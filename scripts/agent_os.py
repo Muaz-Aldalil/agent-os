@@ -103,9 +103,17 @@ def run_install_hooks():
     res = subprocess.run([sys.executable, str(hooks_installer)], cwd=WORKSPACE_ROOT)
     sys.exit(res.returncode)
 
+def run_sync(apply: bool = False):
+    sync_script = WORKSPACE_ROOT / "scripts" / "sync_config.py"
+    args = [sys.executable, str(sync_script)]
+    if apply:
+        args.append("--apply")
+    res = subprocess.run(args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python scripts/agent_os.py <status|audit|test|doctor [--fix]|scan <file>|skill-find <query>|index-skills|install-hooks>")
+        print("Usage: python scripts/agent_os.py <status|audit|test|doctor [--fix]|scan <file>|skill-find <query>|index-skills|install-hooks|sync [--apply]>")
         sys.exit(1)
 
     cmd = sys.argv[1].lower()
@@ -132,8 +140,11 @@ def main():
         run_index_skills()
     elif cmd == "install-hooks":
         run_install_hooks()
+    elif cmd == "sync":
+        should_apply = "--apply" in sys.argv
+        run_sync(apply=should_apply)
     else:
-        print(f"Unknown command: '{cmd}'. Available commands: status, audit, test, doctor [--fix], scan <file>, skill-find <query>, index-skills, install-hooks")
+        print(f"Unknown command: '{cmd}'. Available commands: status, audit, test, doctor [--fix], scan <file>, skill-find <query>, index-skills, install-hooks, sync [--apply]")
         sys.exit(1)
 
 if __name__ == "__main__":

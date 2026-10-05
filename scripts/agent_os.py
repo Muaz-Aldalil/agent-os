@@ -72,9 +72,17 @@ def run_scan(target_file: str):
     res = subprocess.run([sys.executable, str(scan_script), target_file], cwd=WORKSPACE_ROOT)
     sys.exit(res.returncode)
 
+def run_doctor(fix: bool = False):
+    doctor_script = WORKSPACE_ROOT / "scripts" / "doctor.py"
+    args = [sys.executable, str(doctor_script)]
+    if fix:
+        args.append("--fix")
+    res = subprocess.run(args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python scripts/agent_os.py <status|audit|test|scan <file>>")
+        print("Usage: python scripts/agent_os.py <status|audit|test|doctor [--fix]|scan <file>>")
         sys.exit(1)
 
     cmd = sys.argv[1].lower()
@@ -84,13 +92,16 @@ def main():
         run_audit()
     elif cmd == "test":
         run_test()
+    elif cmd == "doctor":
+        should_fix = "--fix" in sys.argv
+        run_doctor(fix=should_fix)
     elif cmd == "scan":
         if len(sys.argv) < 3:
             print("Error: Specify file path to scan. Example: python scripts/agent_os.py scan src/action.ts")
             sys.exit(1)
         run_scan(sys.argv[2])
     else:
-        print(f"Unknown command: '{cmd}'. Available commands: status, audit, test, scan <file>")
+        print(f"Unknown command: '{cmd}'. Available commands: status, audit, test, doctor [--fix], scan <file>")
         sys.exit(1)
 
 if __name__ == "__main__":

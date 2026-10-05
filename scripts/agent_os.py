@@ -184,6 +184,10 @@ def main():
         run_snapshot(sys.argv[2:])
     elif cmd == "resume":
         run_snapshot(["resume"])
+    elif cmd == "codemod":
+        codemod_script = WORKSPACE_ROOT / "scripts" / "codemod.py"
+        res = subprocess.run([sys.executable, str(codemod_script)] + sys.argv[2:], cwd=WORKSPACE_ROOT)
+        sys.exit(res.returncode)
     else:
         print(f"Unknown command: '{cmd}'. Run 'python scripts/agent_os.py' for full command manual.")
         sys.exit(1)

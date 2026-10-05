@@ -41,6 +41,7 @@ CATEGORIES = {
         "project-documentation"
     ],
     "Backend & Data Systems": [
+        "laravel-mastery",
         "backend-api",
         "backend-data",
         "backend-http",
@@ -50,6 +51,7 @@ CATEGORIES = {
         "devops-deploy"
     ],
     "Frontend & User Experience": [
+        "nextjs-fullstack",
         "muaz-skill"
     ],
     "Testing & QA Automation": [

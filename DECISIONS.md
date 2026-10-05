@@ -180,4 +180,26 @@
   4. **Cognitive Memory & State Snapshot (`scripts/snapshot.py`)**: Automatically captures and restores session working state (`python scripts/agent_os.py snapshot freeze|resume`) into `SESSION_SNAPSHOT.md` and `.agent_snapshot.json`, granting 1ms zero-amnesia context recovery after session compactions.
 - **Consequences**: 100X reduction in token overhead, zero circular debugging, instant symbol discovery, and permanent immunity to context compaction amnesia.
 
+---
+
+## [ADR-017] Dedicated Full-Stack Stack Skills: Next.js 15 App Router & Laravel 11 Mastery
+- **Date**: 2026-10-05
+- **Status**: APPROVED
+- **Context**: Generic API or backend guides lack stack-specific architectural rigor for modern Next.js 15 (React 19 Server Components, leaf-node client components, Suspense streaming, PPR, and Tailwind v4 CSS logical properties) and modern Laravel 11 (strict types, Form Request boundaries, Eloquent anti-N+1 eager loading, pessimistic locking for inventory/wallets, and idempotent queues).
+- **Selected Decision**: Deploy two enterprise stack skills:
+  1. skills/nextjs-fullstack/SKILL.md: Governs RSC/RCC boundaries, streaming Suspense, Server Actions security, and Tailwind v4.
+  2. skills/laravel-mastery/SKILL.md: Governs strict types, Form Requests, eager loading, transactions with lockForUpdate(), and Pest 3 tests.
+- **Consequences**: Deterministic architectural guidance and best practices tailored directly to the primary modern full-stack web stacks.
+
+---
+
+## [ADR-018] Automated Codemod & Batch Refactoring Engine
+- **Date**: 2026-10-05
+- **Status**: APPROVED
+- **Context**: Performing repetitive code transformations (e.g., adding declare(strict_types=1); to dozens of PHP files or refactoring physical CSS/Tailwind into logical properties) via manual individual tool edits is slow, token-expensive, and error-prone.
+- **Selected Decision**: Build scripts/codemod.py and python scripts/agent_os.py codemod <rule> <path> [--apply]. Supports batch automated transformations for:
+  - strict-types: Inserts declare(strict_types=1); into PHP files.
+  - rtl-css: Converts physical CSS properties into logical properties.
+  - tailwind-logical: Converts physical Tailwind utilities (ml/mr/pl/pr/text-left/text-right) into bidirectional logical utilities (ms/me/ps/pe/text-start/text-end).
+- **Consequences**: Instant, zero-effort batch refactorings across entire codebases in < 0.1s.
 

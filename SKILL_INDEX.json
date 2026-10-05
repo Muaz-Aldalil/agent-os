@@ -1,5 +1,5 @@
 {
-  "total_skills": 43,
+  "total_skills": 45,
   "skills": [
     {
       "name": "backend-api",
@@ -107,6 +107,13 @@
       "search_corpus": "glopale spec-driven development workflow using spec kit (specify cli v1.0.11). activates when the user wants to plan, specify, implement, or converge a feature using the spec kit workflow. covers all phases: init, constitution, specify, clarify, plan, tasks, checklist, analyze, implement, converge, and taskstoissues. also use for code-review of spec kit diffs and adding community extensions. specification-driven development (spec-kit)"
     },
     {
+      "name": "laravel-mastery",
+      "category": "Backend & Data Systems",
+      "description": "Enterprise architectural engineering skill for modern Laravel 11+ and PHP 8.3/8.4 applications. Enforces strict types, Form Request boundaries, Eloquent query optimization (preventing N+1), pessimistic locking, idempotent queues/jobs, and Pest 3 architectural security testing.",
+      "file": "skills/laravel-mastery/SKILL.md",
+      "search_corpus": "laravel-mastery enterprise architectural engineering skill for modern laravel 11+ and php 8.3/8.4 applications. enforces strict types, form request boundaries, eloquent query optimization (preventing n+1), pessimistic locking, idempotent queues/jobs, and pest 3 architectural security testing. backend & data systems"
+    },
+    {
       "name": "muaz-skill",
       "category": "Frontend & User Experience",
       "description": "Senior Frontend Architect & Design Systems Engineer with full-stack backend co-pilot. Activates on any request to build, design, create, scaffold, improve, audit, or optimize a frontend website or UI — with optional backend guidance (database, auth, payments, backend structure, deployment) for full-stack web apps. Powered by ui-ux-pro-max search engine (91 styles, 169 palettes, 72 font families, 169 product types, 198+ rules). Outputs a structured design blueprint followed by production-ready code, with full decision traceability.",
@@ -119,6 +126,13 @@
       "description": "Security and architecture guard for Next.js 14-16+ App Router Server Actions. Enforces server-side authentication derivation, anti-IDOR resource ownership checks, Zod payload validation, and secure error boundaries. Use whenever creating, editing, or reviewing Server Actions in 'actions.ts' or App Router endpoints.",
       "file": "skills/next-server-action-guard/SKILL.md",
       "search_corpus": "next-server-action-guard security and architecture guard for next.js 14-16+ app router server actions. enforces server-side authentication derivation, anti-idor resource ownership checks, zod payload validation, and secure error boundaries. use whenever creating, editing, or reviewing server actions in 'actions.ts' or app router endpoints. quality & security guards"
+    },
+    {
+      "name": "nextjs-fullstack",
+      "category": "Frontend & User Experience",
+      "description": "Enterprise architectural engineering skill for Next.js 15+ and React 19 App Router applications. Enforces Server vs Client Component boundaries, Turbopack performance, Server Actions security, Suspense streaming, partial prerendering (PPR), and Tailwind CSS v4 styling rules.",
+      "file": "skills/nextjs-fullstack/SKILL.md",
+      "search_corpus": "nextjs-fullstack enterprise architectural engineering skill for next.js 15+ and react 19 app router applications. enforces server vs client component boundaries, turbopack performance, server actions security, suspense streaming, partial prerendering (ppr), and tailwind css v4 styling rules. frontend & user experience"
     },
     {
       "name": "opencode-delegate",

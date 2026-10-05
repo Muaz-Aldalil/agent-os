@@ -87,7 +87,7 @@
 - Release `v1.2.0` tagged and certified. The 100X Cognitive & Execution Power Suite is fully online.
 
 ## 5. Known Blockers, Failing Tests & Edge Cases
-- None within Agent OS. 100% GREEN status across 35 unit tests, 43 workspace skills, 43 global skills, 3 rules, and native pre-commit gates.
+- None within Agent OS. 100% GREEN status across 40 unit tests, 45 workspace skills, 45 global skills, 3 rules, and native pre-commit gates.
 
 ## 6. Immediate Next Executable Actions
 1. `python scripts/agent_os.py preflight`: Check assumptions and flight clearance before writing code.

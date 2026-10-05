@@ -45,6 +45,9 @@ def main():
     has_violations = False
     for f_path in staged_files:
         p = Path(f_path)
+        # Skip test directories and test fixtures which intentionally contain test samples
+        if "tests" in p.parts or p.name.startswith("test_") or p.name.endswith("Test.php"):
+            continue
         if p.suffix.lower() in [".ts", ".tsx", ".js", ".jsx", ".php", ".py", ".css"]:
             if not p.exists():
                 continue

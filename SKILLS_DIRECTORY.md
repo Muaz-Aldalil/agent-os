@@ -1,6 +1,6 @@
 # Antigravity Agent OS - Skills Directory
 
-> Auto-indexed registry of **43 production skills** categorized by operational domain.
+> Auto-indexed registry of **45 production skills** categorized by operational domain.
 
 ## Backend & Data Systems
 
@@ -11,6 +11,7 @@
 - **[`backend-ops`](file:///D:/Skills/.agents/skills/backend-ops/SKILL.md)**: Backend operations procedures for the Backend Agent: background jobs, queues, workers, object storage, deployment concerns, observability (structured logging, metrics, tracing, health), deployment verification. Loaded on demand per detected stack.
 - **[`database`](file:///D:/Skills/.agents/skills/database/SKILL.md)**: Use when designing database schemas, writing queries, creating migrations, optimizing performance, or managing data layer across PostgreSQL, MongoDB, SQLite, Firebase, Redis. Triggers on: schema, query, migration, database, SQL, index, relation, collection, Firestore.
 - **[`devops-deploy`](file:///D:/Skills/.agents/skills/devops-deploy/SKILL.md)**: Use when setting up CI/CD pipelines, Docker containers, deployment configurations, environment management, or infrastructure automation. Triggers on: deploy, Docker, CI, GitHub Actions, Vercel, Netlify, AWS, nginx, hosting, pipeline.
+- **[`laravel-mastery`](file:///D:/Skills/.agents/skills/laravel-mastery/SKILL.md)**: Enterprise architectural engineering skill for modern Laravel 11+ and PHP 8.3/8.4 applications. Enforces strict types, Form Request boundaries, Eloquent query optimization (preventing N+1), pessimistic locking, idempotent queues/jobs, and Pest 3 architectural security testing.
 
 ## Simplicity & Anti-Bloat (Ponytail)
 
@@ -61,6 +62,7 @@
 ## Frontend & User Experience
 
 - **[`muaz-skill`](file:///D:/Skills/.agents/skills/muaz-skill/SKILL.md)**: Senior Frontend Architect & Design Systems Engineer with full-stack backend co-pilot. Activates on any request to build, design, create, scaffold, improve, audit, or optimize a frontend website or UI — with optional backend guidance (database, auth, payments, backend structure, deployment) for full-stack web apps. Powered by ui-ux-pro-max search engine (91 styles, 169 palettes, 72 font families, 169 product types, 198+ rules). Outputs a structured design blueprint followed by production-ready code, with full decision traceability.
+- **[`nextjs-fullstack`](file:///D:/Skills/.agents/skills/nextjs-fullstack/SKILL.md)**: Enterprise architectural engineering skill for Next.js 15+ and React 19 App Router applications. Enforces Server vs Client Component boundaries, Turbopack performance, Server Actions security, Suspense streaming, partial prerendering (PPR), and Tailwind CSS v4 styling rules.
 
 ## Testing & QA Automation
 

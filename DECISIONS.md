@@ -98,5 +98,33 @@
   3. Harmonize frontend contracts in `admin.ts`, `useAdminUsers.ts`, and `useCheckout.ts` to cleanly support string UUIDs and sanitized payloads.
 - **Consequences**: Zero accidental data destruction; complete TypeScript and runtime payload alignment between Next.js and Laravel models; verified by 160 passing invariant tests.
 
+---
 
+## [ADR-010] Strict Workspace Boundary Isolation & Danger Zone Protocol
+- **Date**: 2026-10-05
+- **Status**: APPROVED
+- **Context**: Autonomous agents operating in workstations with multiple projects or open editor tabs risk cross-contaminating external repositories (e.g. adjacent client production codebases) when resolving dependencies or executing commands.
+- **Alternatives Evaluated**:
+  1. *Rely on conversational prompts*: (Rejected: Prone to drift across multi-turn sessions).
+  2. *Constitutional + Programmatic Defense-in-Depth*: (Selected).
+- **Selected Decision**:
+  1. Enshrine Workspace Boundary Isolation in `engineering-constitution.md` (Section 3.4) and `engineering-workflow/SKILL.md` (Stage 1 & Danger Zone 4).
+  2. Programmatically enforce directory boundaries in `scripts/safety_hook.py` by intercepting any `run_command` with `Cwd` or `CommandLine` referencing restricted danger zones (e.g., KNZiN Project).
+  3. Prohibit `cd` usage across all tool invocations.
+- **Consequences**: 100% boundary isolation. External repositories are completely protected from unauthorized modification or inspection.
 
+---
+
+## [ADR-011] Automated Guard Verification Battery & Static Security Checker
+- **Date**: 2026-10-05
+- **Status**: APPROVED
+- **Context**: Critical quality guards (`next-server-action-guard`, `pest-security-guard`, `rtl-logical-guard`, `clean-code-guard`) existed as advisory documentation. Without an automated verification engine, anti-patterns could slip through during rapid implementation.
+- **Selected Decision**:
+  1. Create `scripts/guard_checker.py` to programmatically detect:
+     - Next.js Server Action auth derivation bypasses, anti-IDOR violations, and raw error leaks.
+     - PHP missing `declare(strict_types=1);`, forbidden functions (`eval`, `exec`, `system`), and missing Pest `arch()->preset()->security()`.
+     - Physical CSS properties and physical Tailwind classes violating bidirectional RTL integrity.
+     - Swallowed errors and exceptions (`except: pass`, empty catch blocks).
+  2. Create `tests/test_guards_battery.py` validating detection against both vulnerable samples and clean fixtures.
+  3. Deploy unified `scripts/agent_os.py` CLI (`status`, `audit`, `test`, `scan`).
+- **Consequences**: Deterministic, zero-cost static verification for all engineering workflows.

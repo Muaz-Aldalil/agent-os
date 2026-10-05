@@ -80,9 +80,27 @@ def run_doctor(fix: bool = False):
     res = subprocess.run(args, cwd=WORKSPACE_ROOT)
     sys.exit(res.returncode)
 
+def run_skill_find(query: str):
+    from skill_indexer import search_skills, build_index
+    idx = build_index()
+    results = search_skills(query, idx, limit=5)
+    if not results:
+        print(f"No skills matched query: '{query}'")
+        return
+    print(f"\nTop {len(results)} skill(s) for '{query}':")
+    for r in results:
+        print(f"  * {r['name'].ljust(26)} [{r['category']}]")
+        print(f"    Path: {r['file']}")
+        print(f"    {r['description'][:100]}...\n")
+
+def run_index_skills():
+    indexer_script = WORKSPACE_ROOT / "scripts" / "skill_indexer.py"
+    res = subprocess.run([sys.executable, str(indexer_script), "--build-only"], cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python scripts/agent_os.py <status|audit|test|doctor [--fix]|scan <file>>")
+        print("Usage: python scripts/agent_os.py <status|audit|test|doctor [--fix]|scan <file>|skill-find <query>|index-skills>")
         sys.exit(1)
 
     cmd = sys.argv[1].lower()
@@ -100,8 +118,15 @@ def main():
             print("Error: Specify file path to scan. Example: python scripts/agent_os.py scan src/action.ts")
             sys.exit(1)
         run_scan(sys.argv[2])
+    elif cmd == "skill-find":
+        if len(sys.argv) < 3:
+            print("Error: Specify search terms. Example: python scripts/agent_os.py skill-find 'next auth'")
+            sys.exit(1)
+        run_skill_find(" ".join(sys.argv[2:]))
+    elif cmd == "index-skills":
+        run_index_skills()
     else:
-        print(f"Unknown command: '{cmd}'. Available commands: status, audit, test, doctor [--fix], scan <file>")
+        print(f"Unknown command: '{cmd}'. Available commands: status, audit, test, doctor [--fix], scan <file>, skill-find <query>, index-skills")
         sys.exit(1)
 
 if __name__ == "__main__":

@@ -98,9 +98,14 @@ def run_index_skills():
     res = subprocess.run([sys.executable, str(indexer_script), "--build-only"], cwd=WORKSPACE_ROOT)
     sys.exit(res.returncode)
 
+def run_install_hooks():
+    hooks_installer = WORKSPACE_ROOT / "scripts" / "install_git_hooks.py"
+    res = subprocess.run([sys.executable, str(hooks_installer)], cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python scripts/agent_os.py <status|audit|test|doctor [--fix]|scan <file>|skill-find <query>|index-skills>")
+        print("Usage: python scripts/agent_os.py <status|audit|test|doctor [--fix]|scan <file>|skill-find <query>|index-skills|install-hooks>")
         sys.exit(1)
 
     cmd = sys.argv[1].lower()
@@ -125,8 +130,10 @@ def main():
         run_skill_find(" ".join(sys.argv[2:]))
     elif cmd == "index-skills":
         run_index_skills()
+    elif cmd == "install-hooks":
+        run_install_hooks()
     else:
-        print(f"Unknown command: '{cmd}'. Available commands: status, audit, test, doctor [--fix], scan <file>, skill-find <query>, index-skills")
+        print(f"Unknown command: '{cmd}'. Available commands: status, audit, test, doctor [--fix], scan <file>, skill-find <query>, index-skills, install-hooks")
         sys.exit(1)
 
 if __name__ == "__main__":

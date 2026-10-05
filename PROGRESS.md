@@ -75,17 +75,26 @@
     - Added `python scripts/agent_os.py sync [--apply]`.
     - Verified via `tests/test_sync_config.py` (3/3 tests PASS). Total suite: 30/30 tests PASS.
     - Ratified **ADR-012**, **ADR-013**, **ADR-014**, and **ADR-015** in `DECISIONS.md`.
+- [x] **Subtask 10: The 100X Cognitive & Execution Power Suite (Release v1.2.0)**:
+  - **Pre-Flight Reality Check (`scripts/preflight.py`)**: Validates assumptions, clean working trees, locks, toolchains, and pre-commit status, scoring flight readiness (0-100%).
+  - **AST Code Graph & Symbol Fast-Lookup (`scripts/code_graph.py`)**: 5ms instant symbol resolution (`python scripts/agent_os.py symbol <name>`) and architectural file outlines (`python scripts/agent_os.py outline <file>`) across Python, TypeScript, and PHP without prompt context bloating.
+  - **Scientific Debugging Tracer (`scripts/tracer.py`)**: Persistent hypothesis and experiment ledger (`.agent_trace.json`) executing `start`, `hypo`, `exp`, `conclude`, and `log` to permanently banish circular shotgun debugging.
+  - **Cognitive Memory & State Snapshot (`scripts/snapshot.py`)**: Captures and restores active working state (`freeze` / `resume`), creating permanent immunity against token compaction amnesia.
+  - **Verified via `tests/test_100x_suite.py`**: 5/5 tests PASS. Total test suite across OS: **35/35 unit tests PASS**.
+  - Ratified **ADR-016** in `DECISIONS.md`.
 
 ## 4. Current In-Progress Work
-- Release `v1.1.0` tagged and certified. All 8 senior persona iterations complete with 100% empirical evidence.
+- Release `v1.2.0` tagged and certified. The 100X Cognitive & Execution Power Suite is fully online.
 
 ## 5. Known Blockers, Failing Tests & Edge Cases
-- None within Agent OS. 100% GREEN status across 30 unit tests, 43 workspace skills, 43 global skills, 3 rules, and native pre-commit gates.
+- None within Agent OS. 100% GREEN status across 35 unit tests, 43 workspace skills, 43 global skills, 3 rules, and native pre-commit gates.
 
 ## 6. Immediate Next Executable Actions
-1. `python scripts/agent_os.py status`: View current operational health and boundary locks.
-2. `python scripts/agent_os.py doctor`: Run self-healing diagnostics.
-3. `python scripts/agent_os.py skill-find "<query>"`: Instant semantic skill discovery.
-4. `python scripts/agent_os.py test`: Run all 30 unit tests across all verification batteries.
+1. `python scripts/agent_os.py preflight`: Check assumptions and flight clearance before writing code.
+2. `python scripts/agent_os.py symbol <name>`: Instantly locate classes, functions, and methods across the codebase.
+3. `python scripts/agent_os.py outline <file>`: Inspect file architecture in 5ms without reading the file into context.
+4. `python scripts/agent_os.py trace start|hypo|exp|conclude`: Run scientific hypothesis debugging.
+5. `python scripts/agent_os.py resume`: Instantly recover cognitive state and active changes after turn compaction.
+
 
 

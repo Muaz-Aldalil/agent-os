@@ -1,0 +1,18 @@
+{
+  "current_investigation": {
+    "title": "Unit Test Investigation",
+    "started_at": "2026-10-05T12:24:25.019478",
+    "hypotheses": [
+      {
+        "id": 1,
+        "statement": "Testing tracer cycle",
+        "prediction": "Cycle will succeed",
+        "experiments": [],
+        "status": "CONCLUDED",
+        "verdict": "CONFIRMED",
+        "notes": "Verified by unit test"
+      }
+    ]
+  },
+  "history": []
+}

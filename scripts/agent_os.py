@@ -111,9 +111,32 @@ def run_sync(apply: bool = False):
     res = subprocess.run(args, cwd=WORKSPACE_ROOT)
     sys.exit(res.returncode)
 
+def run_preflight():
+    preflight_script = WORKSPACE_ROOT / "scripts" / "preflight.py"
+    res = subprocess.run([sys.executable, str(preflight_script)], cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_code_graph(args: List[str]):
+    cg_script = WORKSPACE_ROOT / "scripts" / "code_graph.py"
+    res = subprocess.run([sys.executable, str(cg_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_tracer(args: List[str]):
+    tracer_script = WORKSPACE_ROOT / "scripts" / "tracer.py"
+    res = subprocess.run([sys.executable, str(tracer_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_snapshot(args: List[str]):
+    snap_script = WORKSPACE_ROOT / "scripts" / "snapshot.py"
+    res = subprocess.run([sys.executable, str(snap_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python scripts/agent_os.py <status|audit|test|doctor [--fix]|scan <file>|skill-find <query>|index-skills|install-hooks|sync [--apply]>")
+        print("Usage: python scripts/agent_os.py <command> [args...]")
+        print("Core Commands:   status, audit, test, doctor [--fix], scan <file>, sync [--apply]")
+        print("Discovery:       skill-find <query>, index-skills, install-hooks")
+        print("100X Power:      preflight, symbol <name>, outline <file>, trace <args>, snapshot [freeze|resume]")
         sys.exit(1)
 
     cmd = sys.argv[1].lower()
@@ -143,8 +166,26 @@ def main():
     elif cmd == "sync":
         should_apply = "--apply" in sys.argv
         run_sync(apply=should_apply)
+    elif cmd == "preflight":
+        run_preflight()
+    elif cmd == "symbol":
+        if len(sys.argv) < 3:
+            print("Error: Specify symbol name. Example: python scripts/agent_os.py symbol evaluate_command")
+            sys.exit(1)
+        run_code_graph(["find", sys.argv[2]])
+    elif cmd == "outline":
+        if len(sys.argv) < 3:
+            print("Error: Specify file path. Example: python scripts/agent_os.py outline scripts/guard_checker.py")
+            sys.exit(1)
+        run_code_graph(["outline", sys.argv[2]])
+    elif cmd == "trace":
+        run_tracer(sys.argv[2:])
+    elif cmd == "snapshot":
+        run_snapshot(sys.argv[2:])
+    elif cmd == "resume":
+        run_snapshot(["resume"])
     else:
-        print(f"Unknown command: '{cmd}'. Available commands: status, audit, test, doctor [--fix], scan <file>, skill-find <query>, index-skills, install-hooks, sync [--apply]")
+        print(f"Unknown command: '{cmd}'. Run 'python scripts/agent_os.py' for full command manual.")
         sys.exit(1)
 
 if __name__ == "__main__":

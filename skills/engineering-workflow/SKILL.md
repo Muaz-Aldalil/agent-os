@@ -104,10 +104,15 @@ Engineering tasks must not be forced into a one-size-fits-all ceremony. Before t
   3. Define the **Explicit Scope Boundary**:
      - *In-Scope*: Target files, modules, endpoints, and behaviors to be touched.
      - *Out-of-Scope*: Adjacent subsystems, speculative improvements, unrelated technical debt.
+  4. Enforce **Workspace Boundary Isolation**:
+     - Identify the active Workspace Root directory from the current session context.
+     - Hard Rule: Under no circumstance shall the agent inspect, edit, or execute terminal commands in an adjacent workspace, external project, or foreign repository unless the user explicitly assigns cross-project authorization in the current turn.
+     - Treat all external project folders as **Isolated Danger Zones**.
 - **Prohibited Actions**:
+  - Crossing active workspace boundaries to read, touch, or modify foreign repositories.
   - Running destructive Git commands (`git clean`, `git reset`, `git checkout --`).
   - Discarding or stashing user work without permission.
-- **Exit Criteria**: Task level assigned; uncommitted user work identified and preserved.
+- **Exit Criteria**: Task level assigned; workspace boundaries locked; uncommitted user work identified and preserved.
 - **Human Involvement**: None, unless pre-existing uncommitted work directly blocks target files.
 
 ---
@@ -347,6 +352,17 @@ When modifying a core database table in a production system, a destructive or lo
    - Any column used in `WHERE`, `JOIN`, or `ORDER BY` clauses on high-cardinality tables must have an index.
    - Run `EXPLAIN` on complex queries to verify index usage and eliminate full table scans.
 
+### 4.4 Cross-Project & Workspace Boundary Sandbox (Danger Zone 4)
+In developer workstations, agents frequently have multi-project paths present in recent history, open tabs, or parent folders. Treating foreign repositories casually is a severe operational hazard that leads to data contamination, accidental commits, or destructive side effects across independent client repositories.
+
+1. **The Single-Workspace Invariant**:
+   - The agent operates exclusively within the bounds of the active workspace directory ($CWD / Workspace URI).
+   - Under no circumstances shall the agent edit files, run tests, or execute Git commands targeting an external project directory unless the user provides explicit, turn-specific authorization naming that external project.
+2. **Tab & Metadata Discipline**:
+   - The presence of open editor tabs or recent conversation history pointing to adjacent projects (e.g. client apps, production codebases) is purely context for the user's IDE state. It is NEVER permission to touch those repositories.
+3. **Safe Reversion & Clean Extraction**:
+   - If an agent accidentally touches files outside the active workspace, it must immediately rollback the foreign files (`git checkout HEAD` or discard) and return completely to the designated workspace.
+
 ---
 
 # 5. THE CLEAN SESSION CONTINUITY PROTOCOL (CONTEXT PRESERVATION)
@@ -483,6 +499,20 @@ Step 4: ESCALATION CRITERIA (When to Stop)
 - Do NOT kill unrelated background processes, daemons, or active dev servers.
 - Do NOT delete the database or drop all tables unless executing a sanctioned local migration reset.
 - Do NOT claim a test passed when the exit code was non-zero.
+
+### 7.1 Cross-Platform Host Environment Invariants (Windows PowerShell vs. POSIX)
+1. **PowerShell Variable & Piping Nuances**:
+   - Under Windows PowerShell, inline script blocks using `$_` (e.g. `Where-Object { $_.Name -like '...' }`) must be properly escaped if passed inside string arguments, or use simple filters to prevent the parent shell from stripping `$_`.
+   - Never use `cd` in command lines (prohibited by tool policy). Specify `Cwd` explicitly in tool parameters.
+2. **Character Encoding & Output Streams**:
+   - Windows terminal standard encoding is often `cp1252`, which raises `UnicodeEncodeError` when printing raw UTF-8 emoji or non-ASCII characters in Python scripts. Always configure `sys.stdout.reconfigure(encoding='utf-8')` or use robust ASCII fallbacks (`[PASS]`, `[FAIL]`, `[WARN]`).
+
+### 7.2 Service & Daemon Pre-Flight Verification
+1. **Never Assume External Daemons Are Running**:
+   - If a test suite or command requires a local background service (e.g., MySQL on port 3306, Redis on port 6379, Docker daemon), verify service reachability before running a massive suite.
+   - If a connection is refused (`SQLSTATE[HY000] [2002]`), immediately stop. Do not loop through 50+ test files hoping one connects. Report the offline dependency cleanly to the user.
+2. **Proactive Command Timeout & Background Task Hygiene**:
+   - Do NOT poll background task status in tight loops. Use the reactive wakeup notification to resume execution naturally.
 
 ---
 

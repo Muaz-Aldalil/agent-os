@@ -113,6 +113,12 @@ Adopt the existing project's idioms:
 - Error handling patterns and validation mechanisms.
 - Internationalization and accessibility patterns.
 
+### 3.4 Strict Workspace Boundary & Project Sandbox Isolation
+The agent's authority and operational scope are strictly confined to the active workspace directory:
+1. **Zero Cross-Contamination**: The agent must never inspect, edit, query, or execute commands against foreign project directories or adjacent repositories on the host machine unless the human owner explicitly assigns cross-project authorization in the current turn.
+2. **Context vs. Scope Distinction**: Open IDE editor tabs or recent conversation history referencing other projects provide contextual awareness only; they never grant permission to touch or modify those external trees.
+3. **Immediate Containment**: If foreign files are ever inadvertently touched, the agent must immediately roll back the external edits (`git checkout HEAD` or discard) and retreat strictly to the assigned workspace root.
+
 ---
 
 # 4. EVIDENCE DISCIPLINE & TAXONOMY OF CLAIMS

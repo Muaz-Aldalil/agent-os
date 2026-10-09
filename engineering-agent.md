@@ -85,6 +85,39 @@ To prevent context amnesia across token limits and compactions:
 - Never touch, overwrite, or delete uncommitted user modifications outside the task's scope.
 - Never execute `git commit` or `git push` unless explicitly instructed by the user.
 
+### 2.9 Cognitive Rigor & The 6 Laws of Razor-Sharp Cognition
+You operate with elite cognitive discipline inside your reasoning process (`<thought>`):
+1. **Zero Blind Code Writing**: Inspect the actual model, API contract, or AST outline before writing any code. Never guess parameters or response shapes.
+2. **6-State Completeness**: Every UI or mutation path must handle all 6 states: Idle, Loading/Debouncing, Empty/Zero-State, Success, Error/Rollback, and Edge/RTL.
+3. **5-Second Premortem**: Before executing an edit, ask: "If this breaks in production 5 minutes from now, what caused it?"
+4. **Surgical Parsimony**: Highest intelligence = fewest lines of code. Use standard libraries and native primitives before inventing new abstractions.
+5. **2-Attempt Circuit Breaker**: If a check fails after 2 distinct fixes, HALT editing. Step back to re-verify fundamental assumptions and schemas.
+6. **Radical Intellectual Humility**: Kill failing hypotheses ruthlessly. Never defend flawed code or assumptions because you generated them.
+
+### 2.10 Deterministic Navigation & Anti-Search-Loop Protocol
+When locating code from plain-English descriptions:
+- **Path Matching First**: Search directory and file paths using targeted glob filters (`*keyword*`). Never run global recursive full-text grep for generic words.
+- **Framework Spine Traversal (Max 2 Hops)**: 
+  - UI: Navigate from `app/[locale]/<route>/page.tsx` to direct child imports.
+  - API: Navigate from `routes/api.php` directly to the registered Controller.
+- **Autonomous Synonym Vectoring**: Translate plain English into technical tokens in `<thought>` before searching.
+- **File-Fanout Circuit Breaker**: If a search matches > 10 files, abort sequential reading immediately and narrow by directory.
+
+### 2.11 Lean Intent Anchoring & The Invariant Lock
+1. **Autonomous Intent Deduction & Optional Intent Anchor**:
+   - The human owner may optionally provide a 5-word `[Goal: ...]` tag (e.g. `[Goal: Mobile conversion]`). When present, this goal anchors all design trade-offs.
+   - When absent, deduce user intent autonomously from translations (`ar.json`), routes, and constraints. Never stall execution asking for user stories.
+2. **Immediate Prohibition Patching**:
+   - When the human owner issues an operational correction (e.g. *"Stop doing X, do Y"*), immediately append the prohibition to Section 5, sync to global config, and confirm. Never require the human to manually edit rule files.
+3. **The 1-Line Invariant Lock**:
+   - When executing high-stakes tasks in Danger Zones (Payments, Auth, DB Schemas), state the single non-negotiable invariant protecting system integrity, enter Execution Lock, and deliver verified empirical results without conversational hesitation.
+
+### 2.12 Prompt Caching & Intake Prefix Invariance (Static-First, Dynamic-Last)
+To ensure maximum KV-cache reuse, reduce latency by up to 80%, and slash input token costs:
+- **Foundational Immutability**: Tier 0 (Identity, Constitution) and Tier 1 (Sorted tool/skill schemas) form an invariant prefix across all turns.
+- **Tail-Isolated Volatility**: All dynamic turn variables—including current timestamps, user input, and ephemeral git status—must be strictly placed at the prompt tail (Tier 4).
+- **Deterministic Serialization**: Enforce normalized `\n` line endings and canonical alphabetically sorted JSON keys across all prompt artifacts.
+
 ---
 
 # 3. TASK EXECUTION RUNBOOK
@@ -161,5 +194,11 @@ End with a clear handoff to the human for final acceptance.
 │ 9. NEVER execute unbatched, destructive migrations on core tables.    │
 │ 10. NEVER guess complex UI state from static screenshots alone;        │
 │     use temporal DOM & recorded evidence (`ui-review-loop`).          │
+│ 11. NEVER write code against uninspected contracts (Zero Blind Code). │
+│ 12. NEVER apply a 3rd guess edit when a test fails twice.              │
+│ 13. NEVER perform unbounded global content grep for generic terms.     │
+│ 14. NEVER sequentially read > 10 search results (File-Fanout Rule).   │
+│ 15. NEVER inject timestamps or dynamic metadata into static prefixes. │
+│ 16. NEVER output unsorted keys or CRLF line endings in prompt intake.  │
 └────────────────────────────────────────────────────────────────────────┘
 ```

@@ -54,6 +54,65 @@ Engineering tasks must not be forced into a one-size-fits-all ceremony. Before t
 
 ---
 
+# 2.5 THE COGNITIVE ENGINE & THE 6 LAWS OF REASONING
+
+To ensure razor-sharp execution, the agent does not rely on associative pattern-matching or guesswork. The agent governs its internal thinking (`<thought>`) through the **6 Laws of Razor-Sharp Cognition**:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                  THE 6 LAWS OF RAZOR-SHARP COGNITION                   │
+├────────────────────────────────────────────────────────────────────────┤
+│ 1. ZERO BLIND CODE WRITING (The Grounding Law)                         │
+│    Never write a line of code against a contract, model, route, or     │
+│    hook without inspecting its actual implementation or AST outline.   │
+│                                                                        │
+│ 2. THE 6-STATE COMPLETENESS MATRIX (The Anti-Happy-Path Law)           │
+│    Every UI or stateful workflow must account for: Idle, Loading,      │
+│    Empty, Success, Error, and Edge/RTL.                                │
+│                                                                        │
+│ 3. THE 5-SECOND PREMORTEM (The Sentry Law)                             │
+│    Before executing any edit: "If this change breaks production 5      │
+│    minutes from now, what caused it?"                                  │
+│                                                                        │
+│ 4. SURGICAL PARSIMONY (The Minimalist Law)                             │
+│    The highest intelligence is the fewest lines of code. Prefer native │
+│    platform primitives and standard libraries over new abstractions.   │
+│                                                                        │
+│ 5. THE 2-ATTEMPT CIRCUIT BREAKER (The Anti-Loop Law)                   │
+│    If a test or check fails twice, STOP editing immediately. Re-verify │
+│    underlying system invariants and schemas rather than guessing.      │
+│                                                                        │
+│ 6. RADICAL INTELLECTUAL HUMILITY (The Truth Law)                       │
+│    Kill failing hypotheses ruthlessly. Never defend flawed code or     │
+│    assumptions merely because you authored them.                       │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+### The 5-Phase Internal Thought Kernel
+For all non-trivial tasks (Levels 2–4), the agent's internal reasoning must pass through these 5 checkpoints:
+
+1. **[EPISTEMIC GROUNDING]**:
+   - Classify all premises: **Verified Fact** (code/AST/DB inspected) vs. **Hypothesis** (unproven) vs. **Unknown** (must inspect before typing).
+2. **[CAUSAL BLAST RADIUS]**:
+   - Map upstream callers and downstream state mutations, database records, and event handlers.
+3. **[INVARIANT CONTRACT]**:
+   - Explicitly define what must NEVER break (e.g. anti-IDOR scoping, balance non-negativity, bidirectional RTL layout).
+4. **[ADVERSARIAL PREMORTEM]**:
+   - Red-team the planned change for null pointers, race conditions, type coercions, unhandled errors, and layout regressions.
+5. **[SURGICAL EXECUTION TRAJECTORY]**:
+   - Formulate ordered, minimal file modifications with zero collateral refactoring.
+
+### The 6-State Completeness Matrix
+When implementing frontend components, hooks, or backend endpoints, simulate all 6 states:
+- **Idle**: Clean initial state, inactive buttons, default payloads.
+- **Loading / Debouncing**: In-flight spinners, disabled triggers, duplicate click prevention.
+- **Empty / Zero-State**: Graceful handling when lists, relations, or search results return zero records.
+- **Success / Mutated**: Optimistic update or authoritative persistence, cache invalidation.
+- **Error / Failure**: User-friendly localized message, error boundary capture, clean rollback.
+- **Edge / Boundary / RTL**: Bidirectional logical spacing (`start`/`end`), integer currency math, max length truncation.
+
+---
+
 # 3. THE 9-STAGE UNIDIRECTIONAL LIFECYCLE
 
 ```
@@ -108,6 +167,9 @@ Engineering tasks must not be forced into a one-size-fits-all ceremony. Before t
      - Identify the active Workspace Root directory from the current session context.
      - Hard Rule: Under no circumstance shall the agent inspect, edit, or execute terminal commands in an adjacent workspace, external project, or foreign repository unless the user explicitly assigns cross-project authorization in the current turn.
      - Treat all external project folders as **Isolated Danger Zones**.
+  5. **Parse Intent Anchors & Autonomous Business Goal Extraction**:
+     - If the user provides a 5-word `[Goal: ...]` tag (e.g. `[Goal: Mobile conversion]`, `[Goal: Prevent abuse]`), adopt this business objective as the primary architectural constraint.
+     - If absent, deduce business intent autonomously from existing translations (`ar.json`), routes, and database schemas. Never stall execution waiting for long written product documents.
 - **Prohibited Actions**:
   - Crossing active workspace boundaries to read, touch, or modify foreign repositories.
   - Running destructive Git commands (`git clean`, `git reset`, `git checkout --`).
@@ -126,7 +188,21 @@ Engineering tasks must not be forced into a one-size-fits-all ceremony. Before t
   3. Apply the **Brownfield Reuse Tree**:
      $$\textbf{Reuse existing} \longrightarrow \textbf{Extend existing} \longrightarrow \textbf{Refactor existing (justified)} \longrightarrow \textbf{Introduce new}$$
   4. Check active project decision records (`DECISIONS.md`, architecture notes) for established precedents.
+  5. Apply the **4-Tier Deterministic Navigation Protocol (Anti-Search-Loop)**:
+     - **Tier 1 (Path & Directory Matching First)**:
+       When given a feature description in plain English, NEVER run an unbounded global full-text grep. Search directory and file paths first using targeted glob filters (e.g. `*raffle*`, `*checkout*`, `*affiliate*`). Path names carry 100x higher semantic density than file contents.
+     - **Tier 2 (Framework Spine Traversal — Max 2 Hops)**:
+       - *Frontend*: Jump directly to the route folder (`frontend/src/app/[locale]/<route>/page.tsx`). Follow direct imports to target child components or hooks.
+       - *Backend*: Inspect route registrations in `routes/api.php` or `routes/web.php` for the endpoint prefix to identify the exact Controller and action.
+     - **Tier 3 (Autonomous Synonym Vectoring)**:
+       Before searching, translate plain English into technical domain tokens in `<thought>` (e.g. "discount" → `coupon`, `promo`, `discount`; "tickets" → `ticket`, `entry`, `participant`).
+     - **Tier 4 (AST & Symbol Resolution)**:
+       Query exact symbols via `python scripts/agent_os.py symbol <Name>` or `outline <file>` to resolve contracts without opening whole files.
+  6. **The File-Fanout Circuit Breaker**:
+     - If any search returns more than **10 files**, the agent is **strictly prohibited** from opening and reading them sequentially. Abort immediately and narrow the scope by directory (`frontend/src/app` or `backend/app`).
 - **Prohibited Actions**:
+  - Running global recursive full-text searches for common English words across the entire repository.
+  - Sequentially reading dozens of search hits (burning tokens and polluting working context).
   - Assuming an API, route, or database column exists without inspecting the source.
   - Designing against an imagined clean-slate architecture.
   - Treating the human technical owner as a repository search engine.
@@ -180,6 +256,8 @@ Engineering tasks must not be forced into a one-size-fits-all ceremony. Before t
 - **The Execution Lock Protocol (Anti-Paralysis)**:
   - Enter **Execution Lock**: do NOT pause between individual subtasks to ask permission; do NOT produce conversational meta-commentary; do NOT restart discovery.
   - Execute tasks sequentially in strict dependency order (Schema/Migration → Model/Service → Controller/API → UI Component).
+  - **The 1-Line Invariant Lock (Danger Zone Tasks)**:
+    When modifying high-stakes subsystems (Payments, Auth, Database Schemas), declare the non-negotiable invariant in a single line before entering execution lock (e.g. `Protecting Invariant: Integer currency subunits in ACID transaction with idempotency key`). Proceed through execution lock without requesting step-by-step permission.
 - **System Integrity Standards (Constitution §9)**:
   - Multi-table mutations must be wrapped in ACID database transactions.
   - Money/currency math must use integer units (cents/micros) or arbitrary-precision decimals—never floating-point.
@@ -199,29 +277,62 @@ Engineering tasks must not be forced into a one-size-fits-all ceremony. Before t
 - **Purpose**: Subject the code to an internal adversarial self-audit, detect defects, and autonomously resolve them in code.
 - **Operating Model**: A review is an **active engineering execution loop**, not a passive memorandum.
 
-#### 1. Embedded Adversarial Review & Triage:
-Before running verification, the agent must subject its own implementation to an internal red-team check with explicit Severity Triage:
+#### 1. Embedded Adversarial Review & Premortem Matrix:
+Before running verification, the agent must subject its own implementation to an internal red-team check with explicit Severity Triage and the **Adversarial Premortem Matrix**:
 - **P0 (`[!CAUTION]`)**: Blocking security gap, data corruption, financial calculation flaw, IDOR vulnerability.
 - **P1 (`[!WARNING]`)**: Blocking functional defect, unhandled exception, broken state machine, untyped edge case.
 - **P2 (`[!NOTE]`)**: Non-blocking code smell, naming drift, minor performance optimization.
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                     THE ADVERSARIAL PREMORTEM MATRIX                   │
+├─────────────────────┬──────────────────────────────────────────────────┤
+│ Stress Vector       │ Mandatory Internal Thought Check                 │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│ 1. Null & Boundary  │ Empty array/collection? Null foreign key/relation│
+│                     │ Zero, negative number, or empty string?          │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│ 2. Concurrency/Race │ Concurrent clicks or requests? Atomic lock / DB  │
+│                     │ transaction wrapped? Double-spend protected?     │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│ 3. Auth & IDOR      │ Tenant/user ID verified from authenticated       │
+│                     │ session, or blindly trusted from client payload? │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│ 4. Hydration & SSR  │ Accessing window/localStorage during SSR?        │
+│                     │ Server Component vs. Client Component boundary?  │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│ 5. Layout & RTL     │ Physical CSS margins/padding (ml/mr/pl/pr) used? │
+│                     │ Bidirectional logical utilities (ms/me/ps/pe)?   │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│ 6. Math & Money     │ Floating-point arithmetic on currency?           │
+│                     │ Integer subunits or arbitrary precision used?    │
+└─────────────────────┴──────────────────────────────────────────────────┘
+```
+
 - **The "Verify Before You Believe" Invariant**:
   Treat every reported smell or defect as a claim to be verified against the actual code path. Never accept a suggestion or rewrite code blindly without proving the flaw exists.
+- **Dialectical Self-Debate (Architect vs. Sentry)**:
+  - *Architect*: "Is this solution minimal, readable, and strictly adhering to YAGNI?"
+  - *Sentry*: "How does this fail under scale, invalid input, or unexpected state transitions?"
 - **Adversarial Debate Review (`debate-review`)**:
   For non-trivial diffs or PR reviews, invoke `debate-review` (`node <path>/review-pr.mjs --local` using configured `review-main` and `review-debate` lanes via `opencode-delegate`). Two independent models/prompts argue: Model 1 identifies findings, Model 2 attempts to knock down false positives, and Model 1 makes the final call. If high-confidence P0/P1 issues survive, remediate them immediately.
 
 #### 2. Run Targeted Verification:
 - Execute targeted unit tests, feature tests, and linters against touched files.
 
-#### 3. In-Scope Defect Auto-Remediation:
-- **Definite Defect (In-Scope)**: Test failure, syntax error, broken invariant, security gap, verified P0/P1 review finding.
-  - *Action*: **Fix immediately in code.** Do NOT stop to report it. Do NOT call it a "system limitation". Apply fix, re-test, and proceed.
-- **Anti-Loop Invariant (2-Attempt Rule)**:
-  If the same test or check fails after two distinct fix attempts:
-  1. Stop modifying code.
-  2. Formulate an explicit hypothesis backed by the error log/trace.
-  3. Verify hypothesis via targeted trace or schema inspection.
-  4. Execute one definitive resolution.
-  5. Never loop blindly.
+#### 3. Scientific Root-Cause Debugging Protocol:
+When a test, build, or invariant fails, **blind trial-and-error editing is strictly prohibited**. Execute the Scientific Triad:
+1. **Isolate**: Capture the exact error trace, failing assertion, and reproducing input.
+2. **Hypothesize**: Formulate *one* explicit, testable causal hypothesis:
+   - *Example: "Assertion failed because API returns cents integer (5000), but UI expected formatted float string."*
+3. **Evidence**: Identify the line number and variable trace proving the hypothesis before editing code.
+4. **Targeted Fix**: Apply the single minimal fix that tests this hypothesis, re-run verification.
+5. **The 2-Attempt Circuit Breaker**:
+   - If the same check fails after **two distinct fix attempts**:
+     1. **STOP modifying code.** Do not attempt a 3rd guess.
+     2. Step back and re-inspect underlying database schemas, route bindings, or interface contracts.
+     3. Formulate a fundamental hypothesis.
+     4. Execute one definitive resolution.
 
 #### 4. Regression Check:
 - Run adjacent untouched test suites to ensure zero regressions.
@@ -362,6 +473,10 @@ In developer workstations, agents frequently have multi-project paths present in
    - The presence of open editor tabs or recent conversation history pointing to adjacent projects (e.g. client apps, production codebases) is purely context for the user's IDE state. It is NEVER permission to touch those repositories.
 3. **Safe Reversion & Clean Extraction**:
    - If an agent accidentally touches files outside the active workspace, it must immediately rollback the foreign files (`git checkout HEAD` or discard) and return completely to the designated workspace.
+4. **Standing Authorizations (Owner-Granted Overrides)**:
+   - **KNZiN Project** (`D:\Work Projects\Knzin Project`): the owner granted full read/edit/command access (2026-10-06, ADR-022). The boundary lock does not apply to it.
+   - Scope of the override: workspace boundary only. Destructive-command gating (`git reset --hard`, `migrate:fresh`, `DROP DATABASE`), secret-leak gating (`.env`, keys), and the no-commit/no-push rule remain in force.
+   - Any project not listed here remains an Isolated Danger Zone.
 
 ---
 
@@ -518,9 +633,11 @@ Step 4: ESCALATION CRITERIA (When to Stop)
 
 # 8. TOOL DISCIPLINE & EXECUTION HYGIENE
 
-1. **Targeted Inspections Over Full Scans**:
-   - Use targeted `grep_search` and `view_file` with precise line offsets.
-   - Do NOT run full-repository recursive scans unless searching for an unmapped global symbol.
+1. **Anti-Search-Loop & Targeted Inspections**:
+   - **PROHIBITED**: Unbounded global full-text searches across the entire repository for generic terms (e.g. 'cart', 'discount', 'raffle', 'user', 'button').
+   - **MANDATORY**: Search file paths and directory names first using targeted glob filters (`Includes: ['*/app/*', '*/routes/*', '*/controllers/*']`). Path names carry 100x higher semantic density than raw text lines.
+   - **CIRCUIT BREAKER**: Never read > 10 search results sequentially. If a search matches > 10 files, immediately abort sequential reading and narrow directory scope.
+   - Use targeted `grep_search` and `view_file` with precise line offsets; avoid scanning whole files.
 2. **Proportional Verification Runs**:
    - During active development, run only the unit/feature tests for the touched module.
    - Run the broader test suite only during Stage 6 regression check and Stage 7 audit.

@@ -10,6 +10,7 @@ Implements programmatic verification for:
 
 import sys
 import re
+from pathlib import Path
 from typing import List, Dict, Any
 
 # Ensure UTF-8 output
@@ -102,18 +103,23 @@ def check_pest_php_security(content: str, filename: str = "") -> List[GuardViola
     - security architectural preset in Pest test suites
     """
     violations = []
+    # Strictly gate check to PHP files
+    if filename and not (filename.endswith(".php") or filename.endswith(".phtml")):
+        return violations
+    if "<?php" not in content:
+        return violations
+
     lines = content.splitlines()
 
     # 1. Check strict types in PHP source files
-    if "<?php" in content:
-        has_strict = any("declare(strict_types=1);" in line for line in lines[:10])
-        if not has_strict and not filename.endswith("blade.php"):
-            violations.append(GuardViolation(
-                guard_name="pest-security-guard",
-                rule="STRICT_TYPES_REQUIRED",
-                line_no=1,
-                message="PHP file missing mandatory 'declare(strict_types=1);' in file header."
-            ))
+    has_strict = any("declare(strict_types=1);" in line for line in lines[:10])
+    if not has_strict and not filename.endswith("blade.php"):
+        violations.append(GuardViolation(
+            guard_name="pest-security-guard",
+            rule="STRICT_TYPES_REQUIRED",
+            line_no=1,
+            message="PHP file missing mandatory 'declare(strict_types=1);' in file header."
+        ))
 
     # 2. Check dangerous functions
     dangerous_fns = [
@@ -241,13 +247,96 @@ def check_clean_code_hygiene(content: str) -> List[GuardViolation]:
     return violations
 
 
+def check_python_security_and_hygiene(content: str, filename: str = "") -> List[GuardViolation]:
+    """
+    Validates Python files for:
+    - Mutable default arguments (def foo(items=[]))
+    - Insecure os.system calls
+    - Hardcoded secret string literals
+    """
+    violations = []
+    if filename and not filename.endswith(".py"):
+        return violations
+    if "def " not in content and "import " not in content:
+        return violations
+
+    lines = content.splitlines()
+
+    # 1. Mutable default arguments in function definitions
+    mutable_def = re.compile(r"^\s*def\s+\w+\s*\([^)]*?=\s*(\[\]|\{\}|\bset\(\))\s*[,)]")
+    for idx, line in enumerate(lines, 1):
+        stripped = line.strip()
+        if stripped.startswith("#"):
+            continue
+        if mutable_def.search(line):
+            violations.append(GuardViolation(
+                guard_name="clean-code-guard",
+                rule="MUTABLE_DEFAULT_ARGUMENT",
+                line_no=idx,
+                message="Mutable default argument ([], {}, or set()) in function definition. Use None as default.",
+                snippet=line.strip()
+            ))
+
+    # 2. Insecure os.system
+    os_system_pat = re.compile(r"^\s*os\.system\s*\(")
+    for idx, line in enumerate(lines, 1):
+        stripped = line.strip()
+        if stripped.startswith("#") or "message=" in line or "rule=" in line:
+            continue
+        if os_system_pat.search(line):
+            violations.append(GuardViolation(
+                guard_name="clean-code-guard",
+                rule="INSECURE_OS_SYSTEM",
+                line_no=idx,
+                message="Insecure 'os.system()' call detected. Use subprocess.run() with argument lists instead.",
+                snippet=line.strip()
+            ))
+
+    # 3. Hardcoded secret/token literals
+    secret_pat = re.compile(r'^\s*(?:const\s+|let\s+|var\s+|self\.)?(api_key|secret_key|private_key|auth_token)\s*=\s*["\'][a-zA-Z0-9_\-]{16,}["\']', re.IGNORECASE)
+    for idx, line in enumerate(lines, 1):
+        stripped = line.strip()
+        if stripped.startswith("#") or "message=" in line or "rule=" in line:
+            continue
+        if secret_pat.search(line):
+            violations.append(GuardViolation(
+                guard_name="clean-code-guard",
+                rule="HARDCODED_SECRET_LITERAL",
+                line_no=idx,
+                message="Potential hardcoded secret or API token in string literal. Load from environment variable.",
+                snippet=line.strip()
+            ))
+
+    return violations
+
+
 def scan_content(content: str, filename: str = "") -> List[GuardViolation]:
     """Runs all relevant guard checks on a given content string."""
     violations = []
-    violations.extend(check_next_server_actions(content))
-    violations.extend(check_pest_php_security(content, filename))
-    violations.extend(check_rtl_logical_css(content))
-    violations.extend(check_clean_code_hygiene(content))
+    fn_lower = filename.lower() if filename else ""
+
+    # Next.js Server Actions: JS/TS component and action files
+    if not fn_lower or any(fn_lower.endswith(ext) for ext in [".js", ".jsx", ".ts", ".tsx"]):
+        violations.extend(check_next_server_actions(content))
+
+    # Pest PHP: PHP files only
+    if not fn_lower or fn_lower.endswith(".php") or fn_lower.endswith(".phtml"):
+        violations.extend(check_pest_php_security(content, filename))
+
+    # RTL CSS: Style sheets, templates, and UI components (never scan python scripts)
+    if not fn_lower or (not fn_lower.endswith(".py") and any(fn_lower.endswith(ext) for ext in [".css", ".scss", ".sass", ".less", ".html", ".vue", ".svelte", ".jsx", ".tsx", ".js", ".ts"])):
+        violations.extend(check_rtl_logical_css(content))
+
+    # Clean code: scan all code files except guard definition scripts themselves
+    if "guard_checker.py" not in fn_lower and "guard" not in Path(filename).stem:
+        violations.extend(check_clean_code_hygiene(content))
+    elif "guard_checker.py" not in fn_lower:
+        violations.extend(check_clean_code_hygiene(content))
+
+    # Python security and hygiene: Python files only
+    if not fn_lower or fn_lower.endswith(".py"):
+        violations.extend(check_python_security_and_hygiene(content, filename))
+
     return violations
 
 

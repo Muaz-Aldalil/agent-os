@@ -156,24 +156,28 @@ def build_index() -> Dict[str, Any]:
             "search_corpus": search_corpus
         })
     
+    # Sort skills alphabetically by name for deterministic prompt caching
+    skills.sort(key=lambda s: s["name"])
+    
     return {
-        "total_skills": len(skills),
-        "skills": skills
+        "skills": skills,
+        "total_skills": len(skills)
     }
 
 def generate_markdown_directory(index_data: Dict[str, Any]) -> str:
     md = ["# Antigravity Agent OS - Skills Directory\n"]
     md.append(f"> Auto-indexed registry of **{index_data['total_skills']} production skills** categorized by operational domain.\n")
     
-    # Group by category
+    # Group by category (sorted category names)
     by_cat = {}
     for item in index_data["skills"]:
         c = item["category"]
         by_cat.setdefault(c, []).append(item)
         
-    for cat_name, items in by_cat.items():
+    for cat_name in sorted(by_cat.keys()):
+        items = by_cat[cat_name]
         md.append(f"## {cat_name}\n")
-        for s in items:
+        for s in sorted(items, key=lambda x: x["name"]):
             md.append(f"- **[`{s['name']}`](file:///D:/Skills/.agents/{s['file']})**: {s['description']}")
         md.append("")
         
@@ -211,15 +215,15 @@ def search_skills(query: str, index_data: Optional[Dict[str, Any]] = None, limit
 def main():
     index_data = build_index()
     
-    # 1. Save SKILL_INDEX.json
+    # 1. Save SKILL_INDEX.json with sorted keys and normalized LF endings
     json_path = WORKSPACE_ROOT / "SKILL_INDEX.json"
-    with open(json_path, "w", encoding="utf-8") as f:
-        json.dump(index_data, f, indent=2, ensure_ascii=False)
+    json_text = json.dumps(index_data, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    json_path.write_text(json_text.replace("\r\n", "\n"), encoding="utf-8", newline="\n")
         
-    # 2. Save SKILLS_DIRECTORY.md
+    # 2. Save SKILLS_DIRECTORY.md with LF endings
     md_content = generate_markdown_directory(index_data)
     md_path = WORKSPACE_ROOT / "SKILLS_DIRECTORY.md"
-    md_path.write_text(md_content, encoding="utf-8")
+    md_path.write_text(md_content.replace("\r\n", "\n"), encoding="utf-8", newline="\n")
     
     print(f"[SUCCESS] Indexed {index_data['total_skills']} skills.")
     print(f"  - Machine index: {json_path}")

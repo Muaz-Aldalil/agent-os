@@ -1,0 +1,26 @@
+[
+  {
+    "added_at": "2026-10-08T23:00:00Z",
+    "antipattern_regex": "(?:f[\"']\\s*(?:SELECT|INSERT|UPDATE|DELETE)\\b.*?\\{|\\b(?:execute|query|raw)\\s*\\(\\s*[\"'`].*?(?:\\$|\\{|\\+|%))",
+    "id": "AP-001",
+    "reason": "Eliminates SQL injection vulnerabilities across data layer",
+    "replacement": "Use parameterized queries with bindings or ORM query builder",
+    "trigger": "Raw SQL concatenation in database queries"
+  },
+  {
+    "added_at": "2026-10-08T23:00:00Z",
+    "antipattern_regex": "process\\.env\\.(?:SECRET|KEY|PASSWORD|TOKEN|DATABASE_URL)",
+    "id": "AP-002",
+    "reason": "Prevents leaking infrastructure credentials in client JS bundles",
+    "replacement": "Server-side environment derivation only (Next.js server actions / API)",
+    "trigger": "Direct server secret access in client bundle"
+  },
+  {
+    "added_at": "2026-10-08T23:00:00Z",
+    "antipattern_regex": "def\\s+[a-zA-Z_]\\w*\\s*\\([^)]*?=\\s*(?:\\[\\]|\\{\\}|set\\(\\))",
+    "id": "AP-003",
+    "reason": "Eliminates shared mutable state bugs across function invocations",
+    "replacement": "Use default None and initialize inside function body (item=None)",
+    "trigger": "Mutable default argument in Python function definition"
+  }
+]

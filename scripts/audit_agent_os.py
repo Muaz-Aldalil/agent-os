@@ -134,8 +134,8 @@ def audit_skills(skills_dir: Path):
 def main():
     try:
         sys.stdout.reconfigure(encoding='utf-8')
-    except Exception:
-        pass
+    except (AttributeError, Exception):
+        sys.stdout = sys.__stdout__
     print("=" * 80)
     print("  AGENT OS & GUARD INFRASTRUCTURE AUTOMATED AUDIT")
     print("=" * 80)
@@ -192,13 +192,33 @@ def main():
             print(f"    📄 Rule file: {r.name} ({r.stat().st_size} bytes)")
     print(f"    Total active rules: {rules_count}")
 
+    print(f"\n[5] Prompt Caching & Intake Optimization Audit")
+    cache_ok = True
+    try:
+        from prompt_cache import load_canonical_workspace_assembler
+        assembler = load_canonical_workspace_assembler()
+        prefix = assembler.build_static_prefix()
+        prefix_hash = assembler.compute_static_prefix_hash()
+        violations = assembler.audit_cache_leakage()
+        if violations:
+            cache_ok = False
+            for v in violations:
+                print(f"    [FAIL] {v}")
+        else:
+            print(f"    [PASS] Static Prefix Size: {len(prefix):,} bytes (~{len(prefix) // 4:,} tokens)")
+            print(f"    [PASS] Prefix SHA-256:     {prefix_hash[:16]}...{prefix_hash[-8:]}")
+            print(f"    [PASS] Leakage Scan:       100% CLEAN (Zero early timestamps or git status)")
+    except Exception as e:
+        cache_ok = False
+        print(f"    [FAIL] Prompt cache audit failed: {e}")
+
     print("\n" + "=" * 80)
-    if ws_failed == 0 and gl_failed == 0 and all_guards_ok:
+    if ws_failed == 0 and gl_failed == 0 and all_guards_ok and cache_ok:
         print("  OVERALL AUDIT RESULT: ALL SYSTEMS OPERATIONAL (GREEN)")
         print("=" * 80)
         return 0
     else:
-        print(f"  OVERALL AUDIT RESULT: FAILURES DETECTED (WS: {ws_failed}, GL: {gl_failed}, Guards: {all_guards_ok})")
+        print(f"  OVERALL AUDIT RESULT: FAILURES DETECTED (WS: {ws_failed}, GL: {gl_failed}, Guards: {all_guards_ok}, Cache: {cache_ok})")
         print("=" * 80)
         return 1
 

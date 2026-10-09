@@ -38,7 +38,7 @@ def run_status():
     # 3. Boundary & Danger Zone Locks
     print("-" * 65)
     print("Boundary Protection:  [ACTIVE] Isolation Sandbox Enforced")
-    print("Danger Zones:         [RESTRICTED] KNZiN Project (Zero-Access Lock)")
+    print("Danger Zones:         None active | Authorized: KNZiN Project (full access, ADR-022)")
     print("Secret Leak Guard:    [ACTIVE] .env, SSH keys, AWS credentials gated")
     print("Destructive Ops:      [ACTIVE] git reset --hard, clean -f, migrate:fresh gated")
     
@@ -131,12 +131,61 @@ def run_snapshot(args: List[str]):
     res = subprocess.run([sys.executable, str(snap_script)] + args, cwd=WORKSPACE_ROOT)
     sys.exit(res.returncode)
 
+def run_prompt_cache(action: str = "audit"):
+    cache_script = WORKSPACE_ROOT / "scripts" / "prompt_cache.py"
+    args = [sys.executable, str(cache_script)]
+    if action == "sim":
+        args.append("sim")
+    res = subprocess.run(args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_diff_review(args: List[str]):
+    review_script = WORKSPACE_ROOT / "scripts" / "diff_reviewer.py"
+    res = subprocess.run([sys.executable, str(review_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_repl_sandbox(mode: str, args: List[str]):
+    repl_script = WORKSPACE_ROOT / "scripts" / "repl_sandbox.py"
+    res = subprocess.run([sys.executable, str(repl_script), mode] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_scope(args: List[str]):
+    scope_script = WORKSPACE_ROOT / "scripts" / "scope_guard.py"
+    res = subprocess.run([sys.executable, str(scope_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_chaos(args: List[str]):
+    chaos_script = WORKSPACE_ROOT / "scripts" / "chaos_guard.py"
+    res = subprocess.run([sys.executable, str(chaos_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_runtime_observer(mode: str, args: List[str]):
+    obs_script = WORKSPACE_ROOT / "scripts" / "runtime_observer.py"
+    res = subprocess.run([sys.executable, str(obs_script), mode] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_adr_enforcer(args: List[str]):
+    adr_script = WORKSPACE_ROOT / "scripts" / "adr_enforcer.py"
+    res = subprocess.run([sys.executable, str(adr_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_antipattern(args: List[str]):
+    ap_script = WORKSPACE_ROOT / "scripts" / "antipattern_ledger.py"
+    res = subprocess.run([sys.executable, str(ap_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
+def run_telemetry(args: List[str]):
+    tel_script = WORKSPACE_ROOT / "scripts" / "context_telemetry.py"
+    res = subprocess.run([sys.executable, str(tel_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python scripts/agent_os.py <command> [args...]")
         print("Core Commands:   status, audit, test, doctor [--fix], scan <file>, sync [--apply]")
         print("Discovery:       skill-find <query>, index-skills, install-hooks")
-        print("100X Power:      preflight, symbol <name>, outline <file>, trace <args>, snapshot [freeze|resume]")
+        print("100X Power:      preflight, review, eval <code>, sql <query>, regex <pat> <txt>, cache-audit, cache-sim, symbol <name>, outline <file>, trace <args>, snapshot [freeze|resume]")
+        print("Autonomy Suite:  scope <set|check|clear|status>, chaos-audit [file], logs [--tail N], probe <url>, adr-check [list], antipattern <list|scan|audit|add>, telemetry [record|reset|status]")
         sys.exit(1)
 
     cmd = sys.argv[1].lower()
@@ -168,6 +217,43 @@ def main():
         run_sync(apply=should_apply)
     elif cmd == "preflight":
         run_preflight()
+    elif cmd in ["review", "diff-review"]:
+        run_diff_review(sys.argv[2:])
+    elif cmd in ["eval", "py"]:
+        if len(sys.argv) < 3:
+            print("Error: Specify Python expression. Example: python scripts/agent_os.py eval 'math.sqrt(64)'")
+            sys.exit(1)
+        run_repl_sandbox("py", [sys.argv[2]])
+    elif cmd == "sql":
+        if len(sys.argv) < 3:
+            print("Error: Specify SQL query. Example: python scripts/agent_os.py sql 'SELECT 1;'")
+            sys.exit(1)
+        run_repl_sandbox("sql", [sys.argv[2]])
+    elif cmd == "regex":
+        if len(sys.argv) < 4:
+            print("Error: Specify regex pattern and text. Example: python scripts/agent_os.py regex '(\\d+)' 'User 123'")
+            sys.exit(1)
+        run_repl_sandbox("regex", sys.argv[2:])
+    elif cmd in ["cache-audit", "cache"]:
+        run_prompt_cache("audit")
+    elif cmd in ["cache-sim", "cache-simulate"]:
+        run_prompt_cache("sim")
+    elif cmd == "scope":
+        run_scope(sys.argv[2:])
+    elif cmd in ["chaos-audit", "chaos"]:
+        sub_args = sys.argv[2:] if len(sys.argv) > 2 else ["audit"]
+        run_chaos(sub_args)
+    elif cmd == "logs":
+        run_runtime_observer("logs", sys.argv[2:])
+    elif cmd == "probe":
+        run_runtime_observer("probe", sys.argv[2:])
+    elif cmd in ["adr-check", "adr"]:
+        run_adr_enforcer(sys.argv[2:])
+    elif cmd in ["antipattern", "ap"]:
+        run_antipattern(sys.argv[2:])
+    elif cmd in ["telemetry", "tokens"]:
+        sub_args = sys.argv[2:] if len(sys.argv) > 2 else ["status"]
+        run_telemetry(sub_args)
     elif cmd == "symbol":
         if len(sys.argv) < 3:
             print("Error: Specify symbol name. Example: python scripts/agent_os.py symbol evaluate_command")
@@ -180,6 +266,11 @@ def main():
         run_code_graph(["outline", sys.argv[2]])
     elif cmd == "trace":
         run_tracer(sys.argv[2:])
+    elif cmd in ["route", "dispatch"]:
+        if len(sys.argv) < 3:
+            print("Error: Specify task description or target file. Example: python scripts/agent_os.py route 'build modal UI'")
+            sys.exit(1)
+        run_router(sys.argv[2:])
     elif cmd == "snapshot":
         run_snapshot(sys.argv[2:])
     elif cmd == "resume":
@@ -192,5 +283,12 @@ def main():
         print(f"Unknown command: '{cmd}'. Run 'python scripts/agent_os.py' for full command manual.")
         sys.exit(1)
 
+def run_router(args: List[str]):
+    router_script = WORKSPACE_ROOT / "scripts" / "skill_router.py"
+    res = subprocess.run([sys.executable, str(router_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
 if __name__ == "__main__":
     main()
+
+

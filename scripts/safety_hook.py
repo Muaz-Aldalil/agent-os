@@ -39,10 +39,11 @@ DESTRUCTIVE_PATTERNS = [
     (r"\b(iex|Invoke-Expression)\s*\(.*(iwr|Invoke-WebRequest|curl)\b", "Executing unverified remote download directly in PowerShell"),
 ]
 
-# Danger Zones - strictly isolated foreign paths / projects
-DANGER_ZONE_KEYWORDS = [
-    (r"knzin", "KNZiN Project is designated an isolated DANGER ZONE and is strictly off-limits"),
-]
+# Authorized projects (owner-granted full access; boundary lock lifted, 2026-10-06, ADR-022):
+#   - KNZiN Project (D:\Work Projects\Knzin Project)
+# Secret-leak and destructive-command guards below STILL apply inside authorized projects.
+# Danger Zones - strictly isolated foreign paths / projects (add (regex, reason) tuples here)
+DANGER_ZONE_KEYWORDS = []
 
 def evaluate_command(cmd: str, cwd: str) -> tuple:
     """

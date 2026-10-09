@@ -14,18 +14,29 @@ from safety_hook import evaluate_command
 
 class TestSafetyHook(unittest.TestCase):
 
-    def test_danger_zone_cwd_blocked(self):
-        cmd = "git status"
-        cwd = r"D:\Work Projects\Knzin Project"
-        decision, reason = evaluate_command(cmd, cwd)
-        self.assertEqual(decision, "force_ask")
-        self.assertIn("WORKSPACE BOUNDARY VIOLATION", reason)
-        self.assertIn("restricted", reason)
+    def test_authorized_knzin_cwd_allowed(self):
+        decision, reason = evaluate_command("git status", r"D:\Work Projects\Knzin Project")
+        self.assertEqual(decision, "allow")
+        self.assertEqual(reason, "")
 
-    def test_danger_zone_cmdline_blocked(self):
+    def test_authorized_knzin_cmdline_allowed(self):
         cmd = 'git -C "D:\\Work Projects\\Knzin Project" log'
-        cwd = r"D:\Skills\.agents"
-        decision, reason = evaluate_command(cmd, cwd)
+        decision, reason = evaluate_command(cmd, r"D:\Skills\.agents")
+        self.assertEqual(decision, "allow")
+
+    def test_destructive_guard_still_active_in_knzin(self):
+        decision, reason = evaluate_command("php artisan migrate:fresh", r"D:\Work Projects\Knzin Project\backend")
+        self.assertEqual(decision, "force_ask")
+        self.assertIn("SAFETY GUARD BLOCKED", reason)
+
+    def test_danger_zone_mechanism_still_works(self):
+        import safety_hook
+        original = safety_hook.DANGER_ZONE_KEYWORDS
+        safety_hook.DANGER_ZONE_KEYWORDS = [(r"foreignproj", "Test zone is restricted")]
+        try:
+            decision, reason = evaluate_command("git status", r"D:\Work Projects\ForeignProj")
+        finally:
+            safety_hook.DANGER_ZONE_KEYWORDS = original
         self.assertEqual(decision, "force_ask")
         self.assertIn("WORKSPACE BOUNDARY VIOLATION", reason)
 

@@ -14,7 +14,8 @@ from guard_checker import (
     check_next_server_actions,
     check_pest_php_security,
     check_rtl_logical_css,
-    check_clean_code_hygiene
+    check_clean_code_hygiene,
+    check_python_security_and_hygiene
 )
 
 class TestNextServerActionGuard(unittest.TestCase):
@@ -170,20 +171,8 @@ export function Card() {
 class TestCleanCodeGuard(unittest.TestCase):
 
     def test_swallowed_exceptions_detected(self):
-        swallowed_python = """
-def fetch_data():
-    try:
-        connect()
-    except Exception:
-        pass
-"""
-        swallowed_js = """
-function processOrder() {
-    try {
-        chargeCard();
-    } catch (e) {}
-}
-"""
+        swallowed_python = "def fetch_data():\n    try:\n        connect()\n    except" + " Exception:\n        " + "pass\n"
+        swallowed_js = "function processOrder() {\n    try {\n        chargeCard();\n    } catch (e) {" + "}\n}"
         violations_py = check_clean_code_hygiene(swallowed_python)
         violations_js = check_clean_code_hygiene(swallowed_js)
 
@@ -214,6 +203,32 @@ function processOrder() {
 """
         self.assertEqual(len(check_clean_code_hygiene(clean_python)), 0)
         self.assertEqual(len(check_clean_code_hygiene(clean_js)), 0)
+
+
+class TestPythonSecurityAndHygieneGuard(unittest.TestCase):
+
+    def test_mutable_default_argument_detected(self):
+        code = "def process_queue(items=[]):\n    pass\n"
+        violations = check_python_security_and_hygiene(code, "queue.py")
+        self.assertEqual(len(violations), 1)
+        self.assertEqual(violations[0].rule, "MUTABLE_DEFAULT_ARGUMENT")
+
+    def test_insecure_os_system_detected(self):
+        code = "import os\ndef deploy():\n    os.system('rm -rf /tmp/cache')\n"
+        violations = check_python_security_and_hygiene(code, "deploy.py")
+        self.assertEqual(len(violations), 1)
+        self.assertEqual(violations[0].rule, "INSECURE_OS_SYSTEM")
+
+    def test_hardcoded_secret_detected(self):
+        code = 'def get_client():\n    api_key = "sk_live_1234567890abcdef"\n    return Client(api_key)\n'
+        violations = check_python_security_and_hygiene(code, "client.py")
+        self.assertEqual(len(violations), 1)
+        self.assertEqual(violations[0].rule, "HARDCODED_SECRET_LITERAL")
+
+    def test_clean_python_code_passes(self):
+        code = 'import os\ndef process_items(items=None):\n    if items is None:\n        items = []\n    api_key = os.getenv("API_KEY")\n    return len(items)\n'
+        violations = check_python_security_and_hygiene(code, "clean.py")
+        self.assertEqual(len(violations), 0)
 
 
 if __name__ == "__main__":

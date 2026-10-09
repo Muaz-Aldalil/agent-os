@@ -102,11 +102,62 @@ def check_environment_runtimes() -> List[FlightItem]:
 
     return items
 
+def check_prompt_caching_integrity() -> List[FlightItem]:
+    items = []
+    try:
+        from prompt_cache import load_canonical_workspace_assembler
+        assembler = load_canonical_workspace_assembler()
+        violations = assembler.audit_cache_leakage()
+        if not violations:
+            prefix_len = len(assembler.build_static_prefix())
+            items.append(FlightItem("Prompt Cache", "Prefix Invariance", True, f"Verified 100% stable (~{prefix_len // 4:,} tokens)", "INFO"))
+        else:
+            items.append(FlightItem("Prompt Cache", "Prefix Invariance", False, f"{len(violations)} leakage violation(s) detected", "WARNING"))
+    except Exception as e:
+        items.append(FlightItem("Prompt Cache", "Prefix Invariance", False, f"Check error: {str(e)}", "WARNING"))
+    return items
+
+def check_autonomy_suite_health() -> List[FlightItem]:
+    items = []
+    # 1. Telemetry
+    try:
+        from context_telemetry import evaluate_health
+        h = evaluate_health()
+        is_pass = h["status"] != "CRITICAL"
+        sev = "INFO" if h["status"] == "HEALTHY" else ("WARNING" if h["status"] == "WARNING" else "ERROR")
+        items.append(FlightItem("Telemetry", "Context Health", is_pass, f"{h['status']}: {h['turns']} turns ({h['total_tokens']:,} tokens)", sev))
+    except Exception as e:
+        items.append(FlightItem("Telemetry", "Context Health", False, f"Check error: {str(e)}", "WARNING"))
+
+    # 2. ADR Enforcement
+    try:
+        from adr_enforcer import audit_all_adrs
+        adr_res = audit_all_adrs()
+        is_pass = adr_res["failed_enforcements"] == 0
+        items.append(FlightItem("Architecture", "ADR Invariants", is_pass, f"{adr_res['passed_enforcements']}/{adr_res['enforced_adrs']} verified ({adr_res['coverage_percent']}% coverage)", "INFO" if is_pass else "WARNING"))
+    except Exception as e:
+        items.append(FlightItem("Architecture", "ADR Invariants", False, f"Check error: {str(e)}", "WARNING"))
+
+    # 3. Scope Contract
+    try:
+        from scope_guard import get_scope
+        scope = get_scope()
+        if scope:
+            items.append(FlightItem("Scope Gate", "Blast-Radius Contract", True, f"Locked: '{scope.get('task')}' ({len(scope.get('permitted_files', []))} files)", "INFO"))
+        else:
+            items.append(FlightItem("Scope Gate", "Blast-Radius Contract", True, "No active scope lock (Unrestricted mode)", "INFO"))
+    except Exception as e:
+        items.append(FlightItem("Scope Gate", "Blast-Radius Contract", False, f"Check error: {str(e)}", "WARNING"))
+
+    return items
+
 def run_preflight() -> Tuple[int, List[FlightItem]]:
     items: List[FlightItem] = []
     items.extend(check_git_readiness())
     items.extend(check_hook_and_guard_gate())
     items.extend(check_environment_runtimes())
+    items.extend(check_prompt_caching_integrity())
+    items.extend(check_autonomy_suite_health())
 
     total = len(items)
     passed = sum(1 for i in items if i.passed)

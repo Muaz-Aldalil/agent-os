@@ -62,8 +62,8 @@ def check_nested_git_submodules(fix: bool = False) -> DiagnosticCheck:
             try:
                 shutil.rmtree(g)
                 removed.append(str(g))
-            except Exception:
-                pass
+            except Exception as e:
+                continue
         return DiagnosticCheck("Nested Git Check", True, f"REPAIRED: Removed {len(removed)} nested .git directories.")
     else:
         return DiagnosticCheck("Nested Git Check", False, f"Found {len(nested_gits)} detached .git directories: {[str(g) for g in nested_gits]}", fixable=True)
@@ -109,8 +109,8 @@ def check_port_availability() -> DiagnosticCheck:
                     if f":{port} " in line or f":{port}\t" in line:
                         listening_ports.append(port)
         listening_ports = sorted(list(set(listening_ports)))
-    except Exception:
-        pass
+    except Exception as e:
+        listening_ports = []
 
     msg = f"Active listening ports detected: {listening_ports}" if listening_ports else "No common dev ports currently held."
     return DiagnosticCheck("Port Scanner", True, msg)

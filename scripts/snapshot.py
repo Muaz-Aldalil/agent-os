@@ -38,7 +38,7 @@ def freeze_session(label: str = "Active Working State") -> Dict[str, Any]:
         sha = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=WORKSPACE_ROOT, text=True).strip()
         status_out = subprocess.check_output(["git", "status", "--porcelain"], cwd=WORKSPACE_ROOT, text=True).strip()
         if status_out:
-            dirty_files = [line.strip() for line in status_out.splitlines()]
+            dirty_files = sorted([line.strip() for line in status_out.splitlines()])
         diff_stat = subprocess.check_output(["git", "diff", "--stat"], cwd=WORKSPACE_ROOT, text=True).strip()
     except Exception as err:
         print(f"[!] Notice: Git status query failed during snapshot: {err}", file=sys.stderr)
@@ -55,20 +55,20 @@ def freeze_session(label: str = "Active Working State") -> Dict[str, Any]:
             print(f"[!] Notice: Failed to parse trace ledger during snapshot: {err}", file=sys.stderr)
 
     snapshot_data = {
-        "label": label,
-        "timestamp": datetime.now().isoformat(),
+        "active_trace": active_trace,
         "git": {
             "branch": branch,
             "commit": sha,
-            "dirty_files": dirty_files,
-            "diff_stat": diff_stat
+            "diff_stat": diff_stat,
+            "dirty_files": dirty_files
         },
-        "active_trace": active_trace
+        "label": label,
+        "timestamp": datetime.now().isoformat()
     }
 
-    # Save JSON
-    with open(SNAPSHOT_JSON, "w", encoding="utf-8") as f:
-        json.dump(snapshot_data, f, indent=2, ensure_ascii=False)
+    # Save JSON with deterministic key sorting and LF line endings
+    json_text = json.dumps(snapshot_data, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    SNAPSHOT_JSON.write_text(json_text.replace("\r\n", "\n"), encoding="utf-8", newline="\n")
 
     # Generate Markdown
     md_lines = [
@@ -98,7 +98,8 @@ def freeze_session(label: str = "Active Working State") -> Dict[str, Any]:
                 md_lines.append(f"  * Conclusion: {h.get('notes')}")
         md_lines.append("")
 
-    SNAPSHOT_MD.write_text("\n".join(md_lines), encoding="utf-8")
+    md_content = "\n".join(md_lines).replace("\r\n", "\n") + "\n"
+    SNAPSHOT_MD.write_text(md_content, encoding="utf-8", newline="\n")
     
     print(f"[SUCCESS] Cognitive state frozen successfully.")
     print(f"  - Machine: {SNAPSHOT_JSON}")

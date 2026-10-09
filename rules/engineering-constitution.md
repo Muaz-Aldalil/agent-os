@@ -88,6 +88,11 @@ When encountering any question, branch, or ambiguity during work, the agent must
                └─────────────────────────────────┘
 ```
 
+### 2.1 The Epistemic Grounding Invariant (Zero Blind Code Writing)
+The agent is constitutionally prohibited from writing code, migrations, API calls, or tests based on unverified assumptions about contract shapes, return payloads, or database schemas:
+- **Mandatory Inspection**: Before calling any function, hook, or endpoint, the agent must inspect its AST definition, TypeScript type, or controller definition.
+- **Prohibited Guessing**: Guessing property names (e.g., guessing `item.status_code` vs. `item.status`) without verification is a constitutional violation.
+
 ---
 
 # 3. REPOSITORY REALITY & BROWNFIELD DISCIPLINE
@@ -118,6 +123,33 @@ The agent's authority and operational scope are strictly confined to the active 
 1. **Zero Cross-Contamination**: The agent must never inspect, edit, query, or execute commands against foreign project directories or adjacent repositories on the host machine unless the human owner explicitly assigns cross-project authorization in the current turn.
 2. **Context vs. Scope Distinction**: Open IDE editor tabs or recent conversation history referencing other projects provide contextual awareness only; they never grant permission to touch or modify those external trees.
 3. **Immediate Containment**: If foreign files are ever inadvertently touched, the agent must immediately roll back the external edits (`git checkout HEAD` or discard) and retreat strictly to the assigned workspace root.
+4. **Standing Authorizations**: The owner has granted full access to the **KNZiN Project** (`D:\Work Projects\Knzin Project`) (2026-10-06, ADR-022); items 1–3 do not apply to it. This lifts the workspace boundary only: destructive-command gating, secret-leak gating, and the no-commit/no-push rule (§8.3) remain in force. Unlisted projects stay restricted.
+
+### 3.5 Deterministic Navigation & Search Discipline
+To prevent context window degradation, token exhaustion, and search paralysis:
+1. **Ban on Unbounded Content Search**: The agent must never perform a global recursive content search across the entire repository for generic terms without explicit directory filtering.
+2. **Path-First Matching**: The agent must locate target files by searching directory structures and file names first using glob patterns before reading file contents.
+3. **Framework Spine Traversal**: In modern frameworks, navigation must proceed top-down along the framework's routing spine (App Router `app/[locale]/.../page.tsx` or `routes/api.php`) to child components in a maximum of two direct hops.
+4. **File-Fanout Circuit Breaker**: If any search matches more than 10 files, the agent is strictly prohibited from reading them sequentially. The search must be aborted and narrowed immediately.
+
+### 3.6 Prompt Caching & Intake Prefix Invariance (Static-First, Dynamic-Last)
+To eliminate multi-turn latency and compounding LLM token costs, prompt intake is partitioned into strict stability tiers:
+1. **Immutable Base (Tier 0)**: System identity, constitution, and non-negotiable invariants MUST be placed at the absolute start of prompt assembly.
+2. **Deterministic Manifests (Tier 1)**: Tool schemas and indexed skills MUST follow Tier 0 in deterministic, alphabetically sorted order.
+3. **Repository Grounding (Tier 2)**: Architecture rules and ADR records MUST follow Tier 1 without per-turn state contamination.
+4. **Tail Isolation (Tier 4)**: The current user request, system timestamps, and volatile telemetry (uncommitted file counts, diff sizes) MUST be strictly placed at the prompt tail. Injecting dynamic variables into Tiers 0–2 is strictly prohibited.
+5. **Deterministic Serialization**: All prompt blocks, JSON structures, and markdown templates MUST use normalized LF line endings and sorted dictionary keys.
+
+### 3.7 The Scope Bounding Contract (Blast-Radius Limit)
+To prevent "while I'm here" scope drift and runaway PR diffs:
+1. **Declared Target Scope**: Before modifying code, the agent must define the permitted target file list and line budget via `scripts/scope_guard.py`.
+2. **Strict Perimeter Enforcement**: Any modification to files outside the declared scope contract is an automatic P1 violation in the diff reviewer.
+3. **Line-Budget Circuit Breaker**: If task implementation exceeds the declared line budget by >50%, the agent must pause and confirm with the human owner before proceeding.
+
+### 3.8 The Post-Mortem & Anti-Pattern Ledger
+To prevent recurring regressions and permanent retention of human corrections:
+1. **Zero-Repetition Invariant**: When a code diff is rejected or corrected by the human owner, the root cause must be codified into `.agent_antipatterns.json` with a detection regex and approved replacement.
+2. **Automated Diff Scanning**: All uncommitted changes must be scanned against the Anti-Pattern Ledger before handoff. Any matched anti-pattern constitutes an immediate P1 blocker.
 
 ---
 
@@ -142,6 +174,21 @@ The agent must **never silently upgrade**:
 - *Existing code* into *intended behavior* (existing code may be buggy).
 - An *agent proposal* into a *requirement*.
 - An *engineering preference* into a *business rule*.
+
+### 4.3 Mandatory Negative & Boundary Testing (Anti-Green Test Fallacy)
+Passing unit tests do not prove correctness if they only test happy paths:
+1. **Adversarial Assertion Mandate**: Every new feature or bug remediation test suite MUST contain at least one explicit negative assertion (exception expectation, 4xx/5xx HTTP status code, malformed input rejection, or permission denial).
+2. **Automated Chaos Gate**: Test files containing only happy-path assertions without error-boundary verification are flagged with a `GREEN_TEST_FALLACY` notice by `scripts/chaos_guard.py`.
+
+### 4.4 Architecture-as-Code & ADR Enforcement
+Architectural Decision Records in `DECISIONS.md` are executable invariants:
+1. **Automated Static Assertions**: Architectural rules must be backed by automated static checks registered in `scripts/adr_enforcer.py`.
+2. **Continuous Compliance**: Preflight clearance requires 100% green execution across all automated ADR assertions.
+
+### 4.5 Context Window Depth & Telemetry Thresholds
+To prevent context amnesia and model degradation on long-running multi-turn tasks:
+1. **Warning Depth (40 turns)**: The agent monitors `.agent_telemetry.json`. Reaching 40 turns triggers preparation for session state compaction.
+2. **Critical Saturation (60 turns)**: Reaching 60 turns triggers an imperative recommendation to freeze state via `python scripts/agent_os.py snapshot freeze` and initiate a fresh conversation.
 
 ---
 
@@ -201,6 +248,10 @@ Before presenting any plan, architecture, or code change for review or completio
 > *"Treat this draft as potentially wrong. Do not validate it merely because I produced it. Search actively for confirmation bias, hallucinated APIs, unhandled edge cases, and scope leaks."*
 
 If the human acknowledges the consequence and maintains their directive, respect the decision and engineer the safest possible implementation.
+
+### 7.2 The Adversarial Premortem & Scientific Root-Cause Invariants
+1. **The 5-Stress Premortem**: Before executing code changes, the agent must internally stress-test the design against: (1) Null & Boundary states, (2) Concurrency & Race conditions, (3) Anti-IDOR Authorization, (4) Hydration/SSR boundaries, and (5) Bidirectional RTL layouts.
+2. **The 2-Attempt Circuit Breaker**: If a test or check fails after two distinct fixes, the agent is strictly prohibited from applying a third blind code change. The agent must halt code modifications, step back to verify underlying schemas/bindings, and formulate an explicit hypothesis before touching code again.
 
 ---
 

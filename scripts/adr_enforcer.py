@@ -88,6 +88,12 @@ def check_adr_027_precode_engine() -> Dict[str, Any]:
     passed = p1 and skill and "Pre-Coding Clearance Gate" in const
     return {"passed": passed, "message": "The 6 Pre-Coding Pillars engine, web-precode skill, and Constitution §3.9 verified"}
 
+def check_adr_028_sentinel() -> Dict[str, Any]:
+    p1 = (WORKSPACE_ROOT / "scripts" / "sentinel.py").is_file()
+    const = (WORKSPACE_ROOT / "rules" / "engineering-constitution.md").read_text(encoding="utf-8")
+    passed = p1 and "Proactive Architectural Sentinel" in const
+    return {"passed": passed, "message": "Proactive Architectural Sentinel & Scalability Guard verified"}
+
 EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-002": check_adr_002_pest_php,
     "ADR-003": check_adr_003_rtl_css,
@@ -99,6 +105,7 @@ EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-023": check_adr_023_prompt_cache,
     "ADR-024": check_adr_024_micro_sandbox_and_python_guard,
     "ADR-027": check_adr_027_precode_engine,
+    "ADR-028": check_adr_028_sentinel,
 }
 
 def parse_adrs_from_decisions() -> List[Dict[str, str]]:

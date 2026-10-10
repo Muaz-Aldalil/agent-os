@@ -162,6 +162,13 @@ To eliminate "impatient coding syndrome" and architectural drift, no new web app
    - `06-IMPLEMENTATION_PLAN.md`: Phased execution dependency graph and executable task checklists.
 2. **Automated Audit Enforcement**: Coding is locked until `python scripts/agent_os.py precode audit` yields a 100% Pre-Coding Readiness Score.
 
+### 3.10 Proactive Architectural Sentinel & Scalability Guard
+To prevent generative bloat, latent query exhaustion, and user-facing regressions:
+1. **Scalability & Latency Invariants**: The agent must never produce unbounded SQL queries or bulk ORM fetches (`Model.all()`) without explicit limit/pagination constraints. Database migrations must include explicit indexes on foreign keys and lifecycle timestamps (`expires_at`, `deleted_at`). Iterative N+1 query patterns inside loops are classified as P0 blockers.
+2. **Generative Bloat & Surgical Parsimony**: The agent must actively resist generative bias. Creating single-method classes or speculative wrapper indirection that merely replicates standard library primitives is strictly forbidden.
+3. **Product Empathy & UX Soundness**: HTTP responses must never leak raw server exceptions, database errors, or stack traces to end users. Interactive buttons and links must provide meaningful descriptive copy or explicit `aria-label` attributes.
+4. **Autonomous Sentinel Audit**: Architectural compliance across these three pillars must be proactively verifiable via `python scripts/agent_os.py sentinel [path]`.
+
 ---
 
 # 4. EVIDENCE DISCIPLINE & TAXONOMY OF CLAIMS

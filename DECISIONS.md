@@ -398,6 +398,30 @@
   - Complete elimination of unhandled UI edge states.
   - Seamless handoff to execution through dependency-ordered task checklists.
 
+---
+
+## [ADR-028] Proactive Architectural Sentinel & Scalability Guard (Release v1.7.0)
+- **Date**: 2026-10-10
+- **Status**: APPROVED
+- **Context**: Autonomous agents naturally suffer from generative bias (adding speculative abstractions) and reactive complacency (waiting for human prompts before detecting latent architectural decay). Long-term system stability requires proactive stewardship: continuous auditing for scalability bottlenecks (unbounded queries, N+1 patterns, unindexed columns), parsimonious restraint (eliminating single-method class bloat), and empathetic human UX (sanitizing hostile error leaks, ensuring accessible controls).
+- **Alternatives Evaluated**:
+  1. *Passive post-failure debugging*: (Rejected: Leaves latent performance bugs and memory exhaustion risks to production traffic).
+  2. *Standard linter rules (ESLint/Flake8) alone*: (Rejected: Shallow syntax checks miss multi-statement N+1 loop patterns and schema-level index omissions).
+  3. *Proactive Architectural Sentinel Engine (`scripts/sentinel.py`)*: (Selected).
+- **Selected Decision**:
+  1. Implement `scripts/sentinel.py` featuring deep multi-pillar static auditing:
+     - Scalability & Latency: Detects unbounded SQL queries, bulk ORM fetches without pagination, N+1 loop queries (P0), and unindexed migration foreign keys/lifecycle timestamps.
+     - Generative Bloat & Parsimony: Flags single-method speculative wrapper classes and enforces surgical parsimony.
+     - Product Empathy & UX: Flags raw exception leaks in HTTP responses and non-descriptive buttons lacking `aria-label`.
+  2. Integrate CLI subcommand: `python scripts/agent_os.py sentinel [path]`.
+  3. Enshrine Section 3.10 (Proactive Architectural Sentinel & Scalability Guard) in `rules/engineering-constitution.md`.
+  4. Integrate automated ADR assertion in `scripts/adr_enforcer.py`.
+- **Consequences**:
+  - Proactive pre-flight immunity against production query exhaustion and N+1 cascade latency.
+  - Elimination of generative code bloat before code is merged.
+  - Verified by `tests/test_sentinel.py` (11/11 tests PASS).
+
+
 
 
 

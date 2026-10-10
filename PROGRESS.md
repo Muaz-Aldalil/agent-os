@@ -162,19 +162,33 @@
     - Added 7 comprehensive unit tests verifying file creation, placeholder rejection, 5-state UI checks, ERD requirements, 100% clearance conditions, and router pairing.
     - Total test suite expanded to **91/91 unit tests PASS** (100% GREEN in 4.4s).
 
+- [x] **Subtask 16: Proactive Architectural Sentinel & Scalability Guard (Release v1.7.0)**:
+  - **The Architectural Sentinel (`scripts/sentinel.py`)**:
+    - Multi-pillar proactive static analysis engine inspecting:
+      - Scalability & Latency: Unbounded queries (`SELECT *` without `LIMIT`), unconstrained ORM bulk fetches (`Model::all()`), iterative N+1 query patterns in loops (P0 blockers), and unindexed migration foreign keys/lifecycle timestamps (`expires_at`, `deleted_at`).
+      - Generative Bloat & Parsimony: Prohibits single-method speculative wrapper classes and enforces surgical parsimony over speculative complexity.
+      - Product Empathy & UX Soundness: Sanitizes hostile/raw HTTP exception leaks and flags non-descriptive buttons lacking `aria-label`.
+  - **CLI Integration (`scripts/agent_os.py`)**:
+    - Added `python scripts/agent_os.py sentinel [path]`.
+  - **Architecture-as-Code & ADR Ratification**:
+    - Ratified **ADR-028** in `DECISIONS.md`.
+    - Added automated static test assertion in `scripts/adr_enforcer.py` (11/11 executable ADRs PASS).
+    - Enshrined Section 3.10 in `rules/engineering-constitution.md`.
+  - **Unit Test Battery (`tests/test_sentinel.py`)**:
+    - 11 comprehensive unit tests covering unbounded SQL, ORM bulk fetches, N+1 patterns, migration index enforcement, parsimony classes, hostile error leaks, and accessible aria-labels.
+    - Total test suite expanded past the 100-test milestone to **102/102 unit tests PASS** (100% GREEN in 4.7s).
+
 ## 4. Current In-Progress Work
-- **Release `v1.6.0` Certified**: The 6 Pre-Coding Pillars Engine, Autonomy Suite, Task Router, In-Flight Micro-Sandbox, Adversarial Diff Reviewer, and Static-Prefix Prompt Caching are 100% operational.
-- **Architectural Ratification**: All 27 ADRs recorded in `DECISIONS.md`.
-- **System Readiness**: 91/91 unit tests PASS (100% GREEN). The system is ready to co-author the 6 pre-coding documents for any targeted website.
+- **Release `v1.7.0` Certified**: The Proactive Architectural Sentinel, Scalability Guard, Generative Bloat Detector, and UX Empathy Checker are 100% operational.
+- **Architectural Ratification**: All 28 ADRs recorded in `DECISIONS.md`.
+- **System Readiness**: 102/102 unit tests PASS (100% GREEN). The system actively audits its own code and brownfield systems for latency, bloat, and usability.
 
 ## 5. Known Blockers, Failing Tests & Edge Cases
-- None within Agent OS. 100% GREEN status across 91 unit tests, 46 workspace skills, 46 global skills, 3 rules, and native pre-commit gates.
+- None within Agent OS. 100% GREEN status across 102 unit tests, 46 workspace skills, 46 global skills, 3 rules, and native pre-commit gates.
 
 ## 6. Immediate Next Executable Actions
-1. `python scripts/agent_os.py precode init <website_name>`: Scaffold the 6 canonical documents for the user's project.
-2. Interactively debate and clarify each document (PRD -> TRD -> App Flow -> Design Brief -> Backend Schema -> Implementation Plan).
-3. `python scripts/agent_os.py precode audit docs/precode/<website_name>`: Verify 100% readiness score before writing code.
-4. Unlock execution lock and commence high-velocity coding.
+1. `python scripts/agent_os.py sentinel`: Run proactive health audit across any codebase.
+2. `python scripts/agent_os.py precode init <website_name>`: Scaffold the 6 canonical documents for any new web project.
 
 
 

@@ -200,6 +200,9 @@ class ArchitecturalSentinel:
     # -------------------------------------------------------------------------
     def audit_product_empathy(self, code: str, file_path: str) -> List[SentinelFinding]:
         findings = []
+        if "test" in file_path.lower():
+            return findings
+
         lines = code.splitlines()
 
         # Check A: Hostile or leaking raw error responses

@@ -1,99 +1,42 @@
 # Session Cognitive Snapshot (Unit Test Freeze)
-- **Captured At**: 2026-10-09T20:04:27.115151
-- **Git Status**: Branch `master` at commit `[13e3f2e]`
-- **Dirty Files**: 79 modified/untracked file(s)
+- **Captured At**: 2026-10-10T13:07:44.318569
+- **Git Status**: Branch `master` at commit `[081b49d]`
+- **Dirty Files**: 17 modified/untracked file(s)
 
 ### Working Tree Diff State
-- `A  .agent_antipatterns.json`
-- `A  .agent_telemetry.json`
-- `A  .agents/skills/speckit-analyze/SKILL.md`
-- `A  .agents/skills/speckit-checklist/SKILL.md`
-- `A  .agents/skills/speckit-clarify/SKILL.md`
-- `A  .agents/skills/speckit-constitution/SKILL.md`
-- `A  .agents/skills/speckit-converge/SKILL.md`
-- `A  .agents/skills/speckit-implement/SKILL.md`
-- `A  .agents/skills/speckit-plan/SKILL.md`
-- `A  .agents/skills/speckit-specify/SKILL.md`
-- `A  .agents/skills/speckit-tasks/SKILL.md`
-- `A  .agents/skills/speckit-taskstoissues/SKILL.md`
-- `A  .specify/.gitignore`
-- `A  .specify/init-options.json`
-- `A  .specify/integration.json`
-- `A  .specify/integrations/agy.manifest.json`
-- `A  .specify/integrations/speckit.manifest.json`
-- `A  .specify/memory/.constitution-template.json`
-- `A  .specify/memory/constitution.md`
-- `A  .specify/scripts/powershell/check-prerequisites.ps1`
-- `A  .specify/scripts/powershell/common.ps1`
-- `A  .specify/scripts/powershell/create-new-feature.ps1`
-- `A  .specify/scripts/powershell/resolve-template.ps1`
-- `A  .specify/scripts/powershell/setup-plan.ps1`
-- `A  .specify/scripts/powershell/setup-tasks.ps1`
-- `A  .specify/templates/checklist-template.md`
-- `A  .specify/templates/constitution-template.md`
-- `A  .specify/templates/plan-template.md`
-- `A  .specify/templates/spec-template.md`
-- `A  .specify/templates/tasks-template.md`
-- `A  .specify/workflows/speckit/workflow.yml`
-- `A  .specify/workflows/workflow-registry.json`
-- `A  FULLSTACK_CAPABILITIES.md`
-- `A  scripts/chaos_guard.py`
-- `A  scripts/context_telemetry.py`
-- `A  scripts/repl_sandbox.py`
-- `A  scripts/runtime_observer.py`
-- `A  scripts/scope_guard.py`
-- `A  scripts/skill_router.py`
-- `A  specs/001-prompt-caching-intake/checklist.md`
-- `A  specs/001-prompt-caching-intake/checklists/requirements.md`
-- `A  specs/001-prompt-caching-intake/plan.md`
-- `A  specs/001-prompt-caching-intake/spec.md`
-- `A  specs/001-prompt-caching-intake/tasks.md`
-- `A  tests/test_adr_enforcer.py`
-- `A  tests/test_antipattern_ledger.py`
-- `A  tests/test_chaos_guard.py`
-- `A  tests/test_context_telemetry.py`
-- `A  tests/test_diff_reviewer.py`
-- `A  tests/test_prompt_caching.py`
-- `A  tests/test_repl_sandbox.py`
-- `A  tests/test_runtime_observer.py`
-- `A  tests/test_scope_guard.py`
-- `A  tests/test_skill_router.py`
-- `AM scripts/adr_enforcer.py`
-- `AM scripts/antipattern_ledger.py`
-- `AM scripts/diff_reviewer.py`
-- `AM scripts/prompt_cache.py`
-- `M  .agent_snapshot.json`
-- `M  .agent_trace.json`
-- `M  DECISIONS.md`
-- `M  PROGRESS.md`
-- `M  SESSION_SNAPSHOT.md`
-- `M  SKILLS_DIRECTORY.md`
-- `M  SKILL_INDEX.json`
-- `M  engineering-agent.md`
-- `M  rules/engineering-agent.md`
-- `M  rules/engineering-constitution.md`
-- `M  scripts/agent_os.py`
-- `M  scripts/preflight.py`
-- `M  scripts/safety_hook.py`
-- `M  scripts/skill_indexer.py`
-- `M  scripts/snapshot.py`
-- `M  skills/engineering-workflow/SKILL.md`
-- `M  tests/test_safety_hook.py`
-- `M scripts/doctor.py`
-- `MM scripts/audit_agent_os.py`
-- `MM scripts/guard_checker.py`
-- `MM tests/test_guards_battery.py`
+- `?? docs/`
+- `?? scripts/precode_engine.py`
+- `?? skills/web-precode/`
+- `?? tests/test_precode_engine.py`
+- `M .agent_snapshot.json`
+- `M .agent_telemetry.json`
+- `M .agent_trace.json`
+- `M DECISIONS.md`
+- `M PROGRESS.md`
+- `M SESSION_SNAPSHOT.md`
+- `M SKILLS_DIRECTORY.md`
+- `M SKILL_INDEX.json`
+- `M rules/engineering-constitution.md`
+- `M scripts/adr_enforcer.py`
+- `M scripts/agent_os.py`
+- `M scripts/diff_reviewer.py`
+- `M scripts/skill_router.py`
 
 ```text
-scripts/adr_enforcer.py       |  4 ++--
- scripts/antipattern_ledger.py |  4 ++--
- scripts/audit_agent_os.py     |  4 ++--
- scripts/diff_reviewer.py      | 21 +++++++++++++++------
- scripts/doctor.py             |  8 ++++----
- scripts/guard_checker.py      | 30 +++++++++++++++++++++++++-----
- scripts/prompt_cache.py       |  4 ++--
- tests/test_guards_battery.py  | 16 ++--------------
- 8 files changed, 54 insertions(+), 37 deletions(-)
+.agent_snapshot.json              | 104 +++++++------------------------
+ .agent_telemetry.json             |   2 +-
+ .agent_trace.json                 |   2 +-
+ DECISIONS.md                      |  27 ++++++++
+ PROGRESS.md                       |  48 ++++++++++-----
+ SESSION_SNAPSHOT.md               | 125 +++++++++++---------------------------
+ SKILLS_DIRECTORY.md               |   6 +-
+ SKILL_INDEX.json                  |   9 ++-
+ rules/engineering-constitution.md |  11 ++++
+ scripts/adr_enforcer.py           |   8 +++
+ scripts/agent_os.py               |   8 +++
+ scripts/diff_reviewer.py          |   2 +
+ scripts/skill_router.py           |   8 +++
+ 13 files changed, 166 insertions(+), 194 deletions(-)
 ```
 
 ### Active Investigation: Unit Test Investigation

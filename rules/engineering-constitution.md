@@ -151,6 +151,17 @@ To prevent recurring regressions and permanent retention of human corrections:
 1. **Zero-Repetition Invariant**: When a code diff is rejected or corrected by the human owner, the root cause must be codified into `.agent_antipatterns.json` with a detection regex and approved replacement.
 2. **Automated Diff Scanning**: All uncommitted changes must be scanned against the Anti-Pattern Ledger before handoff. Any matched anti-pattern constitutes an immediate P1 blocker.
 
+### 3.9 The Pre-Coding Clearance Gate (The 6 Pillars Invariant)
+To eliminate "impatient coding syndrome" and architectural drift, no new web application or major feature may be coded without an audited pre-coding specification:
+1. **The 6 Mandatory Documents**: The workspace or feature MUST maintain:
+   - `01-PRD.md`: Product requirements, user stories with Given/When/Then, and Out-of-Scope boundaries.
+   - `02-TRD.md`: Architecture topology, tech stack rationale, third-party APIs, and security boundary invariants.
+   - `03-APP_FLOW.md`: Route map, Mermaid interaction flowchart, and the 5-State UI Matrix (Idle, Loading, Success, Error, Empty).
+   - `04-DESIGN_BRIEF.md`: Visual aesthetic, 60-30-10 color palette tokens, typography scale, and RTL/LTR CSS Logical Properties.
+   - `05-BACKEND_SCHEMA.md`: Storage strategy, Mermaid ERD, DDL table definitions with primary/foreign keys, and cascade/soft-delete rules.
+   - `06-IMPLEMENTATION_PLAN.md`: Phased execution dependency graph and executable task checklists.
+2. **Automated Audit Enforcement**: Coding is locked until `python scripts/agent_os.py precode audit` yields a 100% Pre-Coding Readiness Score.
+
 ---
 
 # 4. EVIDENCE DISCIPLINE & TAXONOMY OF CLAIMS

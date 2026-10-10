@@ -1,6 +1,6 @@
 # Antigravity Agent OS - Skills Directory
 
-> Auto-indexed registry of **45 production skills** categorized by operational domain.
+> Auto-indexed registry of **46 production skills** categorized by operational domain.
 
 ## Backend & Data Systems
 
@@ -27,6 +27,10 @@
 
 - **[`muaz-skill`](file:///D:/Skills/.agents/skills/muaz-skill/SKILL.md)**: Senior Frontend Architect & Design Systems Engineer with full-stack backend co-pilot. Activates on any request to build, design, create, scaffold, improve, audit, or optimize a frontend website or UI — with optional backend guidance (database, auth, payments, backend structure, deployment) for full-stack web apps. Powered by ui-ux-pro-max search engine (91 styles, 169 palettes, 72 font families, 169 product types, 198+ rules). Outputs a structured design blueprint followed by production-ready code, with full decision traceability.
 - **[`nextjs-fullstack`](file:///D:/Skills/.agents/skills/nextjs-fullstack/SKILL.md)**: Enterprise architectural engineering skill for Next.js 15+ and React 19 App Router applications. Enforces Server vs Client Component boundaries, Turbopack performance, Server Actions security, Suspense streaming, partial prerendering (PPR), and Tailwind CSS v4 styling rules.
+
+## General Customizations
+
+- **[`web-precode`](file:///D:/Skills/.agents/skills/web-precode/SKILL.md)**: The 6 Pre-Coding Pillars Specification & Architecture Blueprint for web applications. Enforces authoring, structuring, and verifying all 6 essential documents (PRD, TRD, App Flow with 5-State UI Matrix, Design Brief with 60-30-10 tokens, Backend Schema with ERD, and Implementation Plan) before writing any code.
 
 ## Quality & Security Guards
 

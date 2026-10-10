@@ -19,6 +19,8 @@ if hasattr(sys.stdout, "reconfigure"):
 
 WORKSPACE_ROOT = Path("D:/Skills/.agents")
 SCRIPTS_DIR = WORKSPACE_ROOT / "scripts"
+if str(WORKSPACE_ROOT) not in sys.path:
+    sys.path.insert(0, str(WORKSPACE_ROOT))
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 

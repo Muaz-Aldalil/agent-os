@@ -16,6 +16,14 @@ WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
 # Domain definitions mapping intent keywords and file patterns to skills/tools
 DOMAIN_PROFILES = {
+    "WEB_PRECODE": {
+        "description": "Pre-Coding Specification & Architecture Blueprint (6 Pillars)",
+        "file_patterns": [r"0[1-6]-.*\.md$", r"docs[\\/]precode[\\/]", r"specs[\\/].*?[\\/]precode[\\/]"],
+        "keywords": ["precode", "prd", "trd", "app flow", "user flow", "design brief", "backend schema", "implementation plan", "spec", "blueprint", "specification"],
+        "implementation_skills": ["web-precode", "spec-kit", "muaz-skill", "database"],
+        "in_flight_tools": ["agent_os precode init", "agent_os precode audit", "repl_sandbox sql"],
+        "completion_guards": ["agent_os precode audit", "clean-code-guard"]
+    },
     "FRONTEND_UI": {
         "description": "User Interface, Frontend Components, Design & Layout",
         "file_patterns": [r"\.tsx$", r"\.jsx$", r"\.vue$", r"\.svelte$", r"\.css$", r"\.scss$", r"components[\\/]", r"app[\\/].*?page\."],

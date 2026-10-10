@@ -371,6 +371,33 @@
   - 100% deterministic pairing between task domain, implementation guidance, and verification gates.
   - Verified by `tests/test_skill_router.py` (4/4 tests PASS). Total suite: **84/84 unit tests PASS**.
 
+---
+
+## [ADR-027] The 6 Pre-Coding Pillars for Web Engineering (Release v1.6.0)
+- **Date**: 2026-10-10
+- **Status**: APPROVED
+- **Context**: In autonomous agent workflows, the most persistent failure mode is "impatient coding syndrome"—generating component files, routes, or database calls before requirements, UX state machines, design tokens, or schema cascades are formally established. This causes conversational thrashing, visual drift, and unhandled edge states (loading, error, empty).
+- **Alternatives Evaluated**:
+  1. *Unstructured conversational prompting*: (Rejected: Loses state, misses edge cases, and creates specification drift).
+  2. *Standard Spec Kit without web UX/design gates*: (Rejected: Solves task sequencing, but misses 5-state UI matrices, 60-30-10 color tokens, and ERD relational integrity).
+  3. *The 6 Pre-Coding Pillars Subsystem & Quality Audit Engine*: (Selected).
+- **Selected Decision**:
+  1. Mandate the 6 canonical pre-coding artifacts in `docs/precode/<project_name>/`:
+     - `01-PRD.md`: Vision, personas, P0/P1/P2, formal Given/When/Then user stories, out-of-scope boundaries.
+     - `02-TRD.md`: Architecture topology, tech stack evaluation, third-party APIs, and security boundary invariants.
+     - `03-APP_FLOW.md`: Route map, Mermaid flowcharts, and the 5-State UI Matrix (Idle, Loading, Success, Error, Empty).
+     - `04-DESIGN_BRIEF.md`: Visual aesthetic, 60-30-10 color palette tokens, typography scale, and RTL CSS Logical Properties.
+     - `05-BACKEND_SCHEMA.md`: Storage strategy, Mermaid ERD (`erDiagram`), DDL tables with PK/FK, and cascade/soft-delete rules.
+     - `06-IMPLEMENTATION_PLAN.md`: Phased execution dependency graph and executable task checklists.
+  2. Implement `scripts/precode_engine.py` with `init`, `audit`, and `status` subcommands.
+  3. Expose via Agent OS CLI: `python scripts/agent_os.py precode <init|audit|status>`.
+  4. Enshrine the Zero-Code Invariant in `engineering-constitution.md` §3.9.
+  5. Create `skills/web-precode/SKILL.md` (workspace) and mirror to global config.
+- **Consequences**:
+  - Gated execution lock: zero application code generated without 100% Pre-Coding Readiness Score.
+  - Complete elimination of unhandled UI edge states.
+  - Seamless handoff to execution through dependency-ordered task checklists.
+
 
 
 

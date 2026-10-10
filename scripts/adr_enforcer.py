@@ -81,6 +81,13 @@ def check_adr_024_micro_sandbox_and_python_guard() -> Dict[str, Any]:
     passed = p1 and p2 and "check_python_security_and_hygiene" in guard
     return {"passed": passed, "message": "In-memory REPL, diff reviewer, and Python security guard verified"}
 
+def check_adr_027_precode_engine() -> Dict[str, Any]:
+    p1 = (WORKSPACE_ROOT / "scripts" / "precode_engine.py").is_file()
+    skill = (WORKSPACE_ROOT / "skills" / "web-precode" / "SKILL.md").is_file()
+    const = (WORKSPACE_ROOT / "rules" / "engineering-constitution.md").read_text(encoding="utf-8")
+    passed = p1 and skill and "Pre-Coding Clearance Gate" in const
+    return {"passed": passed, "message": "The 6 Pre-Coding Pillars engine, web-precode skill, and Constitution §3.9 verified"}
+
 EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-002": check_adr_002_pest_php,
     "ADR-003": check_adr_003_rtl_css,
@@ -91,6 +98,7 @@ EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-016": check_adr_016_100x_suite,
     "ADR-023": check_adr_023_prompt_cache,
     "ADR-024": check_adr_024_micro_sandbox_and_python_guard,
+    "ADR-027": check_adr_027_precode_engine,
 }
 
 def parse_adrs_from_decisions() -> List[Dict[str, str]]:

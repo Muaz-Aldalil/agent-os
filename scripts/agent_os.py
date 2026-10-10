@@ -179,11 +179,17 @@ def run_telemetry(args: List[str]):
     res = subprocess.run([sys.executable, str(tel_script)] + args, cwd=WORKSPACE_ROOT)
     sys.exit(res.returncode)
 
+def run_precode(args: List[str]):
+    precode_script = WORKSPACE_ROOT / "scripts" / "precode_engine.py"
+    res = subprocess.run([sys.executable, str(precode_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python scripts/agent_os.py <command> [args...]")
         print("Core Commands:   status, audit, test, doctor [--fix], scan <file>, sync [--apply]")
         print("Discovery:       skill-find <query>, index-skills, install-hooks")
+        print("Pre-Coding:      precode <init|audit|status> [args...]")
         print("100X Power:      preflight, review, eval <code>, sql <query>, regex <pat> <txt>, cache-audit, cache-sim, symbol <name>, outline <file>, trace <args>, snapshot [freeze|resume]")
         print("Autonomy Suite:  scope <set|check|clear|status>, chaos-audit [file], logs [--tail N], probe <url>, adr-check [list], antipattern <list|scan|audit|add>, telemetry [record|reset|status]")
         sys.exit(1)
@@ -275,6 +281,8 @@ def main():
         run_snapshot(sys.argv[2:])
     elif cmd == "resume":
         run_snapshot(["resume"])
+    elif cmd in ["precode", "pre-code", "blueprint"]:
+        run_precode(sys.argv[2:])
     elif cmd == "codemod":
         codemod_script = WORKSPACE_ROOT / "scripts" / "codemod.py"
         res = subprocess.run([sys.executable, str(codemod_script)] + sys.argv[2:], cwd=WORKSPACE_ROOT)

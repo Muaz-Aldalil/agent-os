@@ -302,6 +302,13 @@
       "search_corpus": "ui-review-loop verify ui work with recorded evidence instead of screenshots — record browser-testing rounds (video + dom timeline + network evidence) reviewed on a local site where the operator leaves timestamped video comments, and run coverage sweeps that exercise 100% of an inventoried ui. use after any change that touches web ui, whenever an agent tests or reviews ui behavior (agent-browser, playwright, or chrome), for a dom dynamics / browser testing pass, and when the operator should verify asynchronously — prefer this over calling agent-browser directly for ui verification. recording rounds run through the agent-browser cli by default; a browser-control backend can record the operator's real logged-in browser on explicit request (requires the browser-control cli + extension + ffmpeg). core architecture & workflow"
     },
     {
+      "category": "General Customizations",
+      "description": "The 6 Pre-Coding Pillars Specification & Architecture Blueprint for web applications. Enforces authoring, structuring, and verifying all 6 essential documents (PRD, TRD, App Flow with 5-State UI Matrix, Design Brief with 60-30-10 tokens, Backend Schema with ERD, and Implementation Plan) before writing any code.",
+      "file": "skills/web-precode/SKILL.md",
+      "name": "web-precode",
+      "search_corpus": "web-precode the 6 pre-coding pillars specification & architecture blueprint for web applications. enforces authoring, structuring, and verifying all 6 essential documents (prd, trd, app flow with 5-state ui matrix, design brief with 60-30-10 tokens, backend schema with erd, and implementation plan) before writing any code. general customizations"
+    },
+    {
       "category": "Quality & Security Guards",
       "description": "Review generated or changed WooCommerce code — extensions, payment and shipping integrations, checkout customizations, and order/product logic — before it ships. Best used reactively after an agent writes, edits, or reviews code touching WooCommerce APIs: wc_get_order, wc_get_orders, wc_get_product, WC() cart or session, woocommerce_* hooks, Store API endpoints, payment gateways, order or product meta, HPOS, subscriptions, or bookings. Use on 'review this Woo plugin', 'is this HPOS compatible', or after tasks like 'write a WooCommerce extension', 'add a checkout field', 'hook into the order flow', or 'update stock'. Enforces HPOS-safe order access, CRUD over direct meta, feature-compatibility declarations, server-side checkout validation, money-handling discipline, and hooks over template overrides. DO NOT USE for WordPress code without WooCommerce APIs (use wp-guard), generic code review (use clean-code-guard), test review (use test-guard), or store configuration and admin-screen questions.",
       "file": "skills/woo-guard/SKILL.md",
@@ -316,5 +323,5 @@
       "search_corpus": "wp-guard review generated or changed wordpress code — plugins, themes, and blocks — before it ships. best used reactively after an agent writes, edits, or reviews code touching wordpress apis: add_action/add_filter, shortcodes, meta boxes, ajax handlers, rest routes, wp_query or $wpdb, widgets, or wp-cli commands. use on 'review this plugin', 'is this safe to ship', 'make this translatable', 'speed up this query', or after tasks like 'write a plugin' or 'add an endpoint/shortcode/meta box'. enforces escaping and sanitization, nonces plus capability checks, prepared database queries, core-api-first development, translation-ready strings, and query/caching discipline. do not use for woocommerce-specific order, product, or checkout logic (use woo-guard), non-wordpress php, generic code quality review (use clean-code-guard), test code review (use test-guard), server or hosting configuration, or conceptual wordpress questions. quality & security guards"
     }
   ],
-  "total_skills": 45
+  "total_skills": 46
 }

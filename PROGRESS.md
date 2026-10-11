@@ -1,16 +1,16 @@
 # Engineering Progress & Working State
 
 ## 1. Executive Status
-- **Current Milestone**: Release v1.8.0 Certified: Capability Harmonization, 8-MCP Arsenal, Legacy Constitution Retirement & Resilient Router
-- **Status**: READY_FOR_PRODUCTION (100% GREEN)
-- **Last Updated**: 2026-10-11T05:45:00+02:00
+- **Current Milestone**: Release v1.9.0 Certified: WebMCP In-Browser Model Context Protocol Skill & Integration Architecture
+- **Status**: READY_FOR_ACCEPTANCE (100% GREEN)
+- **Last Updated**: 2026-10-11T14:52:00+02:00
 - **Governing Architecture**:
   - [engineering-constitution.md](file:///D:/Skills/.agents/rules/engineering-constitution.md) (Sole Constitutional Contract)
   - [engineering-agent.md](file:///D:/Skills/.agents/engineering-agent.md) & [rules/engineering-agent.md](file:///D:/Skills/.agents/rules/engineering-agent.md) (Harmonized Profile)
   - [rules/mcp-arsenal.md](file:///D:/Skills/.agents/rules/mcp-arsenal.md) (8-MCP Lifecycle Matrix & Fallbacks)
   - [rules/execution-transparency.md](file:///D:/Skills/.agents/rules/execution-transparency.md) (Status & Reconnection Transparency)
   - [engineering-workflow/SKILL.md](file:///D:/Skills/.agents/skills/engineering-workflow/SKILL.md) (Stages 1-9, Danger Zones 1-4)
-  - [DECISIONS.md](file:///D:/Skills/.agents/DECISIONS.md) (ADR-001 through ADR-029)
+  - [DECISIONS.md](file:///D:/Skills/.agents/DECISIONS.md) (ADR-001 through ADR-030)
 
 ## 2. Working Tree & Scope State
 - **Workspace Root**: `D:\Skills\.agents` (Version Control: Git tracking on `master`)
@@ -199,13 +199,37 @@
   - **ADR-029 Ratification**: Documented in `DECISIONS.md` and enforced via `scripts/adr_enforcer.py` (12/12 ADRs PASS).
   - **Unit Test Battery (`tests/test_skill_router.py`)**: Expanded router tests to 10 comprehensive tests. Total test suite across OS: **108/108 unit tests PASS** (100% GREEN in 2.4s).
 
+- [x] **Subtask 19: WebMCP In-Browser Model Context Protocol Skill & Integration Architecture (Release v1.9.0)**:
+  - **Skill Core (`skills/webmcp/SKILL.md`)**:
+    - Comprehensive standard for in-browser tool registration (`document.modelContext.registerTool`), retrieval (`getTools`), and execution (`executeTool`).
+    - Dynamic lifecycle management using `AbortSignal` for token budget conservation.
+    - Declarative HTML5 form tool synthesis (`toolname`, `tooldescription`, `toolparamdescription`, `toolautosubmit`, `:tool-form-active`, `:tool-submit-active`, and `SubmitEvent.respondWith`).
+    - Permissions Policy gating (`tools` feature with default `'self'`) and cross-origin iframe security (`exposedTo` / `fromOrigins`).
+    - Standardized test mock harness (`MockModelContext`) for Vitest/Jest and headless environments.
+  - **Authoritative References (`skills/webmcp/references/`)**:
+    - `spec-idl.md`: Full Web IDL specification matching W3C WebML draft (`index.bs`).
+    - `security-boundaries.md`: Threat matrix, origin isolation, CSRF defense, and danger zone rules.
+  - **Production-Grade Examples (`skills/webmcp/examples/`)**:
+    - `basic-tool.ts`: TypeScript todo list tool with dynamic abort signal teardown.
+    - `interactive-shopping.ts`: Multi-tool e-commerce catalog filtering and cart mutations with integer cents math.
+    - `form-declarative.html`: Complete HTML5 form markup with WebMCP declarative attributes and async submit handling.
+  - **Router Integration & Test Coverage**:
+    - Registered `WEBMCP` domain profile in `scripts/skill_router.py`.
+    - Added unit test in `tests/test_skill_router.py` verifying WebMCP routing and MCP fallback mapping.
+    - Re-indexed machine and human catalogs via `scripts/agent_os.py index-skills` (47 skills indexed).
+    - Synchronized dual-config parity via `scripts/agent_os.py sync --apply` (47 workspace and 47 global skills PASS).
+  - **Ratification & Test Status**:
+    - Ratified **ADR-030** in `DECISIONS.md`.
+    - 109/109 unit tests PASS (100% GREEN in 4.1s).
+    - `python scripts/agent_os.py audit` verified: ALL SYSTEMS OPERATIONAL (GREEN).
+
 ## 4. Current In-Progress Work
-- **Release `v1.8.0` Certified**: The 8-MCP Arsenal, Resilient Router, Proportional Task Sizing, and Capability Harmonization are 100% operational.
-- **Architectural Ratification**: All 29 ADRs recorded in `DECISIONS.md`.
-- **System Readiness**: 108/108 unit tests PASS (100% GREEN). Global and workspace configs in 100% verified parity.
+- **Release `v1.9.0` Certified**: WebMCP In-Browser Tool Skill, References, Examples, and Resilient Router Integration are 100% operational.
+- **Architectural Ratification**: All 30 ADRs recorded in `DECISIONS.md`.
+- **System Readiness**: 109/109 unit tests PASS (100% GREEN). Global and workspace configs in 100% verified parity (47/47 skills).
 
 ## 5. Known Blockers, Failing Tests & Edge Cases
-- None within Agent OS. 100% GREEN status across 108 unit tests, 46 workspace skills, 46 global skills, 4 rules, and native pre-commit gates.
+- None within Agent OS. 100% GREEN status across 109 unit tests, 47 workspace skills, 47 global skills, 4 rules, and native pre-commit gates.
 
 ## 6. Immediate Next Executable Actions
 1. `python scripts/agent_os.py route "<task>"`: Resolve task sizing, skills, tools, and guards deterministically before implementation.

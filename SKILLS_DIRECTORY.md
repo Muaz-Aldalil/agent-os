@@ -1,6 +1,6 @@
 # Antigravity Agent OS - Skills Directory
 
-> Auto-indexed registry of **46 production skills** categorized by operational domain.
+> Auto-indexed registry of **47 production skills** categorized by operational domain.
 
 ## Backend & Data Systems
 
@@ -27,6 +27,10 @@
 
 - **[`muaz-skill`](file:///D:/Skills/.agents/skills/muaz-skill/SKILL.md)**: Senior Frontend Architect & Design Systems Engineer with full-stack backend co-pilot. Activates on any request to build, design, create, scaffold, improve, audit, or optimize a frontend website or UI — with optional backend guidance (database, auth, payments, backend structure, deployment) for full-stack web apps. Powered by ui-ux-pro-max search engine (91 styles, 169 palettes, 72 font families, 169 product types, 198+ rules). Outputs a structured design blueprint followed by production-ready code, with full decision traceability.
 - **[`nextjs-fullstack`](file:///D:/Skills/.agents/skills/nextjs-fullstack/SKILL.md)**: Enterprise architectural engineering skill for Next.js 15+ and React 19 App Router applications. Enforces Server vs Client Component boundaries, Turbopack performance, Server Actions security, Suspense streaming, partial prerendering (PPR), and Tailwind CSS v4 styling rules.
+
+## General Customizations
+
+- **[`webmcp`](file:///D:/Skills/.agents/skills/webmcp/SKILL.md)**: Standardized protocol and developer guide for WebMCP (Web Model Context Protocol), the W3C browser standard exposing in-page JavaScript tools and declarative forms to AI agents via document.modelContext. Use when designing, authoring, registering, testing, or debugging in-browser WebMCP tools (document.modelContext.registerTool, getTools, executeTool), managing permissions policy ("tools"), securing cross-origin iframe exposures (exposedTo/fromOrigins), or enabling agentic web application actuation.
 
 ## Quality & Security Guards
 

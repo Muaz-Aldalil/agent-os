@@ -79,5 +79,12 @@ class TestSkillRouter(unittest.TestCase):
         self.assertIn("CROSS_SESSION_CONTINUITY", r_cont["domains"])
         self.assertIn("memory MCP", r_cont["fallbacks"])
 
+    def test_routes_webmcp_browser_tools(self):
+        r_webmcp = resolve_task_routing("register in-browser WebMCP tool using document.modelContext")
+        self.assertIn("WEBMCP", r_webmcp["domains"])
+        self.assertIn("webmcp", r_webmcp["implementation_skills"])
+        self.assertTrue(any("chrome-devtools-mcp" in t for t in r_webmcp["in_flight_tools"]))
+        self.assertIn("chrome-devtools-mcp", r_webmcp["fallbacks"])
+
 if __name__ == "__main__":
     unittest.main()

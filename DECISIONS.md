@@ -448,6 +448,39 @@
   - 100% resilient fallback coverage for external integrations.
   - Verified by 108 passing unit tests (100% green).
 
+---
+
+## [ADR-030] WebMCP In-Browser Model Context Protocol Skill & Integration Architecture (Release v1.9.0)
+- **Date**: 2026-10-11
+- **Status**: APPROVED
+- **Context**: Autonomous AI agents actuating web applications have historically been constrained by brittle DOM scraping, synthetic OCR/screenshot clicks, or UI-disintermediating backend APIs that bypass active user sessions, reactive client-side states, and authentication cookies. The emerging W3C Web Machine Learning Community Group standard **WebMCP** (`webmachinelearning/webmcp`) establishes an imperative in-browser model context API (`document.modelContext`) and declarative form synthesis (`<form toolname="...">`). Agent OS required a dedicated engineering skill, reference catalog, runtime mock harness, and routing profile to author, audit, and test WebMCP tools.
+- **Alternatives Evaluated**:
+  1. *Rely strictly on generic Playwright/DevTools click-simulation*: (Rejected: Brittle, slow, breaks easily on minor CSS/DOM refactorings, lacks structured JSON schemas).
+  2. *Bypass web UI with backend MCP server*: (Rejected: Disintermediates user experience, loses client session context, requires duplicate backend servers).
+  3. *Native WebMCP Skill (`skills/webmcp`) with W3C IDL References & Router Profile*: (Selected).
+- **Selected Decision**:
+  1. Author `skills/webmcp/SKILL.md` detailing:
+     - Imperative tool registration (`document.modelContext.registerTool`), discovery (`getTools`), and execution (`executeTool`).
+     - Dynamic tool lifecycle management with `AbortSignal` for token budget conservation.
+     - Declarative HTML5 form tool synthesis (`toolname`, `tooldescription`, `toolparamdescription`, `toolautosubmit`, `:tool-form-active`, and `SubmitEvent.respondWith`).
+     - Permissions Policy gating (`tools` feature with default `'self'`) and cross-origin iframe security (`exposedTo` / `fromOrigins`).
+     - Mock harness (`MockModelContext`) for deterministic Vitest/Jest unit testing.
+  2. Create deep technical references:
+     - `skills/webmcp/references/spec-idl.md`: Complete Web IDL specification matching Bikeshed draft (`index.bs`).
+     - `skills/webmcp/references/security-boundaries.md`: Threat matrix, origin isolation, CSRF defense, and danger zone rules.
+  3. Provide production-ready examples:
+     - `skills/webmcp/examples/basic-tool.ts`: Dynamic todo list tool with AbortController lifecycle.
+     - `skills/webmcp/examples/interactive-shopping.ts`: Multi-tool e-commerce filtering and cart mutations with integer subunit math.
+     - `skills/webmcp/examples/form-declarative.html`: HTML5 declarative form with pseudo-classes and async submission.
+  4. Register `WEBMCP` domain in `scripts/skill_router.py` with in-flight tools and fallback mappings.
+  5. Add unit test coverage in `tests/test_skill_router.py` (109/109 tests PASS).
+  6. Synchronize workspace and global skill configurations via `agent_os index-skills` and `agent_os sync --apply` (47/47 skills PASS).
+- **Consequences**:
+  - Full support for authoring and validating in-browser WebMCP agent tools across client applications.
+  - Zero token waste via structured schemas and dynamic unregistration.
+  - Complete compliance with emerging W3C specifications and Chrome 149+ Origin Trial environments.
+
+
 
 
 

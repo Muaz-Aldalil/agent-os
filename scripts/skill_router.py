@@ -124,6 +124,18 @@ DOMAIN_PROFILES = {
         "fallbacks": {
             "memory MCP": "SESSION_SNAPSHOT.md + PROGRESS.md + DECISIONS.md in project root"
         }
+    },
+    "WEBMCP": {
+        "description": "In-Browser WebMCP (document.modelContext) Tools & Declarative Forms",
+        "file_patterns": [r"webmcp", r"modelContext", r"registerTool"],
+        "keywords": ["webmcp", "modelcontext", "registertool", "gettools", "executetool", "toolchange", "toolautosubmit", "in-browser tool", "browser tool"],
+        "implementation_skills": ["webmcp", "muaz-skill", "clean-code-guard"],
+        "in_flight_tools": ["chrome-devtools-mcp (evaluate_script, list_console_messages)", "playwright (browser_navigate, browser_evaluate)", "context7 (resolve-library-id, query-docs)"],
+        "completion_guards": ["clean-code-guard", "test-guard", "chaos-audit"],
+        "fallbacks": {
+            "chrome-devtools-mcp": "playwright or local mock harness (MockModelContext)",
+            "context7": "skills/webmcp/references/spec-idl.md and official W3C webmachinelearning/webmcp repository"
+        }
     }
 }
 

@@ -21,16 +21,32 @@ DOMAIN_PROFILES = {
         "file_patterns": [r"0[1-6]-.*\.md$", r"docs[\\/]precode[\\/]", r"specs[\\/].*?[\\/]precode[\\/]"],
         "keywords": ["precode", "prd", "trd", "app flow", "user flow", "design brief", "backend schema", "implementation plan", "spec", "blueprint", "specification"],
         "implementation_skills": ["web-precode", "spec-kit", "muaz-skill", "database"],
-        "in_flight_tools": ["agent_os precode init", "agent_os precode audit", "repl_sandbox sql"],
+        "in_flight_tools": ["agent_os precode init", "agent_os precode audit", "repl_sandbox sql", "sequential-thinking (sequentialthinking)", "github MCP (search_issues, list_commits)"],
         "completion_guards": ["agent_os precode audit", "clean-code-guard"]
     },
     "FRONTEND_UI": {
         "description": "User Interface, Frontend Components, Design & Layout",
         "file_patterns": [r"\.tsx$", r"\.jsx$", r"\.vue$", r"\.svelte$", r"\.css$", r"\.scss$", r"components[\\/]", r"app[\\/].*?page\."],
-        "keywords": ["ui", "component", "button", "layout", "design", "css", "tailwind", "modal", "page", "frontend", "bilingual", "rtl", "navbar", "form"],
+        "keywords": ["ui", "component", "button", "layout", "design", "css", "tailwind", "modal", "page", "frontend", "bilingual", "rtl", "navbar", "form", "screen"],
         "implementation_skills": ["muaz-skill", "nextjs-fullstack"],
-        "in_flight_tools": ["code_graph outline", "repl_sandbox regex", "playwright browser_navigate"],
-        "completion_guards": ["rtl-logical-guard", "clean-code-guard", "browser_console_messages", "chaos-audit"]
+        "in_flight_tools": ["StitchMCP (generate_screen_from_text, create_design_system, generate_variants)", "chrome-devtools-mcp (evaluate_script, get_css_styles, take_screenshot)", "code_graph outline", "repl_sandbox regex", "playwright browser_navigate"],
+        "completion_guards": ["rtl-logical-guard", "chrome-devtools-mcp (lighthouse_audit)", "clean-code-guard", "browser_console_messages", "chaos-audit"]
+    },
+    "PAYMENTS_BILLING": {
+        "description": "Stripe Payments, Invoices, Subscriptions & Webhooks",
+        "file_patterns": [r"stripe", r"billing", r"checkout", r"webhook", r"subscription", r"invoice"],
+        "keywords": ["stripe", "payment", "billing", "checkout", "subscription", "invoice", "webhook", "refund", "card"],
+        "implementation_skills": ["backend-api", "database"],
+        "in_flight_tools": ["stripe MCP (stripe_api_search, stripe_api_read, search_stripe_documentation, stripe_implementation_planner)"],
+        "completion_guards": ["Danger Zone 1 (zero float math, mandatory idempotency keys)", "clean-code-guard", "chaos-audit"]
+    },
+    "DEVOPS_DEPLOYMENT": {
+        "description": "Netlify Hosting, CI/CD, Releases & GitHub PR Workflows",
+        "file_patterns": [r"netlify\.toml$", r"deploy", r"\.github[\\/]workflows[\\/]"],
+        "keywords": ["deploy", "netlify", "preview", "ci", "cd", "pipeline", "release", "hosting", "build", "production", "pr", "pull request"],
+        "implementation_skills": ["devops-deploy"],
+        "in_flight_tools": ["netlify MCP (netlify-deploy-services-reader, netlify-project-services-reader)", "github MCP (create_pull_request, push_files, list_pull_requests)"],
+        "completion_guards": ["netlify preview verification", "diff_reviewer", "clean-code-guard"]
     },
     "NEXTJS_SERVER_ACTIONS": {
         "description": "Next.js Server Actions & App Router Endpoints",
@@ -54,7 +70,7 @@ DOMAIN_PROFILES = {
         "keywords": ["database", "sql", "migration", "prisma", "table", "index", "schema", "foreign key", "acid"],
         "implementation_skills": ["database", "backend-data"],
         "in_flight_tools": ["repl_sandbox sql (in-memory SQLite sandbox)"],
-        "completion_guards": ["antipattern AP-001 (raw SQL injection)", "clean-code-guard"]
+        "completion_guards": ["antipattern AP-001 (raw SQL injection)", "sentinel (unbounded query & index check)", "clean-code-guard"]
     },
     "PYTHON_SYSTEMS": {
         "description": "Python Utilities, Agent OS Scripts & Automation",
@@ -62,7 +78,7 @@ DOMAIN_PROFILES = {
         "keywords": ["python", "script", "agent", "daemon", "cli", "regex", "repl"],
         "implementation_skills": ["clean-code-guard", "engineering-workflow"],
         "in_flight_tools": ["repl_sandbox eval", "code_graph symbol"],
-        "completion_guards": ["python-security-guard", "clean-code-guard", "chaos-audit"]
+        "completion_guards": ["python-security-guard", "sentinel", "clean-code-guard", "chaos-audit"]
     }
 }
 

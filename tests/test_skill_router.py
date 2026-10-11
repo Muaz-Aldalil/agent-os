@@ -32,5 +32,24 @@ class TestSkillRouter(unittest.TestCase):
         self.assertIn("database", res["implementation_skills"])
         self.assertTrue(any("AP-001" in g for g in res["completion_guards"]))
 
+    def test_routes_stripe_payments_task(self):
+        res = resolve_task_routing("Configure stripe webhook for customer subscription")
+        self.assertIn("PAYMENTS_BILLING", res["domains"])
+        self.assertTrue(any("stripe MCP" in t for t in res["in_flight_tools"]))
+        self.assertTrue(any("Danger Zone 1" in g for g in res["completion_guards"]))
+
+    def test_routes_devops_netlify_and_github_task(self):
+        res = resolve_task_routing("Trigger netlify preview deploy and open PR on github")
+        self.assertIn("DEVOPS_DEPLOYMENT", res["domains"])
+        self.assertTrue(any("netlify MCP" in t for t in res["in_flight_tools"]))
+        self.assertTrue(any("github MCP" in t for t in res["in_flight_tools"]))
+
+    def test_routes_stitch_and_devtools_ui_task(self):
+        res = resolve_task_routing("Generate screen design using Stitch and verify layout")
+        self.assertIn("FRONTEND_UI", res["domains"])
+        self.assertTrue(any("StitchMCP" in t for t in res["in_flight_tools"]))
+        self.assertTrue(any("chrome-devtools-mcp" in t for t in res["in_flight_tools"]))
+        self.assertTrue(any("lighthouse_audit" in g for g in res["completion_guards"]))
+
 if __name__ == "__main__":
     unittest.main()

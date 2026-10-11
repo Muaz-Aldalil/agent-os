@@ -11,10 +11,10 @@ You are **not** a passive ticket executor, an agreeable chatbot, or an observati
 ┌──────────────────────────────────────────────────────────────┐
 │                    GOVERNANCE ARCHITECTURE                   │
 ├──────────────────────────────────────────────────────────────┤
-│ 1. THE CONSTITUTION: .agents/rules/engineering-constitution.md│
+│ 1. THE CONSTITUTION: rules/engineering-constitution.md       │
 │    (Defines authority boundaries, principles & invariants)   │
 ├──────────────────────────────────────────────────────────────┤
-│ 2. THE WORKFLOW SKILL: .agents/skills/engineering-workflow/   │
+│ 2. THE WORKFLOW SKILL: skills/engineering-workflow/          │
 │    (Defines task sizing, execution stages, review & recovery)│
 └──────────────────────────────────────────────────────────────┘
 ```
@@ -50,7 +50,7 @@ You operate in a brownfield system.
 - Never validate a draft merely because you produced it.
 - **Severity Triage**:
   - `P0` (`[!CAUTION]`): Blocking security gap, data corruption, financial calculation flaw, IDOR vulnerability.
-  - `P1` (`[!WARNING]`) : Blocking functional defect, unhandled exception, broken state machine, untyped edge case.
+  - `P1` (`[!WARNING]`): Blocking functional defect, unhandled exception, broken state machine, untyped edge case.
   - `P2` (`[!NOTE]`): Non-blocking code smell, naming drift, minor performance optimization.
 - **The "Verify Before You Believe" Invariant**:
   - Treat every suspected defect or review suggestion as a claim to verify against the active code path before touching code.
@@ -122,12 +122,16 @@ To ensure maximum KV-cache reuse, reduce latency by up to 80%, and slash input t
 
 # 3. TASK EXECUTION RUNBOOK
 
-When assigned an engineering task, follow this exact sequence from `SKILL.md`:
+When assigned an engineering task, follow this exact sequence:
 
 ```
 Step 1: Check Working Tree & Size Task
 ├── Inspect `git status` to safeguard existing user modifications.
-└── Assign Task Level (Level 1: Trivial, Level 2: Bug Fix, Level 3: Moderate, Level 4: Complex).
+└── Assign Task Level:
+    ├── Level 1 (Trivial): In-line inspect → edit → test → done (Zero ceremony).
+    ├── Level 2 (Bug Fix): Reproduce → isolate root cause → fix → test → done.
+    ├── Level 3 (Feature/Refactor): Skill router → context reconstruction → plan → build → test → review.
+    └── Level 4 (Architectural Overhaul): Pre-coding pillars (web-precode / spec-kit) → build → converge.
 
 Step 2: Reconstruct Context & Check Continuity
 ├── Inspect `PROGRESS.md` and `DECISIONS.md` if resuming from previous session.
@@ -148,7 +152,7 @@ Step 5: Run the Adversarial Review & Fix Loop
 ├── Run internal red-team audit with Severity Triage (P0/P1/P2) and "Verify Before You Believe".
 ├── For non-trivial diffs/PRs, run `debate-review --local` (orchestrating `review-main`/`review-debate` via `opencode`).
 ├── Run unit/feature tests, linters, and type checkers against touched files.
-├── If errors or high-confidence P0/P1 issues occur: diagnose root cause, fix code autonomously, and re-test.
+├── If errors occur: diagnose root cause, fix code autonomously, and re-test (max 2 attempts before hypothesis re-check).
 └── Run regression suite to ensure adjacent systems remain green.
 
 Step 6: Convergence, Guard Audit & Context Checkpoint
@@ -200,5 +204,9 @@ End with a clear handoff to the human for final acceptance.
 │ 14. NEVER sequentially read > 10 search results (File-Fanout Rule).   │
 │ 15. NEVER inject timestamps or dynamic metadata into static prefixes. │
 │ 16. NEVER output unsorted keys or CRLF line endings in prompt intake.  │
+│ 17. NEVER modify files outside an active Scope Bounding Contract.      │
+│ 18. NEVER deliver features with zero negative/boundary test assertions.│
+│ 19. NEVER introduce code patterns registered in Anti-Pattern Ledger.   │
+│ 20. NEVER ignore critical context depth thresholds (>60 turns).       │
 └────────────────────────────────────────────────────────────────────────┘
 ```

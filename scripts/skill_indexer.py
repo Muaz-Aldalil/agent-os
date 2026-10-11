@@ -58,6 +58,7 @@ CATEGORIES = {
         "testing-qa"
     ],
     "Specification-Driven Development (Spec-Kit)": [
+        "web-precode",
         "spec-kit",
         "glopale",
         "speckit-constitution",

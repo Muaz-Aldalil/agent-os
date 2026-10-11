@@ -51,5 +51,33 @@ class TestSkillRouter(unittest.TestCase):
         self.assertTrue(any("chrome-devtools-mcp" in t for t in res["in_flight_tools"]))
         self.assertTrue(any("lighthouse_audit" in g for g in res["completion_guards"]))
 
+    def test_task_sizing_levels(self):
+        # Level 1: Trivial
+        r1 = resolve_task_routing("fix typo in button label")
+        self.assertIn("Level 1", r1["task_level"])
+        self.assertIn("Zero ceremony", r1["ceremony"])
+
+        # Level 2: Bug Fix
+        r2 = resolve_task_routing("fix crash error when user clicks submit")
+        self.assertIn("Level 2", r2["task_level"])
+
+        # Level 4: Greenfield / Overhaul
+        r4 = resolve_task_routing("architectural overhaul and greenfield precode specs")
+        self.assertIn("Level 4", r4["task_level"])
+
+    def test_delegation_guidance(self):
+        # Firestore rules -> delegate
+        r_fs = resolve_task_routing("modify firestore.rules for user security")
+        self.assertIn("firestore-rules-author", r_fs["delegation"])
+
+        # Standard task -> direct execution
+        r_std = resolve_task_routing("write unit tests for order service")
+        self.assertIn("DIRECT EXECUTION LOCK", r_std["delegation"])
+
+    def test_fallbacks_and_continuity_domain(self):
+        r_cont = resolve_task_routing("resume session from PROGRESS.md and check memory")
+        self.assertIn("CROSS_SESSION_CONTINUITY", r_cont["domains"])
+        self.assertIn("memory MCP", r_cont["fallbacks"])
+
 if __name__ == "__main__":
     unittest.main()

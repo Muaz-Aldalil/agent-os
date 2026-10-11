@@ -94,6 +94,26 @@ def check_adr_028_sentinel() -> Dict[str, Any]:
     passed = p1 and "Proactive Architectural Sentinel" in const
     return {"passed": passed, "message": "Proactive Architectural Sentinel & Scalability Guard verified"}
 
+def check_adr_029_capability_harmonization() -> Dict[str, Any]:
+    legacy_const = WORKSPACE_ROOT / "rules" / "agent-constitution.md"
+    eng_const = WORKSPACE_ROOT / "rules" / "engineering-constitution.md"
+    router_script = WORKSPACE_ROOT / "scripts" / "skill_router.py"
+    mcp_matrix = WORKSPACE_ROOT / "rules" / "mcp-arsenal.md"
+    
+    no_legacy = not legacy_const.exists()
+    has_eng = eng_const.is_file()
+    router_content = router_script.read_text(encoding="utf-8") if router_script.is_file() else ""
+    mcp_content = mcp_matrix.read_text(encoding="utf-8") if mcp_matrix.is_file() else ""
+    
+    passed = (
+        no_legacy and
+        has_eng and
+        "determine_task_level" in router_content and
+        "determine_delegation" in router_content and
+        "resolve-library-id" in mcp_content
+    )
+    return {"passed": passed, "message": "Capability harmonization, legacy constitution retired, and resilient router verified"}
+
 EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-002": check_adr_002_pest_php,
     "ADR-003": check_adr_003_rtl_css,
@@ -106,6 +126,7 @@ EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-024": check_adr_024_micro_sandbox_and_python_guard,
     "ADR-027": check_adr_027_precode_engine,
     "ADR-028": check_adr_028_sentinel,
+    "ADR-029": check_adr_029_capability_harmonization,
 }
 
 def parse_adrs_from_decisions() -> List[Dict[str, str]]:

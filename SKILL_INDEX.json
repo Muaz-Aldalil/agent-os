@@ -100,10 +100,10 @@
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
-      "description": "Spec-driven development workflow using Spec Kit (specify CLI v1.0.11). Activates when the user wants to plan, specify, implement, or converge a feature using the Spec Kit workflow. Covers all phases: init, constitution, specify, clarify, plan, tasks, checklist, analyze, implement, converge, and taskstoissues. Also use for code-review of Spec Kit diffs and adding community extensions.",
+      "description": "[DEPRECATED ALIAS] Points directly to official spec-kit skill. Activates when the user mentions glopale or legacy specify commands.",
       "file": "skills/glopale/SKILL.md",
       "name": "glopale",
-      "search_corpus": "glopale spec-driven development workflow using spec kit (specify cli v1.0.11). activates when the user wants to plan, specify, implement, or converge a feature using the spec kit workflow. covers all phases: init, constitution, specify, clarify, plan, tasks, checklist, analyze, implement, converge, and taskstoissues. also use for code-review of spec kit diffs and adding community extensions. specification-driven development (spec-kit)"
+      "search_corpus": "glopale [deprecated alias] points directly to official spec-kit skill. activates when the user mentions glopale or legacy specify commands. specification-driven development (spec-kit)"
     },
     {
       "category": "Backend & Data Systems",
@@ -302,11 +302,11 @@
       "search_corpus": "ui-review-loop verify ui work with recorded evidence instead of screenshots — record browser-testing rounds (video + dom timeline + network evidence) reviewed on a local site where the operator leaves timestamped video comments, and run coverage sweeps that exercise 100% of an inventoried ui. use after any change that touches web ui, whenever an agent tests or reviews ui behavior (agent-browser, playwright, or chrome), for a dom dynamics / browser testing pass, and when the operator should verify asynchronously — prefer this over calling agent-browser directly for ui verification. recording rounds run through the agent-browser cli by default; a browser-control backend can record the operator's real logged-in browser on explicit request (requires the browser-control cli + extension + ffmpeg). core architecture & workflow"
     },
     {
-      "category": "General Customizations",
+      "category": "Specification-Driven Development (Spec-Kit)",
       "description": "The 6 Pre-Coding Pillars Specification & Architecture Blueprint for web applications. Enforces authoring, structuring, and verifying all 6 essential documents (PRD, TRD, App Flow with 5-State UI Matrix, Design Brief with 60-30-10 tokens, Backend Schema with ERD, and Implementation Plan) before writing any code.",
       "file": "skills/web-precode/SKILL.md",
       "name": "web-precode",
-      "search_corpus": "web-precode the 6 pre-coding pillars specification & architecture blueprint for web applications. enforces authoring, structuring, and verifying all 6 essential documents (prd, trd, app flow with 5-state ui matrix, design brief with 60-30-10 tokens, backend schema with erd, and implementation plan) before writing any code. general customizations"
+      "search_corpus": "web-precode the 6 pre-coding pillars specification & architecture blueprint for web applications. enforces authoring, structuring, and verifying all 6 essential documents (prd, trd, app flow with 5-state ui matrix, design brief with 60-30-10 tokens, backend schema with erd, and implementation plan) before writing any code. specification-driven development (spec-kit)"
     },
     {
       "category": "Quality & Security Guards",

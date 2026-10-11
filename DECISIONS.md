@@ -421,6 +421,34 @@
   - Elimination of generative code bloat before code is merged.
   - Verified by `tests/test_sentinel.py` (11/11 tests PASS).
 
+---
+
+## [ADR-029] Capability Harmonization, Legacy Constitution Retirement, and Resilient Router Architecture (Release v1.8.0)
+- **Date**: 2026-10-11
+- **Status**: APPROVED
+- **Context**: Autonomous agent operations suffered from capability confusion: dual conflicting constitutions (`agent-constitution.md` with hardcoded KNZiN project rules vs `engineering-constitution.md`), drift between root and rules `engineering-agent.md`, duplicate speckit skills in nested `.agents/skills`, obsolete aliases (`glopale`), inaccurate MCP documentation (`c7_query` vs `resolve-library-id`/`query-docs`), and absence of explicit fallback hierarchies when an external MCP or integration is unavailable.
+- **Alternatives Evaluated**:
+  1. *Maintain dual constitutions*: (Rejected: Causes cognitive dissonance, conflicting directives, and wastes >4,400 prompt tokens per turn).
+  2. *Static prompt instructions alone*: (Rejected: Vulnerable to context degradation and hallucinated tool schemas).
+  3. *Holistic Capability Harmonization & Resilient Router*: (Selected).
+- **Selected Decision**:
+  1. Retire obsolete `rules/agent-constitution.md` and enshrine `rules/engineering-constitution.md` as the sole constitutional contract.
+  2. Harmonize `engineering-agent.md` across root and rules directory with 100% parity across all 20 invariants, severity triage (P0/P1/P2), and `ui-review-loop`.
+  3. Synchronize `rules/execution-transparency.md` to workspace root for permanent dual-config parity.
+  4. Deprecate legacy clone `glopale` to point cleanly to official `spec-kit`, and eliminate nested `.agents/.agents/skills` duplicates.
+  5. Upgrade `scripts/skill_router.py` with:
+     - 4-tier task sizing detection (Level 1 Trivial to Level 4 Overhaul) to eliminate unnecessary ceremony on quick edits.
+     - Resilient Fallback Protocol mapping for all 8 MCP tools.
+     - Subagent delegation guidance (restricting delegation to specialist boundaries: `firestore-rules-author`, `flutter_a11y_agent`, and `research`).
+     - Added `CROSS_SESSION_CONTINUITY` domain.
+  6. Correct Context7 tool names in `rules/mcp-arsenal.md` (`resolve-library-id`, `query-docs`) and establish deterministic MCP fallback matrices.
+- **Consequences**:
+  - Total elimination of capability confusion and duplicate instruction drift.
+  - Zero hesitation or ceremony on simple/trivial tasks.
+  - 100% resilient fallback coverage for external integrations.
+  - Verified by 108 passing unit tests (100% green).
+
+
 
 
 

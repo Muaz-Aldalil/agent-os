@@ -38,7 +38,7 @@ def run_status():
     # 3. Boundary & Danger Zone Locks
     print("-" * 65)
     print("Boundary Protection:  [ACTIVE] Isolation Sandbox Enforced")
-    print("Danger Zones:         None active | Authorized: KNZiN Project (full access, ADR-022)")
+    print("Danger Zones:         None active | PreToolUse Command Safety Sandbox Enforced")
     print("Secret Leak Guard:    [ACTIVE] .env, SSH keys, AWS credentials gated")
     print("Destructive Ops:      [ACTIVE] git reset --hard, clean -f, migrate:fresh gated")
     
@@ -193,7 +193,7 @@ def main():
     if len(sys.argv) < 2:
         print("Usage: python scripts/agent_os.py <command> [args...]")
         print("Core Commands:   status, audit, test, doctor [--fix], scan <file>, sync [--apply]")
-        print("Discovery:       skill-find <query>, index-skills, install-hooks")
+        print("Discovery:       route <task|file>, skill-find <query>, index-skills, install-hooks")
         print("Pre-Coding:      precode <init|audit|status> [args...]")
         print("Sentinel:        sentinel [path] (proactive scalability, parsimony & UX audit)")
         print("100X Power:      preflight, review, eval <code>, sql <query>, regex <pat> <txt>, cache-audit, cache-sim, symbol <name>, outline <file>, trace <args>, snapshot [freeze|resume]")

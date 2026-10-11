@@ -15,6 +15,7 @@ class TestADREnforcer(unittest.TestCase):
         self.assertIn("ADR-001", ids)
         self.assertIn("ADR-023", ids)
         self.assertIn("ADR-024", ids)
+        self.assertIn("ADR-029", ids)
 
     def test_audit_all_adrs_passes_active_invariants(self):
         res = audit_all_adrs()

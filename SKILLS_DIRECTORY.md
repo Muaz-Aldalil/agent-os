@@ -28,10 +28,6 @@
 - **[`muaz-skill`](file:///D:/Skills/.agents/skills/muaz-skill/SKILL.md)**: Senior Frontend Architect & Design Systems Engineer with full-stack backend co-pilot. Activates on any request to build, design, create, scaffold, improve, audit, or optimize a frontend website or UI — with optional backend guidance (database, auth, payments, backend structure, deployment) for full-stack web apps. Powered by ui-ux-pro-max search engine (91 styles, 169 palettes, 72 font families, 169 product types, 198+ rules). Outputs a structured design blueprint followed by production-ready code, with full decision traceability.
 - **[`nextjs-fullstack`](file:///D:/Skills/.agents/skills/nextjs-fullstack/SKILL.md)**: Enterprise architectural engineering skill for Next.js 15+ and React 19 App Router applications. Enforces Server vs Client Component boundaries, Turbopack performance, Server Actions security, Suspense streaming, partial prerendering (PPR), and Tailwind CSS v4 styling rules.
 
-## General Customizations
-
-- **[`web-precode`](file:///D:/Skills/.agents/skills/web-precode/SKILL.md)**: The 6 Pre-Coding Pillars Specification & Architecture Blueprint for web applications. Enforces authoring, structuring, and verifying all 6 essential documents (PRD, TRD, App Flow with 5-State UI Matrix, Design Brief with 60-30-10 tokens, Backend Schema with ERD, and Implementation Plan) before writing any code.
-
 ## Quality & Security Guards
 
 - **[`clean-code-guard`](file:///D:/Skills/.agents/skills/clean-code-guard/SKILL.md)**: Review generated or changed production code before it ships, using Clean Code, SOLID, DRY, KISS, YAGNI, and LLM-specific failure-mode checks in any programming language. Best used reactively after an agent writes, edits, refactors, or fixes code, before presenting, committing, or merging the result. Use when the user asks "review this PR", "is this safe to merge?", "make this cleaner", "audit this code", "refactor this", "fix this bug", or after a coding agent produced implementation code. Can also guide writing when explicitly invoked before a risky edit. Invoke it on your own initiative the moment you finish writing, editing, or refactoring non-trivial production code, before presenting or committing — don't wait to be asked. DO NOT USE for factual/conceptual questions, CI/tooling config, git workflow, running/debugging tests, pure architecture discussion, prose writing, data analysis, or test-code review (use test-guard).
@@ -55,7 +51,7 @@
 
 ## Specification-Driven Development (Spec-Kit)
 
-- **[`glopale`](file:///D:/Skills/.agents/skills/glopale/SKILL.md)**: Spec-driven development workflow using Spec Kit (specify CLI v1.0.11). Activates when the user wants to plan, specify, implement, or converge a feature using the Spec Kit workflow. Covers all phases: init, constitution, specify, clarify, plan, tasks, checklist, analyze, implement, converge, and taskstoissues. Also use for code-review of Spec Kit diffs and adding community extensions.
+- **[`glopale`](file:///D:/Skills/.agents/skills/glopale/SKILL.md)**: [DEPRECATED ALIAS] Points directly to official spec-kit skill. Activates when the user mentions glopale or legacy specify commands.
 - **[`spec-kit`](file:///D:/Skills/.agents/skills/spec-kit/SKILL.md)**: Official Specification-Driven Development (SDD) workflow using GitHub Spec Kit (specify CLI). Activates on any request to plan, specify, break down, implement, or converge features using Spec Kit. Covers all SDD phases: constitution, specify, clarify, plan, checklist, tasks, implement, analyze, converge, and taskstoissues.
 - **[`speckit-analyze`](file:///D:/Skills/.agents/skills/speckit-analyze/SKILL.md)**: Perform a non-destructive cross-artifact consistency and quality analysis across spec.md, plan.md, and tasks.md after task generation.
 - **[`speckit-checklist`](file:///D:/Skills/.agents/skills/speckit-checklist/SKILL.md)**: Generate a custom checklist for the current feature based on user requirements.
@@ -67,6 +63,7 @@
 - **[`speckit-specify`](file:///D:/Skills/.agents/skills/speckit-specify/SKILL.md)**: Create or update the feature specification from a natural language feature description.
 - **[`speckit-tasks`](file:///D:/Skills/.agents/skills/speckit-tasks/SKILL.md)**: Generate an actionable, dependency-ordered tasks.md for the feature based on available design artifacts.
 - **[`speckit-taskstoissues`](file:///D:/Skills/.agents/skills/speckit-taskstoissues/SKILL.md)**: Convert existing tasks into actionable, dependency-ordered GitHub issues for the feature based on available design artifacts.
+- **[`web-precode`](file:///D:/Skills/.agents/skills/web-precode/SKILL.md)**: The 6 Pre-Coding Pillars Specification & Architecture Blueprint for web applications. Enforces authoring, structuring, and verifying all 6 essential documents (PRD, TRD, App Flow with 5-State UI Matrix, Design Brief with 60-30-10 tokens, Backend Schema with ERD, and Implementation Plan) before writing any code.
 
 ## Testing & QA Automation
 

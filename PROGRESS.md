@@ -1,29 +1,34 @@
 # Engineering Progress & Working State
 
 ## 1. Executive Status
-- **Current Milestone**: Autonomous Sprint Complete: Boundary Isolation, Red-Team Sandbox, Guard Battery & Agent OS CLI
+- **Current Milestone**: Release v1.8.0 Certified: Capability Harmonization, 8-MCP Arsenal, Legacy Constitution Retirement & Resilient Router
 - **Status**: READY_FOR_PRODUCTION (100% GREEN)
-- **Last Updated**: 2026-10-05T12:05:00+02:00
+- **Last Updated**: 2026-10-11T05:45:00+02:00
 - **Governing Architecture**:
-  - [engineering-constitution.md](file:///D:/Skills/.agents/rules/engineering-constitution.md) (Sections 3.4 & 7.1-7.2)
-  - [engineering-agent.md](file:///D:/Skills/.agents/engineering-agent.md)
+  - [engineering-constitution.md](file:///D:/Skills/.agents/rules/engineering-constitution.md) (Sole Constitutional Contract)
+  - [engineering-agent.md](file:///D:/Skills/.agents/engineering-agent.md) & [rules/engineering-agent.md](file:///D:/Skills/.agents/rules/engineering-agent.md) (Harmonized Profile)
+  - [rules/mcp-arsenal.md](file:///D:/Skills/.agents/rules/mcp-arsenal.md) (8-MCP Lifecycle Matrix & Fallbacks)
+  - [rules/execution-transparency.md](file:///D:/Skills/.agents/rules/execution-transparency.md) (Status & Reconnection Transparency)
   - [engineering-workflow/SKILL.md](file:///D:/Skills/.agents/skills/engineering-workflow/SKILL.md) (Stages 1-9, Danger Zones 1-4)
-  - [DECISIONS.md](file:///D:/Skills/.agents/DECISIONS.md) (ADR-001 through ADR-011)
+  - [DECISIONS.md](file:///D:/Skills/.agents/DECISIONS.md) (ADR-001 through ADR-029)
 
 ## 2. Working Tree & Scope State
 - **Workspace Root**: `D:\Skills\.agents` (Version Control: Git tracking on `master`)
 - **Global Config Root**: `C:\Users\HP\.gemini\config`
 - **Active Tracked Files**:
   - `rules/engineering-constitution.md` (Constitutional governance & boundary isolation)
-  - `rules/agent-constitution.md` (Operational principles)
-  - `engineering-agent.md` (Senior Staff Engineer profile & execution runbook)
+  - `rules/engineering-agent.md` & `engineering-agent.md` (Senior Staff Engineer profile & 20 invariants)
+  - `rules/mcp-arsenal.md` (8-MCP lifecycle matrix, fallback protocol, delegation matrix)
+  - `rules/execution-transparency.md` (Background task reporting & network reconnection handling)
   - `hooks.json` (Command-safety lifecycle hook gate)
-  - `scripts/agent_os.py` (Unified CLI: status, audit, test, scan)
+  - `scripts/agent_os.py` (Unified CLI: status, audit, test, scan, route, preflight, precode, sentinel)
+  - `scripts/skill_router.py` (Deterministic Task-to-Skill, Task Sizing Levels 1-4, MCP fallbacks)
   - `scripts/safety_hook.py` (PreToolUse shell sandbox & danger zone lock)
   - `scripts/guard_checker.py` (Static analysis verification engine)
+  - `scripts/adr_enforcer.py` (Executable Architecture-as-Code assertions for 12 ratified ADRs)
   - `scripts/audit_agent_os.py` (Automated Agent OS & Guard health suite)
-  - `tests/test_safety_hook.py` (Boundary, secret leak & command unit tests)
-  - `tests/test_guards_battery.py` (Server Action, Pest, RTL, Clean Code test battery)
+  - `tests/test_skill_router.py` (Router, task sizing, delegation, and fallback test battery)
+  - `tests/test_adr_enforcer.py` (ADR enforcement test battery)
   - `skills/engineering-workflow/SKILL.md` (9-stage lifecycle, Danger Zones, Host Invariants)
   - `skills/debate-review/SKILL.md` (Adversarial two-model diff review via OpenCode lanes)
   - `skills/ui-review-loop/SKILL.md` (Recorded video, DOM timeline & local review server)
@@ -176,19 +181,36 @@
     - Enshrined Section 3.10 in `rules/engineering-constitution.md`.
   - **Unit Test Battery (`tests/test_sentinel.py`)**:
     - 11 comprehensive unit tests covering unbounded SQL, ORM bulk fetches, N+1 patterns, migration index enforcement, parsimony classes, hostile error leaks, and accessible aria-labels.
-    - Total test suite expanded past the 100-test milestone to **102/102 unit tests PASS** (100% GREEN in 4.7s).
+- [x] **Subtask 17: The 8-MCP Engineering Arsenal (Release v1.7.5)**:
+  - Registered 14 MCP configurations across global registry (`~/.gemini/config/mcp_config.json`).
+  - Switched `github` to native `npx @modelcontextprotocol/server-github` on stdio (eliminating Docker dependencies).
+  - Integrated `memory` (`@modelcontextprotocol/server-memory`) with persistent `memory.json`.
+  - Integrated `context7` (`@upstash/context7-mcp`) for upstream library doc retrieval.
+  - Authored the 8-MCP Lifecycle Matrix in `rules/mcp-arsenal.md`.
+  - Added unit test routing for Stripe payments and Netlify devops. Total suite: **105/105 unit tests PASS**.
+
+- [x] **Subtask 18: Capability Harmonization, Legacy Constitution Retirement & Resilient Router (Release v1.8.0)**:
+  - **Legacy Constitution Retirement**: Purged `rules/agent-constitution.md` (839 lines, saving ~4,400 prompt tokens per turn) and established `rules/engineering-constitution.md` as the sole constitutional contract.
+  - **Duplicate & Bloat Elimination**: Purged nested `.agents/.agents/skills` (10 duplicate speckit skills), deprecated `skills/glopale/SKILL.md` to point to `spec-kit`. Net reduction: **3,729 lines purged**.
+  - **Profile Parity**: Harmonized `engineering-agent.md` and `rules/engineering-agent.md` with 100% parity across all 20 invariants, P0/P1/P2 triage, and `ui-review-loop`.
+  - **Execution Transparency**: Imported `rules/execution-transparency.md` to workspace.
+  - **Resilient Router Engine (`scripts/skill_router.py`)**: Added 4-tier task sizing (Level 1 Trivial to Level 4 Overhaul), resilient MCP fallback mappings, subagent delegation checks (`firestore-rules-author`, `flutter_a11y_agent`), and `CROSS_SESSION_CONTINUITY` domain.
+  - **Tool Schema Parity**: Corrected Context7 tools in `rules/mcp-arsenal.md` to `resolve-library-id` and `query-docs`.
+  - **ADR-029 Ratification**: Documented in `DECISIONS.md` and enforced via `scripts/adr_enforcer.py` (12/12 ADRs PASS).
+  - **Unit Test Battery (`tests/test_skill_router.py`)**: Expanded router tests to 10 comprehensive tests. Total test suite across OS: **108/108 unit tests PASS** (100% GREEN in 2.4s).
 
 ## 4. Current In-Progress Work
-- **Release `v1.7.0` Certified**: The Proactive Architectural Sentinel, Scalability Guard, Generative Bloat Detector, and UX Empathy Checker are 100% operational.
-- **Architectural Ratification**: All 28 ADRs recorded in `DECISIONS.md`.
-- **System Readiness**: 102/102 unit tests PASS (100% GREEN). The system actively audits its own code and brownfield systems for latency, bloat, and usability.
+- **Release `v1.8.0` Certified**: The 8-MCP Arsenal, Resilient Router, Proportional Task Sizing, and Capability Harmonization are 100% operational.
+- **Architectural Ratification**: All 29 ADRs recorded in `DECISIONS.md`.
+- **System Readiness**: 108/108 unit tests PASS (100% GREEN). Global and workspace configs in 100% verified parity.
 
 ## 5. Known Blockers, Failing Tests & Edge Cases
-- None within Agent OS. 100% GREEN status across 102 unit tests, 46 workspace skills, 46 global skills, 3 rules, and native pre-commit gates.
+- None within Agent OS. 100% GREEN status across 108 unit tests, 46 workspace skills, 46 global skills, 4 rules, and native pre-commit gates.
 
 ## 6. Immediate Next Executable Actions
-1. `python scripts/agent_os.py sentinel`: Run proactive health audit across any codebase.
-2. `python scripts/agent_os.py precode init <website_name>`: Scaffold the 6 canonical documents for any new web project.
+1. `python scripts/agent_os.py route "<task>"`: Resolve task sizing, skills, tools, and guards deterministically before implementation.
+2. `python scripts/agent_os.py sentinel`: Run proactive health audit across any codebase.
+3. `python scripts/agent_os.py precode init <website_name>`: Scaffold the 6 canonical documents for any new web project.
 
 
 

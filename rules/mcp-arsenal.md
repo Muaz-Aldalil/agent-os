@@ -1,24 +1,25 @@
-# The 6-MCP Engineering Arsenal & Lifecycle Orchestration Matrix
+# The 8-MCP Engineering Arsenal & Lifecycle Orchestration Matrix
 
 ## 1. Overview & Mandate
-Antigravity is equipped with a 6-pillar Model Context Protocol (MCP) tool suite. These tools are not passive utilities—they are active operational instruments bound directly to the **Autonomous Senior Engineering Workflow** and the **6 Pre-Coding Pillars**.
+Antigravity is equipped with an 8-pillar Model Context Protocol (MCP) tool suite. These tools are not passive utilities—they are active operational instruments bound directly to the **Autonomous Senior Engineering Workflow** and the **6 Pre-Coding Pillars**.
 
 When executing engineering tasks, the agent must orchestrate each MCP server at its designated lifecycle phase.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│               THE 6-MCP LIFECYCLE ORCHESTRATION PIPELINE               │
+│               THE 8-MCP LIFECYCLE ORCHESTRATION PIPELINE               │
 ├───────────────────┬──────────────────────────┬─────────────────────────┤
 │ Lifecycle Phase   │ Active MCP Server        │ Primary Capabilities    │
 ├───────────────────┼──────────────────────────┼─────────────────────────┤
-│ 1. Architecture   │ sequential-thinking      │ Multi-step logic trees, │
-│    & Discovery    │ github                   │ issue/PR context        │
+│ 1. Continuity &   │ memory                   │ Persistent graph memory,│
+│    Architecture   │ sequential-thinking      │ entities & relations,   │
+│                   │ github                   │ issue/PR context        │
 ├───────────────────┼──────────────────────────┼─────────────────────────┤
 │ 2. Visual Design  │ StitchMCP                │ Generative screens,     │
 │    & Prototyping  │                          │ design systems, variants│
 ├───────────────────┼──────────────────────────┼─────────────────────────┤
 │ 3. Domain & Auth  │ stripe                   │ Authoritative API docs, │
-│    Implementation │                          │ intents, customer ops   │
+│    Implementation │ context7                 │ intents, live docs & SDK│
 ├───────────────────┼──────────────────────────┼─────────────────────────┤
 │ 4. Live UI & DOM  │ chrome-devtools-mcp      │ DOM inspection, CSS,    │
 │    Verification   │                          │ network trace, consoles │
@@ -33,7 +34,10 @@ When executing engineering tasks, the agent must orchestrate each MCP server at 
 
 ## 2. Phase-by-Phase Tool Orchestration
 
-### Phase 1: Architecture & Intent Clarification (Stages 1–3 / Pre-Code PRD & TRD)
+### Phase 1: Continuity, Architecture & Intent (Stages 1–3 / Pre-Code PRD & TRD)
+* **`memory`**:
+  - `search_nodes`, `open_nodes`: Query the local persistent knowledge graph (`memory.json`) for established project conventions, architectural preferences, and previous decisions.
+  - `create_entities`, `create_relations`, `add_observations`: Codify newly learned conventions and relationships so they survive across all future chat sessions.
 * **`sequential-thinking`**:
   - Activates when decomposing complex architectural trade-offs, database migrations, or distributed flows.
   - Generates hypothesis trees, tests edge assumptions, and prevents hasty design decisions before drafting `01-PRD.md` or `02-TRD.md`.
@@ -53,6 +57,9 @@ When executing engineering tasks, the agent must orchestrate each MCP server at 
   - `stripe_implementation_planner`: Validate checkout architectures and subscription lifecycles.
   - `stripe_api_search`, `stripe_api_read`: Inspect live customer records, payment intents, and price IDs to eliminate configuration drift.
   - Mandatory compliance with **Danger Zone 1** (zero float arithmetic, strict idempotency keys, ACID ledger balance).
+* **`context7`**:
+  - `c7_query`, `c7_search`: Retrieve official, version-pinned documentation for bleeding-edge frameworks (Next.js 15, React 19, Tailwind v4, Pest 3).
+  - Eliminates library API hallucinations and outdated code patterns.
 
 ### Phase 4: Live DOM & Responsive In-Flight Verification (Stage 7)
 * **`chrome-devtools-mcp`**:

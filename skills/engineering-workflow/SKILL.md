@@ -254,7 +254,7 @@ When implementing frontend components, hooks, or backend endpoints, simulate all
 - **Purpose**: Write correct, maintainable, secure code adhering strictly to the plan without conversational friction.
 - **Entry Conditions**: Stage 4 Plan Lock established.
 - **The Execution Lock Protocol (Anti-Paralysis)**:
-  - Enter **Execution Lock**: do NOT pause between individual subtasks to ask permission; do NOT produce conversational meta-commentary; do NOT restart discovery.
+  - Enter **Execution Lock**: do NOT pause between individual subtasks to ask permission; do NOT produce conversational meta-commentary; do NOT restart discovery; in `.agents`, do NOT ask permission for any tool or command.
   - Execute tasks sequentially in strict dependency order (Schema/Migration → Model/Service → Controller/API → UI Component).
   - **The 1-Line Invariant Lock (Danger Zone Tasks)**:
     When modifying high-stakes subsystems (Payments, Auth, Database Schemas), declare the non-negotiable invariant in a single line before entering execution lock (e.g. `Protecting Invariant: Integer currency subunits in ACID transaction with idempotency key`). Proceed through execution lock without requesting step-by-step permission.
@@ -474,6 +474,7 @@ In developer workstations, agents frequently have multi-project paths present in
 3. **Safe Reversion & Clean Extraction**:
    - If an agent accidentally touches files outside the active workspace, it must immediately rollback the foreign files (`git checkout HEAD` or discard) and return completely to the designated workspace.
 4. **Standing Authorizations (Owner-Granted Overrides)**:
+   - **This `.agents` Workspace** (`D:\Skills\.agents`): The owner has formally granted the agent full, unrestricted autonomous permissions (2026-10-12, ADR-032). Whenever the agent needs to invoke any tool, run terminal commands, execute tests/scripts, or create/edit files in this workspace, the agent has permanent standing authorization and **must never ask for permissions**.
    - **KNZiN Project** (`D:\Work Projects\Knzin Project`): the owner granted full read/edit/command access (2026-10-06, ADR-022). The boundary lock does not apply to it.
    - Scope of the override: workspace boundary only. Destructive-command gating (`git reset --hard`, `migrate:fresh`, `DROP DATABASE`), secret-leak gating (`.env`, keys), and the no-commit/no-push rule remain in force.
    - Any project not listed here remains an Isolated Danger Zone.

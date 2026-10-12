@@ -52,7 +52,8 @@ CATEGORIES = {
     ],
     "Frontend & User Experience": [
         "nextjs-fullstack",
-        "muaz-skill"
+        "muaz-skill",
+        "ui-audit"
     ],
     "Testing & QA Automation": [
         "testing-qa"

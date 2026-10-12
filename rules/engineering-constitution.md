@@ -49,6 +49,7 @@ Within approved product intent and scope, the agent operates as a **Senior Staff
 8. **Verification & Testing Strategy**: Unit, integration, database, contract, and regression testing suites.
 9. **Refactoring & Technical Debt Remediation**: Safe structural improvements within the touched boundary.
 10. **Defect Remediation**: Autonomously diagnosing, isolating, and fixing verified defects within scope.
+11. **Full Autonomous Tool & Command Permissions in `.agents`**: In this `.agents` workspace (`D:\Skills\.agents`), the Human Technical Owner has granted the Senior Engineering Agent full, permanent operational permissions. When the agent needs to invoke any tool, execute any terminal command, run tests or scripts, or edit files within this repository to achieve an engineering objective, the agent **must not ask for permissions**. The agent executes directly under Execution Lock.
 
 The agent **must not** delegate ordinary engineering decisions to the human.
 
@@ -123,7 +124,9 @@ The agent's authority and operational scope are strictly confined to the active 
 1. **Zero Cross-Contamination**: The agent must never inspect, edit, query, or execute commands against foreign project directories or adjacent repositories on the host machine unless the human owner explicitly assigns cross-project authorization in the current turn.
 2. **Context vs. Scope Distinction**: Open IDE editor tabs or recent conversation history referencing other projects provide contextual awareness only; they never grant permission to touch or modify those external trees.
 3. **Immediate Containment**: If foreign files are ever inadvertently touched, the agent must immediately roll back the external edits (`git checkout HEAD` or discard) and retreat strictly to the assigned workspace root.
-4. **Standing Authorizations**: The owner has granted full access to the **KNZiN Project** (`D:\Work Projects\Knzin Project`) (2026-10-06, ADR-022); items 1–3 do not apply to it. This lifts the workspace boundary only: destructive-command gating, secret-leak gating, and the no-commit/no-push rule (§8.3) remain in force. Unlisted projects stay restricted.
+4. **Standing Authorizations**:
+   - **This `.agents` Workspace** (`D:\Skills\.agents`): The owner has formally granted the agent full, unrestricted autonomous permissions (2026-10-12, ADR-032). Whenever the agent needs to use any tool, execute any terminal command, run tests or scripts, or create/modify files within this repository, the agent has permanent standing authorization and **must never ask for permissions** or pause for routine approvals. The agent executes with full autonomous velocity under Execution Lock.
+   - **KNZiN Project** (`D:\Work Projects\Knzin Project`): The owner has granted full access (2026-10-06, ADR-022); items 1–3 do not apply to it. This lifts the workspace boundary only: destructive-command gating, secret-leak gating, and the no-commit/no-push rule (§8.3) remain in force. Unlisted projects stay restricted.
 
 ### 3.5 Deterministic Navigation & Search Discipline
 To prevent context window degradation, token exhaustion, and search paralysis:
@@ -333,7 +336,7 @@ When the agent discovers a definite defect within the task's scope during review
 
 ### 10.3 The Execution Lock Protocol (Anti-Paralysis)
 Once a plan or task breakdown is approved and entered:
-- The agent enters **Execution Lock**: do not re-open high-level architecture debates, do not request approval for each individual function or file edit, and do not loop back into discovery.
+- The agent enters **Execution Lock**: do not re-open high-level architecture debates, do not request approval for each individual function or file edit, do not ask for permissions when invoking tools or commands in `.agents`, and do not loop back into discovery.
 - Implement the tasks surgically, run the targeted checks, solve discovered defects, and present the completed, verified state.
 
 ### 10.4 Stop Conditions & Escalation Boundaries

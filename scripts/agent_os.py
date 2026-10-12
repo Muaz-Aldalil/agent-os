@@ -196,6 +196,7 @@ def main():
         print("Discovery:       route <task|file>, skill-find <query>, index-skills, install-hooks")
         print("Pre-Coding:      precode <init|audit|status> [args...]")
         print("Sentinel:        sentinel [path] (proactive scalability, parsimony & UX audit)")
+        print("UI Quality:      ui-audit <scan|audit|generate> [args...] (100X frontend UI quality engine)")
         print("100X Power:      preflight, review, eval <code>, sql <query>, regex <pat> <txt>, cache-audit, cache-sim, symbol <name>, outline <file>, trace <args>, snapshot [freeze|resume]")
         print("Autonomy Suite:  scope <set|check|clear|status>, chaos-audit [file], logs [--tail N], probe <url>, adr-check [list], antipattern <list|scan|audit|add>, telemetry [record|reset|status]")
         sys.exit(1)
@@ -291,6 +292,10 @@ def main():
         run_precode(sys.argv[2:])
     elif cmd in ["sentinel", "scalability", "proactive"]:
         run_sentinel(sys.argv[2:])
+    elif cmd in ["ui-audit", "uiaudit"]:
+        ui_audit_script = WORKSPACE_ROOT / "scripts" / "ui_audit_engine.py"
+        res = subprocess.run([sys.executable, str(ui_audit_script)] + sys.argv[2:], cwd=WORKSPACE_ROOT)
+        sys.exit(res.returncode)
     elif cmd == "codemod":
         codemod_script = WORKSPACE_ROOT / "scripts" / "codemod.py"
         res = subprocess.run([sys.executable, str(codemod_script)] + sys.argv[2:], cwd=WORKSPACE_ROOT)

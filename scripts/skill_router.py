@@ -36,8 +36,8 @@ DOMAIN_PROFILES = {
     "FRONTEND_UI": {
         "description": "User Interface, Frontend Components, Design & Layout",
         "file_patterns": [r"\.tsx$", r"\.jsx$", r"\.vue$", r"\.svelte$", r"\.css$", r"\.scss$", r"components[\\/]", r"app[\\/].*?page\."],
-        "keywords": ["ui", "component", "button", "layout", "design", "css", "tailwind", "modal", "page", "frontend", "bilingual", "rtl", "navbar", "form", "screen"],
-        "implementation_skills": ["muaz-skill", "nextjs-fullstack"],
+        "keywords": ["ui", "component", "button", "layout", "design", "css", "tailwind", "modal", "page", "frontend", "bilingual", "rtl", "navbar", "form", "screen", "ui audit", "audit ui"],
+        "implementation_skills": ["muaz-skill", "nextjs-fullstack", "ui-audit"],
         "in_flight_tools": ["StitchMCP (generate_screen_from_text, create_design_system, generate_variants)", "chrome-devtools-mcp (evaluate_script, get_css_styles, take_screenshot, list_console_messages)", "code_graph outline", "repl_sandbox regex", "playwright browser_navigate"],
         "completion_guards": ["rtl-logical-guard", "chrome-devtools-mcp (lighthouse_audit)", "clean-code-guard", "list_console_messages", "chaos-audit"],
         "fallbacks": {

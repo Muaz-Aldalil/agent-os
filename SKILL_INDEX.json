@@ -295,6 +295,13 @@
       "search_corpus": "testing-qa use when writing unit tests, integration tests, e2e tests, setting up test infrastructure, debugging test failures, or improving test coverage. triggers on: test, spec, vitest, jest, playwright, pytest, mock, stub, fixture, coverage. testing & qa automation"
     },
     {
+      "category": "Frontend & User Experience",
+      "description": "Comprehensive, evidence-based frontend UI audit workflow. Discovers the entire frontend architecture, inspects routes, layouts, design tokens, responsiveness, accessibility, interactions, and localization, produces structured audit reports in docs/ui-audits/<timestamp>/, and generates isolated, self-contained implementation prompts for every confirmed issue without modifying code.",
+      "file": "skills/ui-audit/SKILL.md",
+      "name": "ui-audit",
+      "search_corpus": "ui-audit comprehensive, evidence-based frontend ui audit workflow. discovers the entire frontend architecture, inspects routes, layouts, design tokens, responsiveness, accessibility, interactions, and localization, produces structured audit reports in docs/ui-audits/<timestamp>/, and generates isolated, self-contained implementation prompts for every confirmed issue without modifying code. frontend & user experience"
+    },
+    {
       "category": "Core Architecture & Workflow",
       "description": "Verify UI work with recorded evidence instead of screenshots — record browser-testing rounds (video + DOM timeline + network evidence) reviewed on a local site where the operator leaves timestamped video comments, and run coverage sweeps that exercise 100% of an inventoried UI. Use after ANY change that touches web UI, whenever an agent tests or reviews UI behavior (agent-browser, Playwright, or Chrome), for a DOM dynamics / browser testing pass, and when the operator should verify asynchronously — prefer this over calling agent-browser directly for UI verification. Recording rounds run through the agent-browser CLI by default; a browser-control backend can record the operator's real logged-in browser on explicit request (requires the browser-control CLI + extension + ffmpeg).",
       "file": "skills/ui-review-loop/SKILL.md",
@@ -330,5 +337,5 @@
       "search_corpus": "wp-guard review generated or changed wordpress code — plugins, themes, and blocks — before it ships. best used reactively after an agent writes, edits, or reviews code touching wordpress apis: add_action/add_filter, shortcodes, meta boxes, ajax handlers, rest routes, wp_query or $wpdb, widgets, or wp-cli commands. use on 'review this plugin', 'is this safe to ship', 'make this translatable', 'speed up this query', or after tasks like 'write a plugin' or 'add an endpoint/shortcode/meta box'. enforces escaping and sanitization, nonces plus capability checks, prepared database queries, core-api-first development, translation-ready strings, and query/caching discipline. do not use for woocommerce-specific order, product, or checkout logic (use woo-guard), non-wordpress php, generic code quality review (use clean-code-guard), test code review (use test-guard), server or hosting configuration, or conceptual wordpress questions. quality & security guards"
     }
   ],
-  "total_skills": 47
+  "total_skills": 48
 }

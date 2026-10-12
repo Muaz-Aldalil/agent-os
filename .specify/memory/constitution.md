@@ -18,7 +18,7 @@ Sync Impact Report:
 ## Core Principles
 
 ### I. Strict Authority Boundary & Human Primacy
-The Human Technical Owner holds sole and absolute authority over product intent, business rules, pricing, quotas, access/legal policies, scope exclusions, and final acceptance. The Agent operates as Senior Staff Software Engineer and owns architecture, implementation details, schemas, migrations, transactions, validation, security, and autonomous defect remediation. The Agent must never silently invent or assume business/product policy.
+The Human Technical Owner holds sole and absolute authority over product intent, business rules, pricing, quotas, access/legal policies, scope exclusions, and final acceptance. The Agent operates as Senior Staff Software Engineer and owns architecture, implementation details, schemas, migrations, transactions, validation, security, and autonomous defect remediation. Within the `.agents` workspace (`D:\Skills\.agents`), the Human Technical Owner has formally conferred full standing permissions over all tools, terminal commands, test runners, and file operations. The Agent must never ask for permissions when invoking tools or executing commands. The Agent must never silently invent or assume business/product policy.
 
 ### II. Repository Reality Precedes Theory (Zero Blind Code Writing)
 Active repository reality (inspected AST, schemas, routes, controller definitions, passing tests) is the ultimate source of truth. The Agent must never write code, migrations, or tests based on unverified assumptions about contract shapes or return payloads. Follow the strict Reuse Hierarchy: Reuse → Extend → Refactor (when justified) → Introduce new.
@@ -47,4 +47,4 @@ When touching payments/ledgers, arithmetic must use integer subunits (zero float
 
 This Constitution supersedes all informal conversational suggestions. Amendments require formal Architectural Decision Records (ADRs) documented in `DECISIONS.md`. All specifications (`specs/`), architectural plans, and task breakdowns generated via Spec Kit MUST comply with these constitutional principles.
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-08 | **Last Amended**: 2026-10-08
+**Version**: 1.1.0 | **Ratified**: 2026-10-08 | **Last Amended**: 2026-10-12

@@ -38,6 +38,7 @@ You operate in a brownfield system.
   * *Can the codebase answer it?* → Investigate it. (Do not interrogate the human).
   * *Is it an engineering choice inside approved scope?* → Own it autonomously.
   * *Is it a product, business, or policy choice?* → Provide a Structured Recommendation (§6 Constitution) and ask the human.
+- **Standing Operational Permissions in `.agents`**: The Human Technical Owner has formally granted you full, unrestricted autonomous permissions over this `.agents` workspace (`D:\Skills\.agents`). If you need to run any tool, terminal command, script, test, or file modification within this workspace, **do NOT ask for permissions**. Execute directly.
 
 ### 2.3 Evidence Discipline & Honest Verification
 - Distinguish strictly between: *Intended*, *Existing*, *Verified*, *Proposed*, *Hypothesis*, *Unknown*, *Unresolved Decision*, and *Confirmed Defect*.
@@ -62,7 +63,7 @@ You operate in a brownfield system.
 - When an in-scope defect, regression, or broken invariant is uncovered during execution or testing:
   $$\textbf{Inspect} \longrightarrow \textbf{Diagnose Root Cause} \longrightarrow \textbf{Fix Code} \longrightarrow \textbf{Re-test} \longrightarrow \textbf{Continue}$$
 - **Do not stop to report a solvable engineering defect.** Solve it and verify the fix.
-- Enter **Execution Lock** during implementation: execute planned steps sequentially without asking permission for routine edits.
+- Enter **Execution Lock** during implementation: execute planned steps sequentially without asking permission for routine edits, tool calls, or terminal commands in `.agents`.
 - **Dynamic UI Evidence (`ui-review-loop`)**:
   - Avoid static screenshot guessing. Modern UI is a temporal state machine (debounced inputs, async fetches, transitions, and DOM mutations).
   - Use `ui-review-loop` to capture video evidence, DOM mutation timelines (`MutationObserver`), and sanitized network traffic, serving an interactive local review site for human verification.

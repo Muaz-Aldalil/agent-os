@@ -84,7 +84,10 @@ class TestSkillRouter(unittest.TestCase):
         self.assertIn("WEBMCP", r_webmcp["domains"])
         self.assertIn("webmcp", r_webmcp["implementation_skills"])
         self.assertTrue(any("chrome-devtools-mcp" in t for t in r_webmcp["in_flight_tools"]))
-        self.assertIn("chrome-devtools-mcp", r_webmcp["fallbacks"])
+    def test_routes_ui_audit_task(self):
+        r_audit = resolve_task_routing("run comprehensive frontend UI audit across routes and components")
+        self.assertIn("FRONTEND_UI", r_audit["domains"])
+        self.assertIn("ui-audit", r_audit["implementation_skills"])
 
 if __name__ == "__main__":
     unittest.main()

@@ -50,6 +50,13 @@
       "search_corpus": "clean-code-guard review generated or changed production code before it ships, using clean code, solid, dry, kiss, yagni, and llm-specific failure-mode checks in any programming language. best used reactively after an agent writes, edits, refactors, or fixes code, before presenting, committing, or merging the result. use when the user asks \"review this pr\", \"is this safe to merge?\", \"make this cleaner\", \"audit this code\", \"refactor this\", \"fix this bug\", or after a coding agent produced implementation code. can also guide writing when explicitly invoked before a risky edit. invoke it on your own initiative the moment you finish writing, editing, or refactoring non-trivial production code, before presenting or committing — don't wait to be asked. do not use for factual/conceptual questions, ci/tooling config, git workflow, running/debugging tests, pure architecture discussion, prose writing, data analysis, or test-code review (use test-guard). quality & security guards"
     },
     {
+      "category": "Core Architecture & Workflow",
+      "description": "Audits, activates, and manages the low-bandwidth Data-Saver Profile for Antigravity IDE. Reduces daily internet data consumption by 75-85% by disabling background ghost-text completions, silent IDE and extension updates, continuous Git autofetch, and telemetry.",
+      "file": "skills/data-saver/SKILL.md",
+      "name": "data-saver",
+      "search_corpus": "data-saver audits, activates, and manages the low-bandwidth data-saver profile for antigravity ide. reduces daily internet data consumption by 75-85% by disabling background ghost-text completions, silent ide and extension updates, continuous git autofetch, and telemetry. core architecture & workflow"
+    },
+    {
       "category": "Backend & Data Systems",
       "description": "Use when designing database schemas, writing queries, creating migrations, optimizing performance, or managing data layer across PostgreSQL, MongoDB, SQLite, Firebase, Redis. Triggers on: schema, query, migration, database, SQL, index, relation, collection, Firestore.",
       "file": "skills/database/SKILL.md",
@@ -337,5 +344,5 @@
       "search_corpus": "wp-guard review generated or changed wordpress code — plugins, themes, and blocks — before it ships. best used reactively after an agent writes, edits, or reviews code touching wordpress apis: add_action/add_filter, shortcodes, meta boxes, ajax handlers, rest routes, wp_query or $wpdb, widgets, or wp-cli commands. use on 'review this plugin', 'is this safe to ship', 'make this translatable', 'speed up this query', or after tasks like 'write a plugin' or 'add an endpoint/shortcode/meta box'. enforces escaping and sanitization, nonces plus capability checks, prepared database queries, core-api-first development, translation-ready strings, and query/caching discipline. do not use for woocommerce-specific order, product, or checkout logic (use woo-guard), non-wordpress php, generic code quality review (use clean-code-guard), test code review (use test-guard), server or hosting configuration, or conceptual wordpress questions. quality & security guards"
     }
   ],
-  "total_skills": 48
+  "total_skills": 49
 }

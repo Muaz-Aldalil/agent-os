@@ -38,7 +38,8 @@ CATEGORIES = {
         "delegate-setup",
         "opencode-delegate",
         "find-skills",
-        "project-documentation"
+        "project-documentation",
+        "data-saver"
     ],
     "Backend & Data Systems": [
         "laravel-mastery",

@@ -1,6 +1,6 @@
 # Antigravity Agent OS - Skills Directory
 
-> Auto-indexed registry of **48 production skills** categorized by operational domain.
+> Auto-indexed registry of **49 production skills** categorized by operational domain.
 
 ## Backend & Data Systems
 
@@ -15,6 +15,7 @@
 
 ## Core Architecture & Workflow
 
+- **[`data-saver`](file:///D:/Skills/.agents/skills/data-saver/SKILL.md)**: Audits, activates, and manages the low-bandwidth Data-Saver Profile for Antigravity IDE. Reduces daily internet data consumption by 75-85% by disabling background ghost-text completions, silent IDE and extension updates, continuous Git autofetch, and telemetry.
 - **[`debate-review`](file:///D:/Skills/.agents/skills/debate-review/SKILL.md)**: Two-model debate review of a GitHub PR, GitLab MR, Azure DevOps PR, or local working tree, posted as inline comments or printed. Use for any PR/MR review request, or a local review before a PR exists.
 - **[`delegate-setup`](file:///D:/Skills/.agents/skills/delegate-setup/SKILL.md)**: Configure delegation fleet lanes: which implementer CLI handles which kind of work, with optional model and effort (or variant) dials. Discovers installed CLIs, proposes a lane map for user approval, and writes global or project config only after explicit yes. Use when the user asks to set up, configure, or reconfigure delegation lanes, a fleet of lanes, or which implementer handles feature/tests/ui work — not for dispatching a coding task to an implementer.
 - **[`engineering-workflow`](file:///D:/Skills/.agents/skills/engineering-workflow/SKILL.md)**: Autonomous Senior Engineering Workflow protocol for end-to-end software development. Activates on any engineering task: bug fixes, refactoring, feature development, or architectural changes. Enforces brownfield reality checks, proportional task sizing, unidirectional gate locks, embedded adversarial self-auditing, automatic defect resolution, guard-skill orchestration, the Danger Zone Playbook (Payments, Auth, Database Expand-and-Contract), and the Clean Session Continuity Protocol (automated PROGRESS.md and DECISIONS.md generation).

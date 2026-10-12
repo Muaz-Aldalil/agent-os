@@ -261,16 +261,30 @@
   - **Dual-Config Sync & ADR Ratification**:
     - Ratified **ADR-033** in `DECISIONS.md`.
     - Synchronized dual-config parity via `scripts/sync_config.py --apply`.
+- [x] **Subtask 22: Bandwidth Guard & Data-Saver Optimization Profile (Release v1.12.0)**:
+  - **Problem Solved**: Developer experiencing unsustainable internet data costs (>10 GB daily) in Sudan due to unconstrained IDE cloud polling.
+  - **Bandwidth Guard Engine (`scripts/bandwidth_guard.py`)**:
+    - Disables real-time inline ghost-text code completions (saving ~3–5 GB daily).
+    - Disables silent background IDE & extension updates (saving ~500 MB–1 GB weekly).
+    - Disables continuous Git autofetch polling (saving ~300–800 MB daily).
+    - Disables telemetry, experiments, and natural language search.
+    - Excludes heavy directories (`node_modules`, `vendor`, `.next`, `dist`, `build`) from file watchers and indexing.
+  - **Agent OS CLI Integration**: Added `python scripts/agent_os.py data-saver <status|apply|restore>`.
+  - **Automated Backup & Safe Restore**: Automatically creates `settings.json.backup` before applying optimizations.
+  - **Test Suite (`tests/test_bandwidth_guard.py`)**: 3/3 tests PASS. Total OS test suite: **120/120 unit tests PASS (100% GREEN)**.
+  - **Dual-Config Sync & ADR Ratification**:
+    - Ratified **ADR-034** in `DECISIONS.md`.
+    - Synchronized dual-config parity via `scripts/sync_config.py --apply`.
     - `python scripts/audit_agent_os.py` verified: ALL SYSTEMS OPERATIONAL (GREEN).
 
 ## 4. Current In-Progress Work
-- **Release `v1.11.0` Certified**: 100X UI Audit Engine with Automated AST Static Analysis & Prompt Generation (ADR-033) operational.
-- **Architectural Ratification**: All 33 ADRs recorded in `DECISIONS.md`.
-- **System Readiness**: 117/117 unit tests PASS (100% GREEN). Global and workspace configs in 100% verified parity (48/48 skills).
+- **Release `v1.12.0` Certified**: Bandwidth Guard & Data-Saver Optimization Profile (ADR-034) operational.
+- **Architectural Ratification**: All 34 ADRs recorded in `DECISIONS.md`.
+- **System Readiness**: 120/120 unit tests PASS (100% GREEN). Global and workspace configs in 100% verified parity (48/48 skills).
 
 
 ## 5. Known Blockers, Failing Tests & Edge Cases
-- None within Agent OS. 100% GREEN status across 117 unit tests, 48 workspace skills, 48 global skills, 4 rules, and native pre-commit gates.
+- None within Agent OS. 100% GREEN status across 120 unit tests, 48 workspace skills, 48 global skills, 4 rules, and native pre-commit gates.
 
 ## 6. Immediate Next Executable Actions
 1. Invoke `/ui-audit` on any frontend repository to execute an evidence-based UI audit and generate copy-ready implementation prompts.

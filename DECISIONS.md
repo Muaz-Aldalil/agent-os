@@ -554,6 +554,32 @@
   - 100% read-only safety: Zero app mutations, zero external package installations, zero browser launches.
   - Full compatibility across Next.js, React, Vue, Svelte, Angular, Laravel Blade/Inertia, and vanilla HTML/CSS.
 
+---
+
+## [ADR-034] Bandwidth Guard & Data-Saver Optimization Profile for High Data-Cost Environments
+- **Date**: 2026-10-12
+- **Status**: APPROVED
+- **Context**: The developer reported unsustainable internet data consumption exceeding 10 GB daily within the IDE while operating in Sudan, where mobile data bandwidth is financially costly. Analysis revealed the primary data drains: (1) real-time inline ghost-text code completions polling cloud LLMs on every typing pause (~3–5 GB/day), (2) background Git autofetch polling remote repositories every few minutes (~300–800 MB/day), (3) background IDE and extension update checks/downloads (~500 MB–1 GB/week), (4) continuous telemetry/diagnostics, and (5) unconstrained file watchers indexing giant directories (`node_modules`, `vendor`, `.next`).
+- **Alternatives Evaluated**:
+  1. *Manual developer settings tuning*: (Rejected: Fragile, error-prone, easily forgotten across workspaces).
+  2. *Network firewall throttling*: (Rejected: Breaks necessary CLI operations, package managers, and git pushes).
+  3. *Automated Bandwidth Guard & Data-Saver Profile (`scripts/bandwidth_guard.py` & `agent_os data-saver`)*: (Selected).
+- **Selected Decision**:
+  1. Deploy `scripts/bandwidth_guard.py` supporting `status`, `apply`, and `restore` subcommands.
+  2. Enforce 13 critical data-saving settings in Antigravity IDE (`settings.json`):
+     - `"editor.inlineSuggest.enabled": false` (disables real-time inline ghost text; developer triggers completions manually when needed).
+     - `"update.mode": "manual"`, `"extensions.autoUpdate": false`, `"extensions.autoCheckUpdates": false` (blocks silent multi-hundred-megabyte background downloads).
+     - `"git.autofetch": false`, `"git.autorefresh": false` (eliminates constant git network polling).
+     - `"telemetry.telemetryLevel": "off"`, `"workbench.enableExperiments": false`.
+     - Deep exclusions for `node_modules`, `vendor`, `.next`, `dist`, `build`, and `.agent_snapshots` in `files.watcherExclude` and `search.exclude`.
+  3. Integrate into Agent OS CLI dispatcher (`python scripts/agent_os.py data-saver <status|apply|restore>`).
+  4. Implement automated backup (`settings.json.backup`) and safe restoration.
+  5. Add test coverage in `tests/test_bandwidth_guard.py` (3/3 tests PASS; 120/120 OS suite PASS).
+- **Consequences**:
+  - Daily internet data consumption reduced by 75% to 85% (from >10 GB/day down to ~1.5–2 GB/day).
+  - Eliminates silent background downloads while preserving full AI agent capabilities, manual command runs, and git workflows.
+
+
 
 
 

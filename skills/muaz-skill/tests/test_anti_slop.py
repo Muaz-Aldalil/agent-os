@@ -228,6 +228,59 @@ class TestAntiSlopScript(unittest.TestCase):
         results = scan(self.tmp)
         self.assertIn("EQUAL_3_COL", results)
 
+    def test_wave3_cream_terracotta_reported(self):
+        self._write("theme.css", "body { background-color: #faf9f5; color: #d97757; }")
+        results = scan(self.tmp)
+        self.assertIn("WAVE3_CREAM_TERRACOTTA", results)
+
+    def test_mixed_font_italic_headline_reported(self):
+        self._write(
+            "hero.tsx",
+            "<h1>Build software that <em>actually</em> works</h1>",
+        )
+        results = scan(self.tmp)
+        self.assertIn("MIXED_FONT_ITALIC_HEADLINE", results)
+
+    def test_monospace_prose_tell_reported(self):
+        self._write(
+            "section.tsx",
+            '<span className="font-mono text-xs uppercase tracking-wider">Chapter One</span>',
+        )
+        results = scan(self.tmp)
+        self.assertIn("MONOSPACE_PROSE_TELL", results)
+
+    def test_nested_cards_reported(self):
+        self._write(
+            "dashboard.tsx",
+            '<div className="bg-card p-6"><div className="bg-card p-4">Inner</div></div>',
+        )
+        results = scan(self.tmp)
+        self.assertIn("NESTED_CARDS", results)
+
+    def test_gray_text_on_colored_bg_reported(self):
+        self._write(
+            "banner.tsx",
+            '<div className="bg-emerald-700 text-gray-400">Muted subtitle</div>',
+        )
+        results = scan(self.tmp)
+        self.assertIn("GRAY_TEXT_ON_COLORED_BG", results)
+
+    def test_bounce_elastic_easing_reported(self):
+        self._write(
+            "anim.css",
+            ".modal { transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }",
+        )
+        results = scan(self.tmp)
+        self.assertIn("BOUNCE_ELASTIC_EASING", results)
+
+    def test_icon_in_rounded_square_reported(self):
+        self._write(
+            "features.tsx",
+            '<div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center"><svg /></div>',
+        )
+        results = scan(self.tmp)
+        self.assertIn("ICON_IN_ROUNDED_SQUARE_ABOVE_HEADING", results)
+
 
 class TestFailOn(unittest.TestCase):
     """Exercises the --fail-on severity gate."""

@@ -8,7 +8,7 @@ description: >
   ui-ux-pro-max search engine (91 styles, 169 palettes, 72 font families, 169 product
   types, 198+ rules). Outputs a structured design blueprint followed by production-ready
   code, with full decision traceability.
-version: 5.4.0
+version: 5.5.0
 author: Muaz Aldalil
 integrates_with: nextlevelbuilder/ui-ux-pro-max-skill
 # Upstream: ui-ux-pro-max v2.10.0 — data/ and scripts/ synced from that release
@@ -52,7 +52,10 @@ REFERENCE / INSPIRED-BY / CLONE / COPY [website/design]
   → Load references/design-reference-workflow.md
   → Extract design DNA first, then run build pipeline
 
-TUNE / IMPROVE / FIX / REDESIGN / OPTIMIZE [existing UI]
+TUNE / IMPROVE / FIX / REDESIGN / OPTIMIZE / STEER [existing UI]
+  (Includes 18 Steering Sub-Modes: polish, critique, bolder, quieter, distill, harden,
+   onboard, animate, colorize, typeset, layout, delight, overdrive, clarify, adapt,
+   optimize, extract, document)
   → Load references/tune-mode.md
 
 AUDIT / REVIEW / CHECK [performance / a11y / security / i18n / tests]
@@ -189,15 +192,16 @@ Check **AGENTS.md** at project root. If exists → load silently, confirm in one
 
 | Field | Value |
 |---|---|
-| Version | 5.4.0 |
+| Version | 5.5.0 |
 | Status | published |
-| Last reviewed | 2026-09-24 |
-| Review due | 2027-09 |
+| Last reviewed | 2026-10-14 |
+| Review due | 2027-10 |
 
 ### Changelog
 
 | Version | Change | Date |
 |---|---|---|
+| 5.5.0 | Craft Floor, Art Direction & 3-Wave AI Slop Defense absorbed (zero external dependencies): 7 new deterministic checks in `scripts/anti_slop.py` (29→36 contract: `WAVE3_CREAM_TERRACOTTA`, `MIXED_FONT_ITALIC_HEADLINE`, `MONOSPACE_PROSE_TELL`, `NESTED_CARDS`, `GRAY_TEXT_ON_COLORED_BG`, `BOUNCE_ELASTIC_EASING`, `ICON_IN_ROUNDED_SQUARE_ABOVE_HEADING`); `rules.md` expanded with Rules 38–48 (Craft Floor Browser Surfaces `::selection`/`caret-color`/scrollbars/`tabular-nums`, Heading Spacing `mt > mb`, `<=2-line` Headline Arithmetic, Subject Inventory & Competitor Test, Visitor Modes `Operate`/`Persuade`/`Read`, One Live Interactive Thing, Bounded Verification Passes); `tune-mode.md` expanded with Refinement vs. Redesign and 18 Precision Steering Sub-Modes (`polish`, `critique`, `bolder`, `quieter`, `distill`, `harden`, `onboard`, `animate`, `colorize`, `typeset`, `layout`, `delight`, `overdrive`, `clarify`, `adapt`, `optimize`, `extract`, `document`). | 2026-10-14 |
 | 5.3.0 | UXpeak rule harvest (sources: @uxpeak YouTube, 21 transcripts): new `references/uxpeak-ledger.md` (149 techniques U1–U149, provenance per rule); 26 new `ux-guidelines.csv` rows (No. 101–126) — new Psychology category (smart defaults, goal gradient, reciprocity, anchoring, IKEA, endowment) plus Navigation/Mobile/Conversion/Accessibility/Onboarding/Pricing rules, all routed through `_generate_intelligent_overrides`; routing test added (127 total); version sweep incl. stale frontmatter fix (M-1). | 2026-09 |
 | 5.4.0 | Absorption capability integrated: new decision-tree entry (ABSORB/ABSORB THIS trigger) → `references/absorption.md`; 3 new references (`absorption.md` overview, `absorption-phases.md` 8-phase checklists, `absorption-tracking.md` template); hard rule 17 (absorption principle: extract, build own, eliminate dependency); `reference-graph.md` updated with absorption node + 3 registry rows; version bump 5.3.0→5.4.0. | 2026-09-21 |
 | 5.2.0 | Higgsfield-grade motion layer: new searchable `motion` domain (`data/motion.csv`, 5 tiered rows — CSS-first default, GSAP ScrollTrigger+Lenis cinematic tier, SplitText, film grain) with provenance per row; wired into `CSV_CONFIG` (search.py `-d motion`), consumed by the design-system generator (MOTION DIRECTION section, style-matched); quality-gate Dimension 4 now fed per-style motion inputs. Version sweep (M-1). | 2026-09 |

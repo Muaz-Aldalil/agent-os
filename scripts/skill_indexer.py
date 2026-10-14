@@ -82,6 +82,19 @@ CATEGORIES = {
         "ponytail-help",
         "ponytail-review",
         "caveman"
+    ],
+    "Beginner Situation Combos (All-in-One)": [
+        "start-project",
+        "smart-feature",
+        "feature-fe",
+        "feature-febe",
+        "feature-full",
+        "feature-wp",
+        "fix-ui",
+        "fix-backend",
+        "check-all",
+        "doc-project",
+        "save-data"
     ]
 }
 

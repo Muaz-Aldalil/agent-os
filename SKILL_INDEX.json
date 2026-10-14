@@ -43,6 +43,13 @@
       "search_corpus": "caveman ultra-compressed communication mode that cuts output tokens while keeping technical accuracy. levels: lite, full, ultra and the wenyan variants. use for /caveman, \"caveman mode\", \"talk like caveman\", \"be brief\" or \"less tokens\". simplicity & anti-bloat (ponytail)"
     },
     {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "All-in-one Pre-Push & PR Quality, Security, UI, and Anti-Bloat Review. Chains /clean-code-guard, /test-guard, /rtl-logical-guard, /next-server-action-guard, /pest-security-guard, /ponytail-review, and /debate-review into a single command.",
+      "file": "skills/check-all/SKILL.md",
+      "name": "check-all",
+      "search_corpus": "check-all all-in-one pre-push & pr quality, security, ui, and anti-bloat review. chains /clean-code-guard, /test-guard, /rtl-logical-guard, /next-server-action-guard, /pest-security-guard, /ponytail-review, and /debate-review into a single command. beginner situation combos (all-in-one)"
+    },
+    {
       "category": "Quality & Security Guards",
       "description": "Review generated or changed production code before it ships, using Clean Code, SOLID, DRY, KISS, YAGNI, and LLM-specific failure-mode checks in any programming language. Best used reactively after an agent writes, edits, refactors, or fixes code, before presenting, committing, or merging the result. Use when the user asks \"review this PR\", \"is this safe to merge?\", \"make this cleaner\", \"audit this code\", \"refactor this\", \"fix this bug\", or after a coding agent produced implementation code. Can also guide writing when explicitly invoked before a risky edit. Invoke it on your own initiative the moment you finish writing, editing, or refactoring non-trivial production code, before presenting or committing — don't wait to be asked. DO NOT USE for factual/conceptual questions, CI/tooling config, git workflow, running/debugging tests, pure architecture discussion, prose writing, data analysis, or test-code review (use test-guard).",
       "file": "skills/clean-code-guard/SKILL.md",
@@ -85,6 +92,13 @@
       "search_corpus": "devops-deploy use when setting up ci/cd pipelines, docker containers, deployment configurations, environment management, or infrastructure automation. triggers on: deploy, docker, ci, github actions, vercel, netlify, aws, nginx, hosting, pipeline. backend & data systems"
     },
     {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "All-in-one Project Documentation Generator & Updater for beginners and teams. Chains /project-documentation and /docs-guard to scan any codebase and generate or update clear, beginner-friendly README.md, docs/ARCHITECTURE.md, and docs/API.md files.",
+      "file": "skills/doc-project/SKILL.md",
+      "name": "doc-project",
+      "search_corpus": "doc-project all-in-one project documentation generator & updater for beginners and teams. chains /project-documentation and /docs-guard to scan any codebase and generate or update clear, beginner-friendly readme.md, docs/architecture.md, and docs/api.md files. beginner situation combos (all-in-one)"
+    },
+    {
       "category": "Quality & Security Guards",
       "description": "Review generated or changed documentation before it ships — READMEs, API references, docstrings, PHPDoc/JSDoc, changelogs, tutorials, and doc sites. Best used reactively after an agent writes or edits docs, after code changes documented behavior, or before publishing docs. Use when the user says 'review the docs', 'is this documentation accurate', 'update the docs', 'write a README', 'document this API', 'add a docstring', or 'add a changelog entry'. Core job: verify every referenced function, flag, endpoint, config key, and code sample against the source; catch docs-vs-code drift; strip filler and unverifiable claims. DO NOT USE for production code review (use clean-code-guard), test review (use test-guard), marketing copy or blog posts, prose style editing of non-technical writing, or documentation site theming.",
       "file": "skills/docs-guard/SKILL.md",
@@ -99,11 +113,53 @@
       "search_corpus": "engineering-workflow autonomous senior engineering workflow protocol for end-to-end software development. activates on any engineering task: bug fixes, refactoring, feature development, or architectural changes. enforces brownfield reality checks, proportional task sizing, unidirectional gate locks, embedded adversarial self-auditing, automatic defect resolution, guard-skill orchestration, the danger zone playbook (payments, auth, database expand-and-contract), and the clean session continuity protocol (automated progress.md and decisions.md generation). core architecture & workflow"
     },
     {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "Stack-agnostic Frontend & CMS UI feature builder. Works with React, Next.js, Vue, Nuxt, Blade/Livewire, Angular, Svelte, Astro, HTML/Tailwind, or WordPress. Runs /grill-me + /muaz-skill Smart Intake, enforces CMS Sticky Navbar, Sticky Sidebar, responsive Data Tables, Forms, RTL/LTR logical properties, and auto-verifies via /ui-review-loop.",
+      "file": "skills/feature-fe/SKILL.md",
+      "name": "feature-fe",
+      "search_corpus": "feature-fe stack-agnostic frontend & cms ui feature builder. works with react, next.js, vue, nuxt, blade/livewire, angular, svelte, astro, html/tailwind, or wordpress. runs /grill-me + /muaz-skill smart intake, enforces cms sticky navbar, sticky sidebar, responsive data tables, forms, rtl/ltr logical properties, and auto-verifies via /ui-review-loop. beginner situation combos (all-in-one)"
+    },
+    {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "Stack-agnostic Frontend + Backend feature builder (CMS, dashboards, APIs, forms, tables, auth). Chains /feature-fe (Frontend & CMS Layout Armor) with /backend-api, /backend-http, /backend-identity, /backend-ops, and stack security guards (/laravel-mastery + /pest-security-guard or /next-server-action-guard). Always starts with /grill-me + /muaz-skill Smart Intake.",
+      "file": "skills/feature-febe/SKILL.md",
+      "name": "feature-febe",
+      "search_corpus": "feature-febe stack-agnostic frontend + backend feature builder (cms, dashboards, apis, forms, tables, auth). chains /feature-fe (frontend & cms layout armor) with /backend-api, /backend-http, /backend-identity, /backend-ops, and stack security guards (/laravel-mastery + /pest-security-guard or /next-server-action-guard). always starts with /grill-me + /muaz-skill smart intake. beginner situation combos (all-in-one)"
+    },
+    {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "Complete Full-Stack Feature Builder: Frontend + Backend + Database for ANY tech stack. Chains /feature-febe (CMS UI + Backend API/RBAC/Validation/Uploads) with /database and /backend-data (migrations, foreign keys, compound indexes, soft deletes, N+1 prevention, and transactions). Always starts with /grill-me + /muaz-skill Smart Intake.",
+      "file": "skills/feature-full/SKILL.md",
+      "name": "feature-full",
+      "search_corpus": "feature-full complete full-stack feature builder: frontend + backend + database for any tech stack. chains /feature-febe (cms ui + backend api/rbac/validation/uploads) with /database and /backend-data (migrations, foreign keys, compound indexes, soft deletes, n+1 prevention, and transactions). always starts with /grill-me + /muaz-skill smart intake. beginner situation combos (all-in-one)"
+    },
+    {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "All-in-one WordPress & WooCommerce feature, theme, plugin, and admin UI builder. Runs /grill-me + /muaz-skill Smart Intake, chains /wp-guard, /woo-guard, /rtl-logical-guard, /database, and /clean-code-guard to build secure, HPOS-compatible, RTL-ready WordPress features.",
+      "file": "skills/feature-wp/SKILL.md",
+      "name": "feature-wp",
+      "search_corpus": "feature-wp all-in-one wordpress & woocommerce feature, theme, plugin, and admin ui builder. runs /grill-me + /muaz-skill smart intake, chains /wp-guard, /woo-guard, /rtl-logical-guard, /database, and /clean-code-guard to build secure, hpos-compatible, rtl-ready wordpress features. beginner situation combos (all-in-one)"
+    },
+    {
       "category": "Core Architecture & Workflow",
       "description": "Helps users discover and install agent skills when they ask questions like \"how do I do X\", \"find a skill for X\", \"is there a skill that can...\", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",
       "file": "skills/find-skills/SKILL.md",
       "name": "find-skills",
       "search_corpus": "find-skills helps users discover and install agent skills when they ask questions like \"how do i do x\", \"find a skill for x\", \"is there a skill that can...\", or express interest in extending capabilities. this skill should be used when the user is looking for functionality that might exist as an installable skill. core architecture & workflow"
+    },
+    {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "All-in-one Backend, API, Auth/RBAC, Form Validation, File Upload, and Database Bug Fixer for any stack (Laravel/PHP, Node.js, Next.js Server Actions, Python, Go, SQL/NoSQL). Chains /backend-api, /backend-data, /database, /backend-identity, /test-guard, and stack guards.",
+      "file": "skills/fix-backend/SKILL.md",
+      "name": "fix-backend",
+      "search_corpus": "fix-backend all-in-one backend, api, auth/rbac, form validation, file upload, and database bug fixer for any stack (laravel/php, node.js, next.js server actions, python, go, sql/nosql). chains /backend-api, /backend-data, /database, /backend-identity, /test-guard, and stack guards. beginner situation combos (all-in-one)"
+    },
+    {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "All-in-one UI Violation Scanner & Auto-Fixer for any frontend or CMS stack. Scans the project with /ui-audit, generates structured fix prompts automatically, fixes broken Sticky Navbars, Sticky Sidebars, overflowing Data Tables, messy Forms, RTL/LTR bugs (/rtl-logical-guard), and verifies everything via /ui-review-loop.",
+      "file": "skills/fix-ui/SKILL.md",
+      "name": "fix-ui",
+      "search_corpus": "fix-ui all-in-one ui violation scanner & auto-fixer for any frontend or cms stack. scans the project with /ui-audit, generates structured fix prompts automatically, fixes broken sticky navbars, sticky sidebars, overflowing data tables, messy forms, rtl/ltr bugs (/rtl-logical-guard), and verifies everything via /ui-review-loop. beginner situation combos (all-in-one)"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
@@ -211,6 +267,20 @@
       "search_corpus": "rtl-logical-guard quality guard enforcing css logical properties and bidirectional (ltr/rtl) layout integrity for bilingual arabic/english web applications. activates whenever reviewing, editing, or creating react/next.js components, tailwind css classes, or html templates to eliminate broken layouts. quality & security guards"
     },
     {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "All-in-one Low-Bandwidth & Token Saver command for mobile data, hotspot, and metered connections. Chains /data-saver (bandwidth_guard.py) with /caveman lite and configures offline package manager caching (npm, pnpm, yarn, composer, pip) to cut internet data usage by 75-85%.",
+      "file": "skills/save-data/SKILL.md",
+      "name": "save-data",
+      "search_corpus": "save-data all-in-one low-bandwidth & token saver command for mobile data, hotspot, and metered connections. chains /data-saver (bandwidth_guard.py) with /caveman lite and configures offline package manager caching (npm, pnpm, yarn, composer, pip) to cut internet data usage by 75-85%. beginner situation combos (all-in-one)"
+    },
+    {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "Smart feature router and builder for any tech stack. Reads a plain-language feature description (in English or Arabic) and existing project files, automatically selects the best Frontend, CMS, Backend, Database, and Security skills, runs the full /grill-me + /muaz-skill Smart Intake interview, builds the feature, and auto-verifies UI, security, and tests.",
+      "file": "skills/smart-feature/SKILL.md",
+      "name": "smart-feature",
+      "search_corpus": "smart-feature smart feature router and builder for any tech stack. reads a plain-language feature description (in english or arabic) and existing project files, automatically selects the best frontend, cms, backend, database, and security skills, runs the full /grill-me + /muaz-skill smart intake interview, builds the feature, and auto-verifies ui, security, and tests. beginner situation combos (all-in-one)"
+    },
+    {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Official Specification-Driven Development (SDD) workflow using GitHub Spec Kit (specify CLI). Activates on any request to plan, specify, break down, implement, or converge features using Spec Kit. Covers all SDD phases: constitution, specify, clarify, plan, checklist, tasks, implement, analyze, converge, and taskstoissues.",
       "file": "skills/spec-kit/SKILL.md",
@@ -288,6 +358,13 @@
       "search_corpus": "speckit-taskstoissues convert existing tasks into actionable, dependency-ordered github issues for the feature based on available design artifacts. specification-driven development (spec-kit)"
     },
     {
+      "category": "Beginner Situation Combos (All-in-One)",
+      "description": "All-in-one master command to start a brand new project from zero in ANY tech stack. Runs the full /grill-me + /muaz-skill Smart Intake interview (Q1-Q28 in Frontier Rounds), authors the 6 Pre-Coding architecture documents (/web-precode), generates Spec-Kit tasks (/spec-kit), and builds the project with CMS Frontend, Backend, Database, and Security guards.",
+      "file": "skills/start-project/SKILL.md",
+      "name": "start-project",
+      "search_corpus": "start-project all-in-one master command to start a brand new project from zero in any tech stack. runs the full /grill-me + /muaz-skill smart intake interview (q1-q28 in frontier rounds), authors the 6 pre-coding architecture documents (/web-precode), generates spec-kit tasks (/spec-kit), and builds the project with cms frontend, backend, database, and security guards. beginner situation combos (all-in-one)"
+    },
+    {
       "category": "Quality & Security Guards",
       "description": "Review generated or changed test code against universal testing rules before it ships. Best used reactively after an agent writes, edits, generates, or refactors tests, before presenting, committing, or merging them. Use for pytest (test_*.py, *_test.py), PHPUnit/Pest (*Test.php), Jest/Vitest (*.test.ts, *.spec.js), Go (*_test.go), files under tests/, __tests__/, or spec/, and review requests like 'write tests for X', 'add tests', 'test this', 'review these tests', or PR diffs containing tests. Can also guide test writing when explicitly invoked before the work. This skill is the quality gate that prevents AI-generated test bloat. DO NOT USE for production or implementation code review (use clean-code-guard), CI or test-runner configuration, running or debugging tests, or general architecture discussion.",
       "file": "skills/test-guard/SKILL.md",
@@ -344,5 +421,5 @@
       "search_corpus": "wp-guard review generated or changed wordpress code — plugins, themes, and blocks — before it ships. best used reactively after an agent writes, edits, or reviews code touching wordpress apis: add_action/add_filter, shortcodes, meta boxes, ajax handlers, rest routes, wp_query or $wpdb, widgets, or wp-cli commands. use on 'review this plugin', 'is this safe to ship', 'make this translatable', 'speed up this query', or after tasks like 'write a plugin' or 'add an endpoint/shortcode/meta box'. enforces escaping and sanitization, nonces plus capability checks, prepared database queries, core-api-first development, translation-ready strings, and query/caching discipline. do not use for woocommerce-specific order, product, or checkout logic (use woo-guard), non-wordpress php, generic code quality review (use clean-code-guard), test code review (use test-guard), server or hosting configuration, or conceptual wordpress questions. quality & security guards"
     }
   ],
-  "total_skills": 49
+  "total_skills": 60
 }

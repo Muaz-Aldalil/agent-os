@@ -1,16 +1,16 @@
 # Engineering Progress & Working State
 
 ## 1. Executive Status
-- **Current Milestone**: Release v1.10.0: Antigravity CLI `/ui-audit` Command & Implementation Prompt Engine
+- **Current Milestone**: Release v1.13.0: Craft Floor, Art Direction, 18 Steering Sub-Modes & 3-Wave AI Slop Defense Absorption
 - **Status**: READY_FOR_ACCEPTANCE (100% GREEN)
-- **Last Updated**: 2026-10-12T11:15:00+02:00
+- **Last Updated**: 2026-10-14T10:12:00+02:00
 - **Governing Architecture**:
   - [engineering-constitution.md](file:///D:/Skills/.agents/rules/engineering-constitution.md) (Sole Constitutional Contract)
   - [engineering-agent.md](file:///D:/Skills/.agents/engineering-agent.md) & [rules/engineering-agent.md](file:///D:/Skills/.agents/rules/engineering-agent.md) (Harmonized Profile)
   - [rules/mcp-arsenal.md](file:///D:/Skills/.agents/rules/mcp-arsenal.md) (8-MCP Lifecycle Matrix & Fallbacks)
   - [rules/execution-transparency.md](file:///D:/Skills/.agents/rules/execution-transparency.md) (Status & Reconnection Transparency)
   - [engineering-workflow/SKILL.md](file:///D:/Skills/.agents/skills/engineering-workflow/SKILL.md) (Stages 1-9, Danger Zones 1-4)
-  - [DECISIONS.md](file:///D:/Skills/.agents/DECISIONS.md) (ADR-001 through ADR-032)
+  - [DECISIONS.md](file:///D:/Skills/.agents/DECISIONS.md) (ADR-001 through ADR-035)
 
 ## 2. Working Tree & Scope State
 - **Workspace Root**: `D:\Skills\.agents` (Version Control: Git tracking on `master`)
@@ -276,24 +276,38 @@
     - Ratified **ADR-034** in `DECISIONS.md`.
     - Synchronized dual-config parity via `scripts/sync_config.py --apply`.
     - `python scripts/audit_agent_os.py` verified: ALL SYSTEMS OPERATIONAL (GREEN).
+- [x] **Subtask 23: Craft Floor, Art Direction, 18 Steering Sub-Modes & 3-Wave AI Slop Defense Absorption (Release v1.13.0)**:
+  - **Deterministic Anti-Slop Gate (`skills/muaz-skill/scripts/anti_slop.py`)**:
+    - Expanded contract from 29 to 36 checks with `WAVE3_CREAM_TERRACOTTA`, `MIXED_FONT_ITALIC_HEADLINE`, `MONOSPACE_PROSE_TELL`, `NESTED_CARDS`, `GRAY_TEXT_ON_COLORED_BG`, `BOUNCE_ELASTIC_EASING`, and `ICON_IN_ROUNDED_SQUARE_ABOVE_HEADING`.
+    - Verified via `skills/muaz-skill/tests/test_anti_slop.py` and `test_data_integrity.py` (135/135 tests PASS).
+  - **100X UI Audit Engine (`scripts/ui_audit_engine.py`)**:
+    - Added AST static detectors and 10-section prompt generators for Nested Cards (`HIGH`), Untinted Gray Text on Colored Surfaces (`HIGH`), Wave 3 Terracotta AI Slop (`MEDIUM`), Mixed-Font Italic Word in Headline (`MEDIUM`), Heading Spacing Inversion (`mt < mb`, `MEDIUM`), and Bounce/Elastic Overshoot Easing (`MEDIUM`).
+    - Verified via `tests/test_ui_audit_engine.py` (8/8 tests PASS; 121/121 OS tests PASS).
+  - **Skill & Pre-Code Enforcement (`muaz-skill` v5.5.0, `feature-fe`, `fix-ui`, `ui-audit`, `web-precode`)**:
+    - Enshrined Craft Floor Browser Surface Theming (`::selection`, `caret-color`, custom scrollbars, `tabular-nums`, `:focus-visible`, `65–75ch` measure, `text-wrap: balance`, `mt > mb` heading spacing).
+    - Enshrined Subject Inventory (8–12 facts), Competitor Test, `<=2-line` (~32-char) Headline Arithmetic, Argument-First Copy Deck, One Live Interactive Thing, Visitor Modes (`Operate`/`Persuade`/`Read`), `PRODUCT.md` vs `DESIGN.md` separation, Bounded Verification Passes, and the 18 Precision Steering Sub-Modes.
+  - **Dual-Config Sync & ADR Ratification**:
+    - Ratified **ADR-035** in `DECISIONS.md`.
+    - Re-indexed and synchronized all 60 workspace skills and 60 global skills (`python scripts/agent_os.py sync --apply`).
+- [x] **Subtask 24: Empirical Cross-Project Universal Rules Corpus & 24KB Rule Cap Enforcement (Release v1.14.0)**:
+  - **74-Conversation Empirical Audit**:
+    - Extracted and analyzed all **74 previous sessions (9 AGY + 65 IDE conversations; 1,479 user turns)** across KNZiN, Hadonco, Student Registration LMS, Pawlished, and `.agents` OS.
+  - **24KB Rule Truncation Remediation**:
+    - Identified that `rules/engineering-constitution.md` (`29,717 bytes`) exceeded Antigravity's `24,000-byte` per-file rule cap, silently truncating Sections 9–12. Tightened prose to `~15.5 KB` while preserving 100% of sections, diagrams, and ADR invariants.
+  - **New Universal Rule (`rules/universal-project-rules.md`) & Global `GEMINI.md`**:
+    - Authored `rules/universal-project-rules.md` (`~12.5 KB`) and `GEMINI.md` (`~5.7 KB`) codifying: Team Partnership & Copy-Paste DevOps Guidance, DigAge Solutions attribution, Batch Feedback Hold Mode, One-Pass Narrow Correction & SpecKit Hard-Stop Gate Discipline, Edited-File Traceability, Mathematical Count Reconciliation, 100% Migration & Visual Preservation, Public vs. Admin Shell Separation, `100dvh` Hero (with Navbar offset), Sticky Navbar & Full-Height Sticky Admin Sidebar, Mobile/Tablet Table Cell Truncation (`2–4 words + ...`), `3-Card + Show More/Collapse` Grids, Logical Input Icon Padding (`ps-10`/`pe-10`), Minimalist Badges, Single Floating CMS Save + Toast/Modal Confirmation (Zero `window.alert`), Strict AR/EN Language & Logo Isolation, Multi-Server Port Safety, User-Owned Browser Testing Checklist, Sudan Low-Bandwidth Awareness, and `commit` vs. `commit and push` Deploy Quota Protection.
+  - **Automated Cap & Parity Enforcement (`scripts/audit_agent_os.py`, `scripts/adr_enforcer.py`, `scripts/sync_config.py`)**:
+    - Added 24,000-byte per-file and 80,000-byte aggregate rule budget checks to `audit_agent_os.py` and `adr_enforcer.py` (`ADR-036`).
+    - Extended `sync_config.py` to synchronize `GEMINI.md` to `C:\Users\HP\.gemini\GEMINI.md` alongside `C:\Users\HP\.gemini\config\rules\*.md`.
 
 ## 4. Current In-Progress Work
-- **Release `v1.12.0` Certified**: Bandwidth Guard & Data-Saver Optimization Profile (ADR-034) operational.
-- **Architectural Ratification**: All 34 ADRs recorded in `DECISIONS.md`.
-- **System Readiness**: 120/120 unit tests PASS (100% GREEN). Global and workspace configs in 100% verified parity (48/48 skills).
-
+- **Release `v1.14.0` Certified**: Empirical Cross-Project Universal Rules Corpus & 24KB Rule Cap Enforcement (ADR-036) operational.
+- **Architectural Ratification**: All 36 ADRs recorded in `DECISIONS.md` (13/13 executable ADRs GREEN).
+- **System Readiness**: 121/121 Agent OS unit tests PASS + 135/135 `muaz-skill` unit tests PASS (256/256 total tests GREEN). Global and workspace configs (`rules/*.md`, `GEMINI.md`, and 60/60 skills) in 100% verified parity.
 
 ## 5. Known Blockers, Failing Tests & Edge Cases
-- None within Agent OS. 100% GREEN status across 120 unit tests, 48 workspace skills, 48 global skills, 4 rules, and native pre-commit gates.
+- None within Agent OS. 100% GREEN status across 256 total unit tests, 60 workspace skills, 60 global skills, 5 rules (all strictly `< 24 KB`), `GEMINI.md`, and native pre-commit gates.
 
 ## 6. Immediate Next Executable Actions
-1. Invoke `/ui-audit` on any frontend repository to execute an evidence-based UI audit and generate copy-ready implementation prompts.
-2. `python scripts/agent_os.py route "<task>"`: Resolve task sizing, skills, tools, and guards deterministically before implementation.
-3. `python scripts/agent_os.py sentinel`: Run proactive health audit across any codebase.
-
-
-
-
-
-
-
+1. All 5 global rules (`engineering-constitution.md`, `universal-project-rules.md`, `engineering-agent.md`, `mcp-arsenal.md`, `execution-transparency.md`) and `~/.gemini/GEMINI.md` are automatically active across all projects.
+2. Run `python scripts/agent_os.py audit` or `python scripts/agent_os.py adr-check` at any time to verify rule cap compliance and global parity.

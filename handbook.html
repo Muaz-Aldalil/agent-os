@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent OS Command Studio | Interactive Developer Handbook</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Sora', 'Cairo', 'sans-serif'],
+            sans: ['DM Sans', 'Cairo', 'sans-serif'],
+            arabic: ['Cairo', 'DM Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            canvas: {
+              light: '#FAFAF7',
+              dark: '#0C0E12'
+            },
+            surface: {
+              light: '#F2F0E8',
+              dark: '#13171F'
+            },
+            panel: {
+              light: '#FFFFFF',
+              dark: '#181D27'
+            },
+            ink: {
+              light: '#18181B',
+              dark: '#F3F4F6'
+            },
+            muted: {
+              light: '#52525B',
+              dark: '#9CA3AF'
+            },
+            line: {
+              light: '#E4E2DD',
+              dark: '#242B38'
+            },
+            signal: {
+              DEFAULT: '#10B981',
+              hover: '#059669',
+              soft: 'rgba(16, 185, 129, 0.12)'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    body {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .display-heading {
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+    }
+    .sub-heading {
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .micro-transition {
+      transition-property: transform, opacity, background-color, border-color, color;
+      transition-duration: 200ms;
+      transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .micro-transition {
+        transition-duration: 0ms;
+      }
+    }
+  </style>
+</head>
+<body class="bg-canvas-light dark:bg-canvas-dark text-ink-light dark:text-ink-dark font-sans antialiased selection:bg-signal selection:text-canvas-dark">
+
+  <!-- Mobile Off-Canvas Drawer Backdrop -->
+  <div id="drawer-backdrop" onclick="toggleDrawer()" class="fixed inset-0 z-40 bg-canvas-dark/80 hidden lg:hidden" aria-hidden="true"></div>
+
+  <!-- Master CMS Shell: Sticky Sidebar + flex-1 min-w-0 Content -->
+  <div class="min-h-dvh flex flex-col lg:flex-row">
+
+    <!-- Sticky Sidebar Navigation (264px on Desktop, Off-Canvas Drawer on <1024px) -->
+    <aside id="app-sidebar" aria-label="Primary Workspace Navigation" class="fixed inset-y-0 start-0 z-50 w-64 shrink-0 bg-surface-light dark:bg-surface-dark border-e border-line-light dark:border-line-dark transform -translate-x-full rtl:translate-x-full lg:translate-x-0 lg:rtl:translate-x-0 lg:sticky lg:top-0 lg:h-dvh lg:overflow-y-auto micro-transition flex flex-col justify-between">
+      <div>
+        <!-- Brand Header -->
+        <div class="h-16 px-5 border-b border-line-light dark:border-line-dark flex items-center justify-between gap-3">
+          <a href="#studio" class="flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal rounded-lg">
+            <span class="w-9 h-9 rounded-lg bg-signal text-canvas-dark font-mono font-medium text-sm flex items-center justify-center">.a</span>
+            <div>
+              <span class="block font-display text-sm font-medium tracking-tight">Agent OS</span>
+              <span class="block text-xs text-muted-light dark:text-muted-dark font-mono">v4.2 • 60 Skills</span>
+            </div>
+          </a>
+          <button type="button" onclick="toggleDrawer()" aria-label="Close sidebar navigation" class="lg:hidden min-h-12 min-w-12 inline-flex items-center justify-center rounded-lg border border-line-light dark:border-line-dark text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="p-4 space-y-6" aria-label="Section Directory">
+          <div>
+            <div class="px-3 mb-2 text-xs font-mono text-muted-light dark:text-muted-dark">Interactive Modules</div>
+            <ul class="space-y-1 text-sm">
+              <li>
+                <a href="#studio" onclick="closeDrawerOnMobile()" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-signal/10 text-signal font-medium border border-signal/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+                  <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span data-i18n="nav_studio">Prompt Studio</span>
+                </a>
+              </li>
+              <li>
+                <a href="#comparison" onclick="closeDrawerOnMobile()" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark hover:bg-panel-light dark:hover:bg-panel-dark micro-transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+                  <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                  <span data-i18n="nav_compare">Without vs. With .agents</span>
+                </a>
+              </li>
+              <li>
+                <a href="#workflow" onclick="closeDrawerOnMobile()" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark hover:bg-panel-light dark:hover:bg-panel-dark micro-transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+                  <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  <span data-i18n="nav_workflow">1-2-3 Traffic Light Flow</span>
+                </a>
+              </li>
+              <li>
+                <a href="#catalog" onclick="closeDrawerOnMobile()" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark hover:bg-panel-light dark:hover:bg-panel-dark micro-transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+                  <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                  <span data-i18n="nav_catalog">11 Situation Explorer</span>
+                </a>
+              </li>
+              <li>
+                <a href="#armor" onclick="closeDrawerOnMobile()" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark hover:bg-panel-light dark:hover:bg-panel-dark micro-transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+                  <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                  <span data-i18n="nav_armor">CMS &amp; Security Armor</span>
+                </a>
+              </li>
+              <li>
+                <a href="#setup" onclick="closeDrawerOnMobile()" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark hover:bg-panel-light dark:hover:bg-panel-dark micro-transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+                  <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  <span data-i18n="nav_setup">60-Second Setup</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Quick Launchers in Sidebar -->
+          <div>
+            <div class="px-3 mb-2 text-xs font-mono text-muted-light dark:text-muted-dark">Instant Situation Load</div>
+            <div class="space-y-1 font-mono text-xs" id="sidebar-quick-list"></div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Sidebar Footer Telemetry -->
+      <div class="p-4 border-t border-line-light dark:border-line-dark text-xs space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-muted-light dark:text-muted-dark">Pre-Code Audit</span>
+          <span class="font-mono text-signal">100% PASS</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-muted-light dark:text-muted-dark">Spec-Kit Tasks</span>
+          <span class="font-mono text-ink-light dark:text-ink-dark">15/15 Done</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-muted-light dark:text-muted-dark">Data-Saver Mode</span>
+          <span class="font-mono text-signal">-80% Net</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Column Wrapper (flex-1 min-w-0 guarantees zero horizontal overflow) -->
+    <div class="flex-1 min-w-0 flex flex-col">
+
+      <!-- Sticky Top Bar -->
+      <header class="sticky top-0 z-30 bg-surface-light dark:bg-surface-dark border-b border-line-light dark:border-line-dark px-4 sm:px-6 lg:px-10 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+          <!-- Left: Mobile Drawer Button + Breadcrumb -->
+          <div class="flex items-center gap-3 min-w-0">
+            <button type="button" onclick="toggleDrawer()" aria-label="Open sidebar navigation" class="lg:hidden min-h-12 min-w-12 inline-flex items-center justify-center rounded-lg border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark text-ink-light dark:text-ink-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="truncate">
+              <span class="font-mono text-xs text-signal block">AGENT-OS // INTERACTIVE COMMAND STUDIO</span>
+              <span class="text-sm font-medium truncate block" data-i18n="header_subtitle">Build with a Senior Tech Team instead of a Fast Intern</span>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Controls (48px touch targets) -->
+          <div class="flex items-center gap-2 shrink-0">
+            <button type="button" onclick="toggleLanguage()" id="lang-toggle-btn" aria-label="Toggle Arabic RTL and English LTR" class="min-h-12 px-4 rounded-lg border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark hover:border-signal text-xs font-mono font-medium micro-transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+              عربي (RTL) ⇄ EN
+            </button>
+            <button type="button" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Toggle light and dark color scheme" class="min-h-12 px-4 rounded-lg border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark hover:border-signal text-xs font-mono font-medium micro-transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+              Light / Dark
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content Container -->
+      <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+
+        <!-- SECTION 1: HERO & INTERACTIVE PROMPT STUDIO (Asymmetric 7/12 + 5/12 Split, py-12 lg:py-24) -->
+        <section id="studio" class="py-12 lg:py-24 border-b border-line-light dark:border-line-dark scroll-mt-20">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+            <!-- Left 7 Cols: Editorial Intro + Interactive Configurator -->
+            <div class="lg:col-span-7 space-y-8 min-w-0">
+              <div class="space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark font-mono text-xs text-signal">
+                  <span>SPEC-DRIVEN</span>
+                  <span>•</span>
+                  <span>STACK-AGNOSTIC</span>
+                  <span>•</span>
+                  <span>CMS-ARMORED</span>
+                </div>
+                <h1 class="font-display text-3xl sm:text-5xl display-heading" data-i18n="hero_title">
+                  Turn your AI from a guessing intern into a Senior Engineering Team.
+                </h1>
+                <p class="text-base sm:text-lg text-muted-light dark:text-muted-dark max-w-2xl" data-i18n="hero_desc">
+                  You do not need to memorize 60 skills or terminal flags. Pick your situation, choose any tech stack, type your idea in Arabic or English, and copy the ready-to-run prompt into your AI Chat.
+                </p>
+              </div>
+
+              <!-- Interactive Step-by-Step Builder -->
+              <div class="rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark p-5 sm:p-7 space-y-6">
+                <!-- Step 1: Situation Selector -->
+                <div class="space-y-2.5">
+                  <label for="studio-situation" class="block text-xs font-mono text-muted-light dark:text-muted-dark" data-i18n="step1_label">
+                    STEP 1 // SELECT YOUR SITUATION (اختر حالتك)
+                  </label>
+                  <select id="studio-situation" onchange="updateStudio()" aria-label="Select your development situation" class="w-full min-h-12 px-4 py-2.5 rounded-lg bg-surface-light dark:bg-surface-dark border border-line-light dark:border-line-dark text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal"></select>
+                </div>
+
+                <!-- Step 2: Tech Stack Selector (100% User Choice) -->
+                <div class="space-y-2.5">
+                  <div class="text-xs font-mono text-muted-light dark:text-muted-dark" data-i18n="step2_label">
+                    STEP 2 // CHOOSE PREFERRED TECH STACK (اختر التقنية المفضلة أو الاكتشاف التلقائي)
+                  </div>
+                  <div class="flex flex-wrap gap-2" id="stack-pills" role="group" aria-label="Tech stack presets">
+                    <button type="button" onclick="selectStack('Auto-detect from project')" class="stack-pill min-h-12 px-3.5 py-2 rounded-lg text-xs font-mono border border-signal bg-signal/10 text-signal">Auto-detect</button>
+                    <button type="button" onclick="selectStack('Next.js + React + Tailwind + PostgreSQL')" class="stack-pill min-h-12 px-3.5 py-2 rounded-lg text-xs font-mono border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark">Next.js + Postgres</button>
+                    <button type="button" onclick="selectStack('Laravel 11 + Blade/Livewire + MySQL')" class="stack-pill min-h-12 px-3.5 py-2 rounded-lg text-xs font-mono border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark">Laravel + Blade + MySQL</button>
+                    <button type="button" onclick="selectStack('Vue 3 / Nuxt + Laravel API + MySQL')" class="stack-pill min-h-12 px-3.5 py-2 rounded-lg text-xs font-mono border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark">Vue + Laravel API</button>
+                    <button type="button" onclick="selectStack('HTML + Tailwind CSS + Vanilla JS')" class="stack-pill min-h-12 px-3.5 py-2 rounded-lg text-xs font-mono border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark">HTML + Tailwind</button>
+                    <button type="button" onclick="selectStack('WordPress + WooCommerce (HPOS)')" class="stack-pill min-h-12 px-3.5 py-2 rounded-lg text-xs font-mono border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark">WordPress / Woo</button>
+                  </div>
+                </div>
+
+                <!-- Step 3: Custom Feature / Bug Description -->
+                <div class="space-y-2.5">
+                  <label for="studio-feature-input" class="block text-xs font-mono text-muted-light dark:text-muted-dark" data-i18n="step3_label">
+                    STEP 3 // DESCRIBE WHAT YOU WANT IN ARABIC OR ENGLISH (اكتب وصف الميزة بالعربية أو الإنجليزية)
+                  </label>
+                  <input id="studio-feature-input" type="text" oninput="updateStudio()" aria-label="Describe your feature or bug in Arabic or English" placeholder="e.g. CMS users page with role filter, sticky sidebar, and avatar upload / صفحة إدارة المستخدمين" class="w-full min-h-12 px-4 py-2.5 rounded-lg bg-surface-light dark:bg-surface-dark border border-line-light dark:border-line-dark text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Right 5 Cols: Live AI Chat Prompt Output & Skill Chain Inspector -->
+            <div class="lg:col-span-5 min-w-0">
+              <div class="rounded-xl border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark overflow-hidden">
+                <!-- Terminal Header -->
+                <div class="px-5 py-3.5 border-b border-line-light dark:border-line-dark flex items-center justify-between gap-2 bg-panel-light dark:bg-panel-dark">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-signal"></span>
+                    <span class="font-mono text-xs font-medium" id="studio-cmd-badge">/feature-full</span>
+                  </div>
+                  <span class="text-xs font-mono text-muted-light dark:text-muted-dark">PASTE IN AI CHAT</span>
+                </div>
+
+                <!-- Mode Switcher: Option A (1-Word Command) vs Option B (Full Prompt) -->
+                <div class="p-4 border-b border-line-light dark:border-line-dark flex gap-2">
+                  <button type="button" id="tab-short" onclick="setPromptMode('short')" class="flex-1 min-h-12 px-3 py-2 rounded-lg font-mono text-xs font-medium border border-signal bg-signal/10 text-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+                    Option A: Short /Command
+                  </button>
+                  <button type="button" id="tab-full" onclick="setPromptMode('full')" class="flex-1 min-h-12 px-3 py-2 rounded-lg font-mono text-xs font-medium border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark text-muted-light dark:text-muted-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+                    Option B: Full Prompt
+                  </button>
+                </div>
+
+                <!-- Live Generated Prompt Box -->
+                <div class="p-5 space-y-4">
+                  <div class="relative">
+                    <pre id="studio-output" class="font-mono text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words bg-canvas-light dark:bg-canvas-dark p-4 rounded-lg border border-line-light dark:border-line-dark max-h-80 overflow-y-auto"></pre>
+                  </div>
+
+                  <button type="button" id="studio-copy-btn" onclick="copyStudioPrompt()" aria-label="Copy generated prompt to clipboard" class="w-full min-h-12 px-5 py-3 rounded-lg bg-signal hover:bg-signal-hover text-canvas-dark font-mono text-xs sm:text-sm font-medium flex items-center justify-center gap-2 micro-transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                    <span id="studio-copy-label">Copy Prompt for AI Chat (نسخ الأمر للشات)</span>
+                  </button>
+
+                  <!-- Active Skill Chain Display -->
+                  <div class="pt-3 border-t border-line-light dark:border-line-dark space-y-2">
+                    <div class="text-xs font-mono text-muted-light dark:text-muted-dark">AUTO-CHAINED SKILLS &amp; GUARDS:</div>
+                    <div id="studio-skills-chain" class="flex flex-wrap gap-1.5"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SECTION 2: THE HOOK — INTERACTIVE WITHOUT VS WITH .AGENTS COMPARATOR (py-12 lg:py-24) -->
+        <section id="comparison" class="py-12 lg:py-24 border-b border-line-light dark:border-line-dark space-y-10 scroll-mt-20">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
+            <div class="lg:col-span-8 space-y-3">
+              <div class="font-mono text-xs text-signal">SECTION 01 // THE UNSEEABLE DIFFERENCE</div>
+              <h2 class="font-display text-2xl sm:text-4xl sub-heading" data-i18n="comp_title">
+                How your AI performs Without .agents vs. With .agents
+              </h2>
+              <p class="text-muted-light dark:text-muted-dark text-sm sm:text-base max-w-2xl" data-i18n="comp_subtitle">
+                Without .agents, the AI rushes like an intern and breaks your CMS sidebar, tables, Arabic RTL layout, and security. With .agents, an entire Senior Engineering Team guards every layer.
+              </p>
+            </div>
+            <div class="lg:col-span-4 flex lg:justify-end">
+              <div class="inline-flex rounded-lg border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark p-1">
+                <button type="button" id="comp-view-cards" onclick="setCompView('cards')" class="min-h-12 px-4 rounded-md text-xs font-mono bg-signal text-canvas-dark font-medium">Interactive Cards</button>
+                <button type="button" id="comp-view-table" onclick="setCompView('table')" class="min-h-12 px-4 rounded-md text-xs font-mono text-muted-light dark:text-muted-dark">Full Matrix Table</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- View 1: Responsive Bento Comparison Cards (Works cleanly on 375px mobile through 1440px desktop) -->
+          <div id="comp-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+
+          <!-- View 2: Full Matrix Table (Wrapped in overflow-x-auto + min-w-0) -->
+          <div id="comp-table-container" class="hidden w-full overflow-x-auto rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark">
+            <table class="w-full text-sm text-start border-collapse">
+              <thead class="sticky top-0 bg-surface-light dark:bg-surface-dark border-b border-line-light dark:border-line-dark font-mono text-xs">
+                <tr>
+                  <th class="py-4 px-5 text-start font-medium">Engineering Layer (المجال)</th>
+                  <th class="py-4 px-5 text-start font-medium text-muted-light dark:text-muted-dark">Without .agents (Fast Intern)</th>
+                  <th class="py-4 px-5 text-start font-medium text-signal">With .agents (Senior Tech Team)</th>
+                </tr>
+              </thead>
+              <tbody id="comp-table-body" class="divide-y divide-line-light dark:divide-line-dark"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SECTION 3: THE 1-2-3 TRAFFIC LIGHT WORKFLOW (Asymmetric 4/12 + 8/12 Split, py-12 lg:py-24) -->
+        <section id="workflow" class="py-12 lg:py-24 border-b border-line-light dark:border-line-dark scroll-mt-20">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div class="lg:col-span-4 space-y-4">
+              <div class="font-mono text-xs text-signal">SECTION 02 // ZERO JARGON WORKFLOW</div>
+              <h2 class="font-display text-2xl sm:text-4xl sub-heading" data-i18n="flow_title">
+                The 1-2-3 Traffic Light Rule
+              </h2>
+              <p class="text-sm sm:text-base text-muted-light dark:text-muted-dark" data-i18n="flow_desc">
+                Even if this is your very first week building software, every command follows the exact same 3 steps.
+              </p>
+              <div class="p-4 rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark space-y-2">
+                <div class="font-mono text-xs text-signal">LIVE DOGFOODING PROOF</div>
+                <p class="text-xs text-muted-light dark:text-muted-dark">
+                  This Handbook and its 11 shortcut commands were architected using <code class="font-mono text-ink-light dark:text-ink-dark">/web-precode</code> (<code class="font-mono">docs/precode/handbook/</code>) and built task-by-task using <code class="font-mono text-ink-light dark:text-ink-dark">/spec-kit</code> (<code class="font-mono">specs/001-beginner-handbook/</code>).
+                </p>
+              </div>
+            </div>
+
+            <div class="lg:col-span-8 space-y-4">
+              <div class="p-6 rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark flex flex-col sm:flex-row gap-5 items-start">
+                <div class="w-12 h-12 rounded-lg border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark font-mono text-sm font-medium flex items-center justify-center shrink-0 text-signal">01</div>
+                <div class="space-y-1.5">
+                  <h3 class="font-display text-lg font-medium">Paste One Command + Your Idea in AI Chat</h3>
+                  <p class="text-sm text-muted-light dark:text-muted-dark">Pick your situation (like <code class="font-mono text-ink-light dark:text-ink-dark">/smart-feature</code> or <code class="font-mono text-ink-light dark:text-ink-dark">/start-project</code>) and describe what you want in plain Arabic or English inside the AI Chat box.</p>
+                  <p class="text-xs text-muted-light dark:text-muted-dark font-arabic">الخطوة 1: انسخ أمراً واحداً فقط والصقه في شات الذكاء الاصطناعي مع وصف فكرتك بالعربية أو الإنجليزية.</p>
+                </div>
+              </div>
+
+              <div class="p-6 rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark flex flex-col sm:flex-row gap-5 items-start">
+                <div class="w-12 h-12 rounded-lg border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark font-mono text-sm font-medium flex items-center justify-center shrink-0 text-signal">02</div>
+                <div class="space-y-1.5">
+                  <h3 class="font-display text-lg font-medium">Answer the Interview (Pick Default First Option When Unsure)</h3>
+                  <p class="text-sm text-muted-light dark:text-muted-dark">The AI interviews you one step at a time using <code class="font-mono text-ink-light dark:text-ink-dark">/grill-me</code> + <code class="font-mono text-ink-light dark:text-ink-dark">/muaz-skill</code> Smart Intake (Q1..Q28). If you do not know a technical answer, simply pick the first suggested choice and confirm <code class="font-mono">"yes"</code> on the summary.</p>
+                  <p class="text-xs text-muted-light dark:text-muted-dark font-arabic">الخطوة 2: يسألك النظام خطوة بخطوة قبل كتابة أي كود. إذا لم تعرف إجابة سؤال تقني، اختر الخيار المقترح الأول!</p>
+                </div>
+              </div>
+
+              <div class="p-6 rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark flex flex-col sm:flex-row gap-5 items-start">
+                <div class="w-12 h-12 rounded-lg border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark font-mono text-sm font-medium flex items-center justify-center shrink-0 text-signal">03</div>
+                <div class="space-y-1.5">
+                  <h3 class="font-display text-lg font-medium">Auto-Build, Auto-Verify &amp; Plain-Language "How to Test It" Card</h3>
+                  <p class="text-sm text-muted-light dark:text-muted-dark">It writes the Frontend, Backend, and Database code, checks its own UI and security automatically, fixes any bugs, and gives you a simple card explaining which page and button to click to test.</p>
+                  <p class="text-xs text-muted-light dark:text-muted-dark font-arabic">الخطوة 3: يبني الكود ويختبر الواجهة والأمان تلقائياً، ثم يعطيك بطاقة مبسطة تشرح كيف تجرب الميزة.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 4: ALL 11 SITUATIONS INTERACTIVE EXPLORER (py-12 lg:py-24) -->
+        <section id="catalog" class="py-12 lg:py-24 border-b border-line-light dark:border-line-dark space-y-8 scroll-mt-20">
+          <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div class="space-y-2">
+              <div class="font-mono text-xs text-signal">SECTION 03 // SITUATION COMMAND CATALOG</div>
+              <h2 class="font-display text-2xl sm:text-4xl sub-heading" data-i18n="cat_title">
+                All 11 Situation Commands &amp; Copy-Paste Prompts
+              </h2>
+              <p class="text-sm sm:text-base text-muted-light dark:text-muted-dark" data-i18n="cat_desc">
+                Filter by category or search below. Click "Load in Studio" to customize the stack, or copy either Option A or Option B directly.
+              </p>
+            </div>
+
+            <!-- Search Input (Full width on mobile, 320px on desktop) -->
+            <div class="w-full lg:w-80">
+              <label for="catalog-search" class="sr-only">Search situations by keyword or command</label>
+              <input id="catalog-search" type="search" oninput="renderCatalog()" aria-label="Search situations by keyword or command" placeholder="Filter by keyword or /command..." class="w-full min-h-12 px-4 py-2.5 rounded-lg bg-panel-light dark:bg-panel-dark border border-line-light dark:border-line-dark text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal" />
+            </div>
+          </div>
+
+          <!-- Category Filter Tabs -->
+          <div class="flex flex-wrap gap-2" role="tablist" aria-label="Situation Categories">
+            <button type="button" onclick="setCategory('all')" data-cat="all" class="cat-tab min-h-12 px-4 py-2 rounded-lg font-mono text-xs border border-signal bg-signal/10 text-signal">All Situations (11)</button>
+            <button type="button" onclick="setCategory('build')" data-cat="build" class="cat-tab min-h-12 px-4 py-2 rounded-lg font-mono text-xs border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark text-muted-light dark:text-muted-dark">New Project &amp; Features (6)</button>
+            <button type="button" onclick="setCategory('fix')" data-cat="fix" class="cat-tab min-h-12 px-4 py-2 rounded-lg font-mono text-xs border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark text-muted-light dark:text-muted-dark">Fix UI &amp; Backend Bugs (2)</button>
+            <button type="button" onclick="setCategory('ops')" data-cat="ops" class="cat-tab min-h-12 px-4 py-2 rounded-lg font-mono text-xs border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark text-muted-light dark:text-muted-dark">Review, Docs &amp; Data-Saver (3)</button>
+          </div>
+
+          <!-- Empty State for Catalog Search -->
+          <div id="catalog-empty" class="hidden rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark p-10 text-center space-y-4">
+            <div class="font-display text-lg">No matching situation found / لم يتم العثور على نتيجة</div>
+            <p class="text-sm text-muted-light dark:text-muted-dark">Try searching for <code class="font-mono">cms</code>, <code class="font-mono">table</code>, <code class="font-mono">backend</code>, <code class="font-mono">database</code>, or <code class="font-mono">data</code>.</p>
+            <button type="button" onclick="resetCatalogFilter()" aria-label="Reset catalog search and category filter" class="min-h-12 px-5 py-2.5 rounded-lg bg-signal text-canvas-dark font-mono text-xs font-medium">Reset Filters</button>
+          </div>
+
+          <!-- Dynamic Situation Cards Container -->
+          <div id="catalog-grid" class="grid grid-cols-1 gap-6"></div>
+        </section>
+
+        <!-- SECTION 5: CMS FRONTEND, BACKEND & DATABASE ARMOR (Asymmetric 5/12 + 7/12 Split, py-12 lg:py-24) -->
+        <section id="armor" class="py-12 lg:py-24 border-b border-line-light dark:border-line-dark scroll-mt-20">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div class="lg:col-span-5 space-y-4">
+              <div class="font-mono text-xs text-signal">SECTION 04 // BUILT-IN ARCHITECTURAL ARMOR</div>
+              <h2 class="font-display text-2xl sm:text-4xl sub-heading" data-i18n="armor_title">
+                Every CMS &amp; Full-Stack Pain Point Solved Automatically
+              </h2>
+              <p class="text-sm sm:text-base text-muted-light dark:text-muted-dark" data-i18n="armor_desc">
+                You never have to remind the AI to make the navbar sticky, stop wide tables from breaking the sidebar, or check user roles on the backend. These 11 rules are hardcoded into the combo commands.
+              </p>
+            </div>
+
+            <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <!-- Frontend CMS Armor -->
+              <div class="p-6 rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark space-y-4">
+                <div class="font-mono text-xs text-signal">FRONTEND &amp; CMS SHELL ARMOR</div>
+                <h3 class="font-display text-lg">Sticky Layout, Tables, Forms &amp; RTL</h3>
+                <ul class="space-y-2.5 text-sm text-muted-light dark:text-muted-dark">
+                  <li><strong class="text-ink-light dark:text-ink-dark">Sticky Top Navbar:</strong> <code class="font-mono text-xs">sticky top-0 z-30</code> stays pinned on scroll.</li>
+                  <li><strong class="text-ink-light dark:text-ink-dark">Sticky Desktop Sidebar:</strong> <code class="font-mono text-xs">lg:sticky lg:top-0 lg:h-dvh lg:overflow-y-auto</code> + mobile off-canvas drawer on <code class="font-mono text-xs">&lt;1024px</code>.</li>
+                  <li><strong class="text-ink-light dark:text-ink-dark">Main Column Overflow Lock:</strong> <code class="font-mono text-xs">flex-1 min-w-0</code> prevents wide tables from pushing the layout.</li>
+                  <li><strong class="text-ink-light dark:text-ink-dark">CMS Data Tables:</strong> <code class="font-mono text-xs">overflow-x-auto</code>, sticky headers, pagination, and all 5 UI states.</li>
+                  <li><strong class="text-ink-light dark:text-ink-dark">CMS Forms:</strong> Multi-column responsive grids, inline field errors, and sticky <code class="font-mono text-xs">Save / Cancel</code> bar.</li>
+                  <li><strong class="text-ink-light dark:text-ink-dark">Bilingual RTL/LTR:</strong> 100% CSS Logical Properties (<code class="font-mono text-xs">ms-</code>, <code class="font-mono text-xs">me-</code>, <code class="font-mono text-xs">start-</code>, <code class="font-mono text-xs">end-</code>).</li>
+                </ul>
+              </div>
+
+              <!-- Backend & DB CMS Armor -->
+              <div class="p-6 rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark space-y-4">
+                <div class="font-mono text-xs text-signal">BACKEND &amp; DATABASE ARMOR</div>
+                <h3 class="font-display text-lg">RBAC, Validation, Uploads &amp; Integrity</h3>
+                <ul class="space-y-2.5 text-sm text-muted-light dark:text-muted-dark">
+                  <li><strong class="text-ink-light dark:text-ink-dark">RBAC Permissions:</strong> Locks both UI buttons and API routes (Admin / Editor / User) + anti-IDOR ownership checks.</li>
+                  <li><strong class="text-ink-light dark:text-ink-dark">Server Pagination &amp; Search:</strong> Filtering, sorting, and bounded pagination wired to CMS tables.</li>
+                  <li><strong class="text-ink-light dark:text-ink-dark">Field Validation (422):</strong> Server validation mapped cleanly to each form input.</li>
+                  <li><strong class="text-ink-light dark:text-ink-dark">Safe File Uploads:</strong> MIME/size validation, preview URLs, and old-file cleanup on update/delete.</li>
+                  <li><strong class="text-ink-light dark:text-ink-dark">Database Integrity:</strong> Explicit Foreign Keys, Indexes on FKs/filters, Soft Deletes (<code class="font-mono text-xs">deleted_at</code>), zero N+1 queries, and atomic transactions.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 6: ONE-TIME SETUP & 60-SKILL REGISTRY (py-12 lg:py-24) -->
+        <section id="setup" class="py-12 lg:py-24 space-y-10 scroll-mt-20">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-5 space-y-3">
+              <div class="font-mono text-xs text-signal">SECTION 05 // 60-SECOND ONBOARDING</div>
+              <h2 class="font-display text-2xl sm:text-4xl sub-heading">
+                One-Time Setup in AI Chat
+              </h2>
+              <p class="text-sm sm:text-base text-muted-light dark:text-muted-dark">
+                New developer on the team? Paste this single block into your AI Chat once, then restart the IDE so all 60 skills and low-bandwidth settings load.
+              </p>
+              <p class="text-xs text-muted-light dark:text-muted-dark font-arabic">
+                لتثبيت النظام لأول مرة: انسخ هذا المربع والصقه في شات الذكاء الاصطناعي، ثم أعد تشغيل البرنامج مرة واحدة.
+              </p>
+            </div>
+
+            <div class="lg:col-span-7">
+              <div class="rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark p-5 space-y-4">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-mono text-xs text-signal">PASTE IN AI CHAT (ONE-TIME SETUP)</span>
+                  <button type="button" onclick="copyById('one-time-setup-code', this)" aria-label="Copy one-time setup prompt" class="min-h-12 px-4 py-2 rounded-lg bg-signal text-canvas-dark font-mono text-xs font-medium">
+                    Copy Setup Prompt
+                  </button>
+                </div>
+                <pre id="one-time-setup-code" class="font-mono text-xs sm:text-sm whitespace-pre-wrap break-words bg-canvas-light dark:bg-canvas-dark p-4 rounded-lg border border-line-light dark:border-line-dark">Please set up Agent OS for me:
+1. Run `python scripts/agent_os.py sync --apply` to install all 60 skills and rules globally.
+2. Run `python scripts/agent_os.py install-hooks` to enable local git safety checks.
+3. Run `python scripts/agent_os.py data-saver apply` to enable low-bandwidth mode and offline package caching.
+Tell me in simple words when everything is 100% ready.</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Footer -->
+      <footer class="border-t border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark py-8 px-4 sm:px-6 lg:px-10 text-xs text-muted-light dark:text-muted-dark">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="font-mono">AGENT OS v4.2 // 60 PRODUCTION SKILLS // ZERO-SLOP VERIFIED</div>
+          <div>Architected with <code class="font-mono">/web-precode</code> • Built with <code class="font-mono">/spec-kit</code> • Audited with <code class="font-mono">/ui-audit</code></div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <script>
+    const SITUATIONS = [
+      {
+        id: 'sit-1',
+        num: '01',
+        cmd: '/fix-ui',
+        cat: 'fix',
+        needsStack: false,
+        titleEn: 'Fix UI Violations, Broken Sticky Nav/Sidebar, Tables, or Forms',
+        titleAr: 'إصلاح مشاكل الواجهة، القائمة العلوية/الجانبية، الجداول، أو النماذج تلقائياً',
+        descEn: 'Scans the project with /ui-audit, generates fix prompts automatically, and fixes sticky navbars, sticky sidebars, overflowing tables, forms, and Arabic/English RTL.',
+        skills: ['/ui-audit', '/muaz-skill', '/rtl-logical-guard', '/ui-review-loop', '/clean-code-guard'],
+        shortTpl: (stack, feat) => `/fix-ui ${feat ? feat : ''}`.trim(),
+        fullTpl: (stack, feat) => `Use /fix-ui (/ui-audit, /muaz-skill, /rtl-logical-guard, /ui-review-loop, and /clean-code-guard) to scan my UI${feat ? ' (' + feat + ')' : ''}, generate fix prompts for all violations, and fix them automatically:\n1. Sticky Top Navbar (sticky top-0 z-30) and Sticky Desktop Sidebar (lg:sticky lg:top-0 lg:h-dvh lg:overflow-y-auto) + mobile off-canvas drawer.\n2. Main content wrapper must use flex-1 min-w-0 so wide tables never push or break the layout.\n3. Data tables must use overflow-x-auto, sticky headers, pagination, and all 5 UI states.\n4. Responsive multi-column forms with field validation and sticky Save/Cancel bar.\n5. Full responsiveness across Mobile, Tablet, and Desktop in both LTR and RTL.`
+      },
+      {
+        id: 'sit-2',
+        num: '02',
+        cmd: '/feature-fe',
+        cat: 'build',
+        needsStack: true,
+        titleEn: 'New Frontend / CMS UI Feature (Any Tech Stack)',
+        titleAr: 'بناء ميزة واجهة أمامية أو لوحة تحكم جديدة (بأي تقنية تختارها)',
+        descEn: 'Works with React, Next.js, Vue, Blade/Livewire, Angular, HTML/Tailwind, or WordPress. Interviews you first via /grill-me + /muaz-skill, then builds with full CMS Frontend Armor.',
+        skills: ['/grill-me', '/muaz-skill', '/rtl-logical-guard', '/ui-review-loop', '/nextjs-fullstack', '/clean-code-guard'],
+        shortTpl: (stack, feat) => `/feature-fe Stack: [${stack}] | Feature: [${feat || 'describe your page, table, or form'}]`,
+        fullTpl: (stack, feat) => `I am starting a new frontend feature.\nPreferred Stack: ${stack}\nFeature Description: ${feat || '[describe your page, table, or form in Arabic or English]'}\n\nFollow the /feature-fe workflow:\n1. Auto-detect my project files and interview me step-by-step using /grill-me and /muaz-skill Smart Intake (references/intake-template.md). Show the Confirmation Summary and wait for my "yes" before writing code.\n2. Activate /muaz-skill, /rtl-logical-guard, /ui-review-loop, and /clean-code-guard.\n3. Enforce CMS Frontend Armor: sticky top navbar, sticky h-dvh sidebar + mobile drawer, flex-1 min-w-0 main column, overflow-x-auto tables with 5 UI states, responsive forms with sticky Save bar, and full LTR/RTL responsiveness.\n4. Auto-verify UI and finish with a plain-language "How to Test It" card.`
+      },
+      {
+        id: 'sit-3',
+        num: '03',
+        cmd: '/feature-febe',
+        cat: 'build',
+        needsStack: true,
+        titleEn: 'New Frontend + Backend Feature (APIs, RBAC, Validation, Uploads)',
+        titleAr: 'بناء ميزة واجهة أمامية + باك-إند (صلاحيات، تحقق، ترقيم صفحات، رفع ملفات)',
+        descEn: 'Chains Frontend CMS Armor with Backend API routes, RBAC role guards (Admin/Editor/User), server-side pagination/search/sort, 422 field validation, and safe file uploads.',
+        skills: ['/grill-me', '/muaz-skill', '/rtl-logical-guard', '/backend-api', '/backend-http', '/backend-identity', '/backend-ops', '/test-guard'],
+        shortTpl: (stack, feat) => `/feature-febe Stack: [${stack}] | Feature: [${feat || 'describe your feature'}]`,
+        fullTpl: (stack, feat) => `I am starting a Frontend + Backend feature.\nPreferred Stack: ${stack}\nFeature Description: ${feat || '[describe your feature in Arabic or English]'}\n\nFollow the /feature-febe workflow:\n1. Run /grill-me + /muaz-skill Smart Intake first and wait for my "yes" on the Confirmation Summary.\n2. Activate /feature-fe skills + /backend-api, /backend-http, /backend-identity, /backend-ops, and stack security guards.\n3. Enforce CMS Frontend Armor + Backend Armor: RBAC permissions (Admin/Editor/User) on UI and API, server-side pagination/search/sort, 422 field validation errors, and safe file/image uploads with old-file cleanup.\n4. Auto-verify UI, security, and tests, then show me a "How to Test It" card.`
+      },
+      {
+        id: 'sit-4',
+        num: '04',
+        cmd: '/feature-full',
+        cat: 'build',
+        needsStack: true,
+        titleEn: 'Full Feature: Frontend + Backend + Database (Any Stack)',
+        titleAr: 'بناء ميزة كاملة: واجهة أمامية + باك-إند + قاعدة بيانات (جداول، علاقات، فهارس)',
+        descEn: 'Complete end-to-end builder adding Database Schema design, Foreign Keys, Indexes on FKs and filters, Soft Deletes (deleted_at), zero N+1 queries, and atomic transactions.',
+        skills: ['/grill-me', '/muaz-skill', '/database', '/backend-data', '/backend-api', '/backend-identity', '/rtl-logical-guard', '/ui-review-loop'],
+        shortTpl: (stack, feat) => `/feature-full Stack: [${stack}] | Feature: [${feat || 'describe your full-stack feature'}]`,
+        fullTpl: (stack, feat) => `I am starting a complete Frontend + Backend + Database feature.\nPreferred Stack: ${stack}\nFeature Description: ${feat || '[describe your feature in Arabic or English]'}\n\nFollow the /feature-full workflow:\n1. Run /grill-me + /muaz-skill Smart Intake first and wait for my "yes" on the Confirmation Summary.\n2. Activate /database, /backend-data, /backend-api, /backend-http, /backend-identity, /backend-ops, /muaz-skill, /rtl-logical-guard, and /ui-review-loop.\n3. Enforce Database Armor (Foreign Keys, Indexes on FKs/filters, Soft Deletes deleted_at, zero N+1 queries, transactions), Backend Armor (RBAC, server pagination/search, 422 validation, safe uploads), and CMS Frontend Armor (sticky nav/sidebar, flex-1 min-w-0 tables, responsive forms, LTR/RTL).\n4. Auto-verify and finish with a plain-language "How to Test It" card.`
+      },
+      {
+        id: 'sit-5',
+        num: '05',
+        cmd: '/start-project',
+        cat: 'build',
+        needsStack: true,
+        titleEn: 'Start a Brand New Project from Zero (Any Tech Stack)',
+        titleAr: 'بدء مشروع جديد من الصفر (مقابلة /grill-me + التخطيط المعماري /web-precode + البناء)',
+        descEn: 'Interviews you with /grill-me + /muaz-skill (Q1..Q28), generates the 6 Pre-Coding architecture documents (/web-precode), creates the /spec-kit task plan, and builds the app.',
+        skills: ['/grill-me', '/muaz-skill', '/web-precode', '/spec-kit', '/feature-full', '/rtl-logical-guard'],
+        shortTpl: (stack, feat) => `/start-project Stack: [${stack}] | Idea: [${feat || 'describe your new project idea'}]`,
+        fullTpl: (stack, feat) => `I want to start a brand new project from zero.\nPreferred Stack: ${stack}\nProject Idea: ${feat || '[describe your project idea in Arabic or English]'}\n\nFollow the /start-project workflow:\n1. Interview me first using /grill-me and the 28 Smart Intake questions from /muaz-skill (references/intake-template.md). Show the Phase 1E Confirmation Summary and wait for my "yes" before writing code.\n2. Author and audit all 6 Pre-Coding Pillars using /web-precode and generate the task breakdown using /spec-kit.\n3. Build the project with full CMS Frontend, Backend, and Database Armor.`
+      },
+      {
+        id: 'sit-6',
+        num: '06',
+        cmd: '/smart-feature',
+        cat: 'build',
+        needsStack: false,
+        titleEn: 'Smart Auto-Router: Describe Feature, Auto-Pick Best Skills',
+        titleAr: 'الاختيار الذكي: اكتب وصف الميزة فقط وسيختار النظام أفضل المهارات تلقائياً',
+        descEn: 'Not sure which skills you need? Describe your feature in plain Arabic or English. It inspects your repo, activates the exact right skills, interviews you, and builds it.',
+        skills: ['agent_os route', '/grill-me', '/muaz-skill', 'auto-targeted FE/BE/DB skills', '/clean-code-guard', '/test-guard'],
+        shortTpl: (stack, feat) => `/smart-feature ${feat || '[describe your feature in plain Arabic or English]'}`,
+        fullTpl: (stack, feat) => `Use /smart-feature for this feature: ${feat || '[describe your feature in Arabic or English]'}.\n1. Inspect my project files and automatically select the best targeted Frontend, CMS, Backend, Database, and Security skills.\n2. Run the full /grill-me + /muaz-skill Smart Intake interview first and wait for my "yes" on the Confirmation Summary.\n3. Build and auto-verify the feature, then show me a simple "How to Test It" card.`
+      },
+      {
+        id: 'sit-7',
+        num: '07',
+        cmd: '/feature-wp',
+        cat: 'build',
+        needsStack: false,
+        titleEn: 'WordPress or WooCommerce Feature, Plugin, or Theme',
+        titleAr: 'بناء ميزة أو قالب أو إضافة ووردبريس / ووكومرس آمنة ومتوافقة مع HPOS',
+        descEn: 'Enforces WordPress nonces, capability checks, $wpdb->prepare(), WooCommerce HPOS CRUD methods, and RTL/LTR responsive styling.',
+        skills: ['/grill-me', '/muaz-skill', '/wp-guard', '/woo-guard', '/rtl-logical-guard', '/database'],
+        shortTpl: (stack, feat) => `/feature-wp ${feat || '[describe your WordPress or WooCommerce feature]'}`,
+        fullTpl: (stack, feat) => `Use /feature-wp (/grill-me, /muaz-skill, /wp-guard, /woo-guard, /rtl-logical-guard, and /database) to build: ${feat || '[describe feature]'}.\nRun the Smart Intake interview first, enforce nonces, capabilities (current_user_can), $wpdb->prepare(), WooCommerce HPOS CRUD, and responsive RTL/LTR layouts.`
+      },
+      {
+        id: 'sit-8',
+        num: '08',
+        cmd: '/fix-backend',
+        cat: 'fix',
+        needsStack: false,
+        titleEn: 'Fix Backend, API, Auth/RBAC, Validation, or Database Bug',
+        titleAr: 'إصلاح خطأ في الباك-إند، الـ API، الصلاحيات، التحقق، أو قاعدة البيانات',
+        descEn: 'Traces the bug from request to controller and database query, explains the root cause in 2 plain sentences, fixes it safely, and adds a regression test.',
+        skills: ['/backend-api', '/backend-data', '/database', '/backend-identity', '/test-guard', '/clean-code-guard'],
+        shortTpl: (stack, feat) => `/fix-backend ${feat || '[paste error message or describe what is broken]'}`,
+        fullTpl: (stack, feat) => `Use /fix-backend to diagnose and fix this backend/database issue: ${feat || '[paste error or describe bug]'}.\nTrace the request path through auth/RBAC, validation, and database queries, explain why it broke in 2 simple sentences, fix it safely, and run a regression test.`
+      },
+      {
+        id: 'sit-9',
+        num: '09',
+        cmd: '/check-all',
+        cat: 'ops',
+        needsStack: false,
+        titleEn: 'Pre-Push Security, Clean Code, Test & Anti-Bloat Review',
+        titleAr: 'فحص الأمان وجودة الكود وحذف التعقيد الزائد قبل رفع التعديلات إلى GitHub',
+        descEn: 'Chains security guards, RTL checks, test-guard, ponytail-review (anti-overengineering), and debate-review before you push or open a PR.',
+        skills: ['/clean-code-guard', '/test-guard', '/rtl-logical-guard', '/next-server-action-guard', '/pest-security-guard', '/ponytail-review', '/debate-review'],
+        shortTpl: () => `/check-all`,
+        fullTpl: () => `Use /check-all (/clean-code-guard, /test-guard, /rtl-logical-guard, stack security guards, /ponytail-review, and /debate-review) to audit my recent changes for security holes, broken CMS/RTL rules, and unnecessary code bloat. Give me a clear READY TO PUSH or FIX NEEDED verdict.`
+      },
+      {
+        id: 'sit-10',
+        num: '10',
+        cmd: '/doc-project',
+        cat: 'ops',
+        needsStack: false,
+        titleEn: 'Generate or Update Project Documentation (README, Architecture, API)',
+        titleAr: 'توليد أو تحديث توثيق شامل للمشروع (README و ARCHITECTURE و API)',
+        descEn: 'Scans the real codebase and generates beginner-friendly setup instructions, architecture diagrams, and API tables verified by /docs-guard.',
+        skills: ['/project-documentation', '/docs-guard'],
+        shortTpl: () => `/doc-project`,
+        fullTpl: () => `Use /doc-project (/project-documentation and /docs-guard) to scan this repository and generate or update a beginner-friendly README.md (with exact copy-paste setup steps), docs/ARCHITECTURE.md, and docs/API.md.`
+      },
+      {
+        id: 'sit-11',
+        num: '11',
+        cmd: '/save-data',
+        cat: 'ops',
+        needsStack: false,
+        titleEn: 'Low-Bandwidth & Token-Saver Mode (Cut Internet Usage by 75-85%)',
+        titleAr: 'وضع توفير الإنترنت والبيانات (يقلل الاستهلاك بنسبة 75-85% ويفعل الكاش المحلي)',
+        descEn: 'Disables background IDE data drains, configures npm/composer/pip to use local offline cache first, and enables concise /caveman lite replies.',
+        skills: ['/data-saver', '/caveman lite', 'bandwidth_guard.py'],
+        shortTpl: () => `/save-data`,
+        fullTpl: () => `Use /save-data (/data-saver and /caveman lite): run \`python scripts/agent_os.py data-saver apply\`, use offline-first flags (--prefer-offline) when installing packages, and keep chat replies concise to save bandwidth.`
+      }
+    ];
+
+    const COMPARISONS = [
+      {
+        layerEn: '1. Clarifying Your Idea',
+        layerAr: 'فهم فكرتك ومتطلباتك',
+        withoutEn: 'Guesses everything from a 4-word prompt and builds the wrong screen.',
+        withEn: 'Interviews you step-by-step via /grill-me + /muaz-skill Smart Intake before writing a single line of code.'
+      },
+      {
+        layerEn: '2. Tech Stack Freedom',
+        layerAr: 'حرية اختيار التقنيات',
+        withoutEn: 'Forces random libraries or rewrites your stack without asking.',
+        withEn: '100% stack-agnostic: auto-detects your project or builds with React, Next.js, Vue, Laravel, Blade, WordPress, Python, MySQL, or Postgres.'
+      },
+      {
+        layerEn: '3. CMS Navbar & Sidebar',
+        layerAr: 'الشريط العلوي والقائمة الجانبية',
+        withoutEn: 'Top navbar and sidebar scroll out of view or crush mobile screens.',
+        withEn: 'Enforces sticky top-0 navbar + sticky h-dvh desktop sidebar with independent scroll + mobile off-canvas drawer.'
+      },
+      {
+        layerEn: '4. CMS Data Tables & Forms',
+        layerAr: 'الجداول والنماذج في لوحات التحكم',
+        withoutEn: 'Wide tables blow out the page width; forms lack validation and loading states.',
+        withEn: 'Enforces flex-1 min-w-0 main column + overflow-x-auto tables, sticky headers, 5 UI states, pagination, and sticky form Save bar.'
+      },
+      {
+        layerEn: '5. Arabic & English (RTL/LTR)',
+        layerAr: 'دعم العربية والإنجليزية',
+        withoutEn: 'Hardcodes left/right margins and padding so Arabic layouts break.',
+        withEn: 'Enforces CSS Logical Properties (/rtl-logical-guard: ms-, me-, ps-, pe-, start-, end-) so Arabic and English flip cleanly.'
+      },
+      {
+        layerEn: '6. Backend RBAC & Database',
+        layerAr: 'أمان الباك-إند وقاعدة البيانات',
+        withoutEn: 'Leaves APIs open without role checks, allows N+1 slow queries, and permanently deletes records.',
+        withEn: 'Enforces Admin/Editor/User RBAC on UI + API, 422 validation, safe uploads, Foreign Keys, Indexes, and Soft Deletes (deleted_at).'
+      }
+    ];
+
+    let activeStack = 'Auto-detect from project';
+    let promptMode = 'short';
+    let activeCategory = 'all';
+
+    function initApp() {
+      // Populate Studio Select & Sidebar Quick List
+      const sel = document.getElementById('studio-situation');
+      const quickList = document.getElementById('sidebar-quick-list');
+      sel.innerHTML = '';
+      quickList.innerHTML = '';
+
+      SITUATIONS.forEach((s, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `#${s.num} ${s.cmd} : ${s.titleEn}`;
+        sel.appendChild(opt);
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => { loadIntoStudio(idx); closeDrawerOnMobile(); };
+        btn.className = 'w-full text-start px-3 py-2 rounded-lg text-muted-light dark:text-muted-dark hover:text-signal hover:bg-panel-light dark:hover:bg-panel-dark flex items-center justify-between gap-2 micro-transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal';
+        btn.innerHTML = `<span>${s.cmd}</span><span class="text-[11px] opacity-60">#${s.num}</span>`;
+        quickList.appendChild(btn);
+      });
+
+      sel.value = 3; // Default to #04 /feature-full
+      updateStudio();
+      renderComparisons();
+      renderCatalog();
+    }
+
+    function selectStack(stackName) {
+      activeStack = stackName;
+      document.querySelectorAll('.stack-pill').forEach(btn => {
+        const isMatch = btn.textContent.trim() === stackName || (stackName.startsWith('Auto-detect') && btn.textContent.trim() === 'Auto-detect') || stackName.includes(btn.textContent.trim());
+        btn.className = isMatch
+          ? 'stack-pill min-h-12 px-3.5 py-2 rounded-lg text-xs font-mono border border-signal bg-signal/10 text-signal'
+          : 'stack-pill min-h-12 px-3.5 py-2 rounded-lg text-xs font-mono border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark';
+      });
+      updateStudio();
+    }
+
+    function setPromptMode(mode) {
+      promptMode = mode;
+      const shortBtn = document.getElementById('tab-short');
+      const fullBtn = document.getElementById('tab-full');
+      const activeCls = 'flex-1 min-h-12 px-3 py-2 rounded-lg font-mono text-xs font-medium border border-signal bg-signal/10 text-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal';
+      const idleCls = 'flex-1 min-h-12 px-3 py-2 rounded-lg font-mono text-xs font-medium border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark text-muted-light dark:text-muted-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal';
+      shortBtn.className = mode === 'short' ? activeCls : idleCls;
+      fullBtn.className = mode === 'full' ? activeCls : idleCls;
+      updateStudio();
+    }
+
+    function updateStudio() {
+      const idx = parseInt(document.getElementById('studio-situation').value || '0', 10);
+      const sit = SITUATIONS[idx];
+      const feat = document.getElementById('studio-feature-input').value.trim();
+
+      document.getElementById('studio-cmd-badge').textContent = `${sit.cmd} // SITUATION #${sit.num}`;
+      const output = promptMode === 'short' ? sit.shortTpl(activeStack, feat) : sit.fullTpl(activeStack, feat);
+      document.getElementById('studio-output').textContent = output;
+
+      const chainEl = document.getElementById('studio-skills-chain');
+      chainEl.innerHTML = sit.skills.map(sk =>
+        `<span class="px-2.5 py-1 rounded-md border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark font-mono text-xs text-signal">${sk}</span>`
+      ).join('');
+    }
+
+    function loadIntoStudio(idx) {
+      document.getElementById('studio-situation').value = idx;
+      updateStudio();
+      document.getElementById('studio').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function copyStudioPrompt() {
+      const text = document.getElementById('studio-output').textContent;
+      navigator.clipboard.writeText(text);
+      const label = document.getElementById('studio-copy-label');
+      const prev = label.textContent;
+      label.textContent = 'Copied to Clipboard! / تم النسخ بنجاح';
+      setTimeout(() => { label.textContent = prev; }, 1800);
+    }
+
+    function copyById(id, btn) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text);
+      const prev = btn.textContent;
+      btn.textContent = 'Copied! / تم النسخ';
+      setTimeout(() => { btn.textContent = prev; }, 1800);
+    }
+
+    function renderComparisons() {
+      const cardsEl = document.getElementById('comp-cards-container');
+      const tableBody = document.getElementById('comp-table-body');
+
+      cardsEl.innerHTML = COMPARISONS.map(c => `
+        <article class="rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark p-6 space-y-4">
+          <div class="flex items-center justify-between gap-2 border-b border-line-light dark:border-line-dark pb-3">
+            <h3 class="font-display text-base font-medium">${c.layerEn}</h3>
+            <span class="text-xs font-arabic text-muted-light dark:text-muted-dark">${c.layerAr}</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            <div class="p-3.5 rounded-lg border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark space-y-1">
+              <div class="font-mono text-xs text-muted-light dark:text-muted-dark">WITHOUT .AGENTS</div>
+              <p class="text-muted-light dark:text-muted-dark text-xs leading-relaxed">${c.withoutEn}</p>
+            </div>
+            <div class="p-3.5 rounded-lg border border-signal/40 bg-signal/10 space-y-1">
+              <div class="font-mono text-xs text-signal">WITH .AGENTS</div>
+              <p class="text-ink-light dark:text-ink-dark text-xs leading-relaxed font-medium">${c.withEn}</p>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      tableBody.innerHTML = COMPARISONS.map(c => `
+        <tr>
+          <td class="py-4 px-5 font-medium">${c.layerEn}<br><span class="text-xs font-arabic text-muted-light dark:text-muted-dark">${c.layerAr}</span></td>
+          <td class="py-4 px-5 text-muted-light dark:text-muted-dark">${c.withoutEn}</td>
+          <td class="py-4 px-5 font-medium">${c.withEn}</td>
+        </tr>
+      `).join('');
+    }
+
+    function setCompView(view) {
+      const isCards = view === 'cards';
+      document.getElementById('comp-cards-container').classList.toggle('hidden', !isCards);
+      document.getElementById('comp-table-container').classList.toggle('hidden', isCards);
+      document.getElementById('comp-view-cards').className = isCards
+        ? 'min-h-12 px-4 rounded-md text-xs font-mono bg-signal text-canvas-dark font-medium'
+        : 'min-h-12 px-4 rounded-md text-xs font-mono text-muted-light dark:text-muted-dark';
+      document.getElementById('comp-view-table').className = !isCards
+        ? 'min-h-12 px-4 rounded-md text-xs font-mono bg-signal text-canvas-dark font-medium'
+        : 'min-h-12 px-4 rounded-md text-xs font-mono text-muted-light dark:text-muted-dark';
+    }
+
+    function setCategory(cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-tab').forEach(btn => {
+        const match = btn.dataset.cat === cat;
+        btn.className = match
+          ? 'cat-tab min-h-12 px-4 py-2 rounded-lg font-mono text-xs border border-signal bg-signal/10 text-signal'
+          : 'cat-tab min-h-12 px-4 py-2 rounded-lg font-mono text-xs border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark text-muted-light dark:text-muted-dark';
+      });
+      renderCatalog();
+    }
+
+    function resetCatalogFilter() {
+      document.getElementById('catalog-search').value = '';
+      setCategory('all');
+    }
+
+    function renderCatalog() {
+      const q = (document.getElementById('catalog-search').value || '').toLowerCase().trim();
+      const grid = document.getElementById('catalog-grid');
+      const filtered = SITUATIONS.filter(s => {
+        const catOk = activeCategory === 'all' || s.cat === activeCategory;
+        const hay = `${s.cmd} ${s.titleEn} ${s.titleAr} ${s.descEn} ${s.skills.join(' ')}`.toLowerCase();
+        const searchOk = !q || hay.includes(q);
+        return catOk && searchOk;
+      });
+
+      document.getElementById('catalog-empty').classList.toggle('hidden', filtered.length > 0);
+
+      grid.innerHTML = filtered.map((s) => {
+        const realIdx = SITUATIONS.findIndex(item => item.id === s.id);
+        const shortCodeId = `short-${s.id}`;
+        const fullCodeId = `full-${s.id}`;
+        return `
+          <article id="${s.id}" class="rounded-xl border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark p-5 sm:p-7 space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-line-light dark:border-line-dark pb-4">
+              <div class="space-y-1 min-w-0">
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <span class="font-mono text-xs px-2.5 py-1 rounded bg-signal/10 text-signal border border-signal/30">#${s.num}</span>
+                  <span class="font-mono text-sm font-medium text-signal">${s.cmd}</span>
+                </div>
+                <h3 class="font-display text-lg sm:text-xl font-medium pt-1">${s.titleEn}</h3>
+                <p class="text-sm font-arabic text-muted-light dark:text-muted-dark">${s.titleAr}</p>
+                <p class="text-sm text-muted-light dark:text-muted-dark pt-1">${s.descEn}</p>
+              </div>
+              <button type="button" onclick="loadIntoStudio(${realIdx})" aria-label="Customize ${s.cmd} in Prompt Studio" class="min-h-12 px-4 py-2 rounded-lg border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark hover:border-signal font-mono text-xs shrink-0 micro-transition">
+                Customize in Studio
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+              <div class="lg:col-span-5 rounded-lg border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark p-4 space-y-2.5 min-w-0">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-mono text-xs text-muted-light dark:text-muted-dark">OPTION A // 1-WORD COMMAND</span>
+                  <button type="button" onclick="copyById('${shortCodeId}', this)" aria-label="Copy short command for ${s.cmd}" class="min-h-12 px-3.5 py-1.5 rounded-lg bg-signal text-canvas-dark font-mono text-xs font-medium">Copy</button>
+                </div>
+                <pre id="${shortCodeId}" class="font-mono text-xs whitespace-pre-wrap break-words bg-canvas-light dark:bg-canvas-dark p-3 rounded border border-line-light dark:border-line-dark">${s.shortTpl(activeStack, '')}</pre>
+              </div>
+
+              <div class="lg:col-span-7 rounded-lg border border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark p-4 space-y-2.5 min-w-0">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-mono text-xs text-muted-light dark:text-muted-dark">OPTION B // FULL COPY-PASTE PROMPT</span>
+                  <button type="button" onclick="copyById('${fullCodeId}', this)" aria-label="Copy full prompt for ${s.cmd}" class="min-h-12 px-3.5 py-1.5 rounded-lg border border-line-light dark:border-line-dark bg-panel-light dark:bg-panel-dark hover:border-signal font-mono text-xs font-medium">Copy Full Prompt</button>
+                </div>
+                <pre id="${fullCodeId}" class="font-mono text-xs whitespace-pre-wrap break-words bg-canvas-light dark:bg-canvas-dark p-3 rounded border border-line-light dark:border-line-dark max-h-44 overflow-y-auto">${s.fullTpl(activeStack, '')}</pre>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function toggleDrawer() {
+      const sb = document.getElementById('app-sidebar');
+      const bd = document.getElementById('drawer-backdrop');
+      const isClosed = sb.classList.contains('-translate-x-full');
+      if (isClosed) {
+        sb.classList.remove('-translate-x-full', 'rtl:translate-x-full');
+        bd.classList.remove('hidden');
+      } else {
+        sb.classList.add('-translate-x-full', 'rtl:translate-x-full');
+        bd.classList.add('hidden');
+      }
+    }
+
+    function closeDrawerOnMobile() {
+      const sb = document.getElementById('app-sidebar');
+      const bd = document.getElementById('drawer-backdrop');
+      if (window.innerWidth < 1024) {
+        sb.classList.add('-translate-x-full', 'rtl:translate-x-full');
+        bd.classList.add('hidden');
+      }
+    }
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    function toggleLanguage() {
+      const html = document.documentElement;
+      const isRtl = html.getAttribute('dir') === 'rtl';
+      html.setAttribute('dir', isRtl ? 'ltr' : 'rtl');
+      html.setAttribute('lang', isRtl ? 'en' : 'ar');
+    }
+
+    initApp();
+  </script>
+</body>
+</html>

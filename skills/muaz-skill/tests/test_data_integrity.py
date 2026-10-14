@@ -93,8 +93,8 @@ class TestReferenceGraph(unittest.TestCase):
 
 
 class TestAntiSlopContract(unittest.TestCase):
-    def test_exactly_29_checks(self):
-        self.assertEqual(len(CHECKS), 29)
+    def test_exactly_36_checks(self):
+        self.assertEqual(len(CHECKS), 36)
 
     def test_all_severities_valid(self):
         for check in CHECKS:
@@ -109,10 +109,10 @@ class TestAntiSlopContract(unittest.TestCase):
                 str(check["source"]).strip(), f"{check['label']} has empty source"
             )
 
-    def test_readme_claims_29_checks(self):
+    def test_readme_claims_36_checks(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        self.assertIn("29 AI tell-patterns", readme)
-        self.assertIn("29 نمطاً", readme)
+        self.assertIn("36 AI tell-patterns", readme)
+        self.assertIn("36 نمطاً", readme)
 
 
 class TestGeneratedOutputConsistency(unittest.TestCase):

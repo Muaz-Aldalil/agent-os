@@ -280,6 +280,110 @@ class UIAuditEngine:
                     affected_routes=[f"/{rel_path}"]
                 ))
 
+            # Craft Floor Depth: Nested Cards inside Cards
+            if re.search(r'<Card\b[^>]*>[^<]*<Card\b', line) or re.search(r'\bbg-card\b[^>]*>[^<]*<(?:div|section|article)[^>]*\bbg-card\b', line):
+                self.findings.append(UIFinding(
+                    finding_id=self._next_id(),
+                    title="Nested Card Containers Violate Craft Floor Depth Hierarchy",
+                    category="Visual Consistency",
+                    severity=HIGH,
+                    confidence="High",
+                    file_path=rel_path,
+                    line_num=idx,
+                    code_snippet=line,
+                    current_behavior="Card container (`<Card>` or `bg-card`) is nested directly inside another card container.",
+                    expected_behavior="Never nest cards inside cards. Use spacing, subtle dividers, or flat tone steps for inner groupings.",
+                    user_impact="Creates cluttered 'box-in-a-box' border noise and destroys spatial hierarchy.",
+                    root_cause="Inner section wrapped in a full card surface instead of using spacing or flat grouping.",
+                    is_hypothesis=False,
+                    recommended_solution="Remove the inner card border/surface and separate inner groups with spacing (`space-y-4`) or a subtle tone step (`bg-muted/40`).",
+                    affected_routes=[f"/{rel_path}"]
+                ))
+
+            # Craft Floor Contrast: Untinted Gray Text on Colored Surfaces
+            if (
+                re.search(r'\bbg-(?:primary|indigo|violet|blue|emerald|teal|amber|rose|red|green|purple)-[56789]00\b[^"\']*\btext-(?:gray|slate|neutral|zinc)-[3456]00\b', line)
+                or re.search(r'\btext-(?:gray|slate|neutral|zinc)-[3456]00\b[^"\']*\bbg-(?:primary|indigo|violet|blue|emerald|teal|amber|rose|red|green|purple)-[56789]00\b', line)
+            ):
+                self.findings.append(UIFinding(
+                    finding_id=self._next_id(),
+                    title="Untinted Gray Text on Colored Surface Degrades Contrast & Harmony",
+                    category="Visual Consistency",
+                    severity=HIGH,
+                    confidence="High",
+                    file_path=rel_path,
+                    line_num=idx,
+                    code_snippet=line,
+                    current_behavior="Element places raw untinted gray text (`text-gray-*`/`text-slate-*`) directly on a saturated colored surface.",
+                    expected_behavior="On colored surfaces, tint secondary text from the surface hue or use foreground opacity (e.g. `text-white/80`).",
+                    user_impact="Untinted gray on saturated color looks muddy, deadens the palette, and often fails WCAG 4.5:1 contrast.",
+                    root_cause="Default neutral gray utility applied without accounting for the colored parent surface.",
+                    is_hypothesis=False,
+                    recommended_solution="Replace raw gray text utility with a hue-tinted shade or `text-primary-foreground/80`.",
+                    affected_routes=[f"/{rel_path}"]
+                ))
+
+            # Wave 3 AI Slop Tell: Terracotta / Clay Default Editorial Accent
+            wave3_match = re.search(r'#(?:d97757|da7756|c15f3c|cc785c|bd5d3a)\b', line, re.I)
+            if wave3_match:
+                self.findings.append(UIFinding(
+                    finding_id=self._next_id(),
+                    title=f"Wave 3 Terracotta/Clay AI Slop Signature Detected ('{wave3_match.group(0)}')",
+                    category="Visual Consistency",
+                    severity=MEDIUM,
+                    confidence="High",
+                    file_path=rel_path,
+                    line_num=idx,
+                    code_snippet=line,
+                    current_behavior=f"Element uses the default 2025-2026 AI warm-editorial terracotta hex `{wave3_match.group(0)}`.",
+                    expected_behavior="Choose a subject-grounded palette derived from the client's Subject Inventory (unless terracotta is explicitly mandated by the brand brief).",
+                    user_impact="Makes the interface immediately recognizable as a generic Wave 3 AI-generated template.",
+                    root_cause="Defaulting to the 'warm editorial' cream + terracotta AI palette without subject grounding.",
+                    is_hypothesis=False,
+                    recommended_solution="Replace with an intentional subject-specific accent token, or document explicit brand-brief approval.",
+                    affected_routes=[f"/{rel_path}"]
+                ))
+
+            # Wave 2 AI Slop Tell: Mixed-Font Italic Word in Headline
+            if re.search(r'<h[1-3][^>]*>.*<(?:em|i)\b[^>]*>.*</h[1-3]>', line, re.I) or re.search(r'<h[1-3][^>]*>.*\b(?:font-serif\s+italic|italic\s+font-serif)\b.*</h[1-3]>', line, re.I):
+                self.findings.append(UIFinding(
+                    finding_id=self._next_id(),
+                    title="Mixed-Font Italic Word in Headline (Wave 2 AI Slop Tell)",
+                    category="Visual Consistency",
+                    severity=MEDIUM,
+                    confidence="High",
+                    file_path=rel_path,
+                    line_num=idx,
+                    code_snippet=line,
+                    current_behavior="Headline (`<h1>`-`<h3>`) italicizes a single word (`<em>`/`<i>`/`font-serif italic`) for artificial editorial drama.",
+                    expected_behavior="Headlines must hold to <=2 lines (~32 chars) and carry authority through clear claims, weight, and scale rather than single-word italic gimmicks.",
+                    user_impact="Signals formulaic 2025 AI marketing copy and weakens typographic restraint.",
+                    root_cause="Reliance on decorative mixed-font italic emphasis instead of an Argument-First headline claim.",
+                    is_hypothesis=False,
+                    recommended_solution="Set the full headline in a single cohesive display voice and rewrite to a concrete claim.",
+                    affected_routes=[f"/{rel_path}"]
+                ))
+
+            # Craft Floor Spacing: Heading Spacing Inversion (mb > mt)
+            if re.search(r'<h[2-4]\b[^>]*class(?:Name)?=["\'][^"\']*\bmt-[1-3]\b[^"\']*\bmb-(?:[6-9]|1[0-6])\b', line):
+                self.findings.append(UIFinding(
+                    finding_id=self._next_id(),
+                    title="Heading Spacing Inversion (More Space Below Heading Than Above)",
+                    category="Layout & Content",
+                    severity=MEDIUM,
+                    confidence="High",
+                    file_path=rel_path,
+                    line_num=idx,
+                    code_snippet=line,
+                    current_behavior="Section heading defines smaller top margin (`mt-1..3`) than bottom margin (`mb-6+`).",
+                    expected_behavior="Craft Floor Spacing Law: always place more space above a heading than below it (`mt > mb`) so it visually groups with the content it introduces.",
+                    user_impact="Detaches the heading from its own paragraph and visually glues it to the preceding section.",
+                    root_cause="Inverted vertical rhythm margins on heading element.",
+                    is_hypothesis=False,
+                    recommended_solution="Ensure top margin exceeds bottom margin (e.g. `mt-8 mb-3` or `mt-10 mb-4`).",
+                    affected_routes=[f"/{rel_path}"]
+                ))
+
         # -------------------------------------------------------------
         # DIMENSION 2: Responsive Behavior & Viewport Breakpoints
         # -------------------------------------------------------------
@@ -453,6 +557,26 @@ class UIAuditEngine:
                     root_cause="Link used as trigger for JavaScript action instead of semantic button.",
                     is_hypothesis=False,
                     recommended_solution="Replace `<a href='#'>` with semantic `<button type='button'>`.",
+                    affected_routes=[f"/{rel_path}"]
+                ))
+
+            # Craft Floor Motion: Bounce or Elastic Overshoot Easing
+            if re.search(r'\banimate-bounce\b', line) or re.search(r'cubic-bezier\(\s*[0-9.]+\s*,\s*1\.(?:[2-9][0-9]*|1[6-9])\s*,', line, re.I):
+                self.findings.append(UIFinding(
+                    finding_id=self._next_id(),
+                    title="Bounce or Elastic Overshoot Easing Violates Craft Floor Motion Standard",
+                    category="Interactions",
+                    severity=MEDIUM,
+                    confidence="High",
+                    file_path=rel_path,
+                    line_num=idx,
+                    code_snippet=line,
+                    current_behavior="Element uses theatrical bounce/elastic overshoot animation (`animate-bounce` or `cubic-bezier` overshoot > 1.15).",
+                    expected_behavior="Craft Floor Motion Law: use natural exponential ease-out (`cubic-bezier(0.16, 1, 0.3, 1)` or `cubic-bezier(0.22, 1, 0.36, 1)`) without bounce/elasticity.",
+                    user_impact="Creates distracting, juvenile motion that fatigues users in production interfaces.",
+                    root_cause="Use of spring/elastic overshoot or looping bounce animation instead of clean deceleration.",
+                    is_hypothesis=False,
+                    recommended_solution="Replace bounce/elastic easing with `ease-out` or `cubic-bezier(0.16, 1, 0.3, 1)`.",
                     affected_routes=[f"/{rel_path}"]
                 ))
 

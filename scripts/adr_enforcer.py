@@ -114,6 +114,21 @@ def check_adr_029_capability_harmonization() -> Dict[str, Any]:
     )
     return {"passed": passed, "message": "Capability harmonization, legacy constitution retired, and resilient router verified"}
 
+def check_adr_036_universal_rules_and_24kb_cap() -> Dict[str, Any]:
+    rules_dir = WORKSPACE_ROOT / "rules"
+    universal_rule = rules_dir / "universal-project-rules.md"
+    gemini_md = WORKSPACE_ROOT / "GEMINI.md"
+    if not universal_rule.is_file() or not gemini_md.is_file():
+        return {"passed": False, "message": "universal-project-rules.md or GEMINI.md missing"}
+    rule_files = list(rules_dir.glob("*.md"))
+    under_cap = all(r.stat().st_size <= 24000 for r in rule_files) and gemini_md.stat().st_size <= 24000
+    total_bytes = sum(r.stat().st_size for r in rule_files)
+    passed = under_cap and total_bytes <= 80000 and len(rule_files) >= 5
+    return {
+        "passed": passed,
+        "message": f"Universal cross-project rules active & all {len(rule_files)} rules strictly < 24KB cap ({total_bytes:,}B total)"
+    }
+
 EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-002": check_adr_002_pest_php,
     "ADR-003": check_adr_003_rtl_css,
@@ -127,6 +142,7 @@ EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-027": check_adr_027_precode_engine,
     "ADR-028": check_adr_028_sentinel,
     "ADR-029": check_adr_029_capability_harmonization,
+    "ADR-036": check_adr_036_universal_rules_and_24kb_cap,
 }
 
 def parse_adrs_from_decisions() -> List[Dict[str, str]]:

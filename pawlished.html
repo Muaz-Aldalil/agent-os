@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pawlished Studio | One-on-One Botanical Dog Grooming in Portland</title>
+  <meta name="description" content="Book a calm, cage-free dog grooming appointment at Pawlished Studio on Mercer Botanical Row. 38.5°C hydro-massage baths, pH 7.0 colloidal oat washes, and 52 dB quiet drying." />
+
+  <!-- Google Fonts: Fraunces (Expressive Display Serif, wght 400-500) + Plus Jakarta Sans (Readable Humanist Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN configured with semantic Design Tokens -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: {
+              DEFAULT: '#FAF6EE',
+              paper: '#FDFBF7',
+              deep: '#F1EAE0',
+              card: '#F6F0E4'
+            },
+            forest: {
+              DEFAULT: '#1B3B2B',
+              hover: '#12291E',
+              mist: '#D6E5DC',
+              muted: '#9AB5A6'
+            },
+            sage: {
+              DEFAULT: '#3D5A49',
+              soft: '#E3ECE6',
+              border: '#C5D6CC'
+            },
+            peach: {
+              DEFAULT: '#E59572',
+              soft: '#F9E3D8',
+              ink: '#3B1A0B'
+            },
+            ink: {
+              DEFAULT: '#17231C',
+              muted: '#495A50',
+              subtle: '#526359'
+            },
+            line: {
+              DEFAULT: '#DDD4C5',
+              strong: '#C4B8A5'
+            }
+          },
+          fontFamily: {
+            display: ['Fraunces', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* ==========================================================================
+       DESIGN TOKENS & CRAFT FLOOR BROWSER SURFACE THEMING
+       ========================================================================== */
+    :root {
+      --color-cream: #FAF6EE;
+      --color-cream-paper: #FDFBF7;
+      --color-cream-deep: #F1EAE0;
+      --color-forest: #1B3B2B;
+      --color-forest-hover: #12291E;
+      --color-forest-mist: #D6E5DC;
+      --color-sage: #3D5A49;
+      --color-sage-soft: #E3ECE6;
+      --color-peach: #E59572;
+      --color-peach-soft: #F9E3D8;
+      --color-peach-ink: #3B1A0B;
+      --color-ink: #17231C;
+      --color-ink-muted: #495A50;
+      --color-ink-subtle: #526359;
+      --color-line: #DDD4C5;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html {
+      background-color: var(--color-cream);
+      color: var(--color-ink);
+      caret-color: var(--color-forest);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    /* Browser Surface Theming: Selection, Scrollbars, Underline Offset, Focus Ring */
+    ::selection {
+      background-color: var(--color-forest);
+      color: var(--color-cream);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--color-cream-deep);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-sage);
+      border-radius: 9999px;
+      border: 2px solid var(--color-cream-deep);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-forest);
+    }
+
+    a {
+      text-underline-offset: 0.22em;
+    }
+
+    /* Craft Floor Typography Rules: Display weight 400-500, tracking -0.03em, balance */
+    .display-heading {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+
+    .prose-measure {
+      max-width: 66ch;
+      line-height: 1.65;
+    }
+
+    .tabular-data {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Craft Floor Depth: Vertical offset + soft blur (no zero-offset glow) */
+    .studio-shadow {
+      box-shadow: 0 12px 28px -8px rgba(23, 35, 28, 0.08), 0 4px 10px -3px rgba(23, 35, 28, 0.04);
+    }
+
+    /* Craft Floor Motion: Exponential ease-out only, respects prefers-reduced-motion */
+    .smooth-surface {
+      transition-property: background-color, border-color, color, transform, box-shadow;
+      transition-duration: 220ms;
+      transition-timing-function: var(--ease-out-expo);
+    }
+
+    /* Brass Intake Ticket perforated edge */
+    .ticket-notch {
+      background-image: radial-gradient(circle at 0 50%, var(--color-cream) 8px, transparent 9px),
+                        radial-gradient(circle at 100% 50%, var(--color-cream) 8px, transparent 9px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-cream text-ink antialiased selection:bg-forest selection:text-cream">
+
+  <!-- Skip to Booking Link for Keyboard Accessibility -->
+  <a href="#booking-bench" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:start-3 focus:z-50 focus:bg-forest focus:text-cream focus:px-4 focus:py-2.5 focus:rounded-lg focus:shadow-lg">
+    Skip directly to appointment booking
+  </a>
+
+  <!-- ========================================================================
+       A. STICKY STUDIO HEADER
+       ======================================================================== -->
+  <header class="sticky top-0 z-40 h-20 bg-cream border-b border-line">
+    <div class="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+      <!-- Brand Mark -->
+      <a href="#top" class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded-lg py-1">
+        <span class="w-10 h-10 rounded-full bg-forest text-cream flex items-center justify-center shrink-0 smooth-surface group-hover:bg-forest-hover">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="7.5" cy="8.5" r="2" />
+            <circle cx="12" cy="6.5" r="2" />
+            <circle cx="16.5" cy="8.5" r="2" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.5 14.5c0-2 1.6-3.5 3.5-3.5s3.5 1.5 3.5 3.5c0 2.3-1.8 4-3.5 4s-3.5-1.7-3.5-4z" />
+          </svg>
+        </span>
+        <div>
+          <span class="display-heading text-2xl text-ink block leading-none">Pawlished</span>
+          <span class="text-xs text-ink-muted block mt-1 tabular-data">418 Mercer Botanical Row · Est. 2019</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav aria-label="Primary studio navigation" class="hidden md:flex items-center gap-8">
+        <a href="#services-menu" class="text-sm font-medium text-ink-muted hover:text-forest smooth-surface py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded">
+          Grooming Menu &amp; Coat Scale
+        </a>
+        <a href="#booking-bench" class="text-sm font-medium text-ink-muted hover:text-forest smooth-surface py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded">
+          Appointment Ledger
+        </a>
+        <a href="#conservatory-standards" class="text-sm font-medium text-ink-muted hover:text-forest smooth-surface py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded">
+          52 dB Studio Standards
+        </a>
+        <a href="#studio-hours" class="text-sm font-medium text-ink-muted hover:text-forest smooth-surface py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 rounded">
+          Hours &amp; Location
+        </a>
+      </nav>
+
+      <!-- Primary Header CTA + Mobile Menu Trigger -->
+      <div class="flex items-center gap-3">
+        <a href="#booking-bench" class="inline-flex items-center justify-center gap-2 bg-forest hover:bg-forest-hover text-cream text-sm font-medium px-5 py-3 rounded-xl smooth-surface cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 min-h-11">
+          <span>Book an Appointment</span>
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 10h10m-4-4l4 4-4 4" />
+          </svg>
+        </a>
+
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-nav-drawer"
+          aria-label="Toggle studio navigation menu"
+          class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-line bg-cream-deep text-ink hover:border-forest smooth-surface cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
+        >
+          <svg id="menu-icon-open" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg id="menu-icon-close" class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible Mobile Navigation Drawer -->
+    <div id="mobile-nav-drawer" class="hidden md:hidden bg-cream border-b border-line px-4 pt-3 pb-6">
+      <nav aria-label="Mobile studio navigation" class="flex flex-col gap-2">
+        <a href="#services-menu" class="mobile-nav-link px-3 py-2.5 rounded-lg text-base font-medium text-ink hover:bg-cream-deep">
+          Grooming Menu &amp; Coat Scale
+        </a>
+        <a href="#booking-bench" class="mobile-nav-link px-3 py-2.5 rounded-lg text-base font-medium text-ink hover:bg-cream-deep">
+          Appointment Ledger
+        </a>
+        <a href="#conservatory-standards" class="mobile-nav-link px-3 py-2.5 rounded-lg text-base font-medium text-ink hover:bg-cream-deep">
+          52 dB Studio Standards
+        </a>
+        <a href="#studio-hours" class="mobile-nav-link px-3 py-2.5 rounded-lg text-base font-medium text-ink hover:bg-cream-deep">
+          Hours &amp; Location
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ======================================================================
+         B. ASYMMETRIC SPLIT HERO SECTION (60/40)
+         Claim: Dogs hate loud cages, so we groom one dog at a time in a 52 dB sunlit conservatory.
+         Headline Arithmetic: "Calm hands. Coat-first care." (28 chars, <= 2 lines)
+         ====================================================================== -->
+    <section class="py-12 md:py-20 lg:py-24 border-b border-line">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+
+          <!-- Left Column (7 of 12 cols): Editorial Argument & Studio Telemetry -->
+          <div class="lg:col-span-7">
+            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-sage-soft border border-sage-border text-forest text-xs font-medium mb-6">
+              <span class="w-2 h-2 rounded-full bg-forest"></span>
+              <span>One-on-One Botanical Conservatory · Zero Stacked Cages</span>
+            </div>
+
+            <h1 class="display-heading text-4xl sm:text-5xl lg:text-6xl text-ink leading-tight">
+              Calm hands. Coat-first care.
+            </h1>
+
+            <p class="prose-measure text-base sm:text-lg text-ink-muted mt-5 mb-8">
+              Most grooming salons run like assembly lines with barking rows of steel kennels and roaring high-velocity dryers. At Pawlished, your dog enters a quiet, sunlit botanical room for an unhurried one-on-one session with a Fear-Free certified stylist, a <span class="tabular-data font-medium text-ink">38.5°C</span> warm hydro-massage bath, and <span class="tabular-data font-medium text-ink">pH 7.0</span> colloidal oat botanicals.
+            </p>
+
+            <!-- Primary CTA & Secondary Action -->
+            <div class="flex flex-wrap items-center gap-4">
+              <a href="#booking-bench" class="inline-flex items-center justify-center gap-3 bg-forest hover:bg-forest-hover text-cream font-medium px-7 py-4 rounded-xl smooth-surface cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 min-h-12">
+                <span>Reserve a 1-on-1 Session</span>
+                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 10h10m-4-4l4 4-4 4" />
+                </svg>
+              </a>
+              <a href="#services-menu" class="inline-flex items-center justify-center gap-2 bg-cream-deep hover:bg-sage-soft text-ink font-medium px-6 py-4 rounded-xl border border-line smooth-surface cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 min-h-12">
+                <span>Explore Services &amp; Coat Pricing</span>
+              </a>
+            </div>
+
+            <!-- Concrete Subject Inventory Metrics Bar (tabular-nums) -->
+            <dl class="mt-12 pt-8 border-t border-line grid grid-cols-2 sm:grid-cols-4 gap-6">
+              <div>
+                <dt class="text-xs text-ink-muted">Hydro-Bath Temp</dt>
+                <dd class="display-heading text-2xl sm:text-3xl text-forest mt-1 tabular-data">38.5°C</dd>
+                <span class="text-xs text-ink-subtle block mt-0.5">Canine body-temp match</span>
+              </div>
+              <div>
+                <dt class="text-xs text-ink-muted">Acoustic Ceiling</dt>
+                <dd class="display-heading text-2xl sm:text-3xl text-forest mt-1 tabular-data">52 dB</dd>
+                <span class="text-xs text-ink-subtle block mt-0.5">Hand-held towel &amp; diffuser</span>
+              </div>
+              <div>
+                <dt class="text-xs text-ink-muted">Botanical Wash</dt>
+                <dd class="display-heading text-2xl sm:text-3xl text-forest mt-1 tabular-data">pH 7.0</dd>
+                <span class="text-xs text-ink-subtle block mt-0.5">Cold-pressed oat &amp; cedar</span>
+              </div>
+              <div>
+                <dt class="text-xs text-ink-muted">Kennel Waiting</dt>
+                <dd class="display-heading text-2xl sm:text-3xl text-forest mt-1 tabular-data">0 min</dd>
+                <span class="text-xs text-ink-subtle block mt-0.5">Direct table-to-owner handoff</span>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Right Column (5 of 12 cols): Conservatory Portrait & Intake Tag Callout -->
+          <div class="lg:col-span-5">
+            <figure class="relative rounded-2xl overflow-hidden border border-line bg-cream-deep studio-shadow">
+              <img
+                src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=1000&q=85"
+                alt="A relaxed golden-coated dog wrapped in a warm waffle towel during a gentle bath session at Pawlished Studio"
+                class="w-full h-80 sm:h-96 object-cover object-center"
+              />
+              <figcaption class="p-5 bg-forest text-cream">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <p class="text-xs text-forest-mist font-medium">Suite No. 02 · Mercer Conservatory</p>
+                    <p class="display-heading text-lg text-cream mt-1">Barnaby · 4-Year Cavapoo</p>
+                    <p class="text-xs text-forest-mist mt-1">Chamomile soak, hand-scissored Teddy trim &amp; blueberry facial</p>
+                  </div>
+                  <span class="px-3 py-1 rounded-lg bg-peach text-peach-ink text-xs font-semibold tabular-data shrink-0">
+                    90 min
+                  </span>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         C. SERVICES & LIVE COAT-WEIGHT CALIBRATOR ("One Live Interactive Thing")
+         Subject Device: The Groomer's Coat-Weight Ledger dynamically recalculates
+         all 4 service prices and studio durations before the owner books.
+         ====================================================================== -->
+    <section id="services-menu" class="py-16 md:py-24 border-b border-line">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section Header + Coat-Weight Calibrator Bar -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-12">
+          <div class="lg:col-span-7">
+            <p class="text-xs font-semibold text-sage mb-2">Transparent Coat-Weight Pricing (Illustrative Studio Rates)</p>
+            <h2 class="display-heading text-3xl sm:text-4xl text-ink mt-2 mb-3">
+              Four treatments, calibrated to your dog's coat and weight.
+            </h2>
+            <p class="prose-measure text-ink-muted text-base">
+              Select your dog's size bracket below to see exact session durations and rates across our menu. Clicking any treatment card loads it directly into your appointment ticket.
+            </p>
+          </div>
+
+          <!-- Interactive Coat-Weight Calibrator (Syncs with Booking Form) -->
+          <div class="lg:col-span-5 bg-cream-deep p-4 rounded-2xl border border-line">
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-xs font-semibold text-ink">Step 1: Calibrate by Dog Size</span>
+              <span id="calibrator-active-label" class="text-xs font-medium text-forest tabular-data">Medium (15-40 lb)</span>
+            </div>
+            <div role="group" aria-label="Calibrate service prices by dog weight bracket" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <button
+                type="button"
+                data-size-calibrator="small"
+                class="size-calibrator-btn px-3 py-2.5 rounded-xl text-xs font-medium border border-line bg-cream text-ink hover:border-forest smooth-surface cursor-pointer text-start focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+              >
+                <span class="block font-semibold">Petite</span>
+                <span class="text-ink-muted tabular-data">&lt; 15 lb</span>
+              </button>
+              <button
+                type="button"
+                data-size-calibrator="medium"
+                class="size-calibrator-btn px-3 py-2.5 rounded-xl text-xs font-medium border border-forest bg-forest text-cream smooth-surface cursor-pointer text-start focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+              >
+                <span class="block font-semibold">Medium</span>
+                <span class="text-forest-mist tabular-data">15-40 lb</span>
+              </button>
+              <button
+                type="button"
+                data-size-calibrator="large"
+                class="size-calibrator-btn px-3 py-2.5 rounded-xl text-xs font-medium border border-line bg-cream text-ink hover:border-forest smooth-surface cursor-pointer text-start focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+              >
+                <span class="block font-semibold">Large</span>
+                <span class="text-ink-muted tabular-data">40-75 lb</span>
+              </button>
+              <button
+                type="button"
+                data-size-calibrator="giant"
+                class="size-calibrator-btn px-3 py-2.5 rounded-xl text-xs font-medium border border-line bg-cream text-ink hover:border-forest smooth-surface cursor-pointer text-start focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+              >
+                <span class="block font-semibold">Giant</span>
+                <span class="text-ink-muted tabular-data">75+ lb</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2x2 Editorial Service Ledger Grid (No nested cards, 1px border tone steps) -->
+        <div id="service-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6" role="radiogroup" aria-label="Select a grooming service">
+
+          <!-- Service 1: Bath & Brush -->
+          <article
+            data-service-card="bath-brush"
+            tabindex="0"
+            role="radio"
+            aria-checked="false"
+            class="service-card rounded-2xl border border-line bg-cream-card p-6 sm:p-8 smooth-surface cursor-pointer hover:border-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 flex flex-col justify-between"
+          >
+            <div>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-sage-soft text-forest mb-3">
+                    Essential Coat Refresh
+                  </span>
+                  <h3 class="display-heading text-2xl text-ink">Bath &amp; Brush</h3>
+                </div>
+                <div class="text-end shrink-0">
+                  <span data-price-for="bath-brush" class="display-heading text-3xl text-forest block tabular-data">$68</span>
+                  <span data-duration-for="bath-brush" class="text-xs text-ink-muted block mt-1 tabular-data">60 min session</span>
+                </div>
+              </div>
+
+              <p class="text-sm sm:text-base text-ink-muted mt-3 mb-6 prose-measure">
+                Warm <span class="tabular-data">38.5°C</span> colloidal oat &amp; chamomile hydro-bath, blueberry tear-stain facial, quiet towel &amp; diffuser blow-out, 15-minute pin-brush coat carding, nail dremel rounding, and organic ear cleansing.
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-line flex items-center justify-between gap-4">
+              <span class="text-xs text-ink-subtle">Ideal every 3-4 weeks between full haircuts</span>
+              <span class="service-select-indicator inline-flex items-center gap-1.5 text-xs font-semibold text-forest">
+                <span class="indicator-text">Select Service</span>
+                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 10h10m-4-4l4 4-4 4" />
+                </svg>
+              </span>
+            </div>
+          </article>
+
+          <!-- Service 2: Full Groom (Default Selected) -->
+          <article
+            data-service-card="full-groom"
+            tabindex="0"
+            role="radio"
+            aria-checked="true"
+            class="service-card rounded-2xl border-2 border-forest bg-cream-deep p-6 sm:p-8 smooth-surface cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 flex flex-col justify-between"
+          >
+            <div>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-peach-soft text-peach-ink mb-3">
+                    Complete Breed &amp; Custom Styling
+                  </span>
+                  <h3 class="display-heading text-2xl text-ink">Full Bespoke Groom</h3>
+                </div>
+                <div class="text-end shrink-0">
+                  <span data-price-for="full-groom" class="display-heading text-3xl text-forest block tabular-data">$105</span>
+                  <span data-duration-for="full-groom" class="text-xs text-ink-muted block mt-1 tabular-data">105 min session</span>
+                </div>
+              </div>
+
+              <p class="text-sm sm:text-base text-ink-muted mt-3 mb-6 prose-measure">
+                Everything in Bath &amp; Brush plus full-body hand-scissoring and breed-standard or tailored pet clip using sanitized Japanese VG-10 shears, sanitary trim, paw-pad sculpting, and organic shea paw balm.
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-line flex items-center justify-between gap-4">
+              <span class="text-xs text-ink-subtle">Includes post-session coat notes on your brass tag</span>
+              <span class="service-select-indicator inline-flex items-center gap-1.5 text-xs font-semibold text-forest">
+                <span class="indicator-text">Selected in Ticket</span>
+                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5l3.5 3.5 7.5-7.5" />
+                </svg>
+              </span>
+            </div>
+          </article>
+
+          <!-- Service 3: Puppy First Groom -->
+          <article
+            data-service-card="puppy-first"
+            tabindex="0"
+            role="radio"
+            aria-checked="false"
+            class="service-card rounded-2xl border border-line bg-cream-card p-6 sm:p-8 smooth-surface cursor-pointer hover:border-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 flex flex-col justify-between"
+          >
+            <div>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-sage-soft text-forest mb-3">
+                    Puppies 12 Weeks to 6 Months
+                  </span>
+                  <h3 class="display-heading text-2xl text-ink">Puppy First Sanctuary Groom</h3>
+                </div>
+                <div class="text-end shrink-0">
+                  <span data-price-for="puppy-first" class="display-heading text-3xl text-forest block tabular-data">$58</span>
+                  <span data-duration-for="puppy-first" class="text-xs text-ink-muted block mt-1 tabular-data">45 min session</span>
+                </div>
+              </div>
+
+              <p class="text-sm sm:text-base text-ink-muted mt-3 mb-6 prose-measure">
+                A gentle confidence-building introduction: tearless chamomile bath, warm towel cuddle wrap, low-decibel acoustic desensitization, eye-corner and sanitary tidy, paw-handling play, and wild-salmon reward treats.
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-line flex items-center justify-between gap-4">
+              <span class="text-xs text-ink-subtle">Paced around your puppy's curiosity and comfort</span>
+              <span class="service-select-indicator inline-flex items-center gap-1.5 text-xs font-semibold text-forest">
+                <span class="indicator-text">Select Service</span>
+                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 10h10m-4-4l4 4-4 4" />
+                </svg>
+              </span>
+            </div>
+          </article>
+
+          <!-- Service 4: De-shedding Treatment -->
+          <article
+            data-service-card="deshedding"
+            tabindex="0"
+            role="radio"
+            aria-checked="false"
+            class="service-card rounded-2xl border border-line bg-cream-card p-6 sm:p-8 smooth-surface cursor-pointer hover:border-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 flex flex-col justify-between"
+          >
+            <div>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-peach-soft text-peach-ink mb-3">
+                    Double-Coat &amp; Seasonal Undercoat Release
+                  </span>
+                  <h3 class="display-heading text-2xl text-ink">Botanical De-Shedding Ritual</h3>
+                </div>
+                <div class="text-end shrink-0">
+                  <span data-price-for="deshedding" class="display-heading text-3xl text-forest block tabular-data">$92</span>
+                  <span data-duration-for="deshedding" class="text-xs text-ink-muted block mt-1 tabular-data">90 min session</span>
+                </div>
+              </div>
+
+              <p class="text-sm sm:text-base text-ink-muted mt-3 mb-6 prose-measure">
+                Omega-3 flaxseed &amp; rosemary follicle-release soak, warm hydro-massage rinse, gentle undercoat carding and rake work that removes up to <span class="tabular-data">85%</span> of loose dead undercoat without blade-damage to top guard hairs.
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-line flex items-center justify-between gap-4">
+              <span class="text-xs text-ink-subtle">Recommended for Huskies, Goldens, Corgis &amp; Shepherds</span>
+              <span class="service-select-indicator inline-flex items-center gap-1.5 text-xs font-semibold text-forest">
+                <span class="indicator-text">Select Service</span>
+                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 10h10m-4-4l4 4-4 4" />
+                </svg>
+              </span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         D. INTERACTIVE APPOINTMENT BOOKING BENCH & LIVE STUDIO TICKET
+         7/12 Intake Form + 5/12 Sticky Brass-Tagged Studio Appointment Summary
+         ====================================================================== -->
+    <section id="booking-bench" class="py-16 md:py-24 border-b border-line bg-cream-deep/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="max-w-3xl mb-10">
+          <p class="text-xs font-semibold text-sage mb-2">Interactive Frontend Booking Prototype</p>
+          <h2 class="display-heading text-3xl sm:text-4xl text-ink mt-2 mb-3">
+            Complete your dog's studio intake ledger.
+          </h2>
+          <p class="prose-measure text-ink-muted text-base">
+            Every field updates your studio appointment ticket in real time. No deposit is charged online; you pay at the conservatory counter after inspecting your dog's finished coat.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+
+          <!-- Left Column (7 of 12 cols): Structured Intake Form -->
+          <div class="lg:col-span-7">
+            <form id="grooming-booking-form" novalidate class="bg-cream rounded-2xl border border-line p-6 sm:p-8 studio-shadow">
+
+              <!-- Validation Error Banner (Hidden until needed) -->
+              <div
+                id="form-error-banner"
+                role="alert"
+                aria-live="polite"
+                class="hidden mb-6 p-4 rounded-xl bg-peach-soft border border-peach text-peach-ink text-sm"
+              >
+                <p class="font-semibold mb-1">Please check the highlighted intake details before confirming:</p>
+                <ul id="form-error-list" class="list-disc ps-5 space-y-1 text-xs sm:text-sm"></ul>
+              </div>
+
+              <!-- STEP 1: Service & Coat Size -->
+              <fieldset class="pb-8 border-b border-line">
+                <legend class="display-heading text-xl text-ink mb-4">1. Grooming Treatment &amp; Coat Size</legend>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-2">
+                  <div>
+                    <label for="service-select" class="block text-xs font-semibold text-ink mb-2">
+                      Selected Treatment <span class="text-peach-ink">*</span>
+                    </label>
+                    <select
+                      id="service-select"
+                      name="service"
+                      required
+                      class="w-full rounded-xl border border-line-strong bg-white px-3.5 py-3 text-sm text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                    >
+                      <option value="bath-brush">Bath &amp; Brush</option>
+                      <option value="full-groom" selected>Full Bespoke Groom</option>
+                      <option value="puppy-first">Puppy First Sanctuary Groom</option>
+                      <option value="deshedding">Botanical De-Shedding Ritual</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label for="dog-size-select" class="block text-xs font-semibold text-ink mb-2">
+                      Dog Weight &amp; Coat Bracket <span class="text-peach-ink">*</span>
+                    </label>
+                    <select
+                      id="dog-size-select"
+                      name="dogSize"
+                      required
+                      class="w-full rounded-xl border border-line-strong bg-white px-3.5 py-3 text-sm text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-forest tabular-data"
+                    >
+                      <option value="small">Petite (&lt; 15 lb)</option>
+                      <option value="medium" selected>Medium (15 - 40 lb)</option>
+                      <option value="large">Large (40 - 75 lb)</option>
+                      <option value="giant">Giant / Double-Coat (75+ lb)</option>
+                    </select>
+                  </div>
+                </div>
+              </fieldset>
+
+              <!-- STEP 2: Dog Details -->
+              <fieldset class="mt-8 pb-8 border-b border-line">
+                <legend class="display-heading text-xl text-ink mb-4">2. Dog Profile &amp; Handling Notes</legend>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-2">
+                  <div>
+                    <label for="dog-name-input" class="block text-xs font-semibold text-ink mb-2">
+                      Dog's Name <span class="text-peach-ink">*</span>
+                    </label>
+                    <input
+                      id="dog-name-input"
+                      name="dogName"
+                      type="text"
+                      required
+                      autocomplete="off"
+                      placeholder="e.g., Barnaby"
+                      aria-describedby="dog-name-error"
+                      class="w-full rounded-xl border border-line-strong bg-white px-3.5 py-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                    />
+                    <p id="dog-name-error" class="hidden text-xs text-peach-ink font-medium mt-1.5">
+                      Please enter your dog's name.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label for="dog-breed-input" class="block text-xs font-semibold text-ink mb-2">
+                      Breed or Coat Mix <span class="text-peach-ink">*</span>
+                    </label>
+                    <input
+                      id="dog-breed-input"
+                      name="dogBreed"
+                      type="text"
+                      required
+                      autocomplete="off"
+                      placeholder="e.g., Golden Retriever, Cavapoo, Mixed"
+                      aria-describedby="dog-breed-error"
+                      class="w-full rounded-xl border border-line-strong bg-white px-3.5 py-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                    />
+                    <p id="dog-breed-error" class="hidden text-xs text-peach-ink font-medium mt-1.5">
+                      Please enter your dog's breed or coat mix.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="mt-5">
+                  <label for="coat-notes-input" class="block text-xs font-semibold text-ink mb-2">
+                    Sensitivities or Coat Notes <span class="text-ink-subtle font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    id="coat-notes-input"
+                    name="coatNotes"
+                    type="text"
+                    placeholder="e.g., Shy around ear cleaning, prefers unscented oat wash"
+                    class="w-full rounded-xl border border-line-strong bg-white px-3.5 py-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                  />
+                </div>
+              </fieldset>
+
+              <!-- STEP 3: Date & Available Suite Time Slot -->
+              <fieldset class="mt-8 pb-8 border-b border-line">
+                <legend class="display-heading text-xl text-ink mb-4">3. Appointment Date &amp; Conservatory Window</legend>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-2 items-start">
+                  <div>
+                    <label for="appointment-date-input" class="block text-xs font-semibold text-ink mb-2">
+                      Preferred Date (Tue - Sun) <span class="text-peach-ink">*</span>
+                    </label>
+                    <input
+                      id="appointment-date-input"
+                      name="appointmentDate"
+                      type="date"
+                      required
+                      aria-describedby="date-helper date-error"
+                      class="w-full rounded-xl border border-line-strong bg-white px-3.5 py-3 text-sm text-ink tabular-data focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                    />
+                    <p id="date-helper" class="text-xs text-ink-subtle mt-1.5">
+                      Past dates are disabled. Studio is open daily except Mondays.
+                    </p>
+                    <p id="date-error" class="hidden text-xs text-peach-ink font-medium mt-1.5">
+                      Please select today or a future date (Tuesday through Sunday).
+                    </p>
+                  </div>
+
+                  <div>
+                    <span class="block text-xs font-semibold text-ink mb-2">
+                      Available 1-on-1 Suite Windows <span class="text-peach-ink">*</span>
+                    </span>
+                    <div id="time-slots-container" role="radiogroup" aria-label="Available appointment time slots" class="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        data-time-slot="09:00 AM"
+                        role="radio"
+                        aria-checked="false"
+                        class="time-slot-btn px-3 py-2.5 rounded-xl border border-line-strong bg-white text-xs font-medium text-ink hover:border-forest smooth-surface cursor-pointer tabular-data focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                      >
+                        09:00 AM
+                      </button>
+                      <button
+                        type="button"
+                        data-time-slot="11:00 AM"
+                        role="radio"
+                        aria-checked="true"
+                        class="time-slot-btn px-3 py-2.5 rounded-xl border border-forest bg-forest text-xs font-medium text-cream smooth-surface cursor-pointer tabular-data focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                      >
+                        11:00 AM
+                      </button>
+                      <button
+                        type="button"
+                        data-time-slot="01:30 PM"
+                        role="radio"
+                        aria-checked="false"
+                        class="time-slot-btn px-3 py-2.5 rounded-xl border border-line-strong bg-white text-xs font-medium text-ink hover:border-forest smooth-surface cursor-pointer tabular-data focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                      >
+                        01:30 PM
+                      </button>
+                      <button
+                        type="button"
+                        data-time-slot="03:30 PM"
+                        role="radio"
+                        aria-checked="false"
+                        class="time-slot-btn px-3 py-2.5 rounded-xl border border-line-strong bg-white text-xs font-medium text-ink hover:border-forest smooth-surface cursor-pointer tabular-data focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                      >
+                        03:30 PM
+                      </button>
+                      <button
+                        type="button"
+                        data-time-slot="05:00 PM"
+                        role="radio"
+                        aria-checked="false"
+                        class="time-slot-btn px-3 py-2.5 rounded-xl border border-line-strong bg-white text-xs font-medium text-ink hover:border-forest smooth-surface cursor-pointer tabular-data focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                      >
+                        05:00 PM
+                      </button>
+                    </div>
+                    <input type="hidden" id="selected-time-input" name="appointmentTime" value="11:00 AM" />
+                    <p id="time-error" class="hidden text-xs text-peach-ink font-medium mt-1.5">
+                      Please choose an available time window.
+                    </p>
+                  </div>
+                </div>
+              </fieldset>
+
+              <!-- STEP 4: Owner Contact Information -->
+              <fieldset class="mt-8">
+                <legend class="display-heading text-xl text-ink mb-4">4. Owner Contact Information</legend>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-2">
+                  <div>
+                    <label for="owner-name-input" class="block text-xs font-semibold text-ink mb-2">
+                      Your Full Name <span class="text-peach-ink">*</span>
+                    </label>
+                    <input
+                      id="owner-name-input"
+                      name="ownerName"
+                      type="text"
+                      required
+                      autocomplete="name"
+                      placeholder="e.g., Clara Vance"
+                      aria-describedby="owner-name-error"
+                      class="w-full rounded-xl border border-line-strong bg-white px-3.5 py-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                    />
+                    <p id="owner-name-error" class="hidden text-xs text-peach-ink font-medium mt-1.5">
+                      Please enter your full name.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label for="owner-email-input" class="block text-xs font-semibold text-ink mb-2">
+                      Email Address <span class="text-peach-ink">*</span>
+                    </label>
+                    <input
+                      id="owner-email-input"
+                      name="ownerEmail"
+                      type="email"
+                      required
+                      autocomplete="email"
+                      placeholder="clara@domain.org"
+                      aria-describedby="owner-email-error"
+                      class="w-full rounded-xl border border-line-strong bg-white px-3.5 py-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                    />
+                    <p id="owner-email-error" class="hidden text-xs text-peach-ink font-medium mt-1.5">
+                      Please enter a valid email address.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label for="owner-phone-input" class="block text-xs font-semibold text-ink mb-2">
+                      Mobile Phone (SMS Pickup Alert) <span class="text-peach-ink">*</span>
+                    </label>
+                    <input
+                      id="owner-phone-input"
+                      name="ownerPhone"
+                      type="tel"
+                      required
+                      autocomplete="tel"
+                      placeholder="(503) 555-0194"
+                      aria-describedby="owner-phone-error"
+                      class="w-full rounded-xl border border-line-strong bg-white px-3.5 py-3 text-sm text-ink tabular-data placeholder:text-ink-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                    />
+                    <p id="owner-phone-error" class="hidden text-xs text-peach-ink font-medium mt-1.5">
+                      Please enter a valid phone number (at least 7 digits).
+                    </p>
+                  </div>
+                </div>
+              </fieldset>
+
+              <!-- Form Submit Action -->
+              <div class="mt-8 pt-6 border-t border-line flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <p class="text-xs text-ink-muted">
+                  Prototype note: Confirmation generates an instant client-side studio pass.
+                </p>
+                <button
+                  type="submit"
+                  id="confirm-booking-btn"
+                  class="inline-flex items-center justify-center gap-2.5 bg-forest hover:bg-forest-hover text-cream font-medium px-7 py-4 rounded-xl smooth-surface cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 min-h-12"
+                >
+                  <span>Confirm Studio Appointment</span>
+                  <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5l3.5 3.5 7.5-7.5" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right Column (5 of 12 cols): Sticky Brass-Tagged Studio Appointment Summary -->
+          <aside aria-label="Live appointment summary ticket" class="lg:col-span-5 lg:sticky lg:top-28">
+            <div class="rounded-2xl bg-forest text-cream p-6 sm:p-8 studio-shadow">
+
+              <!-- Ticket Header -->
+              <div class="flex items-center justify-between pb-5 border-b border-sage">
+                <div>
+                  <span class="text-xs text-forest-mist block">Pawlished Conservatory Pass</span>
+                  <h3 class="display-heading text-2xl text-cream mt-0.5">Studio Intake Ticket</h3>
+                </div>
+                <span id="summary-tag-id" class="px-3 py-1 rounded-lg bg-peach text-peach-ink text-xs font-semibold tabular-data">
+                  TAG #PW-204
+                </span>
+              </div>
+
+              <!-- Live Summary Rows (Secondary text tinted with forest-mist, never raw gray!) -->
+              <dl class="mt-6 space-y-4 text-sm">
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-forest-mist">Selected Treatment</dt>
+                  <dd id="summary-service" class="font-semibold text-cream text-end">Full Bespoke Groom</dd>
+                </div>
+
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-forest-mist">Coat &amp; Weight Class</dt>
+                  <dd id="summary-size" class="font-medium text-cream text-end tabular-data">Medium (15 - 40 lb)</dd>
+                </div>
+
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-forest-mist">Dog Profile</dt>
+                  <dd id="summary-dog" class="font-medium text-cream text-end">Awaiting name &amp; breed</dd>
+                </div>
+
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-forest-mist">Appointment Date</dt>
+                  <dd id="summary-date" class="font-medium text-cream text-end tabular-data">Select date</dd>
+                </div>
+
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-forest-mist">Suite Window &amp; Duration</dt>
+                  <dd class="font-medium text-cream text-end tabular-data">
+                    <span id="summary-time">11:00 AM</span> · <span id="summary-duration">105 min</span>
+                  </dd>
+                </div>
+
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-forest-mist">Owner Contact</dt>
+                  <dd id="summary-owner" class="font-medium text-cream text-end">Awaiting contact info</dd>
+                </div>
+              </dl>
+
+              <!-- Perforated Divider & Total Price -->
+              <div class="my-6 pt-6 border-t border-sage flex items-baseline justify-between">
+                <div>
+                  <span class="text-xs text-forest-mist block">Estimated Studio Total</span>
+                  <span class="text-xs text-forest-muted block mt-0.5">Includes pH 7.0 wash &amp; nail dremel</span>
+                </div>
+                <span id="summary-price" class="display-heading text-4xl text-peach tabular-data">$105</span>
+              </div>
+
+              <!-- Confirmed State Box (Revealed on valid submission) -->
+              <div
+                id="booking-confirmed-card"
+                role="status"
+                aria-live="polite"
+                class="hidden mt-6 p-5 rounded-xl bg-cream text-ink border border-peach"
+              >
+                <div class="flex items-start gap-3">
+                  <span class="w-8 h-8 rounded-full bg-forest text-cream flex items-center justify-center shrink-0 mt-0.5">
+                    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5l3.5 3.5 7.5-7.5" />
+                    </svg>
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-xs font-semibold text-forest">Prototype Booking Confirmed</p>
+                    <h4 id="confirmed-headline" class="display-heading text-lg text-ink mt-0.5">
+                      Suite reserved for your dog!
+                    </h4>
+                    <p id="confirmed-details" class="text-xs text-ink-muted mt-1 leading-relaxed tabular-data"></p>
+                    <div class="mt-4 flex flex-wrap items-center gap-3">
+                      <button
+                        type="button"
+                        id="reset-booking-btn"
+                        class="px-3.5 py-2 rounded-lg bg-forest text-cream text-xs font-medium hover:bg-forest-hover smooth-surface cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
+                      >
+                        Book Another Dog
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         E. TRUST SECTION: STUDIO ARCHITECTURE & HYGIENE STANDARDS
+         Asymmetric 5/7 layout with concrete proof points (no generic 3-col cards)
+         ====================================================================== -->
+    <section id="conservatory-standards" class="py-16 md:py-24 border-b border-line">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+
+          <!-- Left Column (5 of 12 cols): Section Claim & Studio Photo -->
+          <div class="lg:col-span-5">
+            <p class="text-xs font-semibold text-sage mb-2">Why Dogs Walk In Wagging</p>
+            <h2 class="display-heading text-3xl sm:text-4xl text-ink mt-2 mb-4">
+              Gentle handling built into the room architecture.
+            </h2>
+            <p class="prose-measure text-ink-muted text-base mb-6">
+              We designed our Mercer Row conservatory with veterinary behaviorists so anxious, senior, and first-time dogs never experience sensory overload.
+            </p>
+            <figure class="rounded-2xl overflow-hidden border border-line bg-cream-deep">
+              <img
+                src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=900&q=80"
+                alt="Happy cream-colored Frenchie resting comfortably on a padded grooming cushion after a bath"
+                class="w-full h-64 object-cover"
+                loading="lazy"
+              />
+              <figcaption class="px-4 py-3 text-xs text-ink-muted bg-cream-card border-t border-line">
+                Hydraulic low-step tables descend to <span class="tabular-data">14 inches</span> so senior dogs step on without being lifted.
+              </figcaption>
+            </figure>
+          </div>
+
+          <!-- Right Column (7 of 12 cols): 4 Concrete Proof Blocks -->
+          <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+            <div class="p-6 rounded-2xl border border-line bg-cream-card">
+              <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-sage-soft text-forest mb-4">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-6-6c0 3.3 2.7 6 6 6s6-2.7 6-6c0-4-6-10-6-10S6 11 6 15z" />
+                </svg>
+              </span>
+              <h3 class="display-heading text-xl text-ink mt-2 mb-2">pH 7.0 Botanical Apothecary</h3>
+              <p class="text-sm text-ink-muted leading-relaxed">
+                Human shampoos strip canine lipid barriers. We formulate small-batch washes balanced to canine <span class="tabular-data">pH 7.0</span> using colloidal oatmeal, organic aloe, and cold-pressed Oregon cedarwood.
+              </p>
+            </div>
+
+            <div class="p-6 rounded-2xl border border-line bg-cream-card">
+              <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-peach-soft text-peach-ink mb-4">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </span>
+              <h3 class="display-heading text-xl text-ink mt-2 mb-2">Zero Cage Dryers, Ever</h3>
+              <p class="text-sm text-ink-muted leading-relaxed">
+                Heated box dryers are banned from our building. Every dog is hand-dried using warm Belgian waffle towels and insulated acoustic-diffuser wands capped at <span class="tabular-data">52 dB</span>.
+              </p>
+            </div>
+
+            <div class="p-6 rounded-2xl border border-line bg-cream-card">
+              <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-sage-soft text-forest mb-4">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.3 6.3a4.5 4.5 0 016.4 0L12 7.6l1.3-1.3a4.5 4.5 0 116.4 6.4L12 20.4l-7.7-7.7a4.5 4.5 0 010-6.4z" />
+                </svg>
+              </span>
+              <h3 class="display-heading text-xl text-ink mt-2 mb-2">Fear-Free Certified Stylists</h3>
+              <p class="text-sm text-ink-muted leading-relaxed">
+                Our stylists hold Fear-Free Pets certification and work on one dog at a time. If your dog needs a 10-minute water break or chin rub mid-trim, the clock pauses for them.
+              </p>
+            </div>
+
+            <div class="p-6 rounded-2xl border border-line bg-cream-card">
+              <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-peach-soft text-peach-ink mb-4">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.46 12C3.73 7.94 7.52 5 12 5c4.48 0 8.27 2.94 9.54 7-1.27 4.06-5.06 7-9.54 7-4.48 0-8.27-2.94-9.54-7z" />
+                </svg>
+              </span>
+              <h3 class="display-heading text-xl text-ink mt-2 mb-2">Open-Glass Conservatory</h3>
+              <p class="text-sm text-ink-muted leading-relaxed">
+                No hidden back rooms. Every grooming table faces our sunlit conservatory garden so you can watch from the espresso bench or receive an SMS the moment your dog is ready.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       F. STUDIO FOOTER
+       ======================================================================== -->
+  <footer id="studio-hours" class="bg-forest text-cream py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-sage">
+
+        <!-- Brand & Conservatory Address (5 cols) -->
+        <div class="md:col-span-5">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-full bg-peach text-peach-ink flex items-center justify-center font-semibold">
+              P
+            </span>
+            <span class="display-heading text-2xl text-cream">Pawlished Studio</span>
+          </div>
+          <p class="text-sm text-forest-mist mt-4 max-w-sm leading-relaxed">
+            Calm, cage-free botanical dog grooming in Portland's Mercer Row conservatory. One dog per stylist, always.
+          </p>
+          <p class="text-xs text-forest-muted mt-4 tabular-data">
+            418 Mercer Botanical Row, Suite B · Portland, OR 97209
+          </p>
+        </div>
+
+        <!-- Navigation Links (3 cols) -->
+        <div class="md:col-span-3">
+          <h3 class="display-heading text-lg text-cream mb-3">Conservatory</h3>
+          <ul class="space-y-2.5 text-sm text-forest-mist">
+            <li><a href="#services-menu" class="hover:text-cream smooth-surface">Grooming Menu &amp; Coat Scale</a></li>
+            <li><a href="#booking-bench" class="hover:text-cream smooth-surface">Book an Appointment</a></li>
+            <li><a href="#conservatory-standards" class="hover:text-cream smooth-surface">52 dB Studio Standards</a></li>
+            <li><a href="#top" class="hover:text-cream smooth-surface">Back to Top</a></li>
+          </ul>
+        </div>
+
+        <!-- Opening Hours & Contact (4 cols) -->
+        <div class="md:col-span-4">
+          <h3 class="display-heading text-lg text-cream mb-3">Studio Hours &amp; Desk</h3>
+          <dl class="space-y-2 text-sm text-forest-mist tabular-data">
+            <div class="flex justify-between">
+              <dt>Tuesday - Friday</dt>
+              <dd class="text-cream font-medium">08:30 AM - 06:30 PM</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt>Saturday - Sunday</dt>
+              <dd class="text-cream font-medium">09:00 AM - 05:30 PM</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt>Monday</dt>
+              <dd class="text-peach">Closed (Deep UV-C Sanitation)</dd>
+            </div>
+          </dl>
+          <div class="mt-5 pt-4 border-t border-sage text-xs text-forest-mist space-y-1 tabular-data">
+            <p>Desk Phone: <a href="tel:+15035550194" class="text-cream underline">(503) 555-0194</a></p>
+            <p>Concierge: <a href="mailto:concierge@pawlishedstudio.pet" class="text-cream underline">concierge@pawlishedstudio.pet</a></p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-forest-mist">
+        <p>© 2026 Pawlished Botanical Grooming Studio. Fictional frontend prototype with illustrative pricing.</p>
+        <p class="tabular-data">Crafted to WCAG 2.2 AA &amp; Craft Floor Standards</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       VANILLA JAVASCRIPT: Interactive Coat Calibrator, Service Selection,
+       Date/Time Validation, Live Studio Ticket & Mobile Drawer
+       ======================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      // 1. Canonical Service & Coat-Size Pricing Matrix
+      var SERVICES = {
+        'bath-brush': {
+          name: 'Bath & Brush',
+          prices: { small: 55, medium: 68, large: 84, giant: 102 },
+          durations: { small: 45, medium: 60, large: 75, giant: 90 }
+        },
+        'full-groom': {
+          name: 'Full Bespoke Groom',
+          prices: { small: 85, medium: 105, large: 128, giant: 155 },
+          durations: { small: 90, medium: 105, large: 120, giant: 150 }
+        },
+        'puppy-first': {
+          name: 'Puppy First Sanctuary Groom',
+          prices: { small: 48, medium: 58, large: 68, giant: 78 },
+          durations: { small: 40, medium: 45, large: 55, giant: 60 }
+        },
+        'deshedding': {
+          name: 'Botanical De-Shedding Ritual',
+          prices: { small: 74, medium: 92, large: 114, giant: 138 },
+          durations: { small: 75, medium: 90, large: 105, giant: 120 }
+        }
+      };
+
+      var SIZE_LABELS = {
+        small: 'Petite (< 15 lb)',
+        medium: 'Medium (15 - 40 lb)',
+        large: 'Large (40 - 75 lb)',
+        giant: 'Giant / Double-Coat (75+ lb)'
+      };
+
+      // State
+      var state = {
+        serviceId: 'full-groom',
+        dogSize: 'medium',
+        dogName: '',
+        dogBreed: '',
+        coatNotes: '',
+        date: '',
+        time: '11:00 AM',
+        ownerName: '',
+        ownerEmail: '',
+        ownerPhone: ''
+      };
+
+      // DOM Elements
+      var serviceCards = document.querySelectorAll('[data-service-card]');
+      var sizeCalibratorBtns = document.querySelectorAll('[data-size-calibrator]');
+      var calibratorActiveLabel = document.getElementById('calibrator-active-label');
+
+      var serviceSelect = document.getElementById('service-select');
+      var dogSizeSelect = document.getElementById('dog-size-select');
+      var dogNameInput = document.getElementById('dog-name-input');
+      var dogBreedInput = document.getElementById('dog-breed-input');
+      var coatNotesInput = document.getElementById('coat-notes-input');
+      var dateInput = document.getElementById('appointment-date-input');
+      var timeSlotBtns = document.querySelectorAll('[data-time-slot]');
+      var selectedTimeInput = document.getElementById('selected-time-input');
+      var ownerNameInput = document.getElementById('owner-name-input');
+      var ownerEmailInput = document.getElementById('owner-email-input');
+      var ownerPhoneInput = document.getElementById('owner-phone-input');
+
+      var summaryService = document.getElementById('summary-service');
+      var summarySize = document.getElementById('summary-size');
+      var summaryDog = document.getElementById('summary-dog');
+      var summaryDate = document.getElementById('summary-date');
+      var summaryTime = document.getElementById('summary-time');
+      var summaryDuration = document.getElementById('summary-duration');
+      var summaryOwner = document.getElementById('summary-owner');
+      var summaryPrice = document.getElementById('summary-price');
+      var summaryTagId = document.getElementById('summary-tag-id');
+
+      var bookingForm = document.getElementById('grooming-booking-form');
+      var errorBanner = document.getElementById('form-error-banner');
+      var errorList = document.getElementById('form-error-list');
+      var confirmedCard = document.getElementById('booking-confirmed-card');
+      var confirmedHeadline = document.getElementById('confirmed-headline');
+      var confirmedDetails = document.getElementById('confirmed-details');
+      var resetBookingBtn = document.getElementById('reset-booking-btn');
+
+      // Mobile Navigation Drawer
+      var mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      var mobileNavDrawer = document.getElementById('mobile-nav-drawer');
+      var menuIconOpen = document.getElementById('menu-icon-open');
+      var menuIconClose = document.getElementById('menu-icon-close');
+      var mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+      // 2. Initialize Minimum Date to Today (Prevent Past Dates)
+      function getLocalTodayIso() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var day = String(now.getDate()).padStart(2, '0');
+        return year + '-' + month + '-' + day;
+      }
+
+      function getDefaultBookingDateIso() {
+        var d = new Date();
+        d.setDate(d.getDate() + 1);
+        // If tomorrow is Monday (1), bump to Tuesday
+        if (d.getDay() === 1) {
+          d.setDate(d.getDate() + 1);
+        }
+        var year = d.getFullYear();
+        var month = String(d.getMonth() + 1).padStart(2, '0');
+        var day = String(d.getDate()).padStart(2, '0');
+        return year + '-' + month + '-' + day;
+      }
+
+      var todayIso = getLocalTodayIso();
+      var defaultDateIso = getDefaultBookingDateIso();
+      dateInput.min = todayIso;
+      dateInput.value = defaultDateIso;
+      state.date = defaultDateIso;
+
+      // Format YYYY-MM-DD into readable studio date
+      function formatReadableDate(isoStr) {
+        if (!isoStr) return 'Select date';
+        var parts = isoStr.split('-');
+        if (parts.length !== 3) return isoStr;
+        var dateObj = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        if (isNaN(dateObj.getTime())) return isoStr;
+        return dateObj.toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+      }
+
+      // 3. Synchronize Service Cards, Coat Calibrator, Form Controls & Live Ticket
+      function renderAll() {
+        var activeService = SERVICES[state.serviceId] || SERVICES['full-groom'];
+        var currentPrice = activeService.prices[state.dogSize];
+        var currentDuration = activeService.durations[state.dogSize];
+
+        // Update all 4 Service Card prices & durations for current dog size
+        Object.keys(SERVICES).forEach(function (serviceKey) {
+          var svc = SERVICES[serviceKey];
+          var priceEl = document.querySelector('[data-price-for="' + serviceKey + '"]');
+          var durEl = document.querySelector('[data-duration-for="' + serviceKey + '"]');
+          if (priceEl) priceEl.textContent = '$' + svc.prices[state.dogSize];
+          if (durEl) durEl.textContent = svc.durations[state.dogSize] + ' min session';
+        });
+
+        // Highlight active Service Card
+        serviceCards.forEach(function (card) {
+          var cardKey = card.getAttribute('data-service-card');
+          var isSelected = cardKey === state.serviceId;
+          card.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+          var indicatorText = card.querySelector('.indicator-text');
+          if (isSelected) {
+            card.classList.remove('border', 'border-line', 'bg-cream-card');
+            card.classList.add('border-2', 'border-forest', 'bg-cream-deep');
+            if (indicatorText) indicatorText.textContent = 'Selected in Ticket';
+          } else {
+            card.classList.remove('border-2', 'border-forest', 'bg-cream-deep');
+            card.classList.add('border', 'border-line', 'bg-cream-card');
+            if (indicatorText) indicatorText.textContent = 'Select Service';
+          }
+        });
+
+        // Highlight active Coat-Size Calibrator button
+        if (calibratorActiveLabel) {
+          calibratorActiveLabel.textContent = SIZE_LABELS[state.dogSize];
+        }
+        sizeCalibratorBtns.forEach(function (btn) {
+          var btnSize = btn.getAttribute('data-size-calibrator');
+          var isMatch = btnSize === state.dogSize;
+          var subSpan = btn.querySelector('span:last-child');
+          if (isMatch) {
+            btn.classList.remove('border-line', 'bg-cream', 'text-ink');
+            btn.classList.add('border-forest', 'bg-forest', 'text-cream');
+            if (subSpan) {
+              subSpan.classList.remove('text-ink-muted');
+              subSpan.classList.add('text-forest-mist');
+            }
+          } else {
+            btn.classList.remove('border-forest', 'bg-forest', 'text-cream');
+            btn.classList.add('border-line', 'bg-cream', 'text-ink');
+            if (subSpan) {
+              subSpan.classList.remove('text-forest-mist');
+              subSpan.classList.add('text-ink-muted');
+            }
+          }
+        });
+
+        // Sync form dropdowns
+        if (serviceSelect.value !== state.serviceId) {
+          serviceSelect.value = state.serviceId;
+        }
+        if (dogSizeSelect.value !== state.dogSize) {
+          dogSizeSelect.value = state.dogSize;
+        }
+
+        // Highlight active Time Slot button
+        timeSlotBtns.forEach(function (btn) {
+          var slotVal = btn.getAttribute('data-time-slot');
+          var isSlotActive = slotVal === state.time;
+          btn.setAttribute('aria-checked', isSlotActive ? 'true' : 'false');
+          if (isSlotActive) {
+            btn.classList.remove('border-line-strong', 'bg-white', 'text-ink');
+            btn.classList.add('border-forest', 'bg-forest', 'text-cream');
+          } else {
+            btn.classList.remove('border-forest', 'bg-forest', 'text-cream');
+            btn.classList.add('border-line-strong', 'bg-white', 'text-ink');
+          }
+        });
+        selectedTimeInput.value = state.time;
+
+        // Update Live Studio Ticket Summary
+        summaryService.textContent = activeService.name;
+        summarySize.textContent = SIZE_LABELS[state.dogSize];
+
+        var trimmedDog = state.dogName.trim();
+        var trimmedBreed = state.dogBreed.trim();
+        if (trimmedDog && trimmedBreed) {
+          summaryDog.textContent = trimmedDog + ' (' + trimmedBreed + ')';
+        } else if (trimmedDog) {
+          summaryDog.textContent = trimmedDog;
+        } else if (trimmedBreed) {
+          summaryDog.textContent = trimmedBreed;
+        } else {
+          summaryDog.textContent = 'Awaiting name & breed';
+        }
+
+        summaryDate.textContent = formatReadableDate(state.date);
+        summaryTime.textContent = state.time || 'Select time';
+        summaryDuration.textContent = currentDuration + ' min';
+
+        var trimmedOwner = state.ownerName.trim();
+        var trimmedPhone = state.ownerPhone.trim();
+        if (trimmedOwner && trimmedPhone) {
+          summaryOwner.textContent = trimmedOwner + ' · ' + trimmedPhone;
+        } else if (trimmedOwner) {
+          summaryOwner.textContent = trimmedOwner;
+        } else {
+          summaryOwner.textContent = 'Awaiting contact info';
+        }
+
+        summaryPrice.textContent = '$' + currentPrice;
+      }
+
+      // 4. Event Listeners: Service Cards (Click + Keyboard Enter/Space)
+      serviceCards.forEach(function (card) {
+        function selectCard() {
+          state.serviceId = card.getAttribute('data-service-card');
+          confirmedCard.classList.add('hidden');
+          renderAll();
+        }
+        card.addEventListener('click', selectCard);
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectCard();
+          }
+        });
+      });
+
+      // Event Listeners: Coat-Size Calibrator Buttons
+      sizeCalibratorBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.dogSize = btn.getAttribute('data-size-calibrator');
+          confirmedCard.classList.add('hidden');
+          renderAll();
+        });
+      });
+
+      // Event Listeners: Form Dropdowns & Text Inputs
+      serviceSelect.addEventListener('change', function () {
+        state.serviceId = serviceSelect.value;
+        confirmedCard.classList.add('hidden');
+        renderAll();
+      });
+
+      dogSizeSelect.addEventListener('change', function () {
+        state.dogSize = dogSizeSelect.value;
+        confirmedCard.classList.add('hidden');
+        renderAll();
+      });
+
+      dogNameInput.addEventListener('input', function () {
+        state.dogName = dogNameInput.value;
+        document.getElementById('dog-name-error').classList.add('hidden');
+        renderAll();
+      });
+
+      dogBreedInput.addEventListener('input', function () {
+        state.dogBreed = dogBreedInput.value;
+        document.getElementById('dog-breed-error').classList.add('hidden');
+        renderAll();
+      });
+
+      coatNotesInput.addEventListener('input', function () {
+        state.coatNotes = coatNotesInput.value;
+      });
+
+      dateInput.addEventListener('change', function () {
+        state.date = dateInput.value;
+        document.getElementById('date-error').classList.add('hidden');
+        confirmedCard.classList.add('hidden');
+        renderAll();
+      });
+
+      timeSlotBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.time = btn.getAttribute('data-time-slot');
+          document.getElementById('time-error').classList.add('hidden');
+          confirmedCard.classList.add('hidden');
+          renderAll();
+        });
+      });
+
+      ownerNameInput.addEventListener('input', function () {
+        state.ownerName = ownerNameInput.value;
+        document.getElementById('owner-name-error').classList.add('hidden');
+        renderAll();
+      });
+
+      ownerEmailInput.addEventListener('input', function () {
+        state.ownerEmail = ownerEmailInput.value;
+        document.getElementById('owner-email-error').classList.add('hidden');
+        renderAll();
+      });
+
+      ownerPhoneInput.addEventListener('input', function () {
+        state.ownerPhone = ownerPhoneInput.value;
+        document.getElementById('owner-phone-error').classList.add('hidden');
+        renderAll();
+      });
+
+      // 5. Form Validation & Confirmation Handler
+      function isValidDateSelection(isoStr) {
+        if (!isoStr) return false;
+        if (isoStr < todayIso) return false;
+        var parts = isoStr.split('-');
+        if (parts.length !== 3) return false;
+        var dateObj = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        if (isNaN(dateObj.getTime())) return false;
+        // Studio closed Mondays (day === 1)
+        if (dateObj.getDay() === 1) return false;
+        return true;
+      }
+
+      bookingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var errors = [];
+
+        // Validate Dog Name
+        if (!state.dogName.trim()) {
+          errors.push("Enter your dog's name.");
+          document.getElementById('dog-name-error').classList.remove('hidden');
+        } else {
+          document.getElementById('dog-name-error').classList.add('hidden');
+        }
+
+        // Validate Dog Breed
+        if (!state.dogBreed.trim()) {
+          errors.push("Enter your dog's breed or coat mix.");
+          document.getElementById('dog-breed-error').classList.remove('hidden');
+        } else {
+          document.getElementById('dog-breed-error').classList.add('hidden');
+        }
+
+        // Validate Date (Not empty, not in the past, not a Monday)
+        if (!isValidDateSelection(state.date)) {
+          errors.push('Choose today or a future date (Tuesday through Sunday; studio is closed Mondays).');
+          document.getElementById('date-error').classList.remove('hidden');
+        } else {
+          document.getElementById('date-error').classList.add('hidden');
+        }
+
+        // Validate Time Slot
+        if (!state.time) {
+          errors.push('Select an available appointment time window.');
+          document.getElementById('time-error').classList.remove('hidden');
+        } else {
+          document.getElementById('time-error').classList.add('hidden');
+        }
+
+        // Validate Owner Name
+        if (!state.ownerName.trim()) {
+          errors.push('Enter your full name.');
+          document.getElementById('owner-name-error').classList.remove('hidden');
+        } else {
+          document.getElementById('owner-name-error').classList.add('hidden');
+        }
+
+        // Validate Owner Email
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(state.ownerEmail.trim())) {
+          errors.push('Enter a valid email address for your appointment pass.');
+          document.getElementById('owner-email-error').classList.remove('hidden');
+        } else {
+          document.getElementById('owner-email-error').classList.add('hidden');
+        }
+
+        // Validate Owner Phone (at least 7 digits)
+        var digitCount = (state.ownerPhone.match(/\d/g) || []).length;
+        if (digitCount < 7) {
+          errors.push('Enter a valid phone number with at least 7 digits for SMS pickup alerts.');
+          document.getElementById('owner-phone-error').classList.remove('hidden');
+        } else {
+          document.getElementById('owner-phone-error').classList.add('hidden');
+        }
+
+        if (errors.length > 0) {
+          errorList.innerHTML = '';
+          errors.forEach(function (errText) {
+            var li = document.createElement('li');
+            li.textContent = errText;
+            errorList.appendChild(li);
+          });
+          errorBanner.classList.remove('hidden');
+          confirmedCard.classList.add('hidden');
+          errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          return;
+        }
+
+        // Hide errors & show confirmed Studio Ticket state
+        errorBanner.classList.add('hidden');
+        var svc = SERVICES[state.serviceId];
+        var price = svc.prices[state.dogSize];
+        var duration = svc.durations[state.dogSize];
+        var randomTag = 'TAG #PW-' + Math.floor(100 + Math.random() * 899);
+        summaryTagId.textContent = randomTag;
+
+        confirmedHeadline.textContent = state.dogName.trim() + ' is penciled in for ' + svc.name + '!';
+        confirmedDetails.textContent =
+          formatReadableDate(state.date) +
+          ' at ' +
+          state.time +
+          ' (' +
+          duration +
+          ' min · $' +
+          price +
+          ') for ' +
+          state.ownerName.trim() +
+          ' (' +
+          state.ownerEmail.trim() +
+          '). Brass Tag ' +
+          randomTag +
+          ' will be waiting at 418 Mercer Botanical Row.';
+
+        confirmedCard.classList.remove('hidden');
+        confirmedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+
+      // Reset / Book Another Dog Button
+      resetBookingBtn.addEventListener('click', function () {
+        dogNameInput.value = '';
+        dogBreedInput.value = '';
+        coatNotesInput.value = '';
+        state.dogName = '';
+        state.dogBreed = '';
+        state.coatNotes = '';
+        confirmedCard.classList.add('hidden');
+        renderAll();
+        dogNameInput.focus();
+      });
+
+      // 6. Mobile Navigation Toggle
+      if (mobileMenuBtn && mobileNavDrawer) {
+        mobileMenuBtn.addEventListener('click', function () {
+          var isHidden = mobileNavDrawer.classList.contains('hidden');
+          if (isHidden) {
+            mobileNavDrawer.classList.remove('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            menuIconOpen.classList.add('hidden');
+            menuIconClose.classList.remove('hidden');
+          } else {
+            mobileNavDrawer.classList.add('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            menuIconOpen.classList.remove('hidden');
+            menuIconClose.classList.add('hidden');
+          }
+        });
+
+        mobileNavLinks.forEach(function (link) {
+          link.addEventListener('click', function () {
+            mobileNavDrawer.classList.add('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            menuIconOpen.classList.remove('hidden');
+            menuIconClose.classList.add('hidden');
+          });
+        });
+      }
+
+      // Initial render
+      renderAll();
+    })();
+  </script>
+</body>
+</html>

@@ -20,7 +20,7 @@
 - **Stack Support**: React, Next.js, Vue, Nuxt, Svelte, Astro, Angular, HTML+Tailwind, SwiftUI, Flutter, React Native, Laravel, Three.js
 - **Premium Design Guide**: Affirmative standard for what "good" looks like (spacing, typography, color, motion, layout)
 - **Quality Gate**: 8-dimension scoring rubric (0-160) with enforcement flow
-- **Anti-Slop Script**: Deterministic checks for 29 AI tell-patterns across 3 severity tiers (CRITICAL/HIGH/MEDIUM) with `--fail-on` gate
+- **Anti-Slop Script**: Deterministic checks for 36 AI tell-patterns across 3 severity tiers (CRITICAL/HIGH/MEDIUM) with `--fail-on` gate
 - **Deterministic Quality Gate**: Pure-Python `scripts/quality_gate.py` — WCAG 2.2 contrast math, token schema validation, per-stack bundle budget vs QD; single `--fail-on` exit code for CI
 - **Taste Memory**: `scripts/taste.py` records A/B style corrections and re-ranks future searches
 - **Token Audit**: `scripts/token_audit.py` (optional Playwright) asserts computed CSS matches `tokens.json`
@@ -128,7 +128,7 @@ database and search engine (84 styles, 161 color palettes, 161 product types,
 - **دعم التقنيات**: Next.js، React، Vue، Nuxt، Svelte، Astro، Angular، Flutter، وغيرها
 - **دليل التصميم المميز**: معيار إيجابي لما يبدو "جيداً" (التباعد، الطباعة، الألوان، الحركة، التخطيط)
 - **بوابة الجودة**: نظام تقييم 8 أبعاد (0-160) مع تدفق الإنفاذ
-- **سكريبت مكافحة الركاكة**: فحوصات حتمية لـ 29 نمطاً من أنماط الذكاء الاصطناعي عبر 3 مستويات خطورة (حرج/عالٍ/متوسط) مع بوابة `--fail-on`
+- **سكريبت مكافحة الركاكة**: فحوصات حتمية لـ 36 نمطاً من أنماط الذكاء الاصطناعي عبر 3 مستويات خطورة (حرج/عالٍ/متوسط) مع بوابة `--fail-on`
 - **ذكاء التصميم**: تكامل Mobbin MCP للوصول إلى أكثر من 600k شاشة منتج حقيقية
 
 ### المراجع الموسعة

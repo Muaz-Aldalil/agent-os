@@ -183,6 +183,34 @@ class TestUIAuditEngine(unittest.TestCase):
         has_crit_high = any(f.severity in [CRITICAL, HIGH] for f in engine.findings)
         self.assertTrue(has_crit_high)
 
+    def test_detects_craft_floor_and_wave3_slop_violations(self):
+        comp = self.test_dir / "SlopDashboard.tsx"
+        comp.write_text("""
+        export function SlopDashboard() {
+            return (
+                <section>
+                    <h1>Ship products that <em>actually</em> convert</h1>
+                    <h2 className="mt-2 mb-8">Inverted Spacing Heading</h2>
+                    <div className="bg-card p-6"><div className="bg-card p-4">Nested card</div></div>
+                    <div className="bg-emerald-700 text-gray-400">Untinted gray on colored bg</div>
+                    <div style={{ color: '#d97757' }} className="animate-bounce">Wave 3 terracotta + bounce</div>
+                </section>
+            );
+        }
+        """, encoding="utf-8")
+
+        engine = UIAuditEngine(self.test_dir)
+        engine.analyze()
+
+        titles = [f.title for f in engine.findings]
+        self.assertTrue(any("Mixed-Font Italic Word in Headline" in t for t in titles))
+        self.assertTrue(any("Heading Spacing Inversion" in t for t in titles))
+        self.assertTrue(any("Nested Card Containers" in t for t in titles))
+        self.assertTrue(any("Untinted Gray Text on Colored Surface" in t for t in titles))
+        self.assertTrue(any("Wave 3 Terracotta/Clay AI Slop Signature" in t for t in titles))
+        self.assertTrue(any("Bounce or Elastic Overshoot Easing" in t for t in titles))
+
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -348,6 +348,93 @@ CHECKS = [
         ],
         "glob": COPY_FILES,
     },
+    {
+        "label": "WAVE3_CREAM_TERRACOTTA",
+        "severity": "MEDIUM",
+        "source": "3-Wave AI Slop Registry (Wave 3: 2025-2026 warm-editorial cream + terracotta tell — override allowed only if explicit brand brief)",
+        "patterns": [
+            re.compile(r"#(?:d97757|da7756|c15f3c|cc785c|bd5d3a)\b", re.I),
+            re.compile(
+                r"background(?:-color)?:\s*#(?:f0eee6|faf9f5|f5f4ed|eeece2|e8e6dc)\b",
+                re.I,
+            ),
+        ],
+        "glob": ALL_FILES,
+    },
+    {
+        "label": "MIXED_FONT_ITALIC_HEADLINE",
+        "severity": "MEDIUM",
+        "source": "3-Wave AI Slop Registry (Wave 2: one italic serif word inside a sans headline)",
+        "patterns": [
+            re.compile(r"<h[1-3][^>]*>.*<(?:em|i)\b[^>]*>.*</h[1-3]>", re.I),
+            re.compile(
+                r"<h[1-3][^>]*>.*\b(?:font-serif\s+italic|italic\s+font-serif)\b.*</h[1-3]>",
+                re.I,
+            ),
+        ],
+        "glob": JSX_FILES,
+    },
+    {
+        "label": "MONOSPACE_PROSE_TELL",
+        "severity": "MEDIUM",
+        "source": "3-Wave AI Slop Registry (Wave 2: monospace font used as decorative prose/eyebrow/badge tell outside code/pre)",
+        "patterns": [
+            re.compile(
+                r"\b(?:uppercase[^\"']{0,60}font-mono|font-mono[^\"']{0,60}uppercase)\b"
+            ),
+        ],
+        "glob": JSX_FILES,
+    },
+    {
+        "label": "NESTED_CARDS",
+        "severity": "HIGH",
+        "source": "Craft Floor (Depth: never nest cards inside cards — use spacing, dividers, or flat tone steps instead)",
+        "patterns": [
+            re.compile(r"<Card\b[^>]*>[^<]*<Card\b"),
+            re.compile(
+                r"\bbg-card\b[^>]*>[^<]*<(?:div|section|article)[^>]*\bbg-card\b"
+            ),
+        ],
+        "glob": JSX_FILES,
+    },
+    {
+        "label": "GRAY_TEXT_ON_COLORED_BG",
+        "severity": "HIGH",
+        "source": "Craft Floor (Contrast: never put raw untinted gray text on colored backgrounds — tint from the surface hue)",
+        "patterns": [
+            re.compile(
+                r"\bbg-(?:primary|indigo|violet|blue|emerald|teal|amber|rose|red|green|purple)-[56789]00\b[^\"']*\btext-(?:gray|slate|neutral|zinc)-[3456]00\b"
+            ),
+            re.compile(
+                r"\btext-(?:gray|slate|neutral|zinc)-[3456]00\b[^\"']*\bbg-(?:primary|indigo|violet|blue|emerald|teal|amber|rose|red|green|purple)-[56789]00\b"
+            ),
+        ],
+        "glob": ALL_FILES,
+    },
+    {
+        "label": "BOUNCE_ELASTIC_EASING",
+        "severity": "MEDIUM",
+        "source": "Craft Floor (Motion: use exponential ease-out; bounce/elastic overshoot easing is banned)",
+        "patterns": [
+            re.compile(r"\banimate-bounce\b"),
+            re.compile(
+                r"cubic-bezier\(\s*[0-9.]+\s*,\s*1\.(?:[2-9][0-9]*|1[6-9])\s*,", re.I
+            ),
+            re.compile(r"\b(?:ease-elastic|ease-bounce|spring-bounce)\b", re.I),
+        ],
+        "glob": ALL_FILES,
+    },
+    {
+        "label": "ICON_IN_ROUNDED_SQUARE_ABOVE_HEADING",
+        "severity": "MEDIUM",
+        "source": "3-Wave AI Slop Registry (Wave 1: 3-up feature card with icon-in-tinted-rounded-square above h3)",
+        "patterns": [
+            re.compile(
+                r"\bw-(?:10|12)\s+h-(?:10|12)\s+rounded-(?:lg|xl)\s+bg-[a-z]+-(?:50|100|500/10)\s+(?:flex\s+items-center\s+justify-center|grid\s+place-items-center)\b"
+            ),
+        ],
+        "glob": JSX_FILES,
+    },
 ]
 
 
@@ -439,10 +526,8 @@ def scan(target: Path):
 
 
 def main(argv=None):
-    try:
+    if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    except AttributeError:
-        pass
     parser = argparse.ArgumentParser(
         prog="anti-slop.py",
         description="Deterministic AI-slop detection for frontend code",

@@ -68,16 +68,19 @@ Before coding begins, the project or feature MUST possess 6 verified documents l
   5. **Edge & Resilience Protocols**: Offline detection and optimistic mutation rollback handlers.
 
 ### Pillar 4: Design Brief & Visual Tokens (`04-DESIGN_BRIEF.md`)
-* **Focus**: Aesthetic, typography, color hierarchy, and spatial rhythm.
+* **Focus**: Aesthetic, art direction, typography, color hierarchy, Craft Floor, and spatial rhythm (separating durable product truth in `01-PRD.md` / `PRODUCT.md` from replaceable surface visual tokens in `04-DESIGN_BRIEF.md` / `DESIGN.md`).
 * **Mandatory Sections**:
-  1. **Design Aesthetic & Mood**: Minimalist SaaS, Editorial, Cyberpunk Dark, etc.
-  2. **The 60-30-10 Color Rule**:
-     * **60% Dominant Background**: Canvas and app shell (`bg-background`).
-     * **30% Structural Surface**: Cards, sidebars, modals (`bg-card`, `bg-muted`).
+  1. **Visitor Mode & Art Direction**:
+     * **Primary Visitor Mode**: `Operate` (dense utility/dashboard/CMS), `Persuade` (landing/conversion), or `Read` (editorial/docs).
+     * **Subject Inventory (8–12 Facts) & Competitor Test**: *"On this page, [something that belongs to the subject] becomes [the layout/interactive device]."* Plus **One Live Interactive Thing** built from the subject's idea.
+     * **Argument-First Copy Deck & Headline Arithmetic**: Section list written as Claim + Proof; hero headlines hold to `<= 2 lines` (~32 chars median).
+  2. **The 60-30-10 Color Rule & Surface Contrast**:
+     * **60% Dominant Background**: Tinted neutral canvas (`bg-background` — never pure `#000` or flat untinted gray; avoid default Wave 3 `#faf9f5` + `#d97757` terracotta unless explicitly in brand brief).
+     * **30% Structural Surface**: Cards, sidebars, modals (`bg-card`, `bg-muted` — never nest cards inside cards).
      * **10% Accent CTA**: Focal interactive elements (`bg-primary`).
-     * Semantic tokens: Success, Error, Warning.
-  3. **Typography Hierarchy**: Font families (Display, Body, Mono) with fluid sizing scales.
-  4. **Component Tokens**: Border radii (`rounded-lg`), elevation shadows, and minimum 44x44px tap targets.
+     * **Colored Surface Contrast**: Secondary text on colored backgrounds must be hue-tinted or foreground-opacity (`text-primary-foreground/80`), never raw gray.
+  3. **Typography Craft Floor**: Font families (Display, Body, Mono) with fluid `clamp()` sizing scales, `65–75ch` body measure, `-0.04em` tracking floor, `text-wrap: balance` on headings, `mt > mb` heading spacing, and `tabular-nums` on all numeric/table data.
+  4. **Component Tokens & Browser Surfaces**: Border radii (`rounded-lg`), offset shadows, minimum `44x44px` tap targets, exponential ease-out (`cubic-bezier(0.16, 1, 0.3, 1)`), and global browser surface tokens (`::selection`, `caret-color`, custom scrollbars, `:focus-visible`, `text-underline-offset`).
   5. **RTL/LTR CSS Logical Properties**: Strictly enforcing `ms-*`/`me-*`, `ps-*`/`pe-*`, `text-start`/`text-end`.
 
 ### Pillar 5: Backend Schema & Data Model (`05-BACKEND_SCHEMA.md`)

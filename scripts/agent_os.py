@@ -12,12 +12,16 @@ import sys
 import os
 import subprocess
 from pathlib import Path
+from typing import List
 
 # UTF-8 terminal encoding configuration
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 WORKSPACE_ROOT = Path("D:/Skills/.agents")
+CALLER_CWD = Path.cwd()
+if str(WORKSPACE_ROOT / "scripts") not in sys.path:
+    sys.path.insert(0, str(WORKSPACE_ROOT / "scripts"))
 
 def run_status():
     print("=" * 65)
@@ -26,6 +30,7 @@ def run_status():
     
     # 1. Active Workspace
     print(f"Active Workspace Root: {WORKSPACE_ROOT.resolve()}")
+    print(f"Caller Project Cwd:    {CALLER_CWD.resolve()}")
     
     # 2. Git Information
     try:
@@ -69,7 +74,7 @@ def run_test():
 
 def run_scan(target_file: str):
     scan_script = WORKSPACE_ROOT / "scripts" / "guard_checker.py"
-    res = subprocess.run([sys.executable, str(scan_script), target_file], cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(scan_script), target_file], cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_doctor(fix: bool = False):
@@ -118,17 +123,17 @@ def run_preflight():
 
 def run_code_graph(args: List[str]):
     cg_script = WORKSPACE_ROOT / "scripts" / "code_graph.py"
-    res = subprocess.run([sys.executable, str(cg_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(cg_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_tracer(args: List[str]):
     tracer_script = WORKSPACE_ROOT / "scripts" / "tracer.py"
-    res = subprocess.run([sys.executable, str(tracer_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(tracer_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_snapshot(args: List[str]):
     snap_script = WORKSPACE_ROOT / "scripts" / "snapshot.py"
-    res = subprocess.run([sys.executable, str(snap_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(snap_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_prompt_cache(action: str = "audit"):
@@ -141,27 +146,27 @@ def run_prompt_cache(action: str = "audit"):
 
 def run_diff_review(args: List[str]):
     review_script = WORKSPACE_ROOT / "scripts" / "diff_reviewer.py"
-    res = subprocess.run([sys.executable, str(review_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(review_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_repl_sandbox(mode: str, args: List[str]):
     repl_script = WORKSPACE_ROOT / "scripts" / "repl_sandbox.py"
-    res = subprocess.run([sys.executable, str(repl_script), mode] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(repl_script), mode] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_scope(args: List[str]):
     scope_script = WORKSPACE_ROOT / "scripts" / "scope_guard.py"
-    res = subprocess.run([sys.executable, str(scope_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(scope_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_chaos(args: List[str]):
     chaos_script = WORKSPACE_ROOT / "scripts" / "chaos_guard.py"
-    res = subprocess.run([sys.executable, str(chaos_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(chaos_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_runtime_observer(mode: str, args: List[str]):
     obs_script = WORKSPACE_ROOT / "scripts" / "runtime_observer.py"
-    res = subprocess.run([sys.executable, str(obs_script), mode] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(obs_script), mode] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_adr_enforcer(args: List[str]):
@@ -171,22 +176,22 @@ def run_adr_enforcer(args: List[str]):
 
 def run_antipattern(args: List[str]):
     ap_script = WORKSPACE_ROOT / "scripts" / "antipattern_ledger.py"
-    res = subprocess.run([sys.executable, str(ap_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(ap_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_telemetry(args: List[str]):
     tel_script = WORKSPACE_ROOT / "scripts" / "context_telemetry.py"
-    res = subprocess.run([sys.executable, str(tel_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(tel_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_sentinel(args: List[str]):
     sentinel_script = WORKSPACE_ROOT / "scripts" / "sentinel.py"
-    res = subprocess.run([sys.executable, str(sentinel_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(sentinel_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_precode(args: List[str]):
     precode_script = WORKSPACE_ROOT / "scripts" / "precode_engine.py"
-    res = subprocess.run([sys.executable, str(precode_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(precode_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def main():
@@ -295,7 +300,7 @@ def main():
         run_sentinel(sys.argv[2:])
     elif cmd in ["ui-audit", "uiaudit"]:
         ui_audit_script = WORKSPACE_ROOT / "scripts" / "ui_audit_engine.py"
-        res = subprocess.run([sys.executable, str(ui_audit_script)] + sys.argv[2:], cwd=WORKSPACE_ROOT)
+        res = subprocess.run([sys.executable, str(ui_audit_script)] + sys.argv[2:], cwd=CALLER_CWD)
         sys.exit(res.returncode)
     elif cmd in ["data-saver", "datasaver", "bandwidth"]:
         bw_script = WORKSPACE_ROOT / "scripts" / "bandwidth_guard.py"
@@ -303,7 +308,7 @@ def main():
         sys.exit(res.returncode)
     elif cmd == "codemod":
         codemod_script = WORKSPACE_ROOT / "scripts" / "codemod.py"
-        res = subprocess.run([sys.executable, str(codemod_script)] + sys.argv[2:], cwd=WORKSPACE_ROOT)
+        res = subprocess.run([sys.executable, str(codemod_script)] + sys.argv[2:], cwd=CALLER_CWD)
         sys.exit(res.returncode)
     else:
         print(f"Unknown command: '{cmd}'. Run 'python scripts/agent_os.py' for full command manual.")
@@ -311,7 +316,7 @@ def main():
 
 def run_router(args: List[str]):
     router_script = WORKSPACE_ROOT / "scripts" / "skill_router.py"
-    res = subprocess.run([sys.executable, str(router_script)] + args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(router_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 if __name__ == "__main__":

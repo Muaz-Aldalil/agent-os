@@ -101,7 +101,7 @@ TYPE:   Display (expressive headings) / Body (16px min, 1.6 line-height) /
 
 Complete every item before writing the blueprint.
 
-### Design Thinking Checklist
+### Design Thinking & Art Direction Checklist
 
 ```
 1. INSPIRATION: Name 3 real products this design is inspired by.
@@ -114,8 +114,19 @@ Complete every item before writing the blueprint.
    → Run: python scripts/search.py "<query>" --domain compositions
 5. STYLE: Which design system?
    → Run: python scripts/search.py "<query>" --domain design
-6. CONTENT: Write the actual headline and body copy.
+6. CONTENT & HEADLINE ARITHMETIC: Write the actual headline and body copy.
    → No placeholder text. No "lorem ipsum".
+   → Hero headline MUST hold to <= 2 lines at every viewport width (~5 words / ~32 chars median).
+   → Argument-First Copy Deck: list every section as Claim + Proof (1 line each); delete any section without a claim.
+7. SUBJECT INVENTORY (8-12 Facts): List 8-12 specific facts unique to the subject
+   (origin, place, numbers/constraints, materials, domain rituals, printed/digital artifacts).
+8. COMPETITOR TEST (Core Device):
+   → Complete: "On this page, [something that belongs to the subject] becomes [the layout/interactive device]."
+   → If substituting the nearest competitor still works, the idea is generic — rewrite it.
+9. VISITOR MODE: Classify the view as:
+   → Operate (dense utility/dashboard/CMS), Persuade (landing/conversion), or Read (editorial/docs).
+10. ONE LIVE INTERACTIVE THING:
+   → Define 1 interactive element built from the subject's idea (thumb-friendly on mobile, degrades without JS, never blocks reading).
 ```
 
 **Gate:** If any item is blank or vague, fix it before Phase 3.
@@ -215,18 +226,24 @@ Always output 3 formats immediately after blueprint:
 - Tailwind config extension
 - JS/TS tokens object
 
-### Design Lock
+### Design Lock & Durable Product Truth vs. Surface Visual World
 
 After blueprint is confirmed, write `.design-lock.md`:
 ```markdown
 # Design Lock — [Project Name]
 Locked: [date]
+Visitor Mode: [Operate | Persuade | Read]
+Subject Device: On this page, [subject artifact] becomes [layout/interactive device]
 Style: [style name]
 Colors: [primary hex]
 Typography: [display font] + [body font]
 Layout: [layout pattern]
 ```
 Re-read at every session start. Override only with explicit user confirmation.
+
+Keep durable product truth separate from surface aesthetics:
+- **Durable Product Truth (`PRODUCT.md` / `.context/PROJECT_BRIEF.md`)**: Audience, core job-to-be-done, operating context, voice, domain evidence, and Subject Inventory. Survives any future visual redesign.
+- **Surface Visual World (`DESIGN.md` / `design-system/MASTER.md`)**: Color tokens, typography scale, atmosphere, elevation, and component craft. Can be replaced completely during a Redesign without losing product truth.
 
 ---
 
@@ -247,44 +264,55 @@ Re-read at every session start. Override only with explicit user confirmation.
 | Flutter | `flutter create . --platforms=ios,android,web` |
 | SwiftUI | Xcode → New Project → iOS App (SwiftUI) |
 
-### 4b — Universal Code Quality
+### 4b — Universal Code Quality & Craft Floor Browser Surfaces
 
 ```
-STRUCTURE     -> semantic HTML, mobile-first CSS, logical section order
-PERFORMANCE   -> no unused imports, lazy-load images, font preconnect+swap,
-                 critical CSS inline, no layout shift
-ACCESSIBILITY -> WCAG AA contrast, aria-label on icon buttons, visible focus,
-                 keyboard nav, alt text, prefers-reduced-motion respected
-INTERACTIONS  -> cursor-pointer on all clickables, 150-300ms hover transitions,
-                 44x44px min touch targets
-ICONS         -> SVG only (Heroicons/Lucide/Phosphor), never emoji as UI icon
-STATES        -> every interactive/data component handles:
-                 Loading (skeleton) / Error (inline+retry) / Empty (CTA) / Disabled
+STRUCTURE        -> semantic HTML, mobile-first CSS, logical section order
+PERFORMANCE      -> no unused imports, lazy-load images, font preconnect+swap,
+                     critical CSS inline, no layout shift
+ACCESSIBILITY    -> WCAG AA contrast, aria-label on icon buttons, visible focus,
+                     keyboard nav, alt text, prefers-reduced-motion respected
+INTERACTIONS     -> cursor-pointer on all clickables, 150-300ms hover transitions,
+                     44x44px min touch targets, exponential ease-out cubic-bezier(0.16, 1, 0.3, 1)
+BROWSER SURFACES -> theme ::selection, caret-color, custom scrollbars, :focus-visible
+                     (2px ring + 2px offset), text-underline-offset: 0.2em
+TYPOGRAPHY CRAFT -> body measure 65-75ch (max-w-[65ch]), display max 6rem,
+                     tracking floor -0.04em, text-wrap: balance on headings,
+                     tabular-nums on all numeric/table/price/counter cells,
+                     more space above headings than below (mt > mb)
+ICONS            -> SVG only (Heroicons/Lucide/Phosphor), never emoji as UI icon
+STATES           -> every interactive/data component handles:
+                     Loading (skeleton) / Error (inline+retry) / Empty (CTA) / Disabled
 ```
 
-### 4z — Anti-Slop Generation Rules (enforce during code, not after)
+### 4z — 3-Wave Anti-Slop & Craft Floor Generation Rules (enforce during code, not after)
 
 ```
-VISUAL BANS:
-  NO gradient heroes — use palette from blueprint
-  NO gradient text on headings — solid color only
-  NO symmetric 3-column feature grids as the sole layout
-  NO centered hero → features → pricing → testimonials → footer (SaaS template)
-  NO stock photo + gradient overlay hero
-  NO glassmorphism / frosted glass as decorative element
-  NO rounded-full pill buttons as the only button style
-  NO purple/indigo/teal as primary unless blueprint explicitly calls for it
+WAVE 1 BANS (2023-2024):
+  NO violet/indigo gradients or gradient-clipped text on headings
+  NO decorative glassmorphism / frosted blur panels
+  NO glowing halo buttons or 3 identical icon-in-rounded-square cards
 
-CONTENT BANS:
-  NO "Revolutionize your workflow" / "Empower your team" / "Seamlessly integrate"
-  NO "Built for modern teams" / "The future of X" / "Unlock your potential"
-  NO filler buzzword copy — use specific, concrete language
+WAVE 2 BANS (2025):
+  NO cramped uppercase tracked eyebrows above every heading
+  NO hero status pill badges ("● Live", "Beta", "Introducing") unless functional
+  NO one-italic-serif-word inside a sans headline (<h1>..<em>word</em>..</h1>)
+  NO decorative 01 / 02 / 03 section numbering or monospace prose outside <code>/<pre>
+  NO thin hairline dividers (<hr>, divide-y) where flat tone steps or space work better
 
-LAYOUT RULES:
-  LAYOUT must be named in blueprint and must differ from the industry default
-  Every page must have a distinct section structure — no two pages identical
-  COLOR reasoning required: "Primary is X because Y" — not just a hex dump
-  TYPOGRAPHY must be a pairing with rationale, not "Inter + Inter"
+WAVE 3 BANS (2025-2026):
+  NO default warm-editorial yellow-cream ground (#faf9f5, #f0eee6) + terracotta/clay (#d97757, #c15f3c)
+     unless the client's explicit brand brief demands it ("The brief wins")
+
+CRAFT FLOOR BANS:
+  NO nested cards inside cards (<Card> in <Card> or bg-card in bg-card)
+  NO raw untinted gray text (text-gray-*, text-slate-*) on colored backgrounds — tint from the surface hue
+  NO bounce or elastic overshoot easing (animate-bounce, cubic-bezier overshoot > 1.15)
+
+SUBSTANCE RULE (WHY REMOVAL IS NOT ENOUGH):
+  Stripping ornaments without adding substance leaves a thin page.
+  Replace removed chrome with larger type, whole fields of color, authentic subject imagery,
+  and Argument-First copy where every section proves a specific claim.
 ```
 
 ### 4c — Stack-Specific Rules

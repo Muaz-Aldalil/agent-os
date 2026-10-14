@@ -62,10 +62,45 @@ Apply changes surgically. Don't rebuild what isn't broken.
 - Follow the stack rules in `references/build-mode.md` §4c
 - Respect the existing design system; match what's there
 
-## STEP 4 — DIFF SUMMARY
+### Refinement vs. Redesign Mode
+- **Refinement (`polish`, `harden`, `clarify`, `typeset`, `adapt`, `optimize`)**: Preserve the incumbent identity, palette, copy, and scope while elevating execution to the **Craft Floor** (`references/rules.md` #38–44).
+- **Redesign (`bolder`, `quieter`, `distill`, `overdrive`, `colorize`)**: Keep durable product truth (`PRODUCT.md` / functional contracts) intact, but replace the surface visual world (`DESIGN.md`) with a stronger, subject-grounded direction.
+
+---
+
+## STEP 3.5 — 18 PRECISION STEERING SUB-MODES
+
+When the user (or `/fix-ui`) invokes a specific steering verb, apply its targeted transformation lens:
+
+| Sub-Mode | Purpose & Exact Transformation |
+|---|---|
+| **`polish`** | Final Craft Floor pass: fix micro-alignment, `mt > mb` heading spacing, `tabular-nums`, `:focus-visible`, `::selection`, and token drift without changing layout or copy. |
+| **`critique`** | Evaluate visual hierarchy, Competitor Test specificity, 3-Wave AI slop tells, and emotional resonance; output ranked findings before editing. |
+| **`bolder`** | Amplify a timid or generic design: increase display scale contrast, commit to whole fields of color, sharpen asymmetry, and foreground the Subject Device. |
+| **`quieter`** | Tone down an over-stimulated interface: strip competing accents, remove decorative badges/glows, soften surface steps, and restore calm breathing room. |
+| **`distill`** | Strip to essence: remove nested cards, hairline dividers, eyebrow labels, and redundant wrappers; replace removed chrome with larger type and spatial clarity. |
+| **`harden`** | Production resilience: add all 5 UI states (`Idle/Loading/Success/Error/Empty`), handle long-string overflow (`min-w-0`, `truncate`), i18n/RTL expansion, and keyboard traps. |
+| **`onboard`** | Design zero-data empty states, first-run progressive disclosure, and clear primary CTAs that teach the user by doing. |
+| **`animate`** | Add one authored motion moment per view using exponential ease-out (`cubic-bezier(0.16, 1, 0.3, 1)`), removing any `transition-all` or bounce/elastic overshoot. |
+| **`colorize`** | Introduce strategic, hue-tinted color harmony to flat monochromatic UIs; tint secondary text on colored surfaces from the surface hue (`>= 4.5:1` contrast). |
+| **`typeset`** | Fix font pairing, fluid `clamp()` scale, `65–75ch` body measure, `-0.04em` tracking floor, `text-wrap: balance`, `<= 2-line` headline arithmetic, and `tabular-nums`. |
+| **`layout`** | Fix spatial rhythm, asymmetric compositions, sticky navbar/sidebar armor, `flex-1 min-w-0` main column protection, and responsive `375px–1920px` reflow. |
+| **`delight`** | Add domain-specific moments of personality and the **One Live Interactive Thing** built directly from the subject's inventory. |
+| **`overdrive`** | Push to technically ambitious execution (View Transitions API, 60fps compositor choreography, or custom canvas/shader surfaces) while respecting `prefers-reduced-motion`. |
+| **`clarify`** | Rewrite vague AI buzzwords into concrete, Argument-First claims, clear form labels, and actionable recovery error messages. |
+| **`adapt`** | Adapt the interface across mobile (`375px`), tablet (`768px`), desktop (`1280px+`), touch targets (`>= 44x44px`), and bidirectional LTR/RTL logical CSS. |
+| **`optimize`** | Eliminate CLS, optimize LCP hero assets, enforce `font-display: swap`, remove scroll listeners, and trim JS/CSS bundle overhead. |
+| **`extract`** | Extract ad-hoc hexes, spacing, and repeated markup into reusable design tokens (`tokens.json` / CSS variables) and shared primitives. |
+| **`document`** | Codify durable product truth (`PRODUCT.md`) separately from the surface visual system (`DESIGN.md` / `design-system/MASTER.md`). |
+
+---
+
+## STEP 4 — BOUNDED VERIFICATION & DIFF SUMMARY
+
+Enforce **Bounded Verification Passes**: build completely, inspect desktop + mobile in 1 batched round (`scripts/anti_slop.py` + `ui-audit`), apply fixes in 1 batch, and confirm in at most 1 final round. Stop over-polishing once gates are green.
 
 ```
-Changed: [list of what changed]
+Changed: [list of what changed + active Steering Sub-Mode]
 Reason:  [why each change was made]
-Result:  [expected measurable outcome]
+Result:  [expected measurable outcome + anti_slop.py / ui-audit proof]
 ```

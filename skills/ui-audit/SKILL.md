@@ -170,18 +170,21 @@ Before auditing individual components, build an authoritative inventory of the f
 
 Audit the entire mapped inventory across the 8 core UI dimensions detailed in [`references/ui-review-taxonomy.md`](references/ui-review-taxonomy.md):
 
-1. **Visual Consistency & Design Tokens**:
+1. **Visual Consistency, Design Tokens & 3-Wave AI Slop Defense**:
    - Mismatched colors, arbitrary hex codes, broken typography scales, irregular padding/margins, inconsistent border radii, and visual theme drift between light/dark modes.
+   - **Craft Floor Depth & Contrast**: Nested cards inside cards (`<Card>` inside `<Card>` or `bg-card` inside `bg-card` — `HIGH`), untinted raw gray text on colored surfaces (`text-gray-*` on `bg-emerald-700` — `HIGH`).
+   - **3-Wave AI Slop Tells**: Wave 3 default warm-editorial cream + terracotta hexes (`#d97757`, `#faf9f5` — `MEDIUM` warning unless mandated by brand brief), Wave 2 mixed-font single-italic-word headlines (`<h1>..<em>word</em>..</h1>` — `MEDIUM`), and monospace prose/eyebrow tells.
 2. **Responsive Behavior & Viewport Breakpoints**:
    - Hardcoded pixel widths (`w-[700px]`, `min-w-[600px]`), inflexible flex/grid layouts lacking wrapping, contradictory breakpoint logic (`md:` overriding `lg:` inconsistently), text overflow, and horizontal scrollbars on mobile viewports (< 640px).
 3. **Accessibility (WCAG 2.2 Level AA)**:
    - Non-semantic clickable elements (`<div onClick>`), broken heading hierarchies (`<h1>` skipping to `<h3>`), missing `<label>` associations for inputs, uninformative or missing image `alt` attributes, missing keyboard focus rings (`focus:outline-none` without replacement), and color contrast deficiencies.
-4. **Interactions & Micro-Behavior**:
+4. **Interactions, Motion & Micro-Behavior**:
    - Incomplete state handling for interactive elements: `:hover`, `:focus-visible`, `:active`, and `:disabled`. Unhandled async states without loading spinners or debouncing to prevent double-clicks.
+   - **Craft Floor Motion**: Theatrical bounce or elastic overshoot easing (`animate-bounce`, `cubic-bezier` overshoot > 1.15 — `MEDIUM`); enforce exponential ease-out (`cubic-bezier(0.16, 1, 0.3, 1)`).
 5. **Forms, Inputs & Feedback**:
    - Inputs without accessible validation messages, error states communicated solely through color, missing `aria-describedby` links, and toast notifications lacking `role="status"` or `aria-live`.
-6. **Layout, Content & The 6-State Matrix**:
-   - Evaluate all 6 states for stateful UI containers: **Idle**, **Loading / Skeleton**, **Empty / Zero-State**, **Success**, **Error / Retry**, and **Edge / Overflow / Long-String**. Detect unhandled zero-records or unconstrained text wrapping.
+6. **Layout, Content, Typography Rhythm & The 6-State Matrix**:
+   - Evaluate all 6 states for stateful UI containers: **Idle**, **Loading / Skeleton**, **Empty / Zero-State**, **Success**, **Error / Retry**, and **Edge / Overflow / Long-String**. Detect unhandled zero-records, unconstrained text wrapping, and **Heading Spacing Inversion** (`mb > mt` on section headings — `MEDIUM`).
 7. **Navigation & Information Architecture**:
    - Inactive or ambiguous active-route indicators, missing `aria-current="page"`, inaccessible mobile navigation menus lacking focus trapping, and inconsistent breadcrumbs.
 8. **Localization & RTL (Bidirectional Layouts)**:

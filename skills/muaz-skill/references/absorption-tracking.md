@@ -112,3 +112,17 @@ When updating phase status in the tracking file, use this format:
 - Zero dependency on both repos.
 - Strategic: Caveman → Ignore & Ride. autoprompt → no action.
 - Moat: Moderate (stronger when fine-tuned model + metrics dashboard built).
+
+---
+
+## Existing Absorption: taste-skill (v2) + impeccable (v4.5.2)
+
+**Status:** Complete (all phases executed & verified, 2026-10-14)
+
+**Final status:**
+- **3-Wave AI Slop & Craft Floor Detectors**: Built natively into `skills/muaz-skill/scripts/anti_slop.py` (expanded 29→36 checks) and `scripts/ui_audit_engine.py` (`WAVE3_CREAM_TERRACOTTA`, `MIXED_FONT_ITALIC_HEADLINE`, `MONOSPACE_PROSE_TELL`, `NESTED_CARDS`, `GRAY_TEXT_ON_COLORED_BG`, `BOUNCE_ELASTIC_EASING`, `ICON_IN_ROUNDED_SQUARE_ABOVE_HEADING`, and `Heading Spacing Inversion`).
+- **Craft Floor & Browser Surface Theming**: Enforced across `muaz-skill` (`rules.md` #38–48, `build-mode.md`), `feature-fe`, `fix-ui`, and `web-precode` (`::selection`, `caret-color`, custom scrollbars, `tabular-nums`, `:focus-visible`, `65–75ch` measure, `text-wrap: balance`, `mt > mb` heading spacing).
+- **Art Direction & Subject Inventory Protocol**: Enforced in `muaz-skill` Phase 2.5 and `web-precode` `04-DESIGN_BRIEF.md` (8–12 Subject Inventory items, Competitor Test, `<=2-line` / ~32-char Headline Arithmetic, Argument-First Copy Deck, One Live Interactive Thing, Visitor Modes `Operate`/`Persuade`/`Read`, and `PRODUCT.md` vs `DESIGN.md` separation).
+- **18 Precision Steering Sub-Modes**: Built natively into `muaz-skill/references/tune-mode.md` and `fix-ui` (`polish`, `critique`, `bolder`, `quieter`, `distill`, `harden`, `onboard`, `animate`, `colorize`, `typeset`, `layout`, `delight`, `overdrive`, `clarify`, `adapt`, `optimize`, `extract`, `document`).
+- **Zero Dependency**: Zero npm packages, binaries, or external repo links required at runtime.
+

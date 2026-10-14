@@ -96,6 +96,25 @@ def scan_sync_drift() -> List[Dict[str, Any]]:
                     "target": gl_f
                 })
 
+    # Also sync root GEMINI.md to ~/.gemini/GEMINI.md
+    ws_gemini = WORKSPACE_ROOT / "GEMINI.md"
+    gl_gemini = Path(os.path.expanduser("~/.gemini/GEMINI.md"))
+    if ws_gemini.exists():
+        if not gl_gemini.exists():
+            drift_items.append({
+                "rel_path": "GEMINI.md (~/.gemini/GEMINI.md)",
+                "status": "MISSING_IN_GLOBAL",
+                "source": ws_gemini,
+                "target": gl_gemini
+            })
+        elif file_hash(ws_gemini) != file_hash(gl_gemini):
+            drift_items.append({
+                "rel_path": "GEMINI.md (~/.gemini/GEMINI.md)",
+                "status": "MODIFIED_IN_WORKSPACE",
+                "source": ws_gemini,
+                "target": gl_gemini
+            })
+
     return drift_items
 
 def apply_sync(drift_items: List[Dict[str, Any]]) -> int:

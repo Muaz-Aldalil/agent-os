@@ -183,14 +183,26 @@ def main():
             all_guards_ok = False
         print(f"    {status} - {guard:<30} (Workspace: {'YES' if in_ws else 'NO'}, Global: {'YES' if in_gl else 'NO'})")
 
-    print(f"\n[4] Rules & Constitutional Governance Audit")
+    print(f"\n[4] Rules & Constitutional Governance Audit (Max 24,000 bytes/file)")
     rules_dir = WORKSPACE_ROOT / "rules"
     rules_count = 0
+    rules_total_bytes = 0
+    rules_ok = True
     if rules_dir.exists():
-        for r in rules_dir.glob("*.md"):
+        for r in sorted(rules_dir.glob("*.md")):
             rules_count += 1
-            print(f"    📄 Rule file: {r.name} ({r.stat().st_size} bytes)")
-    print(f"    Total active rules: {rules_count}")
+            sz = r.stat().st_size
+            rules_total_bytes += sz
+            if sz > 24000:
+                rules_ok = False
+                print(f"    [FAIL] Rule file exceeds 24KB cap: {r.name} ({sz:,} / 24,000 bytes)")
+            else:
+                print(f"    [PASS] Rule file: {r.name:<32} ({sz:,} / 24,000 bytes)")
+    if rules_total_bytes > 80000:
+        rules_ok = False
+        print(f"    [FAIL] Aggregate rules exceed 80KB budget: {rules_total_bytes:,} bytes")
+    else:
+        print(f"    Total active rules: {rules_count} ({rules_total_bytes:,} bytes total, ~{rules_total_bytes // 4:,} tokens)")
 
     print(f"\n[5] Prompt Caching & Intake Optimization Audit")
     cache_ok = True
@@ -213,12 +225,12 @@ def main():
         print(f"    [FAIL] Prompt cache audit failed: {e}")
 
     print("\n" + "=" * 80)
-    if ws_failed == 0 and gl_failed == 0 and all_guards_ok and cache_ok:
+    if ws_failed == 0 and gl_failed == 0 and all_guards_ok and rules_ok and cache_ok:
         print("  OVERALL AUDIT RESULT: ALL SYSTEMS OPERATIONAL (GREEN)")
         print("=" * 80)
         return 0
     else:
-        print(f"  OVERALL AUDIT RESULT: FAILURES DETECTED (WS: {ws_failed}, GL: {gl_failed}, Guards: {all_guards_ok}, Cache: {cache_ok})")
+        print(f"  OVERALL AUDIT RESULT: FAILURES DETECTED (WS: {ws_failed}, GL: {gl_failed}, Guards: {all_guards_ok}, Rules: {rules_ok}, Cache: {cache_ok})")
         print("=" * 80)
         return 1
 

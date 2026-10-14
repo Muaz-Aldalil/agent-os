@@ -1,6 +1,6 @@
 # Antigravity Agent OS - Skills Directory
 
-> Auto-indexed registry of **49 production skills** categorized by operational domain.
+> Auto-indexed registry of **60 production skills** categorized by operational domain.
 
 ## Backend & Data Systems
 
@@ -12,6 +12,20 @@
 - **[`database`](file:///D:/Skills/.agents/skills/database/SKILL.md)**: Use when designing database schemas, writing queries, creating migrations, optimizing performance, or managing data layer across PostgreSQL, MongoDB, SQLite, Firebase, Redis. Triggers on: schema, query, migration, database, SQL, index, relation, collection, Firestore.
 - **[`devops-deploy`](file:///D:/Skills/.agents/skills/devops-deploy/SKILL.md)**: Use when setting up CI/CD pipelines, Docker containers, deployment configurations, environment management, or infrastructure automation. Triggers on: deploy, Docker, CI, GitHub Actions, Vercel, Netlify, AWS, nginx, hosting, pipeline.
 - **[`laravel-mastery`](file:///D:/Skills/.agents/skills/laravel-mastery/SKILL.md)**: Enterprise architectural engineering skill for modern Laravel 11+ and PHP 8.3/8.4 applications. Enforces strict types, Form Request boundaries, Eloquent query optimization (preventing N+1), pessimistic locking, idempotent queues/jobs, and Pest 3 architectural security testing.
+
+## Beginner Situation Combos (All-in-One)
+
+- **[`check-all`](file:///D:/Skills/.agents/skills/check-all/SKILL.md)**: All-in-one Pre-Push & PR Quality, Security, UI, and Anti-Bloat Review. Chains /clean-code-guard, /test-guard, /rtl-logical-guard, /next-server-action-guard, /pest-security-guard, /ponytail-review, and /debate-review into a single command.
+- **[`doc-project`](file:///D:/Skills/.agents/skills/doc-project/SKILL.md)**: All-in-one Project Documentation Generator & Updater for beginners and teams. Chains /project-documentation and /docs-guard to scan any codebase and generate or update clear, beginner-friendly README.md, docs/ARCHITECTURE.md, and docs/API.md files.
+- **[`feature-fe`](file:///D:/Skills/.agents/skills/feature-fe/SKILL.md)**: Stack-agnostic Frontend & CMS UI feature builder. Works with React, Next.js, Vue, Nuxt, Blade/Livewire, Angular, Svelte, Astro, HTML/Tailwind, or WordPress. Runs /grill-me + /muaz-skill Smart Intake, enforces CMS Sticky Navbar, Sticky Sidebar, responsive Data Tables, Forms, RTL/LTR logical properties, and auto-verifies via /ui-review-loop.
+- **[`feature-febe`](file:///D:/Skills/.agents/skills/feature-febe/SKILL.md)**: Stack-agnostic Frontend + Backend feature builder (CMS, dashboards, APIs, forms, tables, auth). Chains /feature-fe (Frontend & CMS Layout Armor) with /backend-api, /backend-http, /backend-identity, /backend-ops, and stack security guards (/laravel-mastery + /pest-security-guard or /next-server-action-guard). Always starts with /grill-me + /muaz-skill Smart Intake.
+- **[`feature-full`](file:///D:/Skills/.agents/skills/feature-full/SKILL.md)**: Complete Full-Stack Feature Builder: Frontend + Backend + Database for ANY tech stack. Chains /feature-febe (CMS UI + Backend API/RBAC/Validation/Uploads) with /database and /backend-data (migrations, foreign keys, compound indexes, soft deletes, N+1 prevention, and transactions). Always starts with /grill-me + /muaz-skill Smart Intake.
+- **[`feature-wp`](file:///D:/Skills/.agents/skills/feature-wp/SKILL.md)**: All-in-one WordPress & WooCommerce feature, theme, plugin, and admin UI builder. Runs /grill-me + /muaz-skill Smart Intake, chains /wp-guard, /woo-guard, /rtl-logical-guard, /database, and /clean-code-guard to build secure, HPOS-compatible, RTL-ready WordPress features.
+- **[`fix-backend`](file:///D:/Skills/.agents/skills/fix-backend/SKILL.md)**: All-in-one Backend, API, Auth/RBAC, Form Validation, File Upload, and Database Bug Fixer for any stack (Laravel/PHP, Node.js, Next.js Server Actions, Python, Go, SQL/NoSQL). Chains /backend-api, /backend-data, /database, /backend-identity, /test-guard, and stack guards.
+- **[`fix-ui`](file:///D:/Skills/.agents/skills/fix-ui/SKILL.md)**: All-in-one UI Violation Scanner & Auto-Fixer for any frontend or CMS stack. Scans the project with /ui-audit, generates structured fix prompts automatically, fixes broken Sticky Navbars, Sticky Sidebars, overflowing Data Tables, messy Forms, RTL/LTR bugs (/rtl-logical-guard), and verifies everything via /ui-review-loop.
+- **[`save-data`](file:///D:/Skills/.agents/skills/save-data/SKILL.md)**: All-in-one Low-Bandwidth & Token Saver command for mobile data, hotspot, and metered connections. Chains /data-saver (bandwidth_guard.py) with /caveman lite and configures offline package manager caching (npm, pnpm, yarn, composer, pip) to cut internet data usage by 75-85%.
+- **[`smart-feature`](file:///D:/Skills/.agents/skills/smart-feature/SKILL.md)**: Smart feature router and builder for any tech stack. Reads a plain-language feature description (in English or Arabic) and existing project files, automatically selects the best Frontend, CMS, Backend, Database, and Security skills, runs the full /grill-me + /muaz-skill Smart Intake interview, builds the feature, and auto-verifies UI, security, and tests.
+- **[`start-project`](file:///D:/Skills/.agents/skills/start-project/SKILL.md)**: All-in-one master command to start a brand new project from zero in ANY tech stack. Runs the full /grill-me + /muaz-skill Smart Intake interview (Q1-Q28 in Frontier Rounds), authors the 6 Pre-Coding architecture documents (/web-precode), generates Spec-Kit tasks (/spec-kit), and builds the project with CMS Frontend, Backend, Database, and Security guards.
 
 ## Core Architecture & Workflow
 

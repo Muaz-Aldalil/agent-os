@@ -579,13 +579,49 @@
   - Daily internet data consumption reduced by 75% to 85% (from >10 GB/day down to ~1.5–2 GB/day).
   - Eliminates silent background downloads while preserving full AI agent capabilities, manual command runs, and git workflows.
 
+---
 
+## [ADR-035] Native Absorption of Craft Floor, Subject Inventory Art Direction, 18 Steering Sub-Modes & 3-Wave AI Slop Defense (Release v1.13.0)
+- **Date**: 2026-10-14
+- **Status**: APPROVED
+- **Context**: AI-generated interfaces evolve through recognizable cliché waves: Wave 1 (2023–2024 violet/indigo gradients, glass blur, 3-up icon boxes), Wave 2 (2025 cramped uppercase eyebrows, pill badges, single italic serif word in sans headlines, decorative `01/02/03` numbering, monospace prose), and Wave 3 (2025–2026 warm-editorial yellow-cream `#faf9f5` ground + terracotta `#d97757` accent). Simultaneously, stripping ornaments without adding substance yields thin, lifeless pages. Using the `/workflow-skill-creator` distillation methodology and `muaz-skill` Hard Rule 17 (Absorption Principle), the Human Technical Owner directed absorbing all capabilities from `Leonxlnx/taste-skill` (v2) and `pbakaus/impeccable` (v4.5.2) directly into our existing frontend skills and static verification engines with zero external dependencies.
+- **Alternatives Evaluated**:
+  1. *Install external npm/CLI packages (`taste-skill`, `impeccable`)*: (Rejected: Violates Hard Rule 17 Absorption Principle, introduces external supply-chain dependencies, and splits routing across redundant skills).
+  2. *Create standalone wrapper skills*: (Rejected: Fragments the `/feature-fe`, `/fix-ui`, `/ui-audit`, and `/muaz-skill` workflows).
+  3. *Full native absorption into existing skills (`muaz-skill` v5.5.0, `feature-fe`, `fix-ui`, `ui-audit`, `web-precode`) + deterministic Python AST detectors (`anti_slop.py` & `ui_audit_engine.py`)*: (Selected per human owner confirmation).
+- **Selected Decision**:
+  1. Upgrade `skills/muaz-skill/scripts/anti_slop.py` from 29 to 36 deterministic checks by adding:
+     - `WAVE3_CREAM_TERRACOTTA` (`MEDIUM` warning — overridable by explicit brand brief)
+     - `MIXED_FONT_ITALIC_HEADLINE` (`MEDIUM`)
+     - `MONOSPACE_PROSE_TELL` (`MEDIUM`)
+     - `NESTED_CARDS` (`HIGH`)
+     - `GRAY_TEXT_ON_COLORED_BG` (`HIGH`)
+     - `BOUNCE_ELASTIC_EASING` (`MEDIUM`)
+     - `ICON_IN_ROUNDED_SQUARE_ABOVE_HEADING` (`MEDIUM`)
+  2. Upgrade `scripts/ui_audit_engine.py` to detect Nested Cards (`HIGH`), Untinted Gray Text on Colored Surfaces (`HIGH`), Wave 3 Terracotta AI Slop (`MEDIUM`), Mixed-Font Italic Word in Headline (`MEDIUM`), Heading Spacing Inversion (`mt < mb`, `MEDIUM`), and Bounce/Elastic Overshoot Easing (`MEDIUM`), generating 10-section remediation prompts automatically.
+  3. Enshrine **The Craft Floor & Browser Surface Theming** (`::selection`, `caret-color`, custom scrollbars, `tabular-nums`, `:focus-visible`, `65–75ch` measure, `text-wrap: balance`, `mt > mb` heading spacing), **Art Direction & Subject Inventory** (8–12 domain facts, Competitor Test, `<=2-line` / ~32-char Headline Arithmetic, Argument-First Copy Deck, One Live Interactive Thing, Visitor Modes `Operate`/`Persuade`/`Read`, `PRODUCT.md` vs `DESIGN.md` separation), **Bounded Verification Passes**, and the **18 Precision Steering Sub-Modes** (`polish`, `critique`, `bolder`, `quieter`, `distill`, `harden`, `onboard`, `animate`, `colorize`, `typeset`, `layout`, `delight`, `overdrive`, `clarify`, `adapt`, `optimize`, `extract`, `document`) across `muaz-skill` (`SKILL.md`, `rules.md`, `build-mode.md`, `tune-mode.md`, `quality-gate.md`), `feature-fe`, `fix-ui`, `ui-audit`, and `web-precode`.
+- **Consequences**:
+  - 100% native enforcement of Craft Floor and 3-Wave AI Slop rules across all frontend builds, audits, and fixes with zero external dependencies.
+  - Verified by 121/121 Agent OS unit tests PASS and 135/135 `muaz-skill` unit tests PASS (256 total tests GREEN).
 
+---
 
-
-
-
-
-
-
-
+## [ADR-036] Empirical Cross-Project Universal Rules Corpus & 24KB Per-File Rule Cap Enforcement (Release v1.14.0)
+- **Date**: 2026-10-14
+- **Status**: APPROVED
+- **Context**: A comprehensive empirical audit of all **74 historical conversations (9 Antigravity sessions + 65 Antigravity IDE sessions; 1,479 owner turns)** across KNZiN, Hadonco (حمدونكو), Student Registration LMS, Pawlished, and `.agents` OS revealed two critical findings:
+  1. **Silent 24KB Rule Truncation Defect**: Antigravity enforces a strict `24,000 byte (24 KB)` per-file limit on rule files (`agy-customizations/docs/rules.md`), silently truncating any rule file exceeding 24 KB on line boundaries. `rules/engineering-constitution.md` had grown to `29,717 bytes`, causing Sections 9–12 (Financial Correctness, Execution Lock, Honest Verification, Completion Semantics) to be truncated in live sessions. Additionally, `~/.gemini/GEMINI.md` was empty (`0 bytes`).
+  2. **Recurring Cross-Project Corrections**: Across IDE and AGY sessions, the Human Technical Owner repeatedly had to re-state specific workflow, UI/CMS, DevOps, and execution rules (e.g., Batch Feedback Hold mode when saying *"don't build until I say proceed"*, One-Pass Narrow Correction & SpecKit Hard-Stop Gate discipline, Edited-File Traceability with clickable local + GitHub links, 100% migration/visual preservation without touching primary brand colors or Navbar, `100dvh` Hero including Navbar height, sticky Navbar & full-height `h-dvh` Admin Sidebar without `overflow-hidden` ancestor traps, mobile/tablet table cell truncation to `2–4 words + ...`, `3-Card + Show More/Collapse` grids, logical input icon padding `ps-10`/`pe-10`, borderless informational badges, single floating CMS Save button + Toast/Modal confirmation instead of `window.alert()`, strict AR/EN language & logo isolation, multi-server port safety, user-owned browser testing mode, Sudan low-bandwidth awareness, and `commit` vs. `commit and push` cloud build quota discipline).
+- **Alternatives Evaluated**:
+  1. *Append all new rules into `rules/engineering-constitution.md`*: (Rejected: Worsens the 24,000-byte per-file truncation bug and violates the owner's explicit directive *"don't just dump it into the constitution.md"*).
+  2. *Project-local rules only*: (Rejected: Fails to apply automatically when starting or switching to new projects).
+  3. *Modular Global + Workspace Rule Architecture strictly under `< 24,000 bytes` per file (`rules/universal-project-rules.md` + tightened `rules/engineering-constitution.md` + `rules/engineering-agent.md` + `~/.gemini/GEMINI.md`) backed by automated 24KB cap enforcement*: (Selected).
+- **Selected Decision**:
+  1. Compress `rules/engineering-constitution.md` from `29,717 bytes` down to `~15.5 KB` (`< 24,000 bytes`) while preserving all 12 sections, diagrams, and ADR-enforced invariants so zero lines are ever truncated.
+  2. Create `rules/universal-project-rules.md` (`~12.5 KB`) codifying the 5 empirical domains distilled from all 74 AGY & IDE conversations (Team Partnership & Step-by-Step Copy-Paste DevOps Guidance; Execution Control Modes & SpecKit Gate Discipline; Surgical Visual & Migration Preservation; Universal UI/Responsive/CMS Standards; Runtime, Browser, Bandwidth & Git/Deploy Quota Discipline).
+  3. Update `rules/engineering-agent.md` and root `engineering-agent.md` (`~15.3 KB`) to integrate `universal-project-rules.md` and expand the Non-Negotiable Prohibitions to 25 items.
+  4. Populate `GEMINI.md` and sync to `C:\Users\HP\.gemini\GEMINI.md` and `C:\Users\HP\.gemini\config\rules\` via `scripts/sync_config.py`.
+  5. Enforce the `24,000 byte` per-file cap and `80,000 byte` (`~20,000 token`) aggregate rules budget in `scripts/audit_agent_os.py` and `scripts/adr_enforcer.py` (`ADR-036`).
+- **Consequences**:
+  - Zero rule truncation across Antigravity and Antigravity IDE (`100%` of all 5 rule files load completely).
+  - All 74 conversations' lessons are permanently active across every current and future project.

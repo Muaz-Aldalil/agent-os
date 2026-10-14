@@ -193,9 +193,9 @@ Total is now 0-160 (8 dimensions × 0-20).
 
 ---
 
-## AI-Slop Detection Checklist
+## AI-Slop & Craft Floor Detection Checklist
 
-Deterministic checks (`python scripts/anti_slop.py <dir> --fail-on MEDIUM`; fallback `anti-slop.sh`; 29 checks, severity-tagged):
+Deterministic checks (`python scripts/anti_slop.py <dir> --fail-on MEDIUM`; fallback `anti-slop.sh`; 36 checks, severity-tagged):
 - [ ] No purple/violet gradient as primary (CRITICAL)
 - [ ] No AI brand gradient (indigo/violet→purple/pink) (HIGH)
 - [ ] No Inter as sole font family (HIGH)
@@ -203,6 +203,13 @@ Deterministic checks (`python scripts/anti_slop.py <dir> --fail-on MEDIUM`; fall
 - [ ] No pure #000 background (HIGH)
 - [ ] No gradient text (background-clip: text) (HIGH)
 - [ ] No scroll listeners / transition-all / layout-property animation (HIGH)
+- [ ] No nested cards inside cards (`NESTED_CARDS`, HIGH)
+- [ ] No untinted gray text on colored backgrounds (`GRAY_TEXT_ON_COLORED_BG`, HIGH)
+- [ ] No Wave 3 default cream + terracotta editorial tell unless explicitly in brand brief (`WAVE3_CREAM_TERRACOTTA`, MEDIUM)
+- [ ] No one-italic-serif-word inside a sans headline (`MIXED_FONT_ITALIC_HEADLINE`, MEDIUM)
+- [ ] No monospace font used as decorative prose/eyebrow tell outside code (`MONOSPACE_PROSE_TELL`, MEDIUM)
+- [ ] No bounce or elastic overshoot easing (`BOUNCE_ELASTIC_EASING`, MEDIUM)
+- [ ] No 3-up icon-in-rounded-square above heading tell (`ICON_IN_ROUNDED_SQUARE_ABOVE_HEADING`, MEDIUM)
 - [ ] No placeholder copy (Lorem, Acme, John Doe, example.com) (MEDIUM)
 - [ ] No hover-only reveal of critical content (MEDIUM)
 - [ ] No "01 · Title" numbered section eyebrows (MEDIUM)
@@ -220,13 +227,13 @@ Deterministic checks (`python scripts/anti_slop.py <dir> --fail-on MEDIUM`; fall
 - [ ] No emoji as UI icons (MEDIUM)
 - [ ] No "Most Popular"-badged middle pricing tier (MEDIUM)
 
-Manual checks (agent must verify):
-- [ ] No symmetric feature grid without visual hierarchy
-- [ ] No stock photo + gradient overlay
-- [ ] No glassmorphism by reflex
-- [ ] No rounded-full pill buttons as only button style
-- [ ] No generic SaaS page structure (hero→features→pricing→testimonials→footer)
-- [ ] No filler buzzword copy
+Manual Craft Floor & Art Direction checks (agent must verify):
+- [ ] Subject Inventory (8-12 subject-specific facts) passes the Competitor Test ("On this page, [subject artifact] becomes [layout/interactive device]")
+- [ ] Argument-First Copy Deck: every section has a distinct claim + proof; headlines hold to <= 2 lines (~32 chars)
+- [ ] One Live Interactive Thing built from the subject's idea (works with thumb on mobile, degrades without JS)
+- [ ] Craft Floor Browser Surfaces themed: `::selection`, `caret-color`, custom scrollbars, `:focus-visible`, `text-underline-offset`, and `tabular-nums` on numeric data
+- [ ] More space above headings than below them (`mt > mb`); body measure `65-75ch`; `text-wrap: balance` on headings
+- [ ] Bounded Verification Passes: build completely, inspect desktop + mobile in 1 batched round, fix in 1 batch, confirm in at most 1 final round — stop over-polishing
 
 ---
 

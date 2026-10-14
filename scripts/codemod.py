@@ -18,7 +18,7 @@ from typing import List, Dict, Any, Tuple
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
 def transform_php_strict_types(content: str) -> Tuple[str, bool]:
     """Adds declare(strict_types=1); to PHP files if missing."""

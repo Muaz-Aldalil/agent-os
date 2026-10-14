@@ -24,7 +24,7 @@ from typing import Dict, Any, List, Tuple, Optional
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
 CANONICAL_DOCS = [
     "01-PRD.md",

@@ -19,7 +19,7 @@ from typing import List, Dict, Any, Tuple
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
 class FlightItem:
     def __init__(self, category: str, title: str, passed: bool, details: str, severity: str = "ERROR"):

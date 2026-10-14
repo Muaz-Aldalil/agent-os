@@ -31,7 +31,7 @@ from typing import List, Dict, Any, Optional, Set, Tuple
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
 # Excluded directories for fast scanning
 IGNORE_DIRS = {

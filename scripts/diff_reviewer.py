@@ -17,7 +17,7 @@ from typing import List, Dict, Any, Optional
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = WORKSPACE_ROOT / "scripts"
 if str(WORKSPACE_ROOT) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT))

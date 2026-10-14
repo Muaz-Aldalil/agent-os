@@ -10,7 +10,7 @@ import sys
 import re
 from pathlib import Path
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 GLOBAL_ROOT = Path(os.path.expanduser("~/.gemini/config"))
 
 CRITICAL_GUARDS = [

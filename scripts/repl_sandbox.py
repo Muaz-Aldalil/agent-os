@@ -19,7 +19,7 @@ from typing import Any, Dict, List, Optional, Tuple
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
 def run_python(code: str, timeout_seconds: float = 3.0) -> Dict[str, Any]:
     """

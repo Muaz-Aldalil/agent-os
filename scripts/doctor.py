@@ -19,7 +19,7 @@ from typing import List, Dict, Any, Tuple
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
 class DiagnosticCheck:
     def __init__(self, name: str, passed: bool, message: str, fixable: bool = False, fix_fn=None):

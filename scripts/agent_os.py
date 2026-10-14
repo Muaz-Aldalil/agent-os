@@ -18,7 +18,7 @@ from typing import List
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 CALLER_CWD = Path.cwd()
 if str(WORKSPACE_ROOT / "scripts") not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT / "scripts"))
@@ -113,6 +113,8 @@ def run_sync(apply: bool = False):
     args = [sys.executable, str(sync_script)]
     if apply:
         args.append("--apply")
+    if "--team" in sys.argv:
+        args.append("--team")
     res = subprocess.run(args, cwd=WORKSPACE_ROOT)
     sys.exit(res.returncode)
 

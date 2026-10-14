@@ -1,91 +1,45 @@
 # Session Cognitive Snapshot (Unit Test Freeze)
-- **Captured At**: 2026-10-14T16:07:08.048038
-- **Git Status**: Branch `master` at commit `[a44ea3e]`
-- **Dirty Files**: 49 modified/untracked file(s)
+- **Captured At**: 2026-10-14T18:18:59.250699
+- **Git Status**: Branch `master` at commit `[c080206]`
+- **Dirty Files**: 17 modified/untracked file(s)
 
 ### Working Tree Diff State
-- `?? GEMINI.md`
-- `?? HANDBOOK.md`
-- `?? HANDBOOK.pdf`
-- `?? docs/precode/handbook/`
-- `?? handbook.html`
-- `?? pawlished.html`
-- `?? rules/universal-project-rules.md`
-- `?? skills/check-all/`
-- `?? skills/doc-project/`
-- `?? skills/feature-fe/`
-- `?? skills/feature-febe/`
-- `?? skills/feature-full/`
-- `?? skills/feature-wp/`
-- `?? skills/fix-backend/`
-- `?? skills/fix-ui/`
-- `?? skills/save-data/`
-- `?? skills/smart-feature/`
-- `?? skills/start-project/`
-- `?? specs/001-beginner-handbook/`
-- `M .agent_snapshot.json`
-- `M .agent_telemetry.json`
-- `M .agent_trace.json`
-- `M DECISIONS.md`
-- `M PROGRESS.md`
-- `M SESSION_SNAPSHOT.md`
-- `M SKILLS_DIRECTORY.md`
-- `M SKILL_INDEX.json`
-- `M engineering-agent.md`
-- `M rules/engineering-agent.md`
-- `M rules/engineering-constitution.md`
-- `M scripts/adr_enforcer.py`
+- `?? GEMINI.team.md`
 - `M scripts/agent_os.py`
 - `M scripts/audit_agent_os.py`
+- `M scripts/code_graph.py`
+- `M scripts/codemod.py`
+- `M scripts/diff_reviewer.py`
+- `M scripts/doctor.py`
+- `M scripts/install_git_hooks.py`
+- `M scripts/precode_engine.py`
+- `M scripts/preflight.py`
+- `M scripts/prompt_cache.py`
+- `M scripts/repl_sandbox.py`
 - `M scripts/skill_indexer.py`
+- `M scripts/snapshot.py`
 - `M scripts/sync_config.py`
+- `M scripts/tracer.py`
 - `M scripts/ui_audit_engine.py`
-- `M skills/muaz-skill/README.md`
-- `M skills/muaz-skill/SKILL.md`
-- `M skills/muaz-skill/references/absorption-tracking.md`
-- `M skills/muaz-skill/references/build-mode.md`
-- `M skills/muaz-skill/references/quality-gate.md`
-- `M skills/muaz-skill/references/rules.md`
-- `M skills/muaz-skill/references/tune-mode.md`
-- `M skills/muaz-skill/scripts/anti_slop.py`
-- `M skills/muaz-skill/tests/test_anti_slop.py`
-- `M skills/muaz-skill/tests/test_data_integrity.py`
-- `M skills/ui-audit/SKILL.md`
-- `M skills/web-precode/SKILL.md`
-- `M tests/test_ui_audit_engine.py`
 
 ```text
-.agent_snapshot.json                               |  53 +++-
- .agent_telemetry.json                              |   2 +-
- .agent_trace.json                                  |   2 +-
- DECISIONS.md                                       |  50 ++-
- PROGRESS.md                                        |  50 +--
- SESSION_SNAPSHOT.md                                |  88 +++++-
- SKILLS_DIRECTORY.md                                |  16 +-
- SKILL_INDEX.json                                   |  79 ++++-
- engineering-agent.md                               | 102 +++---
- rules/engineering-agent.md                         | 102 +++---
- rules/engineering-constitution.md                  | 342 +++++++--------------
- scripts/adr_enforcer.py                            |  16 +
- scripts/agent_os.py                                |  37 ++-
- scripts/audit_agent_os.py                          |  24 +-
- scripts/skill_indexer.py                           |  13 +
- scripts/sync_config.py                             |  19 ++
- scripts/ui_audit_engine.py                         | 124 ++++++++
- skills/muaz-skill/README.md                        |   4 +-
- skills/muaz-skill/SKILL.md                         |  14 +-
- .../muaz-skill/references/absorption-tracking.md   |  14 +
- skills/muaz-skill/references/build-mode.md         |  98 +++---
- skills/muaz-skill/references/quality-gate.md       |  25 +-
- skills/muaz-skill/references/rules.md              |  20 ++
- skills/muaz-skill/references/tune-mode.md          |  41 ++-
- skills/muaz-skill/scripts/anti_slop.py             |  87 ++++++
- skills/muaz-skill/tests/test_anti_slop.py          |  53 ++++
- skills/muaz-skill/tests/test_data_integrity.py     |  10 +-
- skills/ui-audit/SKILL.md                           |  11 +-
- skills/web-precode/SKILL.md                        |  19 +-
- tests/test_ui_audit_engine.py                      |  28 ++
- 30 files changed, 1082 insertions(+), 461 deletions(-)
+scripts/agent_os.py          |  4 +++-
+ scripts/audit_agent_os.py    |  2 +-
+ scripts/code_graph.py        |  2 +-
+ scripts/codemod.py           |  2 +-
+ scripts/diff_reviewer.py     |  2 +-
+ scripts/doctor.py            |  2 +-
+ scripts/install_git_hooks.py |  2 +-
+ scripts/precode_engine.py    |  2 +-
+ scripts/preflight.py         |  2 +-
+ scripts/prompt_cache.py      |  2 +-
+ scripts/repl_sandbox.py      |  2 +-
+ scripts/skill_indexer.py     |  2 +-
+ scripts/snapshot.py          |  2 +-
+ scripts/sync_config.py       | 16 +++++++++-------
+ scripts/tracer.py            |  2 +-
+ scripts/ui_audit_engine.py   |  2 +-
+ 16 files changed, 26 insertions(+), 22 deletions(-)
 ```
 
 ### Active Investigation: Unit Test Investigation

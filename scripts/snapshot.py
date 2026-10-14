@@ -21,7 +21,7 @@ from typing import Dict, Any
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT_JSON = WORKSPACE_ROOT / ".agent_snapshot.json"
 SNAPSHOT_MD = WORKSPACE_ROOT / "SESSION_SNAPSHOT.md"
 

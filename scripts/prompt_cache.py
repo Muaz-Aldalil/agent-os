@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
 def normalize_newlines(text: str) -> str:
     """Normalizes all line breaks to standard LF (\\n), stripping Windows CRLF."""

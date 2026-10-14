@@ -13,7 +13,7 @@ from pathlib import Path
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 HOOKS_DIR = WORKSPACE_ROOT / ".git" / "hooks"
 
 PRE_COMMIT_SCRIPT = r"""#!/bin/sh

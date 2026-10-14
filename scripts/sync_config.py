@@ -18,7 +18,7 @@ from typing import List, Dict, Tuple, Any
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path("D:/Skills/.agents")
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 GLOBAL_ROOT = Path(os.path.expanduser("~/.gemini/config"))
 
 EXCLUDE_PATTERNS = {
@@ -38,7 +38,7 @@ def file_hash(path: Path) -> str:
             h.update(chunk)
     return h.hexdigest()
 
-def scan_sync_drift() -> List[Dict[str, Any]]:
+def scan_sync_drift(team_mode: bool = False) -> List[Dict[str, Any]]:
     """Compares files between workspace and global config."""
     drift_items = []
     
@@ -96,20 +96,21 @@ def scan_sync_drift() -> List[Dict[str, Any]]:
                     "target": gl_f
                 })
 
-    # Also sync root GEMINI.md to ~/.gemini/GEMINI.md
-    ws_gemini = WORKSPACE_ROOT / "GEMINI.md"
+    # Sync GEMINI.team.md (when --team is passed) or GEMINI.md (default) to ~/.gemini/GEMINI.md
+    gemini_src_name = "GEMINI.team.md" if team_mode and (WORKSPACE_ROOT / "GEMINI.team.md").exists() else "GEMINI.md"
+    ws_gemini = WORKSPACE_ROOT / gemini_src_name
     gl_gemini = Path(os.path.expanduser("~/.gemini/GEMINI.md"))
     if ws_gemini.exists():
         if not gl_gemini.exists():
             drift_items.append({
-                "rel_path": "GEMINI.md (~/.gemini/GEMINI.md)",
+                "rel_path": f"{gemini_src_name} (~/.gemini/GEMINI.md)",
                 "status": "MISSING_IN_GLOBAL",
                 "source": ws_gemini,
                 "target": gl_gemini
             })
         elif file_hash(ws_gemini) != file_hash(gl_gemini):
             drift_items.append({
-                "rel_path": "GEMINI.md (~/.gemini/GEMINI.md)",
+                "rel_path": f"{gemini_src_name} (~/.gemini/GEMINI.md)",
                 "status": "MODIFIED_IN_WORKSPACE",
                 "source": ws_gemini,
                 "target": gl_gemini
@@ -129,7 +130,8 @@ def apply_sync(drift_items: List[Dict[str, Any]]) -> int:
 
 def main():
     apply_mode = "--apply" in sys.argv
-    drift = scan_sync_drift()
+    team_mode = "--team" in sys.argv
+    drift = scan_sync_drift(team_mode=team_mode)
 
     print("=" * 65)
     print("      ANTIGRAVITY AGENT OS - CONFIG PARITY SYNC        ")

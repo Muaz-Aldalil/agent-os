@@ -4,28 +4,34 @@ tests/test_scope_guard.py
 Unit tests for the Scope Bounding and Blast-Radius Contract engine.
 """
 
+import tempfile
 import unittest
 from pathlib import Path
+import scripts.scope_guard as scope_guard_mod
 from scripts.scope_guard import (
     set_scope,
     get_scope,
     clear_scope,
     check_scope,
-    SCOPE_FILE
 )
+
 
 class TestScopeGuard(unittest.TestCase):
     def setUp(self):
-        clear_scope()
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self._orig_scope_file = scope_guard_mod.SCOPE_FILE
+        self.scope_file = Path(self.temp_dir.name) / ".agent_scope.json"
+        scope_guard_mod.SCOPE_FILE = self.scope_file
 
     def tearDown(self):
-        clear_scope()
+        scope_guard_mod.SCOPE_FILE = self._orig_scope_file
+        self.temp_dir.cleanup()
 
     def test_set_and_get_scope(self):
         res = set_scope("Fix Auth", ["src/auth.ts", "tests/test_auth.ts"], max_lines=50)
         self.assertEqual(res["task"], "Fix Auth")
         self.assertEqual(res["max_lines"], 50)
-        self.assertTrue(SCOPE_FILE.is_file())
+        self.assertTrue(self.scope_file.is_file())
 
         loaded = get_scope()
         self.assertIsNotNone(loaded)

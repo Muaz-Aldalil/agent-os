@@ -122,10 +122,13 @@ def check_autonomy_suite_health() -> List[FlightItem]:
     # 1. Telemetry
     try:
         from context_telemetry import evaluate_health
+        from snapshot import _measure_live_transcript
         h = evaluate_health()
+        live = _measure_live_transcript()
         is_pass = h["status"] != "CRITICAL"
         sev = "INFO" if h["status"] == "HEALTHY" else ("WARNING" if h["status"] == "WARNING" else "ERROR")
-        items.append(FlightItem("Telemetry", "Context Health", is_pass, f"{h['status']}: {h['turns']} turns ({h['total_tokens']:,} tokens)", sev))
+        live_str = f" | Live chat: ~{live['estimated_pct']}% ({live['transcript_kb']} KB, {live['steps']} steps)" if live.get("steps") else ""
+        items.append(FlightItem("Telemetry", "Context Health", is_pass, f"{h['status']}: {h['turns']} turns ({h['total_tokens']:,} tokens){live_str}", sev))
     except Exception as e:
         items.append(FlightItem("Telemetry", "Context Health", False, f"Check error: {str(e)}", "WARNING"))
 

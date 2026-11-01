@@ -1,16 +1,16 @@
 # Engineering Progress & Working State
 
 ## 1. Executive Status
-- **Current Milestone**: Release v1.13.0: Craft Floor, Art Direction, 18 Steering Sub-Modes & 3-Wave AI Slop Defense Absorption
+- **Current Milestone**: Release v1.15.0: Architectural Layer, Domain & Shell Boundary Guard + Autonomous `/plan-daily` Session & Skill-Evolution Engine
 - **Status**: READY_FOR_ACCEPTANCE (100% GREEN)
-- **Last Updated**: 2026-10-14T10:12:00+02:00
+- **Last Updated**: 2026-10-15T07:20:00+02:00
 - **Governing Architecture**:
   - [engineering-constitution.md](file:///D:/Skills/.agents/rules/engineering-constitution.md) (Sole Constitutional Contract)
   - [engineering-agent.md](file:///D:/Skills/.agents/engineering-agent.md) & [rules/engineering-agent.md](file:///D:/Skills/.agents/rules/engineering-agent.md) (Harmonized Profile)
   - [rules/mcp-arsenal.md](file:///D:/Skills/.agents/rules/mcp-arsenal.md) (8-MCP Lifecycle Matrix & Fallbacks)
   - [rules/execution-transparency.md](file:///D:/Skills/.agents/rules/execution-transparency.md) (Status & Reconnection Transparency)
   - [engineering-workflow/SKILL.md](file:///D:/Skills/.agents/skills/engineering-workflow/SKILL.md) (Stages 1-9, Danger Zones 1-4)
-  - [DECISIONS.md](file:///D:/Skills/.agents/DECISIONS.md) (ADR-001 through ADR-035)
+  - [DECISIONS.md](file:///D:/Skills/.agents/DECISIONS.md) (ADR-001 through ADR-037)
 
 ## 2. Working Tree & Scope State
 - **Workspace Root**: `D:\Skills\.agents` (Version Control: Git tracking on `master`)
@@ -299,15 +299,39 @@
   - **Automated Cap & Parity Enforcement (`scripts/audit_agent_os.py`, `scripts/adr_enforcer.py`, `scripts/sync_config.py`)**:
     - Added 24,000-byte per-file and 80,000-byte aggregate rule budget checks to `audit_agent_os.py` and `adr_enforcer.py` (`ADR-036`).
     - Extended `sync_config.py` to synchronize `GEMINI.md` to `C:\Users\HP\.gemini\GEMINI.md` alongside `C:\Users\HP\.gemini\config\rules\*.md`.
+- [x] **Subtask 25: Architectural Layer, Domain & Shell Boundary Guard + Autonomous `/plan-daily` Session & Skill-Evolution Engine (Release v1.15.0)**:
+  - **Architectural Layer & Domain Boundary Guard (`clean-code-guard`, `guard_checker.py`, `sentinel.py`, `check-all`)**:
+    - Added **Imperatives 25–27** to `skills/clean-code-guard/SKILL.md` (`Never skip architectural layers`, `Enforce bounded domain and Public vs. Admin shell isolation`, `Never leak low-level abstractions across layer contracts`).
+    - Created `skills/clean-code-guard/references/architecture-boundaries.md` and added **Section F** to `skills/clean-code-guard/references/review-checklist.md`.
+    - Implemented deterministic static analysis (`check_architectural_boundaries()` in `scripts/guard_checker.py` + Pillar 4 `audit_boundaries()` in `scripts/sentinel.py`) detecting `CLIENT_SERVER_BOUNDARY_LEAK`, `LAYER_SKIPPING_CONTROLLER_BYPASS`, `PUBLIC_ADMIN_SHELL_LEAK`, `CROSS_DOMAIN_REPOSITORY_LEAK`, and `UPWARD_ABSTRACTION_LEAK`.
+    - Verified via `tests/test_guards_battery.py` (6 new boundary tests) and `tests/test_sentinel.py` (1 new sentinel boundary test).
+  - **Autonomous `/plan-daily` Session Triage & Skill-Evolution Factory (`skills/plan-daily/SKILL.md`, `scripts/daily_planner.py`)**:
+    - Created `scripts/daily_planner.py` and wired `python scripts/agent_os.py plan-daily [focus|--skill <name>]` into `scripts/agent_os.py`, `scripts/skill_router.py`, and `skills/engineering-workflow/SKILL.md`.
+    - Enforces **One Primary Focus per Session**, parks secondary tasks in `Up Next`, binds stack guards + Architectural Layer/Domain/Shell boundaries, and halts before `git commit`/`git push` (Constitutional Rule 5).
+    - Verified via `tests/test_daily_planner.py` (5/5 unit tests PASS).
+  - **Dual-Config Sync & ADR Ratification**:
+    - Ratified **ADR-037** in `DECISIONS.md` and added executable verification in `scripts/adr_enforcer.py` (14/14 executable ADRs GREEN).
+    - Re-indexed and synchronized all 60 workspace skills and 60 global skills (`python scripts/agent_os.py sync --apply`).
+- [x] **Subtask 26: Agent OS W3Schools × Social Media Learning Platform (`learning-platform/` + `handbook-sync`)**:
+  - **Astro + HTML + Tailwind CSS Learning Platform (`learning-platform/`)**:
+    - Locked W3Schools Design DNA in `learning-platform/tokens.json` (Schema v2) and `learning-platform/.design-lock.md`.
+    - Built `learning-platform/src/layouts/W3Layout.astro`, `learning-platform/src/pages/index.astro`, `learning-platform/src/data/curriculum.js`, and `learning-platform/scripts/build-astro.mjs`.
+    - Implemented 60-Second Tap-Through Story Reels, 11 Situation Combos 3-Card Grid (with Show More / Collapse All toggle), Social Learning Feed, W3Schools Chapter Reader (`« Previous` / `Next »` + `#E7E9EB` Example Boxes + `#282A35` Exercises), Split-Pane `"Try it Yourself »"` Simulator (with Astro, Next.js 15, Laravel 11, Vue/Nuxt 3, HTML+TW, and WordPress/WooCommerce presets), and Searchable 60-Skill + 18-MCP Responsive Data Tables (2–4 word cell truncation + Details Modal).
+  - **Automated Registry & Handbook Sync Engine (`scripts/sync_handbook.py`)**:
+    - Wired `python scripts/agent_os.py handbook-sync [--build]` to synchronize `SKILL_INDEX.json` into `learning-platform/src/data/skills-registry.json` and sync built HTML to root `handbook.html`.
+    - Extended `scripts/ui_audit_engine.py`, `skills/muaz-skill/scripts/anti_slop.py`, and `scripts/guard_checker.py` to scan `.astro` files natively.
+    - Verified via `tests/test_handbook_sync.py` (4/4 unit tests PASS; 141/141 total OS unit tests PASS).
+    - Ratified **ADR-038** in `DECISIONS.md`.
 
 ## 4. Current In-Progress Work
-- **Release `v1.14.0` Certified**: Empirical Cross-Project Universal Rules Corpus & 24KB Rule Cap Enforcement (ADR-036) operational.
-- **Architectural Ratification**: All 36 ADRs recorded in `DECISIONS.md` (13/13 executable ADRs GREEN).
-- **System Readiness**: 121/121 Agent OS unit tests PASS + 135/135 `muaz-skill` unit tests PASS (256/256 total tests GREEN). Global and workspace configs (`rules/*.md`, `GEMINI.md`, and 60/60 skills) in 100% verified parity.
+- **Release `v1.15.0` + Learning Platform Certified**: W3Schools × Social Media Learning Platform (ADR-038) and `/plan-daily` (ADR-037) operational.
+- **Architectural Ratification**: All 38 ADRs recorded in `DECISIONS.md` (14/14 executable ADRs GREEN).
+- **System Readiness**: 141/141 Agent OS unit tests PASS + 135/135 `muaz-skill` unit tests PASS (276/276 total tests GREEN).
 
 ## 5. Known Blockers, Failing Tests & Edge Cases
-- None within Agent OS. 100% GREEN status across 256 total unit tests, 60 workspace skills, 60 global skills, 5 rules (all strictly `< 24 KB`), `GEMINI.md`, and native pre-commit gates.
+- None within Agent OS. 100% GREEN status across 276 total unit tests, 60 core skills, 5 rules (all strictly `< 24 KB`), `GEMINI.md`, and native pre-commit gates.
 
 ## 6. Immediate Next Executable Actions
-1. All 5 global rules (`engineering-constitution.md`, `universal-project-rules.md`, `engineering-agent.md`, `mcp-arsenal.md`, `execution-transparency.md`) and `~/.gemini/GEMINI.md` are automatically active across all projects.
-2. Run `python scripts/agent_os.py audit` or `python scripts/agent_os.py adr-check` at any time to verify rule cap compliance and global parity.
+1. Run `python scripts/agent_os.py handbook-sync --build` whenever skills are updated to rebuild and sync `learning-platform/` and root `handbook.html`.
+2. Run `python scripts/agent_os.py plan-daily` at the start of any project session for autonomous triage.
+

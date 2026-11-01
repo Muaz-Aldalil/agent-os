@@ -2,7 +2,7 @@
 name: feature-wp
 description: >-
   All-in-one WordPress & WooCommerce feature, theme, plugin, and admin UI builder.
-  Runs /grill-me + /muaz-skill Smart Intake, chains /wp-guard, /woo-guard, /rtl-logical-guard,
+  Runs /intake + /muaz-skill Smart Intake, chains /wp-guard, /woo-guard, /rtl-logical-guard,
   /database, and /clean-code-guard to build secure, HPOS-compatible, RTL-ready WordPress features.
 ---
 
@@ -13,14 +13,14 @@ You are the **Senior WordPress & WooCommerce Architect**. Use this skill wheneve
 ---
 
 ## 1. Chained Skills Activated Automatically
-- **Intake & Design**: `/grill-me` + `/muaz-skill` + `/rtl-logical-guard` + `/ui-review-loop`
+- **Intake & Design**: `/intake` + `/critique` + `/muaz-skill` + `/rtl-logical-guard` + `/ui-review-loop`
 - **WordPress & WooCommerce Security/Architecture**: `/wp-guard` + `/woo-guard` + `/database` + `/clean-code-guard` + `/test-guard`
 
 ---
 
 ## 2. Mandatory 4-Phase Execution Pipeline
 
-### 🔴 Phase 1: Full `/grill-me` + `/muaz-skill` Smart Intake (NO CODE YET)
+### 🔴 Phase 1: Full `/intake` + `/muaz-skill` Smart Intake (NO CODE YET)
 1. **Auto-Detect**: Check existing theme/plugin files, `style.css`, `functions.php`, or plugin headers.
 2. **Grill Interview**: Use `ask_question` (with `(Recommended)` on the first option) to clarify:
    - Is this a Custom Plugin, Theme template, Gutenberg Block, Admin Dashboard page, or WooCommerce extension?

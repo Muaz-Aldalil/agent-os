@@ -41,21 +41,26 @@ def run_status():
         print("Version Control:      Not initialized or error querying git")
 
     # 3. Boundary & Danger Zone Locks
+    from safety_hook import DANGER_ZONE_KEYWORDS
     print("-" * 65)
-    print("Boundary Protection:  [ACTIVE] Isolation Sandbox Enforced")
-    print("Danger Zones:         None active | PreToolUse Command Safety Sandbox Enforced")
+    if DANGER_ZONE_KEYWORDS:
+        print(f"Boundary Protection:  [ACTIVE — {len(DANGER_ZONE_KEYWORDS)} Danger Zones Configured]")
+        print(f"Danger Zones:         {', '.join(DANGER_ZONE_KEYWORDS)} | PreToolUse Sandbox Enforced")
+    else:
+        print("Boundary Protection:  [INACTIVE — 0 Danger Zones Configured] | PreToolUse Hook Active")
+        print("Danger Zones:         None active | PreToolUse Command & File Safety Sandbox Enforced")
     print("Secret Leak Guard:    [ACTIVE] .env, SSH keys, AWS credentials gated")
-    print("Destructive Ops:      [ACTIVE] git reset --hard, clean -f, migrate:fresh gated")
-    
+    print("Destructive Ops:      [ACTIVE] git reset --hard, clean -f, Remove-Item, migrate:fresh gated")
+
     # 4. Customization Inventory
     skills_dir = WORKSPACE_ROOT / "skills"
     rules_dir = WORKSPACE_ROOT / "rules"
     tests_dir = WORKSPACE_ROOT / "tests"
-    
+
     skill_count = len([s for s in skills_dir.iterdir() if s.is_dir()]) if skills_dir.exists() else 0
     rule_count = len(list(rules_dir.glob("*.md"))) if rules_dir.exists() else 0
     test_count = len(list(tests_dir.glob("test_*.py"))) if tests_dir.exists() else 0
-    
+
     print("-" * 65)
     print(f"Skills Installed:     {skill_count} workspace skills")
     print(f"Rules Enforced:       {rule_count} global/workspace rules")
@@ -82,7 +87,7 @@ def run_doctor(fix: bool = False):
     args = [sys.executable, str(doctor_script)]
     if fix:
         args.append("--fix")
-    res = subprocess.run(args, cwd=WORKSPACE_ROOT)
+    res = subprocess.run(args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
 def run_skill_find(query: str):
@@ -105,16 +110,18 @@ def run_index_skills():
 
 def run_install_hooks():
     hooks_installer = WORKSPACE_ROOT / "scripts" / "install_git_hooks.py"
-    res = subprocess.run([sys.executable, str(hooks_installer)], cwd=WORKSPACE_ROOT)
+    res = subprocess.run([sys.executable, str(hooks_installer)], cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
-def run_sync(apply: bool = False):
+def run_sync(apply: bool = False, extra_args: List[str] | None = None):
     sync_script = WORKSPACE_ROOT / "scripts" / "sync_config.py"
     args = [sys.executable, str(sync_script)]
-    if apply:
+    forwarded = list(extra_args) if extra_args is not None else sys.argv[2:]
+    if apply and "--apply" not in forwarded:
         args.append("--apply")
-    if "--team" in sys.argv:
-        args.append("--team")
+    for flag in forwarded:
+        if flag not in args:
+            args.append(flag)
     res = subprocess.run(args, cwd=WORKSPACE_ROOT)
     sys.exit(res.returncode)
 
@@ -182,6 +189,11 @@ def run_antipattern(args: List[str]):
     sys.exit(res.returncode)
 
 def run_telemetry(args: List[str]):
+    if args and args[0] in ("scan", "today", "stats", "tips", "dashboard"):
+        td_cli = WORKSPACE_ROOT / "token-dashboard" / "cli.py"
+        if td_cli.is_file():
+            res = subprocess.run([sys.executable, str(td_cli)] + args, cwd=WORKSPACE_ROOT / "token-dashboard")
+            sys.exit(res.returncode)
     tel_script = WORKSPACE_ROOT / "scripts" / "context_telemetry.py"
     res = subprocess.run([sys.executable, str(tel_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
@@ -196,13 +208,23 @@ def run_precode(args: List[str]):
     res = subprocess.run([sys.executable, str(precode_script)] + args, cwd=CALLER_CWD)
     sys.exit(res.returncode)
 
+def run_daily_planner(args: List[str]):
+    daily_script = WORKSPACE_ROOT / "scripts" / "daily_planner.py"
+    res = subprocess.run([sys.executable, str(daily_script)] + args, cwd=CALLER_CWD)
+    sys.exit(res.returncode)
+
+def run_handbook_sync(args: List[str]):
+    hb_script = WORKSPACE_ROOT / "scripts" / "sync_handbook.py"
+    res = subprocess.run([sys.executable, str(hb_script)] + args, cwd=WORKSPACE_ROOT)
+    sys.exit(res.returncode)
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python scripts/agent_os.py <command> [args...]")
-        print("Core Commands:   status, audit, test, doctor [--fix], scan <file>, sync [--apply]")
+        print("Core Commands:   status, audit, test, doctor [--fix], scan <file>, sync [--apply], handbook-sync [--build]")
         print("Discovery:       route <task|file>, skill-find <query>, index-skills, install-hooks")
-        print("Pre-Coding:      precode <init|audit|status> [args...]")
-        print("Sentinel:        sentinel [path] (proactive scalability, parsimony & UX audit)")
+        print("Pre-Coding:      precode <init|audit|status> [args...], plan-daily [focus|--skill <name>]")
+        print("Sentinel:        sentinel [path] (proactive scalability, parsimony, UX & boundary audit)")
         print("UI Quality:      ui-audit <scan|audit|generate> [args...] (100X frontend UI quality engine)")
         print("Data Saver:      data-saver <status|apply|restore> (reduce IDE internet data by 75-85%)")
         print("100X Power:      preflight, review, eval <code>, sql <query>, regex <pat> <txt>, cache-audit, cache-sim, symbol <name>, outline <file>, trace <args>, snapshot [freeze|resume]")
@@ -236,6 +258,8 @@ def main():
     elif cmd == "sync":
         should_apply = "--apply" in sys.argv
         run_sync(apply=should_apply)
+    elif cmd in ["handbook-sync", "handbook"]:
+        run_handbook_sync(sys.argv[2:])
     elif cmd == "preflight":
         run_preflight()
     elif cmd in ["review", "diff-review"]:
@@ -272,8 +296,9 @@ def main():
         run_adr_enforcer(sys.argv[2:])
     elif cmd in ["antipattern", "ap"]:
         run_antipattern(sys.argv[2:])
-    elif cmd in ["telemetry", "tokens"]:
-        sub_args = sys.argv[2:] if len(sys.argv) > 2 else ["status"]
+    elif cmd in ["telemetry", "tokens", "token-dashboard"]:
+        default_sub = ["stats"] if cmd == "token-dashboard" else ["status"]
+        sub_args = sys.argv[2:] if len(sys.argv) > 2 else default_sub
         run_telemetry(sub_args)
     elif cmd == "symbol":
         if len(sys.argv) < 3:
@@ -298,6 +323,8 @@ def main():
         run_snapshot(["resume"])
     elif cmd in ["precode", "pre-code", "blueprint"]:
         run_precode(sys.argv[2:])
+    elif cmd in ["plan-daily", "daily", "plan-daily-work"]:
+        run_daily_planner(sys.argv[2:])
     elif cmd in ["sentinel", "scalability", "proactive"]:
         run_sentinel(sys.argv[2:])
     elif cmd in ["ui-audit", "uiaudit"]:

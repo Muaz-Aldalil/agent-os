@@ -625,3 +625,55 @@
 - **Consequences**:
   - Zero rule truncation across Antigravity and Antigravity IDE (`100%` of all 5 rule files load completely).
   - All 74 conversations' lessons are permanently active across every current and future project.
+
+---
+
+## [ADR-037] Architectural Layer, Domain & Shell Boundary Guard + Autonomous `/plan-daily` Session & Skill-Evolution Engine (Release v1.15.0)
+- **Date**: 2026-10-15
+- **Status**: APPROVED
+- **Context**: Analysis of AI-assisted engineering workflows (distilled from Yehia Tech's AI Skills architecture and cross-project brownfield audits) identified two high-leverage enhancements for Agent OS:
+  1. **Architectural Layer, Bounded Domain & Public/Admin Shell Boundary Enforcement**: LLMs naturally optimize for single-file locality, causing them to bypass `Service`/`Action` layers by invoking `*Repository` classes or raw SQL/transactions directly inside HTTP Controllers, importing server/DB modules inside `"use client"` components, leaking `/admin/*` shells into Public routes (or Public Navbar/Footer into `/admin/*`), importing internal repositories across foreign domains, and leaking unexecuted ORM query builders (`Eloquent\Builder`) or transport objects upward.
+  2. **Owner-Free Autonomous Daily/Session Triage & Skill-Evolution Factory (`/plan-daily`)**: The Product/Technical Owner does not manually write daily plans; instead, the agent owns daily/session triage autonomously (`One Primary Focus` + `Up Next` parking + bound stack guards + local quality gate stopping before `git commit`/`git push`) and executes end-to-end Skill/Tool creation whenever the Owner requests adding a skill or tool.
+- **Alternatives Evaluated**:
+  1. *Rely solely on prose SOLID reminders in `clean-code-guard`*: (Rejected: Does not deterministically catch Controller -> Repository bypasses, `"use client"` -> DB leaks, or Public/Admin shell bleed in `guard_checker.py` or `sentinel.py`).
+  2. *Adopt external auto-commit / auto-push / auto-merge `finalize-task` workflows*: (Rejected: Directly violates `GEMINI.md` Constitutional Rule 1 — Owner manual acceptance — and Rule 5 — Git & cloud deploy quota protection).
+  3. *Enshrine Imperatives 25–27 (`references/architecture-boundaries.md` + Section F review checklist) in `clean-code-guard`, add deterministic static analysis (`check_architectural_boundaries` in `guard_checker.py` + Pillar 4 `audit_boundaries` in `sentinel.py`), and deploy `/plan-daily` (`skills/plan-daily/SKILL.md` + `scripts/daily_planner.py`)*: (Selected).
+- **Selected Decision**:
+  1. Extend `skills/clean-code-guard/SKILL.md` with **Imperatives 25–27** (`Never skip architectural layers`, `Enforce bounded domain and Public vs. Admin shell isolation`, `Never leak low-level abstractions across layer contracts`), author `skills/clean-code-guard/references/architecture-boundaries.md`, and add **Section F** to `skills/clean-code-guard/references/review-checklist.md`.
+  2. Implement `check_architectural_boundaries()` in `scripts/guard_checker.py` and Pillar 4 `audit_boundaries()` in `scripts/sentinel.py` detecting `CLIENT_SERVER_BOUNDARY_LEAK`, `LAYER_SKIPPING_CONTROLLER_BYPASS`, `PUBLIC_ADMIN_SHELL_LEAK`, `CROSS_DOMAIN_REPOSITORY_LEAK`, and `UPWARD_ABSTRACTION_LEAK`.
+  3. Create `skills/plan-daily/SKILL.md` and `scripts/daily_planner.py` (wired into `scripts/agent_os.py plan-daily` and `scripts/skill_router.py`) supporting both Autonomous Session/Daily Triage and the `--skill <name>` Skill & Tool Evolution Factory while strictly halting before `git commit`/`git push`.
+- **Consequences**:
+  - Architectural layer skipping, cross-domain repository intrusion, and Public/Admin shell bleed are caught both during code review (`clean-code-guard`) and deterministically via `agent_os.py scan` and `agent_os.py sentinel`.
+  - Session triage and skill/tool evolution are automated under `/plan-daily` and `/engineering-workflow` without requiring manual daily planning from the Owner.
+
+---
+
+## [ADR-038] Agent OS W3Schools × Social Media Learning Platform (`learning-platform/` + `handbook-sync`)
+- **Date**: 2026-10-15
+- **Status**: APPROVED
+- **Context**: The static `handbook.html` demo needed to evolve into an engaging, zero-boredom, mobile-first learning platform modeled on W3Schools (`https://www.w3schools.com/`) combined with social-media interactivity (60s Story Reels, Feed Posts, XP Rank & Saved Toolkit) and powered by Astro + HTML + Tailwind CSS with automated CLI synchronization (`handbook-sync`) so the Owner can update skills and redeploy without manually editing HTML files.
+- **Selected Decision**:
+  1. Build `learning-platform/` (Astro + HTML + Tailwind CSS) with `tokens.json` (Schema v2, WCAG 2.2 AA verified) and `.design-lock.md`, featuring a 4-layer mobile-first architecture (Sticky Topbar + W3Schools `#subtopnav` Dark Ribbon `#282A35` + Collapsible W3Schools Chapter Tree + 4 Interactive Modes: Social Feed, W3Schools Reader, Split-Pane `"Try it Yourself »"` Studio with Astro/Next.js/Laravel/Vue/HTML/WP presets, and Searchable 60-Skill Reference Dictionary + XP/Toolkit Rail + Mobile Bottom Bar).
+  2. Build `scripts/sync_handbook.py` and wire `python scripts/agent_os.py handbook-sync [--build]` to sync `SKILL_INDEX.json` into `learning-platform/src/data/skills-registry.json` (with 2–4 word truncated table summaries + Details modal descriptions) and sync the compiled static output into root `handbook.html`.
+  3. Extend `scripts/ui_audit_engine.py`, `skills/muaz-skill/scripts/anti_slop.py`, and `scripts/guard_checker.py` to audit `.astro` files natively.
+- **Consequences**:
+  - Zero-boredom interactive team onboarding in both English (`LTR`) and Arabic (`RTL`) with 0 `anti_slop.py` violations, 0 `ui-audit` findings, and 141/141 passing OS unit tests.
+
+---
+
+## [ADR-039] Agent OS v2.0: Zero-Eviction Skill Budget, Independent Critical Thinking & Debate Protocol, Karpathy + Superpowers Synthesis, and 60%–70% Live Context Handover
+- **Date**: 2026-10-17
+- **Status**: APPROVED
+- **Context**: As Agent OS grew to 76 custom skills, 5 always-on rule files (`77,413 bytes`), a `51,765-byte` `engineering-workflow` skill, and 93 external plugin skills in `~/.gemini/config/plugins`, three systemic bottlenecks emerged:
+  1. **Context-Budget Skill Eviction (`169 > ~151` cap)**: 38 unused biology/chemistry/DNA skills in `plugins/science` and 16 duplicate Stitch plugin folders pushed total discovered skills to 169, causing Antigravity IDE to evict 18 alphabetically-later core skills (`clean-code-guard`, `test-guard`, `docs-guard`, `engineering-workflow`, `modern-web-guidance`, `opencode-delegate`, `ponytail`, `ui-review-loop`, `wp-guard`, `woo-guard`).
+  2. **Rule Repetition & Premature Agreement**: Rules were repeated 4x across `GEMINI.md` and `rules/*.md`, and a legacy instruction (`"When absent, deduce user intent autonomously... Never stall execution"`) encouraged rushing into agreement rather than debating flawed or over-engineered proposals upfront.
+  3. **Late Context Compaction**: Waiting until 100% context saturation (~180 steps / ~600 KB transcript) degraded reasoning before compaction occurred.
+- **Alternatives Evaluated**:
+  1. *Delete custom `speckit-*` or `ponytail-*` skills from `D:\Skills\.agents\skills`*: (Rejected: Breaks IDE `/slash-commands`, breaks `handbook.html` / `learning-platform`, and fails `test_skill_indexer.py` & `test_handbook_sync.py`).
+  2. *Keep all 76 custom skills intact, archive the 38 unused biology skills + 16 duplicate Stitch plugin folders to `plugins_archive` (retaining `credentials`, `uv`, and `workflow_skill_creator`), deduplicate `GEMINI.md` + `rules/*.md` (`-57.8%`) and `skills/engineering-workflow/SKILL.md` (`-76.2%`), embed the 12 Core Critical Thinking & Debate Rules + Andrej Karpathy's 4 Laws + `obra/superpowers` discipline + 3-Class Instrument Model, and upgrade `scripts/snapshot.py` with live transcript telemetry for 60%–70% Context Handover*: (Selected).
+- **Selected Decision**:
+  1. Archive the 38 biology/chemistry/DNA skills and `science/rules` plus the 16 duplicate Stitch plugin folders into `C:\Users\HP\.gemini\config\plugins_archive\`, reducing active `<skills>` from `169` to `115` (`0` evicted skills) while keeping all 76 custom skills and `credentials`, `uv`, and `workflow_skill_creator` active.
+  2. Rewrite and deduplicate `GEMINI.md`, `rules/engineering-constitution.md`, `rules/engineering-agent.md` (and root `engineering-agent.md`), `rules/universal-project-rules.md`, `rules/mcp-arsenal.md`, and `skills/engineering-workflow/SKILL.md` to enforce the Independent Critical Thinking & Debate Mandate (5-Part Direct Challenge, 6-Point Decision Brief, Post-Advice Authority Respect), **The #1 Anti-Hallucination Law (Permission to Fail & Explicit `"I Don't Know"` when absent from context)**, Andrej Karpathy's 4 Coding Laws, `obra/superpowers` Pattern Analysis / Backward Root-Cause Tracing / Anti-Rationalization Gate, and the 3-Class Instrument Model.
+  3. Upgrade `scripts/snapshot.py` with `_measure_live_transcript()` and structured 60%–70% Context Handover fields (`Objective`, `Mode`, `Locked Decisions`, `Rejected Ideas`, `Immediate Next Step`) in `SESSION_SNAPSHOT.md`.
+- **Consequences**:
+  - `0` evicted skills in `<skills>`; `-57.8%` smaller always-on rules; `-76.2%` smaller `engineering-workflow` skill; explicit permission to fail and say `"I don't know"` enshrined and enforced across both workspace and global config; empirical 60%–70% context handover ready via `agent_os.py snapshot`.

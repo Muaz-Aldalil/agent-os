@@ -19,16 +19,20 @@ This protocol guarantees that neither human nor AI writes a single line of appli
 
 Under [engineering-constitution.md](file:///D:/Skills/.agents/rules/engineering-constitution.md) §3.9, writing application code without an audited pre-coding specification is an immediate **P0 Gate Failure**.
 
-Before coding begins, the project or feature MUST possess 6 verified documents located at `docs/precode/<project_name>/`:
+Before coding begins, every project possesses **3 Root Project Governance Files** (`MASTER.md`, `DESIGN.md`, `SECURITY.md` initialized via `python scripts/agent_os.py precode init-root <project_name> --type <landing|cms|lms|sms|fintech>`) at the repository root, and for Level 4 full-spec features, 6 verified documents located at `docs/precode/<project_name>/`:
 
 ```
- docs/precode/<project_name>/
- ├── 01-PRD.md                 # Product Requirements (What & Why)
- ├── 02-TRD.md                 # Technical Requirements (Stack, Security, Budgets)
- ├── 03-APP_FLOW.md            # UX State Machine (Mermaid Flows & 5-State Matrix)
- ├── 04-DESIGN_BRIEF.md        # Visual System (60-30-10 Tokens & RTL Logical CSS)
- ├── 05-BACKEND_SCHEMA.md      # Data Persistence (ERD, DDL, Indexes & Cascades)
- └── 06-IMPLEMENTATION_PLAN.md # Execution Sequencing (Phased Task Battery)
+ <project_root>/
+ ├── MASTER.md                 # Project rules, 1-component-per-file map & Admin <-> Public contracts
+ ├── DESIGN.md                 # Typography, 60-30-10 color tokens & reusable UI primitives (Button, Card)
+ ├── SECURITY.md               # Tiered Security Policy (Tier 1 Landing, Tier 2 CMS/SaaS, Tier 3 LMS/SMS/FinTech)
+ └── docs/precode/<project_name>/   # (Level 4 Full Pre-Code Blueprint)
+     ├── 01-PRD.md                 # Product Requirements (What & Why)
+     ├── 02-TRD.md                 # Technical Requirements (Stack, Security, Budgets)
+     ├── 03-APP_FLOW.md            # UX State Machine (Mermaid Flows & 5-State Matrix)
+     ├── 04-DESIGN_BRIEF.md        # Visual System (60-30-10 Tokens & RTL Logical CSS)
+     ├── 05-BACKEND_SCHEMA.md      # Data Persistence (ERD, DDL, Indexes & Cascades)
+     └── 06-IMPLEMENTATION_PLAN.md # Execution Sequencing (Phased Task Battery)
 ```
 
 ---
@@ -82,6 +86,7 @@ Before coding begins, the project or feature MUST possess 6 verified documents l
   3. **Typography Craft Floor**: Font families (Display, Body, Mono) with fluid `clamp()` sizing scales, `65–75ch` body measure, `-0.04em` tracking floor, `text-wrap: balance` on headings, `mt > mb` heading spacing, and `tabular-nums` on all numeric/table data.
   4. **Component Tokens & Browser Surfaces**: Border radii (`rounded-lg`), offset shadows, minimum `44x44px` tap targets, exponential ease-out (`cubic-bezier(0.16, 1, 0.3, 1)`), and global browser surface tokens (`::selection`, `caret-color`, custom scrollbars, `:focus-visible`, `text-underline-offset`).
   5. **RTL/LTR CSS Logical Properties**: Strictly enforcing `ms-*`/`me-*`, `ps-*`/`pe-*`, `text-start`/`text-end`.
+  6. **Google Stitch & `StitchMCP` Sync**: When prototyping or syncing design systems with `StitchMCP`, pair `04-DESIGN_BRIEF.md` with the installed Google Stitch skills (`/design-md`, `/site-md`, `/taste-design`, `/manage-design-system`, `/generate-design`, `/extract-design-md`).
 
 ### Pillar 5: Backend Schema & Data Model (`05-BACKEND_SCHEMA.md`)
 * **Focus**: Entity relationships, persistence, schema migrations, and relational integrity.

@@ -16,11 +16,11 @@ SKIP_DIRS = {
     ".pytest_cache",
 }
 
-ALL_FILES = "**/*.{css,scss,tsx,jsx,ts,js,html}"
+ALL_FILES = "**/*.{css,scss,tsx,jsx,ts,js,html,astro}"
 CSS_FILES = "**/*.{css,scss}"
 TSX_FILES = "**/*.tsx"
-COPY_FILES = "**/*.{tsx,jsx,ts,js,html}"
-JSX_FILES = "**/*.{tsx,jsx,html}"
+COPY_FILES = "**/*.{tsx,jsx,ts,js,html,astro}"
+JSX_FILES = "**/*.{tsx,jsx,html,astro}"
 
 # Severity ladder (CRITICAL > HIGH > MEDIUM). `--fail-on` uses this.
 SEVERITY_RANK = {"MEDIUM": 1, "HIGH": 2, "CRITICAL": 3}

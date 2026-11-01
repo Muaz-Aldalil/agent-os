@@ -12,6 +12,7 @@ Stores persistent trace history in .agent_trace.json to eliminate circular debug
 import sys
 import os
 import json
+import shlex
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -20,8 +21,15 @@ from typing import List, Dict, Any, Optional
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
-TRACE_FILE = WORKSPACE_ROOT / ".agent_trace.json"
+AGENT_OS_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(os.environ.get("AGENT_OS_PROJECT_ROOT") or Path.cwd()).resolve()
+WORKSPACE_ROOT = PROJECT_ROOT
+TRACE_FILE = PROJECT_ROOT / ".agent_trace.json"
+
+if str(AGENT_OS_ROOT / "scripts") not in sys.path:
+    sys.path.insert(0, str(AGENT_OS_ROOT / "scripts"))
+from safety_hook import evaluate_command
+
 
 def load_traces() -> Dict[str, Any]:
     if not TRACE_FILE.exists():
@@ -32,9 +40,11 @@ def load_traces() -> Dict[str, Any]:
     except Exception:
         return {"current_investigation": None, "history": []}
 
+
 def save_traces(data: Dict[str, Any]):
     with open(TRACE_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+
 
 def start_investigation(title: str):
     data = load_traces()
@@ -46,6 +56,7 @@ def start_investigation(title: str):
     data["current_investigation"] = inv
     save_traces(data)
     print(f"[SUCCESS] Started new investigation: '{title}'")
+
 
 def add_hypothesis(statement: str, prediction: str = ""):
     data = load_traces()
@@ -72,6 +83,7 @@ def add_hypothesis(statement: str, prediction: str = ""):
     if prediction:
         print(f"  Prediction: {prediction}")
 
+
 def record_experiment(cmd: str, run_now: bool = False, passed: Optional[bool] = None, notes: str = ""):
     data = load_traces()
     inv = data.get("current_investigation")
@@ -80,15 +92,35 @@ def record_experiment(cmd: str, run_now: bool = False, passed: Optional[bool] = 
         return
 
     active_hypo = inv["hypotheses"][-1]
-    
+
     exit_code = 0
-    cmd_output = ""
     if run_now:
-        print(f"[*] Executing experiment: {cmd}...")
-        res = subprocess.run(cmd, shell=True, text=True, cwd=WORKSPACE_ROOT)
-        exit_code = res.returncode
-        passed = (exit_code == 0)
-    
+        decision, reason = evaluate_command(cmd, str(PROJECT_ROOT))
+        if decision != "allow":
+            print(f"[BLOCKED] {reason}")
+            exit_code = 126
+            passed = False
+        else:
+            print(f"[*] Executing experiment: {cmd}...")
+            try:
+                argv = shlex.split(cmd, posix=(os.name != "nt"))
+                if os.name == "nt":
+                    argv = [
+                        tok[1:-1] if len(tok) >= 2 and tok[0] == tok[-1] and tok[0] in ("'", '"') else tok
+                        for tok in argv
+                    ]
+                res = subprocess.run(argv, shell=False, text=True, cwd=PROJECT_ROOT, timeout=60)
+                exit_code = res.returncode
+                passed = (exit_code == 0)
+            except subprocess.TimeoutExpired:
+                print(f"[TIMEOUT] Experiment exceeded 60s timeout: {cmd}")
+                exit_code = 124
+                passed = False
+            except Exception as exc:
+                print(f"[ERROR] Experiment failed to execute: {exc}")
+                exit_code = 1
+                passed = False
+
     exp = {
         "timestamp": datetime.now().isoformat(),
         "command": cmd,
@@ -98,9 +130,10 @@ def record_experiment(cmd: str, run_now: bool = False, passed: Optional[bool] = 
     }
     active_hypo["experiments"].append(exp)
     save_traces(data)
-    
+
     status_str = "[PASS]" if exp["passed"] else "[FAIL]"
     print(f"{status_str} Experiment recorded for Hypothesis #{active_hypo['id']}: {cmd}")
+
 
 def conclude_hypothesis(verdict: str, notes: str = ""):
     data = load_traces()
@@ -123,6 +156,7 @@ def conclude_hypothesis(verdict: str, notes: str = ""):
     print(f"\n[VERDICT: {v_upper}] Hypothesis #{active_hypo['id']}: {active_hypo['statement']}")
     if notes:
         print(f"  Findings: {notes}")
+
 
 def show_trace_log():
     data = load_traces()
@@ -150,6 +184,7 @@ def show_trace_log():
         print()
     print("=" * 65)
 
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python scripts/tracer.py <start <title>|hypo <statement> [--pred <pred>]|exp <cmd> [--run]|conclude <verdict> [--notes <notes>]|log>")
@@ -174,9 +209,9 @@ def main():
         if len(sys.argv) < 3:
             print("Error: Specify experiment command.")
             sys.exit(1)
-        raw = " ".join(sys.argv[2:])
-        run_now = "--run" in raw
-        cmd_clean = raw.replace("--run", "").strip()
+        run_now = "--run" in sys.argv[2:]
+        cmd_tokens = [a for a in sys.argv[2:] if a != "--run"]
+        cmd_clean = " ".join(cmd_tokens).strip()
         record_experiment(cmd_clean, run_now=run_now)
     elif cmd == "conclude":
         if len(sys.argv) < 3:
@@ -185,12 +220,13 @@ def main():
         verdict = sys.argv[2]
         notes = " ".join(sys.argv[3:]) if len(sys.argv) > 3 else ""
         if notes.startswith("--notes"):
-            notes = notes.replace("--notes", "").strip()
+            notes = notes.replace("--notes", "", 1).strip()
         conclude_hypothesis(verdict, notes)
     elif cmd == "log":
         show_trace_log()
     else:
         print(f"Unknown command: '{cmd}'. Available: start, hypo, exp, conclude, log")
+
 
 if __name__ == "__main__":
     main()

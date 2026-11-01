@@ -41,29 +41,33 @@ class TestDoctorDiagnostics(unittest.TestCase):
         self.assertIn("No detached nested .git", check.message)
 
     def test_stale_git_lock_detection_and_fix(self):
-        # Create a mock lock file in .git
-        lock_file = Path("D:/Skills/.agents/.git/index.lock")
-        if lock_file.exists():
-            lock_file.unlink()
-
-        try:
-            # Simulate stale lock creation
+        import time
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_root = Path(tmp)
+            git_dir = tmp_root / ".git"
+            git_dir.mkdir(parents=True, exist_ok=True)
+            lock_file = git_dir / "index.lock"
             lock_file.write_text("dummy lock content", encoding="utf-8")
 
-            # 1. Detection without fix
-            detect_check = check_stale_git_locks(fix=False)
+            # Active/fresh lock (< 600s) should be detected and NOT deleted without force
+            detect_check = check_stale_git_locks(fix=False, root_dir=tmp_root)
             self.assertFalse(detect_check.passed)
             self.assertTrue(detect_check.fixable)
             self.assertIn("STALE LOCK FOUND", detect_check.message)
 
-            # 2. Repair with fix
-            fix_check = check_stale_git_locks(fix=True)
+            active_fix = check_stale_git_locks(fix=True, root_dir=tmp_root)
+            self.assertFalse(active_fix.passed)
+            self.assertTrue(lock_file.exists())
+
+            # Backdate lock > 600s to simulate genuinely stale lock
+            old_ts = time.time() - 700
+            os.utime(lock_file, (old_ts, old_ts))
+
+            fix_check = check_stale_git_locks(fix=True, root_dir=tmp_root)
             self.assertTrue(fix_check.passed)
             self.assertIn("REPAIRED", fix_check.message)
             self.assertFalse(lock_file.exists())
-        finally:
-            if lock_file.exists():
-                lock_file.unlink()
+
 
 if __name__ == "__main__":
     unittest.main()

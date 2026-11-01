@@ -236,6 +236,34 @@ class ArchitecturalSentinel:
         return findings
 
     # -------------------------------------------------------------------------
+    # 4. ARCHITECTURAL LAYER, DOMAIN & SHELL BOUNDARY AUDIT
+    # -------------------------------------------------------------------------
+    def audit_boundaries(self, code: str, file_path: str) -> List[SentinelFinding]:
+        findings = []
+        fn_lower = file_path.replace("\\", "/").lower()
+        if any(skip in fn_lower for skip in ["test", "guard_checker.py", "sentinel.py"]):
+            return findings
+
+        try:
+            from guard_checker import check_architectural_boundaries
+            violations = check_architectural_boundaries(code, file_path)
+            for v in violations:
+                sev = P0 if v.rule in ["CLIENT_SERVER_BOUNDARY_LEAK", "PUBLIC_ADMIN_SHELL_LEAK"] else P1
+                findings.append(SentinelFinding(
+                    severity=sev,
+                    category=f"BOUNDARY_LEAK ({v.rule})",
+                    file_path=file_path,
+                    line_num=v.line_no,
+                    snippet=v.snippet,
+                    message=v.message,
+                    suggestion="Delegate through the proper Service/Action contract and keep Domain/Shell boundaries isolated."
+                ))
+        except ImportError:
+            return findings
+
+        return findings
+
+    # -------------------------------------------------------------------------
     # SCANNER RUNNER
     # -------------------------------------------------------------------------
     def scan_file(self, file_path: Path) -> List[SentinelFinding]:
@@ -248,8 +276,9 @@ class ArchitecturalSentinel:
         f1 = self.audit_scalability(content, rel_path)
         f2 = self.audit_parsimony(content, rel_path)
         f3 = self.audit_product_empathy(content, rel_path)
+        f4 = self.audit_boundaries(content, rel_path)
         
-        all_f = f1 + f2 + f3
+        all_f = f1 + f2 + f3 + f4
         self.findings.extend(all_f)
         return all_f
 

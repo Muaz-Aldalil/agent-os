@@ -60,5 +60,35 @@ class TestBandwidthGuard(unittest.TestCase):
         self.assertTrue(data.get("original"))
         self.assertNotIn("telemetry.telemetryLevel", data)
 
+    def test_preserves_existing_keys_in_jsonc_with_comments_and_trailing_commas(self):
+        jsonc_content = """// User custom IDE settings
+{
+    /* Keep custom font and URL intact */
+    "editor.fontSize": 16,
+    "http.proxy": "http://localhost:8080",
+    "git.autofetch": true,
+}
+"""
+        self.settings_file.write_text(jsonc_content, encoding="utf-8")
+        guard = BandwidthGuard(self.settings_file)
+        success, count = guard.apply_profile()
+        self.assertTrue(success)
+        self.assertGreater(count, 0)
+
+        updated = guard.read_settings()
+        self.assertEqual(updated.get("editor.fontSize"), 16)
+        self.assertEqual(updated.get("http.proxy"), "http://localhost:8080")
+        self.assertFalse(updated.get("git.autofetch"))
+
+    def test_aborts_apply_on_corrupt_json_without_wiping_file(self):
+        corrupt = '{"editor.fontSize": 16, "broken": '
+        self.settings_file.write_text(corrupt, encoding="utf-8")
+        guard = BandwidthGuard(self.settings_file)
+        success, count = guard.apply_profile()
+        self.assertFalse(success)
+        self.assertEqual(count, 0)
+        self.assertEqual(self.settings_file.read_text(encoding="utf-8"), corrupt)
+
+
 if __name__ == "__main__":
     unittest.main()

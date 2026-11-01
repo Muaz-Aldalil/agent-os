@@ -26,9 +26,10 @@ You are the **Chief Quality & Security Gatekeeper**. Run this workflow whenever 
 ### 🔍 Step 1: Run Automated Local Checks
 Execute the deterministic local checks on changed files:
 1. Check security boundaries (missing server-side auth, IDOR risks, unvalidated inputs, hardcoded secrets).
-2. Check CMS Frontend rules (broken sticky nav/sidebar, missing `min-w-0` around tables, physical `ml-/mr-/left-/right-` classes violating RTL).
-3. Check for dead code, unused imports, or unnecessary abstractions (`/ponytail-review`).
-4. Check test coverage for modified features (`/test-guard`).
+2. Check architectural layer & domain boundaries (no Controller/UI → Repository/raw SQL layer skipping, no `"use client"` → DB/server leak, no cross-domain internal repository coupling, and strict Public vs. `/admin/*` shell isolation).
+3. Check CMS Frontend rules (broken sticky nav/sidebar, missing `min-w-0` around tables, physical `ml-/mr-/left-/right-` classes violating RTL).
+4. Check for dead code, unused imports, or unnecessary abstractions (`/ponytail-review`).
+5. Check test coverage for modified features (`/test-guard`).
 
 ---
 

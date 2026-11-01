@@ -1,0 +1,100 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Agent OS W3Schools x Social Learning Platform (v1.15.0)',
+  description = 'Interactive mobile-first W3Schools tutorial hub, social learning feed, Split-Pane Try-it-Yourself studio, and 60-skill reference dictionary for Agent OS.'
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en" dir="ltr" class="scroll-smooth overflow-x-clip">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style is:global>
+      @tailwind base;
+      @tailwind components;
+      @tailwind utilities;
+
+      :root {
+        --navbar-height: 6rem;
+        --w3-green: #04AA6D;
+        --w3-green-hover: #059862;
+        --w3-green-dark: #047857;
+        --w3-slate: #282A35;
+        --w3-slate-deep: #1D2A35;
+        --w3-mint: #D9EEE1;
+        --w3-yellow: #FFF4A3;
+        --w3-pink: #FFC0C7;
+        --w3-example: #E7E9EB;
+        --w3-canvas: #FAFAF8;
+        --w3-card: #FFFFFF;
+        --w3-ink: #18181B;
+        --w3-muted: #52525B;
+        --w3-line: #E4E4E0;
+      }
+
+      body {
+        background-color: var(--w3-canvas);
+        color: var(--w3-ink);
+        font-family: 'Plus Jakarta Sans', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+        overflow-x: clip;
+      }
+
+      html.dark body {
+        background-color: var(--w3-slate-deep);
+        color: var(--w3-canvas);
+      }
+
+      html[lang="ar"] body {
+        font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif;
+      }
+
+      html[lang="en"] .lang-ar {
+        display: none !important;
+      }
+
+      html[lang="ar"] .lang-en {
+        display: none !important;
+      }
+
+      .micro-transition {
+        transition-property: transform, opacity, background-color, border-color, color, box-shadow;
+        transition-duration: 150ms;
+        transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .hero-fold {
+        min-height: calc(100dvh - var(--navbar-height));
+      }
+
+      .w3-scrollbar::-webkit-scrollbar {
+        height: 6px;
+        width: 6px;
+      }
+
+      .w3-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .w3-scrollbar::-webkit-scrollbar-thumb {
+        background-color: rgba(113, 113, 122, 0.45);
+        border-radius: 9999px;
+      }
+    </style>
+  </head>
+  <body class="min-h-dvh flex flex-col bg-w3-canvas text-w3-ink dark:bg-w3-slateDeep dark:text-w3-canvas overflow-x-clip pb-16 lg:pb-0">
+    <slot />
+  </body>
+</html>

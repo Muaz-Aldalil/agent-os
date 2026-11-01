@@ -129,6 +129,52 @@ def check_adr_036_universal_rules_and_24kb_cap() -> Dict[str, Any]:
         "message": f"Universal cross-project rules active & all {len(rule_files)} rules strictly < 24KB cap ({total_bytes:,}B total)"
     }
 
+def check_adr_037_boundaries_and_daily_planner() -> Dict[str, Any]:
+    guard_script = WORKSPACE_ROOT / "scripts" / "guard_checker.py"
+    daily_script = WORKSPACE_ROOT / "scripts" / "daily_planner.py"
+    daily_skill = WORKSPACE_ROOT / "skills" / "plan-daily" / "SKILL.md"
+    boundary_ref = WORKSPACE_ROOT / "skills" / "clean-code-guard" / "references" / "architecture-boundaries.md"
+    passed = (
+        guard_script.is_file()
+        and "check_architectural_boundaries" in guard_script.read_text(encoding="utf-8")
+        and daily_script.is_file()
+        and daily_skill.is_file()
+        and boundary_ref.is_file()
+    )
+    return {
+        "passed": passed,
+        "message": "Architectural Layer/Domain/Shell Boundary guard & autonomous /plan-daily engine verified"
+    }
+
+def check_adr_039_agent_os_v2() -> Dict[str, Any]:
+    const_file = WORKSPACE_ROOT / "rules" / "engineering-constitution.md"
+    agent_file = WORKSPACE_ROOT / "rules" / "engineering-agent.md"
+    gemini_file = WORKSPACE_ROOT / "GEMINI.md"
+    snap_file = WORKSPACE_ROOT / "scripts" / "snapshot.py"
+    rules_dir = WORKSPACE_ROOT / "rules"
+    if not (const_file.is_file() and agent_file.is_file() and gemini_file.is_file() and snap_file.is_file()):
+        return {"passed": False, "message": "Missing v2 core rule or snapshot files"}
+    const_txt = const_file.read_text(encoding="utf-8")
+    agent_txt = agent_file.read_text(encoding="utf-8")
+    gemini_txt = gemini_file.read_text(encoding="utf-8")
+    snap_txt = snap_file.read_text(encoding="utf-8")
+    total_rules_bytes = sum(f.stat().st_size for f in rules_dir.glob("*.md"))
+    ok = (
+        "5-Part Challenge Structure" in const_txt
+        and "Permission to Fail" in const_txt
+        and "I don't know" in const_txt
+        and "Permission to Fail" in gemini_txt
+        and "I don't know" in agent_txt
+        and "Karpathy" in agent_txt
+        and "3-Class Instrument Model" in agent_txt
+        and "_measure_live_transcript" in snap_txt
+        and total_rules_bytes <= 45000
+    )
+    return {
+        "passed": ok,
+        "message": f"Agent OS v2.0 Debate/Permission-to-Fail/Karpathy/Handover active & rules lean ({total_rules_bytes:,}B)"
+    }
+
 EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-002": check_adr_002_pest_php,
     "ADR-003": check_adr_003_rtl_css,
@@ -143,6 +189,8 @@ EXECUTABLE_ADR_MAP: Dict[str, Callable[[], Dict[str, Any]]] = {
     "ADR-028": check_adr_028_sentinel,
     "ADR-029": check_adr_029_capability_harmonization,
     "ADR-036": check_adr_036_universal_rules_and_24kb_cap,
+    "ADR-037": check_adr_037_boundaries_and_daily_planner,
+    "ADR-039": check_adr_039_agent_os_v2,
 }
 
 def parse_adrs_from_decisions() -> List[Dict[str, str]]:

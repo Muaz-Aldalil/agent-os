@@ -12,6 +12,7 @@ When the user asks you to **review, audit, critique, or rate code** (rather than
   - Section C: SOLID
   - Section D: DRY, KISS, YAGNI
   - Section E: AI failure modes
+  - Section F: architectural layer & domain boundaries
 - What to do with each finding
 - When the review is contested
 - What this review does not do
@@ -50,11 +51,12 @@ One line per section: the findings it produced, or `clean` (walked it, found not
 - Section C (SOLID): <findings, or `clean`>
 - Section D (DRY/KISS/YAGNI): <findings, or `clean`>
 - Section E (AI failure modes): <findings, or `clean`>
+- Section F (architectural & domain boundaries): <findings, or `clean`>
 ```
 
 Severity:
-- **Critical** — security, correctness, data loss, swallowed exceptions, hardcoded "success" returns.
-- **Important** — design defects with maintenance cost: SOLID violations, premature abstractions, parameter explosion, generic naming.
+- **Critical** — security, correctness, data loss, swallowed exceptions, hardcoded "success" returns, client-to-DB/server boundary leaks, Public/Admin shell boundary violations.
+- **Important** — design defects with maintenance cost: SOLID violations, architectural layer skipping (Controller → Repository/raw SQL bypass), cross-domain internal repository coupling, upward abstraction leaks, premature abstractions, parameter explosion, generic naming.
 - **Nit** — style, single-letter names outside loops, missing docstring contracts on public APIs.
 
 Every finding carries its quoted code or observed behavior and a named fix — that is what lets the author contest it; with no quote or no fix it is not a finding, so drop it. Report only counted findings: never an estimated quality score, "X% cleaner," or a maintainability index — no baseline exists, so the number would be invented.
@@ -128,6 +130,18 @@ Pull [ai-failure-modes.md](ai-failure-modes.md) for every check here.
 13. Any code that looks copy-pasted from a similar function (off-by-one, wrong null semantic)?
 14. Any speculative configurability — flags, env vars, optional params without callers?
 15. **Any "simplification" that deleted boundary validation, or a cleanup path (`finally`/`close`/`defer`/context-manager) the contract relied on?** That's a behavior change, not cleanup. Critical.
+
+### Section F — architectural layer & domain boundaries
+
+Pull [architecture-boundaries.md](architecture-boundaries.md) for every check here.
+
+1. **(Layer Skipping)** Does any HTTP Controller, Route handler, or UI Page directly invoke a `*Repository`, execute raw SQL (`DB::raw`, `DB::statement`, `prisma.$queryRaw`), or open manual database transactions (`DB::beginTransaction`, `prisma.$transaction`) instead of delegating to a `Service` or `Action`? Important.
+2. **(Client/Server Boundary Leak)** Does any `"use client"` component import server-only modules (`prisma`, `@/lib/db`, `repositories/*`, `fs`, `child_process`, or non-public environment secrets)? Critical.
+3. **(Public/Admin Shell Boundary Leak)** Does any Public route/page (`(public)/*`, storefront view) import `/admin/*` layout or sidebar components (`AdminSidebar`, `AdminNavbar`), or does any `/admin/*` page import the Public `Navbar`/`Footer`? Critical.
+4. **(Cross-Domain Intrusion)** Does a module in Domain A import an internal `*Repository` from Domain B instead of calling Domain B's public `Service` or contract? Important.
+5. **(Upward Abstraction Leak)** Does a `Service` or `Repository` return an unexecuted ORM query builder (`Eloquent\Builder`, `PrismaPromise`), a third-party HTTP wrapper (`Stripe\ApiResponse`, `AxiosResponse`), or raw unmasked persistence models/exceptions across layer boundaries? Important.
+6. **(Monolith Component File vs. Practical 2+ Reusability)** Does an entry file (`App.jsx`, `page.tsx`) bundle multiple distinct page sections (`Header`, `Hero`, `Footer`) or repeated primitives (`Button`, `Card`) instead of splitting each into its own reusable file? Conversely, did the author over-abstract raw CSS tokens (like fonts) into unnecessary wrapper components? Important.
+7. **(Junior-Developer Readability & 2–3 Line Component Header)** Does every reusable component/service file begin with a concise 2–3 line header comment (`Purpose | Reused In | Key Props/Inputs`), and can a junior developer working on a connected surface (e.g., Landing Page ↔ Admin Dashboard) read and reuse it in 30 seconds? Nit/Important.
 
 ## What to do with each finding
 

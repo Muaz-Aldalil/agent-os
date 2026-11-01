@@ -71,19 +71,97 @@ DATA_SAVER_PROFILE: Dict[str, Any] = {
     }
 }
 
+def _strip_jsonc(text: str) -> str:
+    """Strips // and /* */ comments outside string literals, plus trailing commas before } or ]."""
+    out: list[str] = []
+    i = 0
+    n = len(text)
+    in_string = False
+    escape = False
+
+    while i < n:
+        ch = text[i]
+        if in_string:
+            out.append(ch)
+            if escape:
+                escape = False
+            elif ch == "\\":
+                escape = True
+            elif ch == '"':
+                in_string = False
+            i += 1
+        else:
+            if ch == '"':
+                in_string = True
+                out.append(ch)
+                i += 1
+            elif ch == "/" and i + 1 < n and text[i + 1] == "/":
+                i += 2
+                while i < n and text[i] not in ("\n", "\r"):
+                    i += 1
+            elif ch == "/" and i + 1 < n and text[i + 1] == "*":
+                i += 2
+                while i + 1 < n and not (text[i] == "*" and text[i + 1] == "/"):
+                    i += 1
+                i += 2
+            else:
+                out.append(ch)
+                i += 1
+
+    cleaned = "".join(out)
+    # Remove trailing commas before } or ] outside strings
+    result: list[str] = []
+    i = 0
+    m = len(cleaned)
+    in_string = False
+    escape = False
+    while i < m:
+        ch = cleaned[i]
+        if in_string:
+            result.append(ch)
+            if escape:
+                escape = False
+            elif ch == "\\":
+                escape = True
+            elif ch == '"':
+                in_string = False
+            i += 1
+        else:
+            if ch == '"':
+                in_string = True
+                result.append(ch)
+                i += 1
+            elif ch == ",":
+                j = i + 1
+                while j < m and cleaned[j] in (" ", "\t", "\r", "\n"):
+                    j += 1
+                if j < m and cleaned[j] in ("}", "]"):
+                    i += 1
+                    continue
+                result.append(ch)
+                i += 1
+            else:
+                result.append(ch)
+                i += 1
+    return "".join(result)
+
+
 class BandwidthGuard:
     def __init__(self, settings_file: Path = SETTINGS_PATH):
         self.settings_file = settings_file
+        self.parse_error: str | None = None
 
     def read_settings(self) -> Dict[str, Any]:
+        self.parse_error = None
         if not self.settings_file.exists():
             return {}
         try:
             content = self.settings_file.read_text(encoding="utf-8", errors="ignore").strip()
             if not content:
                 return {}
-            return json.loads(content)
+            return json.loads(_strip_jsonc(content))
         except (json.JSONDecodeError, OSError) as e:
+            self.parse_error = str(e)
             sys.stderr.write(f"[bandwidth-guard] Warning: Could not parse {self.settings_file}: {e}\n")
             return {}
 
@@ -110,12 +188,21 @@ class BandwidthGuard:
 
     def apply_profile(self) -> Tuple[bool, int]:
         current = self.read_settings()
+        if self.parse_error is not None:
+            sys.stderr.write(
+                f"[bandwidth-guard] Error: Refusing to overwrite {self.settings_file} due to parse error: {self.parse_error}\n"
+            )
+            return False, 0
 
-        # Create backup if not already present
+        # Create backup (preserving initial .json.backup and writing .json.last.backup if .json.backup exists)
         backup_file = self.settings_file.with_suffix(".json.backup")
-        if self.settings_file.exists() and not backup_file.exists():
+        last_backup_file = self.settings_file.with_suffix(".json.last.backup")
+        if self.settings_file.exists():
             try:
-                shutil.copy2(self.settings_file, backup_file)
+                if not backup_file.exists():
+                    shutil.copy2(self.settings_file, backup_file)
+                else:
+                    shutil.copy2(self.settings_file, last_backup_file)
             except OSError as e:
                 sys.stderr.write(f"[bandwidth-guard] Notice: Could not create backup: {e}\n")
 

@@ -7,6 +7,7 @@ Prevents "while I'm here" scope drift by enforcing a declared target file list
 and maximum line-budget contract on active git working-tree changes.
 """
 
+import os
 import sys
 import json
 import subprocess
@@ -14,8 +15,10 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
 
-WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
-SCOPE_FILE = WORKSPACE_ROOT / ".agent_scope.json"
+AGENT_OS_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(os.environ.get("AGENT_OS_PROJECT_ROOT") or Path.cwd()).resolve()
+WORKSPACE_ROOT = PROJECT_ROOT
+SCOPE_FILE = PROJECT_ROOT / ".agent_scope.json"
 
 def get_scope() -> Optional[Dict[str, Any]]:
     if not SCOPE_FILE.is_file():

@@ -38,6 +38,7 @@ Declare source in every blueprint header.
 ```
 BUILD / CREATE / DESIGN / SCAFFOLD [website/page/UI]
   → Load references/build-mode.md
+  → IF StitchMCP available: pair with the 16 installed Google Stitch skills (/generate-design, /design-md, /taste-design, /manage-design-system, /stitch-loop, /react-components, /shadcn-ui — see references/mcp-setup.md)
   → IF mobbin MCP available: search real screens first (see references/mcp-setup.md)
   → Run python scripts/search.py "<query>" --design-system first
 
@@ -49,7 +50,7 @@ DATABASE / BACKEND / AUTH / PAYMENTS / DEPLOYMENT questions
   → Load the matching reference file directly
 
 REFERENCE / INSPIRED-BY / CLONE / COPY [website/design]
-  → Load references/design-reference-workflow.md
+  → Load references/design-reference-workflow.md (plus /extract-design-md or /code-to-design when syncing with StitchMCP)
   → Extract design DNA first, then run build pipeline
 
 TUNE / IMPROVE / FIX / REDESIGN / OPTIMIZE / STEER [existing UI]
@@ -115,7 +116,7 @@ Full checklists: references/security-levels.md
 
 **Phase 1E — Confirmation Summary:** Structured summary of all fields. User confirms or edits before Phase 2. If user says "edit [field]" → re-ask only that field. **Done:** user said yes.
 
-**Phase 2 — Design System:** Generate with `python scripts/search.py "<query>" --design-system`. Fallback: use universal color/type rules in build-mode.md. If direction stays unresolved after search + references, offer prototype variants (build-mode Phase 2.5 escape hatch). **Done:** style/palette/typography/motion selected and cited.
+**Phase 2 — Design System:** Generate with `python scripts/search.py "<query>" --design-system` (and `/taste-design` + `/design-md` + `/manage-design-system` when syncing with `StitchMCP`). Fallback: use universal color/type rules in build-mode.md. If direction stays unresolved after search + references, offer prototype variants (build-mode Phase 2.5 escape hatch or `/generate-design` via `StitchMCP`). **Done:** style/palette/typography/motion selected and cited.
 
 **Phase 3 — Blueprint:** Output the full structured blueprint (all 14 mandatory fields with source citations + evidence classes) + Decision Briefs (5-part, scoped to named design choices) + Design Tokens (3 formats: CSS vars, Tailwind config, JS/TS object). No code before blueprint. Write `.design-lock.md` after blueprint confirmed. See `references/build-mode.md` for template. **Done:** blueprint confirmed + `.design-lock.md` written.
 

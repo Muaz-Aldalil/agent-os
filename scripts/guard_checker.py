@@ -189,6 +189,8 @@ def check_rtl_logical_css(content: str) -> List[GuardViolation]:
     ]
 
     for idx, line in enumerate(lines, 1):
+        if "guard-ignore" in line:
+            continue
         for pattern, recommendation in css_physical_patterns:
             if re.search(pattern, line):
                 violations.append(GuardViolation(
@@ -310,6 +312,254 @@ def check_python_security_and_hygiene(content: str, filename: str = "") -> List[
     return violations
 
 
+def check_architectural_boundaries(content: str, filename: str = "") -> List[GuardViolation]:
+    """
+    Validates Architectural Layer, Bounded Domain, and Public/Admin Shell Boundaries:
+    - CLIENT_SERVER_BOUNDARY_LEAK: "use client" components importing DB/Repository/server-only modules
+    - LAYER_SKIPPING_CONTROLLER_BYPASS: HTTP Controllers directly calling *Repository or raw SQL/transactions
+    - PUBLIC_ADMIN_SHELL_LEAK: Public routes importing Admin shell (AdminSidebar/AdminNavbar) or Admin routes importing Public Navbar/Footer
+    - CROSS_DOMAIN_REPOSITORY_LEAK: Domain A importing internal Repository of Domain B
+    - UPWARD_ABSTRACTION_LEAK: Services/Repositories returning unexecuted ORM query builders or raw driver statements
+    """
+    violations = []
+    fn_norm = filename.replace("\\", "/") if filename else ""
+    fn_lower = fn_norm.lower()
+
+    # Do not scan guard/test/sentinel scripts themselves unless invoked with synthetic filename in unit tests
+    if fn_lower and any(skip in fn_lower for skip in ["guard_checker.py", "sentinel.py", "test_guards_battery.py", "test_sentinel.py"]):
+        return violations
+
+    lines = content.splitlines()
+    is_client_component = '"use client"' in content or "'use client'" in content
+    is_controller = (
+        fn_lower.endswith("controller.php")
+        or fn_lower.endswith(".controller.ts")
+        or fn_lower.endswith(".controller.js")
+        or bool(re.search(r"\bclass\s+\w+Controller\b", content))
+    )
+
+    # 1. Client -> Server / DB / Repository Boundary Leak
+    if is_client_component:
+        server_import_pat = re.compile(
+            r"""^\s*import\s+.*?\bfrom\s+['"](@prisma/client|[^'"]*/lib/(?:db|prisma)|[^'"]*/repositories/[^'"]+|[^'"]*\.repo(?:sitory)?|(?:node:)?(?:fs|fs/promises|child_process|net|tls)|mysql2|pg|better-sqlite3)['"]"""
+        )
+        direct_db_call_pat = re.compile(r"\b(prisma\.\w+\.(?:findMany|findUnique|findFirst|create|update|delete|upsert|\$queryRaw)|db\.query\s*\()")
+        for idx, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if stripped.startswith("//") or stripped.startswith("*"):
+                continue
+            if server_import_pat.search(line) or direct_db_call_pat.search(line):
+                violations.append(GuardViolation(
+                    guard_name="clean-code-guard",
+                    rule="CLIENT_SERVER_BOUNDARY_LEAK",
+                    line_no=idx,
+                    message="Client component ('use client') imports or calls server-only persistence/repository module. Move data access to a Server Component or Server Action.",
+                    snippet=stripped
+                ))
+
+    # 2. Layer Skipping in HTTP Controllers (Controller -> Repository or Raw SQL / Transaction)
+    if is_controller:
+        raw_sql_or_tx_pat = re.compile(
+            r"\b(DB::(?:raw|statement|unprepared|select|beginTransaction)\s*\(|prisma\.\$(?:queryRaw|executeRaw|transaction)\b)"
+        )
+        repo_bypass_pat = re.compile(
+            r"(?:^\s*use\s+[\w\\]+\\Repositories\\\w+Repository\b|^\s*import\s+.*?\b\w+Repository\b.*?\bfrom\b|\b\w+Repository\s+\$\w+|\bprivate\s+(?:readonly\s+)?\w+\s*:\s*\w+Repository\b)"
+        )
+        for idx, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if stripped.startswith("//") or stripped.startswith("#") or stripped.startswith("*"):
+                continue
+            if raw_sql_or_tx_pat.search(line):
+                violations.append(GuardViolation(
+                    guard_name="clean-code-guard",
+                    rule="LAYER_SKIPPING_CONTROLLER_BYPASS",
+                    line_no=idx,
+                    message="Controller executes raw SQL or manual DB transaction directly, bypassing the Service/Action layer.",
+                    snippet=stripped
+                ))
+            if repo_bypass_pat.search(line):
+                violations.append(GuardViolation(
+                    guard_name="clean-code-guard",
+                    rule="LAYER_SKIPPING_CONTROLLER_BYPASS",
+                    line_no=idx,
+                    message="Controller couples directly to a Repository, bypassing the Service/Action orchestration layer.",
+                    snippet=stripped
+                ))
+
+    # 3. Public vs. Admin Shell Separation Leak
+    is_public_scope = (
+        "/(public)/" in fn_lower
+        or "/public/" in fn_lower
+        or bool(re.search(r"\b(?:function|class)\s+Public\w*(?:Page|Layout|View)\b", content))
+    )
+    is_admin_scope = (
+        "/admin/" in fn_lower
+        or fn_lower.startswith("admin/")
+        or bool(re.search(r"\b(?:function|class)\s+Admin\w*(?:Page|Layout|View)\b", content))
+    )
+
+    if is_public_scope and not is_admin_scope:
+        admin_shell_pat = re.compile(r"""(\bAdmin(?:Sidebar|Navbar|Shell|Header|Layout)\b|from\s+['"][^'"]*/components/admin/)""")
+        for idx, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if stripped.startswith("//") or stripped.startswith("*"):
+                continue
+            if admin_shell_pat.search(line):
+                violations.append(GuardViolation(
+                    guard_name="clean-code-guard",
+                    rule="PUBLIC_ADMIN_SHELL_LEAK",
+                    line_no=idx,
+                    message="Public route/view imports or renders Admin shell navigation (AdminSidebar/AdminNavbar). Keep Public and Admin shells strictly isolated.",
+                    snippet=stripped
+                ))
+
+    if is_admin_scope and not is_public_scope:
+        public_shell_pat = re.compile(r"""(\bPublic(?:Navbar|Footer|Header|Shell|Layout)\b|from\s+['"][^'"]*/components/public/(?:Navbar|Footer|Header))""")
+        for idx, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if stripped.startswith("//") or stripped.startswith("*"):
+                continue
+            if public_shell_pat.search(line):
+                violations.append(GuardViolation(
+                    guard_name="clean-code-guard",
+                    rule="PUBLIC_ADMIN_SHELL_LEAK",
+                    line_no=idx,
+                    message="Admin route/view imports or renders Public shell navigation (PublicNavbar/PublicFooter). Keep Public and Admin shells strictly isolated.",
+                    snippet=stripped
+                ))
+
+    # 4. Cross-Domain Internal Repository Leak
+    php_domain_match = re.search(r"namespace\s+App\\Domains\\([A-Za-z0-9_]+)", content)
+    path_domain_match = re.search(r"(?:^|/)domains/([a-zA-Z0-9_-]+)/", fn_norm, re.IGNORECASE)
+    current_domain = (
+        php_domain_match.group(1).lower() if php_domain_match
+        else (path_domain_match.group(1).lower() if path_domain_match else None)
+    )
+
+    if current_domain:
+        php_cross_repo = re.compile(r"^\s*use\s+App\\Domains\\([A-Za-z0-9_]+)\\Repositories\\(\w+)")
+        ts_cross_repo = re.compile(r"""from\s+['"][^'"]*domains/([a-zA-Z0-9_-]+)/repositories/([^'"]+)['"]""", re.IGNORECASE)
+        for idx, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if stripped.startswith("//") or stripped.startswith("#") or stripped.startswith("*"):
+                continue
+            m_php = php_cross_repo.search(line)
+            if m_php and m_php.group(1).lower() != current_domain:
+                violations.append(GuardViolation(
+                    guard_name="clean-code-guard",
+                    rule="CROSS_DOMAIN_REPOSITORY_LEAK",
+                    line_no=idx,
+                    message=f"Domain '{current_domain}' imports internal Repository '{m_php.group(2)}' from foreign Domain '{m_php.group(1)}'. Use public Service/Action contracts across domains.",
+                    snippet=stripped
+                ))
+            m_ts = ts_cross_repo.search(line)
+            if m_ts and m_ts.group(1).lower() != current_domain:
+                violations.append(GuardViolation(
+                    guard_name="clean-code-guard",
+                    rule="CROSS_DOMAIN_REPOSITORY_LEAK",
+                    line_no=idx,
+                    message=f"Domain '{current_domain}' imports internal Repository from foreign Domain '{m_ts.group(1)}'. Use public Service/Action contracts across domains.",
+                    snippet=stripped
+                ))
+
+    # 5. Upward Abstraction Leak (Returning unexecuted ORM Query Builder, PDOStatement, or SDK HTTP wrapper from Service/Repository)
+    imports_orm_builder = bool(re.search(r"use\s+Illuminate\\Database\\(?:Eloquent|Query)\\Builder\b", content))
+    abstraction_leak_pat = re.compile(
+        r"(?:function\s+\w+\s*\([^)]*\)\s*:\s*(?:\\?Illuminate\\Database\\(?:Eloquent|Query)\\Builder|Eloquent\\Builder|Query\\Builder|\\?PDOStatement|Stripe\\ApiResponse|AxiosResponse"
+        + (r"|Builder" if imports_orm_builder else "")
+        + r")\b)"
+    )
+    for idx, line in enumerate(lines, 1):
+        stripped = line.strip()
+        if stripped.startswith("//") or stripped.startswith("#") or stripped.startswith("*"):
+            continue
+        if abstraction_leak_pat.search(line):
+            violations.append(GuardViolation(
+                guard_name="clean-code-guard",
+                rule="UPWARD_ABSTRACTION_LEAK",
+                line_no=idx,
+                message="Method leaks unexecuted ORM Builder, raw PDOStatement, or transport wrapper across layer boundary. Return a domain DTO, Collection, or paginated result.",
+                snippet=stripped
+            ))
+
+    return violations
+
+
+def check_modularity_and_reusability(content: str, filename: str = "") -> List[GuardViolation]:
+    """
+    Enforces Junior-Developer Readability, Single-Component-Per-File Modularity,
+    Practical 2+ Reusability, and the 2-3 Line Component Header Comment contract:
+    1. MONOLITH_COMPONENT_FILE: Entry files (App.jsx/tsx, page.jsx/tsx, index.jsx/tsx)
+       must not bundle 3+ distinct UI components/sections inline (e.g., Header + Hero + Footer + Card).
+    2. MISSING_COMPONENT_HEADER_DOC: Reusable UI component files under components/
+       must start with a concise 2-3 line header comment (Purpose | Reused In | Key Props/Inputs).
+    3. EXTREME_TOKEN_MICRO_ABSTRACTION: Flags pointless wrapper components around a single raw font/color CSS token.
+    """
+    violations: List[GuardViolation] = []
+    if not filename:
+        return violations
+
+    fn_norm = filename.replace("\\", "/")
+    fn_lower = fn_norm.lower()
+    base_lower = fn_lower.split("/")[-1]
+    lines = content.splitlines()
+
+    # 1. Monolith Component File Check on entry/page files
+    is_entry_file = base_lower in ("app.jsx", "app.tsx", "page.jsx", "page.tsx", "index.jsx", "index.tsx")
+    if is_entry_file:
+        comp_decl_pat = re.compile(
+            r"^\s*(?:export\s+(?:default\s+)?)?(?:function\s+([A-Z][A-Za-z0-9_]*)\s*\(|const\s+([A-Z][A-Za-z0-9_]*)\s*(?::\s*[^=]+)?=\s*(?:async\s*)?(?:\([^)]*\)|[a-zA-Z0-9_]+)\s*=>)"
+        )
+        found_components: List[tuple] = []
+        for idx, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if stripped.startswith("//") or stripped.startswith("/*") or stripped.startswith("*"):
+                continue
+            m = comp_decl_pat.search(line)
+            if m:
+                comp_name = m.group(1) or m.group(2)
+                found_components.append((idx, comp_name, stripped))
+
+        if len(found_components) >= 3:
+            names_str = ", ".join(c[1] for c in found_components)
+            first_line, _, first_snip = found_components[0]
+            violations.append(GuardViolation(
+                guard_name="clean-code-guard",
+                rule="MONOLITH_COMPONENT_FILE",
+                line_no=first_line,
+                message=(
+                    f"Entry file '{base_lower}' bundles {len(found_components)} components inline ({names_str}). "
+                    "Split Header, Hero, Footer, and reusable primitives (Button, Card) into separate 1-component-per-file modules."
+                ),
+                snippet=first_snip[:80]
+            ))
+
+    # 2. Concise 2-3 Line Component Header Check on reusable components
+    is_reusable_component_file = (
+        ("/components/" in fn_lower or fn_lower.startswith("components/"))
+        and any(fn_lower.endswith(ext) for ext in (".jsx", ".tsx", ".vue", ".svelte"))
+        and not base_lower.endswith((".test.tsx", ".test.jsx", ".spec.tsx", ".spec.jsx", ".types.ts", ".stories.tsx"))
+    )
+    if is_reusable_component_file:
+        top_slice = "\n".join(lines[:12])
+        has_header_comment = bool(
+            re.search(r"(/\*[\s\S]*?\*/|^\s*//\s*\S+)", top_slice, re.MULTILINE)
+        )
+        if not has_header_comment:
+            violations.append(GuardViolation(
+                guard_name="clean-code-guard",
+                rule="MISSING_COMPONENT_HEADER_DOC",
+                line_no=1,
+                message=(
+                    "Reusable component file is missing a concise 2-3 line top header comment "
+                    "(Purpose | Reused In | Key Props/Inputs) for junior-developer readability."
+                ),
+                snippet=lines[0].strip()[:80] if lines else ""
+            ))
+
+    return violations
+
+
 def scan_content(content: str, filename: str = "") -> List[GuardViolation]:
     """Runs all relevant guard checks on a given content string."""
     violations = []
@@ -324,14 +574,14 @@ def scan_content(content: str, filename: str = "") -> List[GuardViolation]:
         violations.extend(check_pest_php_security(content, filename))
 
     # RTL CSS: Style sheets, templates, and UI components (never scan python scripts)
-    if not fn_lower or (not fn_lower.endswith(".py") and any(fn_lower.endswith(ext) for ext in [".css", ".scss", ".sass", ".less", ".html", ".vue", ".svelte", ".jsx", ".tsx", ".js", ".ts"])):
+    if not fn_lower or (not fn_lower.endswith(".py") and any(fn_lower.endswith(ext) for ext in [".css", ".scss", ".sass", ".less", ".html", ".astro", ".vue", ".svelte", ".jsx", ".tsx", ".js", ".ts"])):
         violations.extend(check_rtl_logical_css(content))
 
-    # Clean code: scan all code files except guard definition scripts themselves
-    if "guard_checker.py" not in fn_lower and "guard" not in Path(filename).stem:
+    # Clean code & Architectural Boundaries: scan all code files except guard_checker.py itself
+    if "guard_checker.py" not in fn_lower:
         violations.extend(check_clean_code_hygiene(content))
-    elif "guard_checker.py" not in fn_lower:
-        violations.extend(check_clean_code_hygiene(content))
+        violations.extend(check_architectural_boundaries(content, filename))
+        violations.extend(check_modularity_and_reusability(content, filename))
 
     # Python security and hygiene: Python files only
     if not fn_lower or fn_lower.endswith(".py"):

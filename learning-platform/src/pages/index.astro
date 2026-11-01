@@ -1,0 +1,1851 @@
+---
+import W3Layout from '../layouts/W3Layout.astro';
+import {
+  TECH_STACKS,
+  STORY_REELS,
+  CURRICULUM_TRACKS,
+  SITUATION_COMBOS_CARDS,
+  UI_DICTIONARY
+} from '../data/curriculum.js';
+import skillsRegistry from '../data/skills-registry.json';
+
+const allLessons = CURRICULUM_TRACKS.flatMap((track) => track.lessons);
+const skillsList = skillsRegistry.skills || [];
+const mcpList = skillsRegistry.mcpServers || [];
+const uniqueCategoriesEn = Array.from(new Set(skillsList.map((s) => s.categoryEn)));
+
+const clientPayload = JSON.stringify({
+  techStacks: TECH_STACKS,
+  storyReels: STORY_REELS,
+  tracks: CURRICULUM_TRACKS,
+  lessons: allLessons,
+  combos: SITUATION_COMBOS_CARDS,
+  skills: skillsList,
+  mcpServers: mcpList,
+  ui: UI_DICTIONARY
+});
+---
+
+<W3Layout
+  title="Agent OS — W3Schools x Social Learning Platform (v1.15.0)"
+  description="Interactive W3Schools-style tutorial reader, social learning feed, Try-it-Yourself simulator, and 60-skill dictionary for Agent OS."
+>
+  <!-- LAYER 1A: STICKY TOPBAR (h-14) -->
+  <header class="sticky top-0 z-40 bg-w3-card dark:bg-w3-slate border-b border-w3-line dark:border-zinc-700">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-2 sm:gap-4">
+      <!-- Brand + Mobile Chapter Drawer Button -->
+      <div class="flex items-center gap-2 shrink-0">
+        <button type="button" id="mobile-drawer-open-btn" aria-label="Toggle W3Schools Chapter Menu" class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas hover:bg-w3-example dark:hover:bg-w3-slate focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        <button type="button" data-switch-mode="social" class="flex items-center gap-2.5 text-start group focus-visible:ring-2 focus-visible:ring-w3-green rounded-md px-1.5 py-1 micro-transition">
+          <span class="inline-flex items-center justify-center px-2.5 py-1 rounded bg-w3-green text-white font-display font-bold text-sm tracking-tight shadow-sm">
+            w3
+          </span>
+          <div>
+            <span class="font-display font-bold text-base sm:text-lg text-w3-ink dark:text-w3-canvas block leading-none">
+              <span class="lang-en">{UI_DICTIONARY.en.brandTitle}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.brandTitle}</span>
+            </span>
+            <span class="hidden sm:block text-xs text-w3-muted dark:text-zinc-300 mt-0.5">
+              <span class="lang-en">{UI_DICTIONARY.en.brandSub}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.brandSub}</span>
+            </span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Global Quick Search Input (Logical Padding ps-10 pe-4 + start-3 icon) -->
+      <div class="relative flex-1 max-w-xs xl:max-w-md hidden md:block">
+        <span class="absolute inset-y-0 start-3 flex items-center pointer-events-none text-w3-muted dark:text-zinc-400">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path stroke-linecap="round" d="m21 21-4.3-4.3" />
+          </svg>
+        </span>
+        <input id="global-top-search" type="search" aria-label="Search 60 skills, commands, or lessons" placeholder={UI_DICTIONARY.en.searchPlaceholder} class="w-full ps-10 pe-4 py-1.5 text-xs sm:text-sm rounded-full bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green focus-visible:outline-none micro-transition" />
+      </div>
+
+      <!-- Mode Switcher Pills (Visible on lg+ Desktop & Laptop) -->
+      <nav aria-label="Learning Mode Switcher" class="hidden lg:flex items-center gap-1 bg-w3-example dark:bg-w3-slateDeep p-1 rounded-lg border border-w3-line dark:border-zinc-700">
+        <button type="button" data-switch-mode="social" class="mode-tab-btn px-3 py-1.5 rounded-md text-xs font-semibold bg-w3-green text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+          <span class="lang-en">{UI_DICTIONARY.en.modeSocial}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modeSocial}</span>
+        </button>
+        <button type="button" data-switch-mode="reader" class="mode-tab-btn px-3 py-1.5 rounded-md text-xs font-semibold text-w3-ink dark:text-zinc-100 hover:bg-w3-card dark:hover:bg-w3-slate focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+          <span class="lang-en">{UI_DICTIONARY.en.modeReader}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modeReader}</span>
+        </button>
+        <button type="button" data-switch-mode="simulator" class="mode-tab-btn px-3 py-1.5 rounded-md text-xs font-semibold text-w3-ink dark:text-zinc-100 hover:bg-w3-card dark:hover:bg-w3-slate focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+          <span class="lang-en">{UI_DICTIONARY.en.modeSimulator}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modeSimulator}</span>
+        </button>
+        <button type="button" data-switch-mode="reference" class="mode-tab-btn px-3 py-1.5 rounded-md text-xs font-semibold text-w3-ink dark:text-zinc-100 hover:bg-w3-card dark:hover:bg-w3-slate focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+          <span class="lang-en">{UI_DICTIONARY.en.modeReference}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modeReference}</span>
+        </button>
+      </nav>
+
+      <!-- XP Pill + Theme Toggle + Language Toggle -->
+      <div class="flex items-center gap-2 shrink-0">
+        <button type="button" id="top-xp-badge-btn" aria-label="View learning progress and XP" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-w3-mint text-w3-greenDark font-mono text-xs font-bold border border-w3-green/40 focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+          </svg>
+          <span id="header-xp-count">0 XP</span>
+        </button>
+
+        <button type="button" id="theme-toggle-btn" aria-label="Toggle Light and Dark Theme" class="inline-flex items-center justify-center w-9 h-9 rounded-md bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-zinc-100 hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+
+        <button type="button" id="lang-toggle-btn" aria-label="Switch between English LTR and Arabic RTL" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-w3-slate text-white dark:bg-w3-green dark:text-white text-xs font-semibold hover:bg-w3-greenHover focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+          <span class="lang-en">{UI_DICTIONARY.en.langToggleLabel}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.langToggleLabel}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- LAYER 1B: W3SCHOOLS SIGNATURE #subtopnav DARK RIBBON (h-10, #282A35) -->
+    <div id="subtopnav" class="bg-w3-slate text-zinc-100 h-10 border-t border-zinc-700 overflow-x-auto w3-scrollbar">
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 h-full flex items-center gap-1.5 whitespace-nowrap text-xs font-mono">
+        <button type="button" data-switch-mode="social" class="subnav-pill px-3 py-1 rounded bg-w3-green text-white font-semibold focus-visible:ring-2 focus-visible:ring-white micro-transition">
+          <span class="lang-en">FEED HUB</span>
+          <span class="lang-ar">الموجز الرئيسي</span>
+        </button>
+        {SITUATION_COMBOS_CARDS.map((combo) => (
+          <button type="button" data-ribbon-lesson={combo.lessonId} data-ribbon-cmd={combo.command} class="subnav-pill px-2.5 py-1 rounded bg-w3-slateDeep text-zinc-100 border border-zinc-700 hover:bg-w3-green hover:text-white hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+            {combo.command}
+          </button>
+        ))}
+        <button type="button" data-switch-mode="simulator" class="subnav-pill px-3 py-1 rounded bg-w3-yellow text-w3-ink font-semibold hover:bg-w3-mint focus-visible:ring-2 focus-visible:ring-white micro-transition">
+          <span class="lang-en">Try it Yourself »</span>
+          <span class="lang-ar">جربها بنفسك »</span>
+        </button>
+        <button type="button" data-switch-mode="reference" class="subnav-pill px-3 py-1 rounded bg-w3-mint text-w3-greenDark font-semibold hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-white micro-transition">
+          <span class="lang-en">60-Skill Dict »</span>
+          <span class="lang-ar">قاموس 60 مهارة »</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE SLIDE-OVER CHAPTER DRAWER BACKDROP -->
+  <div id="mobile-drawer-backdrop" class="fixed inset-0 z-40 bg-w3-slate/75 hidden lg:hidden"></div>
+
+  <!-- MAIN 3-COLUMN W3SCHOOLS + SOCIAL WORKSPACE -->
+  <div class="max-w-7xl w-full mx-auto flex-1 flex items-start gap-0 lg:gap-5 px-0 sm:px-4 lg:px-6 pt-0 lg:pt-6">
+    <!-- LEFT RAIL: W3SCHOOLS CHAPTER TREE SIDEBAR (w-64 shrink-0, sticky on desktop, slide-over on mobile) -->
+    <aside id="w3-sidebar" aria-label="W3Schools Curriculum Chapters" class="fixed lg:sticky top-0 lg:top-28 start-0 z-50 lg:z-20 w-72 lg:w-64 shrink-0 h-dvh lg:h-[calc(100dvh-7.5rem)] overflow-y-auto w3-scrollbar bg-w3-example dark:bg-w3-slate border-e lg:border border-w3-line dark:border-zinc-700 lg:rounded-xl p-4 -translate-x-full rtl:translate-x-full lg:translate-x-0 rtl:lg:translate-x-0 micro-transition">
+      <div class="flex items-center justify-between pb-3 mb-3 border-b border-w3-line dark:border-zinc-700">
+        <div>
+          <span class="text-xs font-mono text-w3-greenDark dark:text-w3-mint font-bold block">
+            <span class="lang-en">W3SCHOOLS CURRICULUM</span>
+            <span class="lang-ar">منهج W3SCHOOLS التفاعلي</span>
+          </span>
+          <h2 class="font-display font-bold text-sm text-w3-ink dark:text-w3-canvas mt-1 mb-0">
+            <span class="lang-en">4 Tracks • {allLessons.length} Chapters</span>
+            <span class="lang-ar">4 مسارات • {allLessons.length} درساً</span>
+          </h2>
+        </div>
+        <button type="button" id="mobile-drawer-close-btn" aria-label="Close Chapter Menu" class="lg:hidden inline-flex items-center justify-center w-8 h-8 rounded-md bg-w3-card dark:bg-w3-slateDeep text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sidebar Track List -->
+      <div class="space-y-4">
+        {CURRICULUM_TRACKS.map((track) => (
+          <div>
+            <h3 class="font-display font-bold text-xs text-w3-ink dark:text-w3-mint mt-3 mb-2 px-1">
+              <span class="lang-en">{track.titleEn}</span>
+              <span class="lang-ar">{track.titleAr}</span>
+            </h3>
+            <ul class="space-y-1.5">
+              {track.lessons.map((lesson, idx) => (
+                <li>
+                  <button type="button" data-open-lesson={lesson.id} class={`sidebar-lesson-btn w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-xs text-start border focus-visible:ring-2 focus-visible:ring-w3-green micro-transition ${idx === 0 && track.id === 'track-start' ? 'bg-w3-green text-white font-semibold border-w3-green shadow-sm' : 'bg-w3-card dark:bg-w3-slateDeep text-w3-ink dark:text-zinc-100 border-w3-line dark:border-zinc-700 hover:border-w3-green'}`}>
+                    <span class="truncate">
+                      <span class="lang-en">{lesson.badgeEn}: {lesson.titleEn}</span>
+                      <span class="lang-ar">{lesson.badgeAr}: {lesson.titleAr}</span>
+                    </span>
+                    <span data-lesson-tick={lesson.id} class="hidden shrink-0 inline-flex items-center justify-center w-4 h-4 rounded-full bg-w3-mint text-w3-greenDark text-xs font-bold">
+                      +
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </aside>
+
+    <!-- CENTER STAGE: FLEX-1 MIN-W-0 (Prevents flex child overflow on 375px mobile!) -->
+    <main id="center-stage" class="flex-1 min-w-0 px-3 sm:px-0 pb-12">
+      <!-- ===================================================================== -->
+      <!-- MODE 1: SOCIAL DISCOVERY FEED + LANDING PAGE HERO + STORY REELS       -->
+      <!-- ===================================================================== -->
+      <div id="view-social" class="space-y-6">
+        <!-- W3SCHOOLS LANDING HERO BANNER -->
+        <section class="rounded-none sm:rounded-xl bg-w3-slate text-white p-5 sm:p-8 border-b sm:border border-zinc-700 shadow-sm">
+          <div class="max-w-3xl">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-w3-mint text-w3-greenDark text-xs font-bold">
+              <span class="lang-en">{UI_DICTIONARY.en.heroEyebrow}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.heroEyebrow}</span>
+            </span>
+            <h1 class="font-display font-bold text-2xl sm:text-4xl text-white mt-4 mb-3 leading-tight">
+              <span class="lang-en">{UI_DICTIONARY.en.heroTitle}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.heroTitle}</span>
+            </h1>
+            <p class="text-sm sm:text-base text-zinc-200 leading-relaxed mb-6">
+              <span class="lang-en">{UI_DICTIONARY.en.heroSubtitle}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.heroSubtitle}</span>
+            </p>
+
+            <!-- Hero CTAs -->
+            <div class="flex flex-wrap items-center gap-3">
+              <button type="button" data-open-lesson="ch-intro" class="px-5 py-2.5 rounded-full bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-sm focus-visible:ring-2 focus-visible:ring-white micro-transition">
+                <span class="lang-en">{UI_DICTIONARY.en.heroCtaPrimary}</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.heroCtaPrimary}</span>
+              </button>
+              <button type="button" data-switch-mode="simulator" class="px-5 py-2.5 rounded-full bg-w3-yellow text-w3-ink font-bold text-sm hover:bg-w3-mint focus-visible:ring-2 focus-visible:ring-white micro-transition">
+                <span class="lang-en">{UI_DICTIONARY.en.heroCtaSecondary}</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.heroCtaSecondary}</span>
+              </button>
+              <button type="button" data-switch-mode="reference" class="px-4 py-2.5 rounded-full bg-w3-slateDeep border border-zinc-600 text-zinc-100 font-semibold text-sm hover:border-w3-mint focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                <span class="lang-en">{UI_DICTIONARY.en.modeReference} »</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.modeReference} »</span>
+              </button>
+            </div>
+
+            <!-- 4 Metric Badges (Borderless minimalist informational counters) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-5 border-t border-zinc-700">
+              <div>
+                <span class="font-display font-bold text-lg text-w3-mint block">{skillsRegistry.totalSkills}</span>
+                <span class="text-xs text-zinc-300">
+                  <span class="lang-en">{UI_DICTIONARY.en.statsSkills}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.statsSkills}</span>
+                </span>
+              </div>
+              <div>
+                <span class="font-display font-bold text-lg text-w3-yellow block">11</span>
+                <span class="text-xs text-zinc-300">
+                  <span class="lang-en">{UI_DICTIONARY.en.statsCombos}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.statsCombos}</span>
+                </span>
+              </div>
+              <div>
+                <span class="font-display font-bold text-lg text-w3-pink block">{skillsRegistry.totalMcpServers}</span>
+                <span class="text-xs text-zinc-300">
+                  <span class="lang-en">{UI_DICTIONARY.en.statsMcps}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.statsMcps}</span>
+                </span>
+              </div>
+              <div>
+                <span class="font-display font-bold text-lg text-w3-green block">36</span>
+                <span class="text-xs text-zinc-300">
+                  <span class="lang-en">{UI_DICTIONARY.en.statsGuards}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.statsGuards}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 60-SECOND TAP-THROUGH STORY REELS BAR -->
+        <section aria-label="60-Second Story Reels" class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-display font-bold text-sm text-w3-ink dark:text-w3-canvas mt-1 mb-0">
+              <span class="lang-en">{UI_DICTIONARY.en.storiesHeading}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.storiesHeading}</span>
+            </h2>
+            <span class="text-xs font-mono font-semibold text-w3-greenDark dark:text-w3-mint">6 Reels</span>
+          </div>
+
+          <div class="flex items-stretch gap-3 overflow-x-auto w3-scrollbar pb-2">
+            {STORY_REELS.map((reel, idx) => (
+              <button type="button" data-open-story={idx} class="story-ring-btn shrink-0 w-44 p-3.5 rounded-xl border-2 border-w3-green bg-w3-canvas dark:bg-w3-slateDeep hover:bg-w3-mint/40 dark:hover:bg-w3-slate text-start flex flex-col justify-between focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="inline-block px-2 py-0.5 rounded-full bg-w3-mint text-w3-greenDark font-mono text-xs font-bold">
+                    <span class="lang-en">{reel.badgeEn}</span>
+                    <span class="lang-ar">{reel.badgeAr}</span>
+                  </span>
+                  <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-w3-green text-white text-xs font-bold">»</span>
+                </div>
+                <span class="font-display font-bold text-xs sm:text-sm text-w3-ink dark:text-w3-canvas block mt-2.5 leading-snug">
+                  <span class="lang-en">{reel.titleEn}</span>
+                  <span class="lang-ar">{reel.titleAr}</span>
+                </span>
+                <span class="text-xs text-w3-muted dark:text-zinc-300 block mt-1 truncate">
+                  <span class="lang-en">{reel.authorEn}</span>
+                  <span class="lang-ar">{reel.authorAr}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <!-- 11 SITUATION COMBOS 3-CARD GRID (With Show More / Collapse All Toggle!) -->
+        <section aria-label="Situation Combos Grid" class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div>
+              <h2 class="font-display font-bold text-lg text-w3-ink dark:text-w3-canvas mt-1 mb-1">
+                <span class="lang-en">{UI_DICTIONARY.en.combosSectionTitle}</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.combosSectionTitle}</span>
+              </h2>
+              <p class="text-xs text-w3-muted dark:text-zinc-300">
+                <span class="lang-en">{UI_DICTIONARY.en.combosSectionSub}</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.combosSectionSub}</span>
+              </p>
+            </div>
+          </div>
+
+          <div id="combos-card-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))] gap-4">
+            {SITUATION_COMBOS_CARDS.map((card, idx) => (
+              <article data-combo-card-index={idx} class={`combo-grid-card rounded-xl border border-w3-line dark:border-zinc-700 bg-w3-canvas dark:bg-w3-slateDeep p-4 flex flex-col justify-between ${idx >= 3 ? 'hidden' : ''}`}>
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-2">
+                    <code class="px-2.5 py-1 rounded bg-w3-slate text-w3-mint font-mono text-xs font-semibold">
+                      {card.command}
+                    </code>
+                    <span class="text-xs font-mono text-w3-muted dark:text-zinc-300">
+                      <span class="lang-en">{card.badgeEn}</span>
+                      <span class="lang-ar">{card.badgeAr}</span>
+                    </span>
+                  </div>
+                  <h3 class="font-display font-bold text-base text-w3-ink dark:text-w3-canvas mt-3 mb-1.5">
+                    <span class="lang-en">{card.titleEn}</span>
+                    <span class="lang-ar">{card.titleAr}</span>
+                  </h3>
+                  <p class="text-xs text-w3-muted dark:text-zinc-300 leading-relaxed mb-4">
+                    <span class="lang-en">{card.descEn}</span>
+                    <span class="lang-ar">{card.descAr}</span>
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between gap-2 pt-3 border-t border-w3-line dark:border-zinc-700">
+                  <button type="button" data-try-command={card.command} data-try-prompt-en={card.samplePromptEn} data-try-prompt-ar={card.samplePromptAr} class="px-3 py-1.5 rounded-md bg-w3-green hover:bg-w3-greenHover text-white text-xs font-semibold focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <span class="lang-en">{UI_DICTIONARY.en.tryItBtn}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.tryItBtn}</span>
+                  </button>
+                  <button type="button" data-open-lesson={card.lessonId} class="px-2.5 py-1.5 rounded-md bg-w3-example dark:bg-w3-slate text-xs font-semibold text-w3-greenDark dark:text-w3-mint hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <span class="lang-en">Lesson »</span>
+                    <span class="lang-ar">الدرس »</span>
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div class="mt-4 text-center">
+            <button type="button" id="toggle-combos-grid-btn" data-expanded="false" class="px-5 py-2 rounded-full bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+              <span id="toggle-combos-label-en" class="lang-en">{UI_DICTIONARY.en.showMoreCombos}</span>
+              <span id="toggle-combos-label-ar" class="lang-ar">{UI_DICTIONARY.ar.showMoreCombos}</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- SOCIAL LEARNING FEED FILTER BAR -->
+        <div class="flex items-center gap-2 overflow-x-auto w3-scrollbar py-1">
+          <button type="button" data-feed-filter="all" class="feed-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-w3-green text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+            <span class="lang-en">{UI_DICTIONARY.en.feedFilterAll}</span>
+            <span class="lang-ar">{UI_DICTIONARY.ar.feedFilterAll}</span>
+          </button>
+          <button type="button" data-feed-filter="start" class="feed-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+            <span class="lang-en">{UI_DICTIONARY.en.feedFilterStart}</span>
+            <span class="lang-ar">{UI_DICTIONARY.ar.feedFilterStart}</span>
+          </button>
+          <button type="button" data-feed-filter="features" class="feed-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+            <span class="lang-en">{UI_DICTIONARY.en.feedFilterFeatures}</span>
+            <span class="lang-ar">{UI_DICTIONARY.ar.feedFilterFeatures}</span>
+          </button>
+          <button type="button" data-feed-filter="bugs" class="feed-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+            <span class="lang-en">{UI_DICTIONARY.en.feedFilterBugs}</span>
+            <span class="lang-ar">{UI_DICTIONARY.ar.feedFilterBugs}</span>
+          </button>
+          <button type="button" data-feed-filter="cms" class="feed-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+            <span class="lang-en">{UI_DICTIONARY.en.feedFilterCms}</span>
+            <span class="lang-ar">{UI_DICTIONARY.ar.feedFilterCms}</span>
+          </button>
+          <button type="button" data-feed-filter="ops" class="feed-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+            <span class="lang-en">{UI_DICTIONARY.en.feedFilterOps}</span>
+            <span class="lang-ar">{UI_DICTIONARY.ar.feedFilterOps}</span>
+          </button>
+        </div>
+
+        <!-- SOCIAL LEARNING FEED CARDS -->
+        <div id="social-feed-stream" class="space-y-6">
+          {allLessons.map((lesson) => (
+            <article data-feed-card={lesson.id} data-feed-cat={lesson.feedCategory} class="feed-post-card bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
+              <!-- Social Post Author Header -->
+              <div class="flex items-start justify-between gap-3 pb-3 border-b border-w3-line dark:border-zinc-700">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-w3-green text-white font-display font-bold text-sm flex items-center justify-center shrink-0">
+                    {lesson.command.replace('/', '').slice(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <span class="font-display font-bold text-sm text-w3-ink dark:text-w3-canvas">
+                        <span class="lang-en">{lesson.authorEn}</span>
+                        <span class="lang-ar">{lesson.authorAr}</span>
+                      </span>
+                      <span class="px-2 py-0.5 rounded-full bg-w3-mint text-w3-greenDark font-mono text-xs font-bold">
+                        <span class="lang-en">{lesson.badgeEn}</span>
+                        <span class="lang-ar">{lesson.badgeAr}</span>
+                      </span>
+                    </div>
+                    <span class="text-xs text-w3-muted dark:text-zinc-300 block">
+                      <span class="lang-en">{lesson.roleEn} • {lesson.readTimeEn}</span>
+                      <span class="lang-ar">{lesson.roleAr} • {lesson.readTimeAr}</span>
+                    </span>
+                  </div>
+                </div>
+
+                <span class="px-2.5 py-1 rounded bg-w3-yellow text-w3-ink font-mono text-xs font-bold shrink-0">
+                  +{lesson.xp} XP
+                </span>
+              </div>
+
+              <!-- Post Title & Summary -->
+              <h2 class="font-display font-bold text-lg sm:text-xl text-w3-ink dark:text-w3-canvas mt-4 mb-2">
+                <span class="lang-en">{lesson.titleEn}</span>
+                <span class="lang-ar">{lesson.titleAr}</span>
+              </h2>
+              <p class="text-sm text-w3-muted dark:text-zinc-200 leading-relaxed mb-4">
+                <span class="lang-en">{lesson.summaryEn}</span>
+                <span class="lang-ar">{lesson.summaryAr}</span>
+              </p>
+
+              <!-- Key Bullet Points -->
+              <ul class="space-y-2 mb-4 text-xs sm:text-sm text-w3-ink dark:text-zinc-100">
+                {lesson.bulletsEn.map((bEn, i) => (
+                  <li class="flex items-start gap-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-w3-green mt-1.5 shrink-0"></span>
+                    <span>
+                      <span class="lang-en">{bEn}</span>
+                      <span class="lang-ar">{lesson.bulletsAr[i]}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <!-- Before vs After Comparison Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                <div class="rounded-lg bg-w3-pink/30 dark:bg-w3-slateDeep border border-red-300 dark:border-w3-pink/50 p-3.5">
+                  <span class="font-mono text-xs font-bold text-red-800 dark:text-w3-pink block mb-1">
+                    <span class="lang-en">{UI_DICTIONARY.en.beforeLabel}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.beforeLabel}</span>
+                  </span>
+                  <p class="text-xs text-w3-ink dark:text-zinc-200 whitespace-pre-line">
+                    <span class="lang-en">{lesson.beforeEn}</span>
+                    <span class="lang-ar">{lesson.beforeAr}</span>
+                  </p>
+                </div>
+
+                <div class="rounded-lg bg-w3-mint/50 dark:bg-w3-slateDeep border border-w3-green p-3.5">
+                  <span class="font-mono text-xs font-bold text-w3-greenDark dark:text-w3-mint block mb-1">
+                    <span class="lang-en">{UI_DICTIONARY.en.afterLabel}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.afterLabel}</span>
+                  </span>
+                  <p class="text-xs text-w3-ink dark:text-zinc-200 whitespace-pre-line">
+                    <span class="lang-en">{lesson.afterEn}</span>
+                    <span class="lang-ar">{lesson.afterAr}</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- SIGNATURE W3SCHOOLS #E7E9EB EXAMPLE BOX (border-s-4 border-w3-green) -->
+              <div class="rounded-lg bg-w3-example dark:bg-w3-slateDeep p-4 border border-w3-line dark:border-zinc-700 mb-4">
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <h3 class="font-display font-bold text-sm text-w3-ink dark:text-w3-canvas mt-1 mb-0">
+                    <span class="lang-en">{lesson.exampleTitleEn}</span>
+                    <span class="lang-ar">{lesson.exampleTitleAr}</span>
+                  </h3>
+                  <code class="text-xs font-mono px-2.5 py-0.5 rounded bg-w3-slate text-w3-mint font-semibold">
+                    {lesson.command}
+                  </code>
+                </div>
+
+                <div class="bg-w3-card dark:bg-w3-slate border-s-4 border-w3-green p-3 rounded font-mono text-xs text-w3-ink dark:text-zinc-100 overflow-x-auto mb-3">
+                  <div class="lang-en">{lesson.promptEn}</div>
+                  <div class="lang-ar">{lesson.promptAr}</div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                  <button type="button" data-try-command={lesson.command} data-try-prompt-en={lesson.promptEn} data-try-prompt-ar={lesson.promptAr} class="px-4 py-2 rounded-md bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <span class="lang-en">{UI_DICTIONARY.en.tryItBtn}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.tryItBtn}</span>
+                  </button>
+                  <button type="button" data-copy-text-en={lesson.promptEn} data-copy-text-ar={lesson.promptAr} class="px-3 py-2 rounded-md bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <span class="lang-en">{UI_DICTIONARY.en.modalCopyCmdBtn}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.modalCopyCmdBtn}</span>
+                  </button>
+                  <button type="button" data-open-lesson={lesson.id} class="px-3 py-2 rounded-md bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-w3-greenDark dark:text-w3-mint font-semibold text-xs hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <span class="lang-en">{UI_DICTIONARY.en.readFullLessonBtn}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.readFullLessonBtn}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- SOCIAL INTERACTION FOOTER (Helpful + Save to Toolkit + Complete Lesson) -->
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-w3-line dark:border-zinc-700">
+                <div class="flex items-center gap-2">
+                  <button type="button" data-like-lesson={lesson.id} class="like-lesson-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-xs font-semibold text-w3-ink dark:text-w3-canvas hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <svg class="w-3.5 h-3.5 text-w3-green" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                    <span class="lang-en">{UI_DICTIONARY.en.helpfulBtn}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.helpfulBtn}</span>
+                    <span data-like-count={lesson.id} class="font-mono text-w3-greenDark dark:text-w3-mint">12</span>
+                  </button>
+
+                  <button type="button" data-bookmark-cmd={lesson.command} data-bookmark-title-en={lesson.titleEn} data-bookmark-title-ar={lesson.titleAr} class="bookmark-cmd-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-xs font-semibold text-w3-ink dark:text-w3-canvas hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <svg class="w-3.5 h-3.5 text-w3-greenDark dark:text-w3-mint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                    </svg>
+                    <span class="lang-en">{UI_DICTIONARY.en.saveToolkitBtn}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.saveToolkitBtn}</span>
+                  </button>
+                </div>
+
+                <button type="button" data-complete-lesson={lesson.id} class="complete-lesson-btn px-3.5 py-1.5 rounded-full bg-w3-mint text-w3-greenDark font-bold text-xs hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                  <span class="lang-en">{UI_DICTIONARY.en.markCompleteBtn}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.markCompleteBtn}</span>
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- MODE 2: DEDICATED W3SCHOOLS LESSON READER                             -->
+      <!-- ===================================================================== -->
+      <div id="view-reader" class="hidden space-y-6">
+        <div class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-8 shadow-sm">
+          <!-- Top W3Schools Prev / Next Buttons -->
+          <div class="flex items-center justify-between gap-2 pb-4 border-b border-w3-line dark:border-zinc-700">
+            <button type="button" id="reader-prev-btn" class="px-4 py-2 rounded-md bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs sm:text-sm focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+              <span class="lang-en">{UI_DICTIONARY.en.prevLessonBtn}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.prevLessonBtn}</span>
+            </button>
+            <span id="reader-lesson-badge" class="px-3 py-1 rounded-full bg-w3-mint text-w3-greenDark font-mono text-xs font-bold">
+              Lesson 1.1
+            </span>
+            <button type="button" id="reader-next-btn" class="px-4 py-2 rounded-md bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs sm:text-sm focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+              <span class="lang-en">{UI_DICTIONARY.en.nextLessonBtn}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.nextLessonBtn}</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Lesson Header -->
+          <h2 id="reader-title" class="font-display font-bold text-2xl sm:text-3xl text-w3-ink dark:text-w3-canvas mt-6 mb-3">
+            {allLessons[0].titleEn}
+          </h2>
+          <p id="reader-summary" class="text-sm sm:text-base text-w3-muted dark:text-zinc-200 leading-relaxed mb-6">
+            {allLessons[0].summaryEn}
+          </p>
+
+          <!-- Dynamic Lesson Bullets -->
+          <ul id="reader-bullets" class="space-y-3 mb-6 text-sm text-w3-ink dark:text-zinc-100 bg-w3-canvas dark:bg-w3-slateDeep p-4 rounded-lg border border-w3-line dark:border-zinc-700"></ul>
+
+          <!-- Dynamic Before / After Comparison -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="rounded-lg bg-w3-pink/30 dark:bg-w3-slateDeep border border-red-300 dark:border-w3-pink/50 p-4">
+              <h3 class="font-mono text-xs font-bold text-red-800 dark:text-w3-pink mt-1 mb-2">
+                <span class="lang-en">{UI_DICTIONARY.en.beforeLabel}</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.beforeLabel}</span>
+              </h3>
+              <p id="reader-before" class="text-xs sm:text-sm text-w3-ink dark:text-zinc-200 whitespace-pre-line"></p>
+            </div>
+            <div class="rounded-lg bg-w3-mint/50 dark:bg-w3-slateDeep border border-w3-green p-4">
+              <h3 class="font-mono text-xs font-bold text-w3-greenDark dark:text-w3-mint mt-1 mb-2">
+                <span class="lang-en">{UI_DICTIONARY.en.afterLabel}</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.afterLabel}</span>
+              </h3>
+              <p id="reader-after" class="text-xs sm:text-sm text-w3-ink dark:text-zinc-200 whitespace-pre-line"></p>
+            </div>
+          </div>
+
+          <!-- W3Schools #E7E9EB Example Box -->
+          <div class="rounded-xl bg-w3-example dark:bg-w3-slateDeep p-5 border border-w3-line dark:border-zinc-700 mb-6">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <h3 id="reader-example-title" class="font-display font-bold text-base text-w3-ink dark:text-w3-canvas mt-1 mb-0">
+                Example
+              </h3>
+              <code id="reader-command-pill" class="px-2.5 py-1 rounded bg-w3-slate text-w3-mint font-mono text-xs font-semibold">
+                /smart-feature
+              </code>
+            </div>
+            <div id="reader-code-box" class="bg-w3-card dark:bg-w3-slate border-s-4 border-w3-green p-4 rounded font-mono text-xs sm:text-sm text-w3-ink dark:text-zinc-100 overflow-x-auto mb-4"></div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button type="button" id="reader-try-btn" class="px-5 py-2.5 rounded-md bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs sm:text-sm focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                <span class="lang-en">{UI_DICTIONARY.en.tryItBtn}</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.tryItBtn}</span>
+              </button>
+              <button type="button" id="reader-complete-btn" class="px-4 py-2.5 rounded-md bg-w3-yellow text-w3-ink font-bold text-xs sm:text-sm hover:bg-w3-mint focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                <span class="lang-en">{UI_DICTIONARY.en.markCompleteBtn}</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.markCompleteBtn}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- W3SCHOOLS DARK #282A35 "TEST YOURSELF WITH EXERCISES" QUIZ BOX -->
+          <div class="rounded-xl bg-w3-slate text-white p-5 sm:p-6 border border-zinc-700">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <h3 class="font-display font-bold text-lg text-w3-yellow mt-1 mb-0">
+                <span class="lang-en">{UI_DICTIONARY.en.quizHeader}</span>
+                <span class="lang-ar">{UI_DICTIONARY.ar.quizHeader}</span>
+              </h3>
+              <span class="px-2.5 py-0.5 rounded bg-w3-green text-white font-mono text-xs font-semibold">Quiz</span>
+            </div>
+            <p id="reader-quiz-question" class="text-sm sm:text-base text-zinc-100 mb-4"></p>
+            <div id="reader-quiz-options" class="space-y-2 mb-4"></div>
+            <div id="reader-quiz-feedback" class="hidden p-3 rounded-lg text-xs sm:text-sm font-medium mb-3"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- MODE 3: W3SCHOOLS SPLIT-PANE "TRY IT YOURSELF »" STUDIO               -->
+      <!-- ===================================================================== -->
+      <div id="view-simulator" class="hidden space-y-6">
+        <section class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
+          <div class="border-b border-w3-line dark:border-zinc-700 pb-4 mb-5">
+            <h2 class="font-display font-bold text-xl sm:text-2xl text-w3-ink dark:text-w3-canvas mt-1 mb-1">
+              <span class="lang-en">{UI_DICTIONARY.en.simHeaderTitle}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.simHeaderTitle}</span>
+            </h2>
+            <p class="text-xs sm:text-sm text-w3-muted dark:text-zinc-300">
+              <span class="lang-en">{UI_DICTIONARY.en.simHeaderSub}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.simHeaderSub}</span>
+            </p>
+          </div>
+
+          <!-- Split-Pane Grid: Start Pane (Inputs) + End Pane (Live Execution Preview) -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- START PANE: COMMAND + STACK + PROMPT EDITOR -->
+            <div class="rounded-xl bg-w3-example dark:bg-w3-slateDeep p-4 border border-w3-line dark:border-zinc-700 space-y-4">
+              <div>
+                <label for="sim-command-select" class="block text-xs font-bold text-w3-ink dark:text-w3-canvas mb-1.5">
+                  <span class="lang-en">{UI_DICTIONARY.en.simSelectCombo}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.simSelectCombo}</span>
+                </label>
+                <select id="sim-command-select" aria-label="Select Agent OS Slash Command" class="w-full px-3 py-2 rounded-lg bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-xs sm:text-sm font-mono text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green focus-visible:outline-none">
+                  {SITUATION_COMBOS_CARDS.map((c) => (
+                    <option value={c.command}>{c.command} — {c.titleEn}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label for="sim-stack-select" class="block text-xs font-bold text-w3-ink dark:text-w3-canvas mb-1.5">
+                  <span class="lang-en">{UI_DICTIONARY.en.simSelectStack}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.simSelectStack}</span>
+                </label>
+                <select id="sim-stack-select" aria-label="Select Target Tech Stack" class="w-full px-3 py-2 rounded-lg bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-xs sm:text-sm text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green focus-visible:outline-none">
+                  {TECH_STACKS.map((st) => (
+                    <option value={st.id}>{st.labelEn}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label for="sim-prompt-textarea" class="block text-xs font-bold text-w3-ink dark:text-w3-canvas mb-1.5">
+                  <span class="lang-en">{UI_DICTIONARY.en.simEditPrompt}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.simEditPrompt}</span>
+                </label>
+                <textarea id="sim-prompt-textarea" aria-label="Edit your Agent OS prompt" rows="4" class="w-full p-3 rounded-lg bg-w3-card dark:bg-w3-slate border-s-4 border-w3-green border border-w3-line dark:border-zinc-700 font-mono text-xs sm:text-sm text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green focus-visible:outline-none">{SITUATION_COMBOS_CARDS[0].samplePromptEn}</textarea>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3 pt-1">
+                <button type="button" id="sim-run-btn" class="px-5 py-2.5 rounded-md bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs sm:text-sm focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                  <span class="lang-en">{UI_DICTIONARY.en.simRunBtn}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.simRunBtn}</span>
+                </button>
+                <button type="button" id="sim-copy-btn" class="px-4 py-2.5 rounded-md bg-w3-slate text-white border border-zinc-600 font-semibold text-xs sm:text-sm hover:bg-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                  <span class="lang-en">{UI_DICTIONARY.en.simCopyPromptBtn}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.simCopyPromptBtn}</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- END PANE: SIMULATED 3-STAGE EXECUTION OUTPUT -->
+            <div class="rounded-xl bg-w3-slate text-zinc-100 p-4 sm:p-5 border border-zinc-700 space-y-4">
+              <div class="flex items-center justify-between border-b border-zinc-700 pb-3">
+                <span class="font-display font-bold text-sm text-w3-mint">
+                  <span class="lang-en">{UI_DICTIONARY.en.simOutputHeader}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.simOutputHeader}</span>
+                </span>
+                <span id="sim-active-stack-badge" class="px-2.5 py-0.5 rounded bg-w3-green text-white font-mono text-xs font-semibold">
+                  Astro 4
+                </span>
+              </div>
+
+              <!-- Stage 1: RED LIGHT -->
+              <div class="rounded-lg bg-w3-slateDeep p-3.5 border-s-4 border-w3-pink">
+                <h3 class="font-display font-bold text-xs text-w3-pink mt-1 mb-2">
+                  <span class="lang-en">{UI_DICTIONARY.en.simStage1Title}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.simStage1Title}</span>
+                </h3>
+                <ul id="sim-stage1-list" class="space-y-1.5 text-xs text-zinc-200 font-mono"></ul>
+              </div>
+
+              <!-- Stage 2: YELLOW LIGHT -->
+              <div class="rounded-lg bg-w3-slateDeep p-3.5 border-s-4 border-w3-yellow">
+                <h3 class="font-display font-bold text-xs text-w3-yellow mt-1 mb-2">
+                  <span class="lang-en">{UI_DICTIONARY.en.simStage2Title}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.simStage2Title}</span>
+                </h3>
+                <div id="sim-stage2-pills" class="flex flex-wrap gap-1.5"></div>
+              </div>
+
+              <!-- Stage 3: GREEN LIGHT -->
+              <div class="rounded-lg bg-w3-slateDeep p-3.5 border-s-4 border-w3-green">
+                <h3 class="font-display font-bold text-xs text-w3-mint mt-1 mb-2">
+                  <span class="lang-en">{UI_DICTIONARY.en.simStage3Title}</span>
+                  <span class="lang-ar">{UI_DICTIONARY.ar.simStage3Title}</span>
+                </h3>
+                <ul id="sim-stage3-files" class="space-y-1.5 text-xs text-zinc-200 font-mono"></ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- MODE 4: SEARCHABLE 60-SKILL & 18-MCP REFERENCE DICTIONARY             -->
+      <!-- ===================================================================== -->
+      <div id="view-reference" class="hidden space-y-6">
+        <section class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
+          <div class="mb-4">
+            <h2 class="font-display font-bold text-xl sm:text-2xl text-w3-ink dark:text-w3-canvas mt-1 mb-1">
+              <span class="lang-en">{UI_DICTIONARY.en.refHeaderTitle}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.refHeaderTitle}</span>
+            </h2>
+            <p class="text-xs sm:text-sm text-w3-muted dark:text-zinc-300">
+              <span class="lang-en">{UI_DICTIONARY.en.refHeaderSub}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.refHeaderSub}</span>
+            </p>
+          </div>
+
+          <!-- Search + Category Select + Phase Filter Bar -->
+          <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 mb-4">
+            <div class="relative flex-1 min-w-0">
+              <span class="absolute inset-y-0 start-3 flex items-center pointer-events-none text-w3-muted dark:text-zinc-400">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8" />
+                  <path stroke-linecap="round" d="m21 21-4.3-4.3" />
+                </svg>
+              </span>
+              <input id="skill-dict-search" type="search" aria-label="Search 60 skills in dictionary table" placeholder={UI_DICTIONARY.en.refSearchPlaceholder} class="w-full ps-10 pe-4 py-2 text-xs sm:text-sm rounded-lg bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green focus-visible:outline-none" />
+            </div>
+
+            <div class="w-full md:w-72 shrink-0">
+              <select id="skill-dict-cat-select" aria-label="Filter skills by category" class="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green focus-visible:outline-none">
+                <option value="ALL">All Categories ({skillsList.length} Skills)</option>
+                {uniqueCategoriesEn.map((cat) => (
+                  <option value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <!-- RESPONSIVE DATA TABLE (overflow-x-auto + 2-4 word truncated cells + Details modal trigger) -->
+          <div class="w-full overflow-x-auto rounded-lg border border-w3-line dark:border-zinc-700">
+            <table class="w-full text-start border-collapse text-xs sm:text-sm">
+              <thead class="bg-w3-slate text-white">
+                <tr>
+                  <th class="py-3 px-3 text-start font-display font-semibold">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColCommand}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColCommand}</span>
+                  </th>
+                  <th class="py-3 px-3 text-start font-display font-semibold hidden sm:table-cell">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColCategory}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColCategory}</span>
+                  </th>
+                  <th class="py-3 px-3 text-start font-display font-semibold">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColPhase}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColPhase}</span>
+                  </th>
+                  <th class="py-3 px-3 text-start font-display font-semibold">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColSummary}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColSummary}</span>
+                  </th>
+                  <th class="py-3 px-3 text-end font-display font-semibold">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColAction}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColAction}</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="skills-table-body" class="divide-y divide-w3-line dark:divide-zinc-700 bg-w3-card dark:bg-w3-slate">
+                {skillsList.map((skill, idx) => (
+                  <tr data-skill-row={skill.name} data-skill-cat={skill.categoryEn} data-skill-search={`${skill.name} ${skill.categoryEn} ${skill.categoryAr} ${skill.phase} ${skill.descriptionEn} ${skill.descriptionAr}`.toLowerCase()} class={`skill-table-row hover:bg-w3-example/60 dark:hover:bg-w3-slateDeep ${idx >= 12 ? 'hidden' : ''}`}>
+                    <td class="py-2.5 px-3 font-mono font-semibold text-w3-greenDark dark:text-w3-mint whitespace-nowrap">
+                      {skill.command}
+                    </td>
+                    <td class="py-2.5 px-3 text-w3-muted dark:text-zinc-300 max-w-xs truncate hidden sm:table-cell">
+                      <span class="lang-en">{skill.categoryEn}</span>
+                      <span class="lang-ar">{skill.categoryAr}</span>
+                    </td>
+                    <td class="py-2.5 px-3 whitespace-nowrap">
+                      <span class="px-2 py-0.5 rounded bg-w3-example dark:bg-w3-slateDeep font-mono text-xs text-w3-ink dark:text-zinc-200">
+                        {skill.phase}
+                      </span>
+                    </td>
+                    <td class="py-2.5 px-3 max-w-xs truncate text-w3-ink dark:text-zinc-200">
+                      <span class="lang-en">{skill.shortEn}</span>
+                      <span class="lang-ar">{skill.shortAr}</span>
+                    </td>
+                    <td class="py-2.5 px-3 text-end whitespace-nowrap">
+                      <button type="button" data-open-skill-modal={skill.name} class="px-2.5 py-1 rounded bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                        <span class="lang-en">{UI_DICTIONARY.en.refDetailsBtn}</span>
+                        <span class="lang-ar">{UI_DICTIONARY.ar.refDetailsBtn}</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-4 text-center">
+            <button type="button" id="toggle-skills-table-btn" data-expanded="false" class="px-5 py-2 rounded-full bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+              <span id="toggle-skills-label-en" class="lang-en">{UI_DICTIONARY.en.refShowMoreRows}</span>
+              <span id="toggle-skills-label-ar" class="lang-ar">{UI_DICTIONARY.ar.refShowMoreRows}</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 18 MCP SERVERS RESPONSIVE TABLE -->
+        <section class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
+          <h3 class="font-display font-bold text-lg text-w3-ink dark:text-w3-canvas mt-1 mb-3">
+            <span class="lang-en">18 Configured MCP Servers Reference</span>
+            <span class="lang-ar">مرجع خوادم MCP الـ 18 المربوطة بالنظام</span>
+          </h3>
+          <div class="w-full overflow-x-auto rounded-lg border border-w3-line dark:border-zinc-700">
+            <table class="w-full text-start border-collapse text-xs sm:text-sm">
+              <thead class="bg-w3-slate text-white">
+                <tr>
+                  <th class="py-2.5 px-3 text-start font-display font-semibold">MCP Server</th>
+                  <th class="py-2.5 px-3 text-start font-display font-semibold">Phase</th>
+                  <th class="py-2.5 px-3 text-start font-display font-semibold">Summary (2-4 Words)</th>
+                  <th class="py-2.5 px-3 text-end font-display font-semibold">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-w3-line dark:divide-zinc-700 bg-w3-card dark:bg-w3-slate">
+                {mcpList.map((srv) => (
+                  <tr class="hover:bg-w3-example/60 dark:hover:bg-w3-slateDeep">
+                    <td class="py-2 px-3 font-mono font-semibold text-w3-greenDark dark:text-w3-mint whitespace-nowrap">
+                      {srv.name}
+                    </td>
+                    <td class="py-2 px-3 font-mono text-xs text-w3-ink dark:text-zinc-200">{srv.phase}</td>
+                    <td class="py-2 px-3 max-w-xs truncate text-w3-ink dark:text-zinc-200">
+                      <span class="lang-en">{srv.shortEn}</span>
+                      <span class="lang-ar">{srv.shortAr}</span>
+                    </td>
+                    <td class="py-2 px-3 text-end whitespace-nowrap">
+                      <button type="button" data-open-mcp-modal={srv.name} class="px-2.5 py-1 rounded bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                        <span class="lang-en">{UI_DICTIONARY.en.refDetailsBtn}</span>
+                        <span class="lang-ar">{UI_DICTIONARY.ar.refDetailsBtn}</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- END RAIL: GAMIFIED XP PROGRESS & SAVED TOOLKIT (w-72 shrink-0 on xl) -->
+    <aside id="end-xp-rail" aria-label="My Learning XP and Saved Toolkit" class="hidden xl:block sticky top-28 w-72 shrink-0 space-y-4">
+      <!-- XP Progress Card -->
+      <div class="rounded-xl bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 p-4 shadow-sm">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <h2 class="font-display font-bold text-sm text-w3-ink dark:text-w3-canvas mt-1 mb-0">
+            <span class="lang-en">{UI_DICTIONARY.en.rightRailProgressTitle}</span>
+            <span class="lang-ar">{UI_DICTIONARY.ar.rightRailProgressTitle}</span>
+          </h2>
+          <span id="rail-xp-pill" class="px-2 py-0.5 rounded-full bg-w3-green text-white font-mono text-xs font-bold">
+            0 XP
+          </span>
+        </div>
+
+        <p id="rail-rank-label" class="text-xs font-semibold text-w3-greenDark dark:text-w3-mint mb-3">
+          {UI_DICTIONARY.en.rank0}
+        </p>
+
+        <div class="w-full h-2.5 rounded-full bg-w3-example dark:bg-w3-slateDeep overflow-hidden mb-2">
+          <div id="rail-xp-bar" class="h-full bg-w3-green w-0 micro-transition"></div>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-w3-muted dark:text-zinc-300">
+          <span>
+            <span class="lang-en">{UI_DICTIONARY.en.rightRailCompletedLabel}</span>
+            <span class="lang-ar">{UI_DICTIONARY.ar.rightRailCompletedLabel}</span>
+          </span>
+          <span id="rail-completed-count" class="font-mono font-semibold">0 / {allLessons.length}</span>
+        </div>
+      </div>
+
+      <!-- Saved Command Toolkit Card -->
+      <div class="rounded-xl bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 p-4 shadow-sm">
+        <h3 class="font-display font-bold text-sm text-w3-ink dark:text-w3-canvas mt-1 mb-2">
+          <span class="lang-en">{UI_DICTIONARY.en.rightRailToolkitTitle}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.rightRailToolkitTitle}</span>
+        </h3>
+        <div id="rail-saved-list" class="space-y-2 text-xs text-w3-muted dark:text-zinc-300">
+          <p class="lang-en">{UI_DICTIONARY.en.rightRailToolkitEmpty}</p>
+          <p class="lang-ar">{UI_DICTIONARY.ar.rightRailToolkitEmpty}</p>
+        </div>
+      </div>
+
+      <!-- Team Maintainer Auto-Sync Box -->
+      <div class="rounded-xl bg-w3-slate text-zinc-100 p-4 border border-zinc-700">
+        <h3 class="font-display font-bold text-xs text-w3-yellow mt-1 mb-1">
+          <span class="lang-en">{UI_DICTIONARY.en.rightRailUpdateBoxTitle}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.rightRailUpdateBoxTitle}</span>
+        </h3>
+        <p class="text-xs text-zinc-300 mb-2">
+          <span class="lang-en">{UI_DICTIONARY.en.rightRailUpdateBoxDesc}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.rightRailUpdateBoxDesc}</span>
+        </p>
+        <div class="bg-w3-slateDeep p-2.5 rounded border-s-4 border-w3-green font-mono text-xs text-w3-mint overflow-x-auto mb-2">
+          python scripts/agent_os.py handbook-sync --build
+        </div>
+        <button type="button" data-copy-text-en="python scripts/agent_os.py handbook-sync --build" data-copy-text-ar="python scripts/agent_os.py handbook-sync --build" class="w-full py-1.5 rounded bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-white micro-transition">
+          <span class="lang-en">Copy Sync Command</span>
+          <span class="lang-ar">نسخ أمر المزامنة</span>
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR (5 Thumb-Friendly Tap Targets < 1024px) -->
+  <nav aria-label="Mobile Bottom Navigation" class="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-w3-card dark:bg-w3-slate border-t border-w3-line dark:border-zinc-700 h-14 px-2 flex items-center justify-around">
+    <button type="button" data-switch-mode="social" class="flex flex-col items-center justify-center py-1 px-2 text-xs font-semibold text-w3-greenDark dark:text-w3-mint focus-visible:ring-2 focus-visible:ring-w3-green rounded">
+      <svg class="w-4 h-4 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+      <span class="lang-en">{UI_DICTIONARY.en.mobileNavFeed}</span>
+      <span class="lang-ar">{UI_DICTIONARY.ar.mobileNavFeed}</span>
+    </button>
+
+    <button type="button" id="mobile-bottom-chapters-btn" class="flex flex-col items-center justify-center py-1 px-2 text-xs font-semibold text-w3-ink dark:text-zinc-200 focus-visible:ring-2 focus-visible:ring-w3-green rounded">
+      <svg class="w-4 h-4 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg>
+      <span class="lang-en">{UI_DICTIONARY.en.mobileNavLessons}</span>
+      <span class="lang-ar">{UI_DICTIONARY.ar.mobileNavLessons}</span>
+    </button>
+
+    <button type="button" data-switch-mode="simulator" class="flex flex-col items-center justify-center py-1.5 px-3 rounded-full bg-w3-green text-white text-xs font-semibold focus-visible:ring-2 focus-visible:ring-w3-green">
+      <span class="lang-en">{UI_DICTIONARY.en.mobileNavTryIt} »</span>
+      <span class="lang-ar">{UI_DICTIONARY.ar.mobileNavTryIt} »</span>
+    </button>
+
+    <button type="button" data-switch-mode="reference" class="flex flex-col items-center justify-center py-1 px-2 text-xs font-semibold text-w3-ink dark:text-zinc-200 focus-visible:ring-2 focus-visible:ring-w3-green rounded">
+      <svg class="w-4 h-4 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+      </svg>
+      <span class="lang-en">{UI_DICTIONARY.en.mobileNavRef}</span>
+      <span class="lang-ar">{UI_DICTIONARY.ar.mobileNavRef}</span>
+    </button>
+
+    <button type="button" id="mobile-bottom-xp-btn" class="flex flex-col items-center justify-center py-1 px-2 text-xs font-semibold text-w3-ink dark:text-zinc-200 focus-visible:ring-2 focus-visible:ring-w3-green rounded">
+      <svg class="w-4 h-4 mb-0.5 text-w3-green" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+      </svg>
+      <span class="lang-en">{UI_DICTIONARY.en.mobileNavProfile}</span>
+      <span class="lang-ar">{UI_DICTIONARY.ar.mobileNavProfile}</span>
+    </button>
+  </nav>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 1: 60-SECOND STORY REEL PLAYER MODAL                              -->
+  <!-- ======================================================================= -->
+  <div id="story-player-modal" role="dialog" aria-modal="true" aria-labelledby="story-modal-title" class="fixed inset-0 z-50 hidden bg-w3-slate/90 flex items-center justify-center p-4">
+    <div class="w-full max-w-lg rounded-2xl bg-w3-slateDeep text-white border border-zinc-700 p-5 sm:p-6 shadow-xl">
+      <!-- Story Progress Bars -->
+      <div id="story-progress-bars" class="flex items-center gap-1.5 mb-4"></div>
+
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span id="story-step-badge" class="px-2.5 py-0.5 rounded-full bg-w3-mint text-w3-greenDark font-mono text-xs font-bold">
+          Slide 1
+        </span>
+        <button type="button" id="story-close-btn" class="px-3 py-1 rounded bg-w3-slate border border-zinc-600 text-xs font-semibold text-zinc-100 hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green">
+          <span class="lang-en">{UI_DICTIONARY.en.modalCloseBtn}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modalCloseBtn}</span>
+        </button>
+      </div>
+
+      <h3 id="story-modal-title" class="font-display font-bold text-xl text-white mt-2 mb-2">Story Title</h3>
+      <p id="story-modal-body" class="text-sm text-zinc-200 leading-relaxed mb-4"></p>
+      <pre id="story-modal-code" class="hidden rounded-lg bg-w3-slate border-s-4 border-w3-green p-3 font-mono text-xs text-w3-mint overflow-x-auto mb-4"></pre>
+
+      <div class="flex items-center justify-between gap-3 pt-3 border-t border-zinc-700">
+        <button type="button" id="story-prev-slide-btn" class="px-4 py-2 rounded-md bg-w3-slate border border-zinc-600 text-xs font-semibold text-white hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green">
+          <span class="lang-en">{UI_DICTIONARY.en.prevLessonBtn}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.prevLessonBtn}</span>
+        </button>
+        <button type="button" id="story-next-slide-btn" class="px-5 py-2 rounded-md bg-w3-green hover:bg-w3-greenHover text-xs font-semibold text-white focus-visible:ring-2 focus-visible:ring-white">
+          <span class="lang-en">{UI_DICTIONARY.en.nextLessonBtn}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.nextLessonBtn}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 2: TABLE ROW DETAILS & MOBILE XP DRAWER MODAL                     -->
+  <!-- ======================================================================= -->
+  <div id="details-modal" role="dialog" aria-modal="true" aria-labelledby="details-modal-title" class="fixed inset-0 z-50 hidden bg-w3-slate/80 flex items-center justify-center p-4">
+    <div class="w-full max-w-lg rounded-2xl bg-w3-card dark:bg-w3-slate text-w3-ink dark:text-w3-canvas border border-w3-line dark:border-zinc-700 p-5 sm:p-6 shadow-xl">
+      <div class="flex items-center justify-between gap-2 pb-3 border-b border-w3-line dark:border-zinc-700">
+        <code id="details-modal-cmd" class="px-2.5 py-1 rounded bg-w3-slate text-w3-mint font-mono text-xs font-bold">
+          /skill
+        </code>
+        <button type="button" id="details-modal-close-btn" class="px-3 py-1 rounded bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas text-xs font-semibold hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green">
+          <span class="lang-en">{UI_DICTIONARY.en.modalCloseBtn}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modalCloseBtn}</span>
+        </button>
+      </div>
+
+      <h3 id="details-modal-title" class="font-display font-bold text-lg mt-4 mb-2">Skill Details</h3>
+      <p id="details-modal-meta" class="text-xs font-mono text-w3-greenDark dark:text-w3-mint mb-3"></p>
+      <p id="details-modal-desc" class="text-sm text-w3-muted dark:text-zinc-200 leading-relaxed mb-5"></p>
+
+      <div class="flex flex-wrap items-center gap-3 pt-3 border-t border-w3-line dark:border-zinc-700">
+        <button type="button" id="details-modal-try-btn" class="px-4 py-2 rounded-md bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green">
+          <span class="lang-en">{UI_DICTIONARY.en.modalTryInSimBtn}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modalTryInSimBtn}</span>
+        </button>
+        <button type="button" id="details-modal-copy-btn" class="px-4 py-2 rounded-md bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green">
+          <span class="lang-en">{UI_DICTIONARY.en.modalCopyCmdBtn}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modalCopyCmdBtn}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM TOAST NOTIFICATION BANNER (Zero window.alert()!) -->
+  <div id="w3-toast" role="status" aria-live="polite" class="fixed bottom-16 lg:bottom-6 end-4 z-50 hidden px-4 py-3 rounded-xl bg-w3-slate text-white border-s-4 border-w3-green shadow-lg text-xs sm:text-sm font-semibold">
+    Notification
+  </div>
+
+  <!-- CLIENT-SIDE INTERACTIVE STATE ENGINE -->
+  <script is:inline define:vars={{ clientPayload }}>
+    (function () {
+      const DATA = JSON.parse(clientPayload);
+      const STORAGE_KEY = 'agent_os_w3_learning_v115';
+
+      let state = {
+        lang: 'en',
+        theme: 'light',
+        mode: 'social',
+        activeLessonId: 'ch-intro',
+        activeStoryIdx: 0,
+        activeSlideIdx: 0,
+        xp: 0,
+        completedLessons: [],
+        completedQuizzes: [],
+        likedLessons: {},
+        savedToolkit: []
+      };
+
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          state = Object.assign({}, state, parsed);
+        }
+      } catch (_e) {
+        // Fallback if storage blocked
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (_e) {
+          // Ignore storage quota errors
+        }
+      }
+
+      function showToast(msgEn, msgAr) {
+        const toast = document.getElementById('w3-toast');
+        if (!toast) return;
+        toast.textContent = state.lang === 'ar' ? msgAr : msgEn;
+        toast.classList.remove('hidden');
+        clearTimeout(window.__w3ToastTimer);
+        window.__w3ToastTimer = setTimeout(function () {
+          toast.classList.add('hidden');
+        }, 2600);
+      }
+
+      function applyLangAndTheme() {
+        const htmlEl = document.documentElement;
+        htmlEl.setAttribute('lang', state.lang);
+        htmlEl.setAttribute('dir', state.lang === 'ar' ? 'rtl' : 'ltr');
+
+        if (state.theme === 'dark') {
+          htmlEl.classList.add('dark');
+        } else {
+          htmlEl.classList.remove('dark');
+        }
+
+        const topSearch = document.getElementById('global-top-search');
+        if (topSearch) {
+          topSearch.setAttribute('placeholder', DATA.ui[state.lang].searchPlaceholder);
+        }
+        const refSearch = document.getElementById('skill-dict-search');
+        if (refSearch) {
+          refSearch.setAttribute('placeholder', DATA.ui[state.lang].refSearchPlaceholder);
+        }
+
+        renderReaderLesson(state.activeLessonId);
+        renderSimulatorOutput();
+        renderXpAndToolkit();
+      }
+
+      function switchMode(newMode) {
+        state.mode = newMode;
+        const views = {
+          social: document.getElementById('view-social'),
+          reader: document.getElementById('view-reader'),
+          simulator: document.getElementById('view-simulator'),
+          reference: document.getElementById('view-reference')
+        };
+        Object.keys(views).forEach(function (k) {
+          if (views[k]) {
+            if (k === newMode) {
+              views[k].classList.remove('hidden');
+            } else {
+              views[k].classList.add('hidden');
+            }
+          }
+        });
+
+        document.querySelectorAll('.mode-tab-btn').forEach(function (btn) {
+          if (btn.getAttribute('data-switch-mode') === newMode) {
+            btn.className = 'mode-tab-btn px-3 py-1.5 rounded-md text-xs font-semibold bg-w3-green text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition';
+          } else {
+            btn.className = 'mode-tab-btn px-3 py-1.5 rounded-md text-xs font-semibold text-w3-ink dark:text-zinc-100 hover:bg-w3-card dark:hover:bg-w3-slate focus-visible:ring-2 focus-visible:ring-w3-green micro-transition';
+          }
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function getRankTitle(xp) {
+        const ui = DATA.ui[state.lang];
+        if (xp >= 250) return ui.rank3;
+        if (xp >= 125) return ui.rank2;
+        if (xp >= 50) return ui.rank1;
+        return ui.rank0;
+      }
+
+      function renderXpAndToolkit() {
+        const headerXp = document.getElementById('header-xp-count');
+        const railXp = document.getElementById('rail-xp-pill');
+        const railRank = document.getElementById('rail-rank-label');
+        const railBar = document.getElementById('rail-xp-bar');
+        const railDone = document.getElementById('rail-completed-count');
+
+        if (headerXp) headerXp.textContent = state.xp + ' XP';
+        if (railXp) railXp.textContent = state.xp + ' XP';
+        if (railRank) railRank.textContent = getRankTitle(state.xp);
+        if (railBar) {
+          const pct = Math.min(100, Math.round((state.xp / 300) * 100));
+          railBar.style.width = pct + '%';
+        }
+        if (railDone) {
+          railDone.textContent = state.completedLessons.length + ' / ' + DATA.lessons.length;
+        }
+
+        // Update sidebar completion ticks
+        document.querySelectorAll('[data-lesson-tick]').forEach(function (el) {
+          const id = el.getAttribute('data-lesson-tick');
+          if (state.completedLessons.indexOf(id) !== -1) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        });
+
+        // Update Saved Toolkit list
+        const savedContainer = document.getElementById('rail-saved-list');
+        if (savedContainer) {
+          if (!state.savedToolkit || state.savedToolkit.length === 0) {
+            savedContainer.innerHTML = '<p>' + DATA.ui[state.lang].rightRailToolkitEmpty + '</p>';
+          } else {
+            savedContainer.innerHTML = state.savedToolkit
+              .map(function (item) {
+                const label = state.lang === 'ar' ? item.titleAr : item.titleEn;
+                return (
+                  '<div class="flex items-center justify-between gap-2 p-2 rounded bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700">' +
+                  '<div class="min-w-0 flex-1">' +
+                  '<code class="font-mono text-xs font-bold text-w3-greenDark dark:text-w3-mint block">' +
+                  item.cmd +
+                  '</code>' +
+                  '<span class="text-xs text-w3-ink dark:text-zinc-200 truncate block">' +
+                  label +
+                  '</span>' +
+                  '</div>' +
+                  '<button type="button" data-try-command="' +
+                  item.cmd +
+                  '" class="px-2 py-1 rounded bg-w3-green text-white text-xs font-semibold shrink-0">»</button>' +
+                  '</div>'
+                );
+              })
+              .join('');
+          }
+        }
+      }
+
+      function renderReaderLesson(lessonId) {
+        const idx = DATA.lessons.findIndex(function (l) {
+          return l.id === lessonId;
+        });
+        const lesson = idx !== -1 ? DATA.lessons[idx] : DATA.lessons[0];
+        state.activeLessonId = lesson.id;
+
+        const isAr = state.lang === 'ar';
+        const badgeEl = document.getElementById('reader-lesson-badge');
+        const titleEl = document.getElementById('reader-title');
+        const summaryEl = document.getElementById('reader-summary');
+        const bulletsEl = document.getElementById('reader-bullets');
+        const beforeEl = document.getElementById('reader-before');
+        const afterEl = document.getElementById('reader-after');
+        const exTitleEl = document.getElementById('reader-example-title');
+        const cmdPillEl = document.getElementById('reader-command-pill');
+        const codeBoxEl = document.getElementById('reader-code-box');
+        const quizQEl = document.getElementById('reader-quiz-question');
+        const quizOptsEl = document.getElementById('reader-quiz-options');
+        const quizFbEl = document.getElementById('reader-quiz-feedback');
+
+        if (badgeEl) badgeEl.textContent = isAr ? lesson.badgeAr : lesson.badgeEn;
+        if (titleEl) titleEl.textContent = isAr ? lesson.titleAr : lesson.titleEn;
+        if (summaryEl) summaryEl.textContent = isAr ? lesson.summaryAr : lesson.summaryEn;
+        if (bulletsEl) {
+          const list = isAr ? lesson.bulletsAr : lesson.bulletsEn;
+          bulletsEl.innerHTML = list
+            .map(function (item) {
+              return (
+                '<li class="flex items-start gap-2.5">' +
+                '<span class="inline-block w-2 h-2 rounded-full bg-w3-green mt-2 shrink-0"></span>' +
+                '<span>' +
+                item +
+                '</span>' +
+                '</li>'
+              );
+            })
+            .join('');
+        }
+        if (beforeEl) beforeEl.textContent = isAr ? lesson.beforeAr : lesson.beforeEn;
+        if (afterEl) afterEl.textContent = isAr ? lesson.afterAr : lesson.afterEn;
+        if (exTitleEl) exTitleEl.textContent = isAr ? lesson.exampleTitleAr : lesson.exampleTitleEn;
+        if (cmdPillEl) cmdPillEl.textContent = lesson.command;
+        if (codeBoxEl) codeBoxEl.textContent = isAr ? lesson.promptAr : lesson.promptEn;
+
+        // Sidebar active state
+        document.querySelectorAll('.sidebar-lesson-btn').forEach(function (btn) {
+          if (btn.getAttribute('data-open-lesson') === lesson.id) {
+            btn.className = 'sidebar-lesson-btn w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-xs text-start border bg-w3-green text-white font-semibold border-w3-green shadow-sm focus-visible:ring-2 focus-visible:ring-w3-green micro-transition';
+          } else {
+            btn.className = 'sidebar-lesson-btn w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-xs text-start border bg-w3-card dark:bg-w3-slateDeep text-w3-ink dark:text-zinc-100 border-w3-line dark:border-zinc-700 hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition';
+          }
+        });
+
+        // Quiz rendering
+        if (quizQEl && quizOptsEl && lesson.quiz) {
+          quizQEl.textContent = isAr ? lesson.quiz.questionAr : lesson.quiz.questionEn;
+          const opts = isAr ? lesson.quiz.optionsAr : lesson.quiz.optionsEn;
+          if (quizFbEl) quizFbEl.classList.add('hidden');
+          quizOptsEl.innerHTML = opts
+            .map(function (optText, optIndex) {
+              return (
+                '<button type="button" data-quiz-idx="' +
+                optIndex +
+                '" class="w-full text-start p-3 rounded-lg bg-w3-slateDeep hover:bg-w3-green text-xs sm:text-sm text-white border border-zinc-600 font-medium focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">' +
+                optText +
+                '</button>'
+              );
+            })
+            .join('');
+        }
+      }
+
+      function renderSimulatorOutput() {
+        const cmdSelect = document.getElementById('sim-command-select');
+        const stackSelect = document.getElementById('sim-stack-select');
+        const stage1List = document.getElementById('sim-stage1-list');
+        const stage2Pills = document.getElementById('sim-stage2-pills');
+        const stage3Files = document.getElementById('sim-stage3-files');
+        const stackBadge = document.getElementById('sim-active-stack-badge');
+
+        const selectedCmd = cmdSelect ? cmdSelect.value : '/start-project';
+        const selectedStackId = stackSelect ? stackSelect.value : 'astro';
+        const isAr = state.lang === 'ar';
+
+        const lessonMatch =
+          DATA.lessons.find(function (l) {
+            return l.command === selectedCmd;
+          }) || DATA.lessons[0];
+
+        const stackMatch =
+          DATA.techStacks.find(function (s) {
+            return s.id === selectedStackId;
+          }) || DATA.techStacks[0];
+
+        if (stackBadge) stackBadge.textContent = stackMatch.badge;
+
+        if (stage1List) {
+          const qs = isAr ? lessonMatch.simQuestionsAr : lessonMatch.simQuestionsEn;
+          stage1List.innerHTML = qs
+            .map(function (q) {
+              return '<li>• ' + q + '</li>';
+            })
+            .join('');
+        }
+
+        if (stage2Pills) {
+          const combinedSkills = Array.from(new Set(lessonMatch.chainedSkills.concat(stackMatch.stackSkills)));
+          stage2Pills.innerHTML = combinedSkills
+            .map(function (sk) {
+              return '<span class="px-2.5 py-1 rounded bg-w3-slate border border-w3-green text-w3-mint font-mono text-xs">' + sk + '</span>';
+            })
+            .join('');
+        }
+
+        if (stage3Files) {
+          const files = isAr ? stackMatch.filesAr : stackMatch.filesEn;
+          stage3Files.innerHTML = files
+            .map(function (f) {
+              return '<li>+ ' + f + '</li>';
+            })
+            .join('');
+        }
+      }
+
+      function openStoryModal(storyIdx) {
+        state.activeStoryIdx = storyIdx;
+        state.activeSlideIdx = 0;
+        renderStorySlide();
+        const modal = document.getElementById('story-player-modal');
+        if (modal) modal.classList.remove('hidden');
+      }
+
+      function renderStorySlide() {
+        const reel = DATA.storyReels[state.activeStoryIdx] || DATA.storyReels[0];
+        const slide = reel.slides[state.activeSlideIdx] || reel.slides[0];
+        const isAr = state.lang === 'ar';
+
+        const barsEl = document.getElementById('story-progress-bars');
+        const stepBadge = document.getElementById('story-step-badge');
+        const titleEl = document.getElementById('story-modal-title');
+        const bodyEl = document.getElementById('story-modal-body');
+        const codeEl = document.getElementById('story-modal-code');
+
+        if (barsEl) {
+          barsEl.innerHTML = reel.slides
+            .map(function (_, idx) {
+              const activeClass = idx <= state.activeSlideIdx ? 'bg-w3-green' : 'bg-zinc-700';
+              return '<div class="flex-1 h-1.5 rounded-full ' + activeClass + '"></div>';
+            })
+            .join('');
+        }
+        if (stepBadge) stepBadge.textContent = isAr ? slide.stepLabelAr : slide.stepLabelEn;
+        if (titleEl) titleEl.textContent = isAr ? slide.headingAr : slide.headingEn;
+        if (bodyEl) bodyEl.textContent = isAr ? slide.bodyAr : slide.bodyEn;
+        if (codeEl) {
+          if (slide.code) {
+            codeEl.textContent = slide.code;
+            codeEl.classList.remove('hidden');
+          } else {
+            codeEl.classList.add('hidden');
+          }
+        }
+      }
+
+      function openMobileDrawer(open) {
+        const sidebar = document.getElementById('w3-sidebar');
+        const backdrop = document.getElementById('mobile-drawer-backdrop');
+        if (!sidebar || !backdrop) return;
+        if (open) {
+          sidebar.classList.remove('-translate-x-full', 'rtl:translate-x-full');
+          backdrop.classList.remove('hidden');
+        } else {
+          sidebar.classList.add('-translate-x-full', 'rtl:translate-x-full');
+          backdrop.classList.add('hidden');
+        }
+      }
+
+      // Global Event Delegation
+      document.addEventListener('click', function (e) {
+        const target = e.target.closest('button');
+        if (!target) return;
+
+        // Mode switch
+        const modeAttr = target.getAttribute('data-switch-mode');
+        if (modeAttr) {
+          switchMode(modeAttr);
+          openMobileDrawer(false);
+          return;
+        }
+
+        // Ribbon lesson shortcut
+        const ribbonLesson = target.getAttribute('data-ribbon-lesson');
+        if (ribbonLesson) {
+          renderReaderLesson(ribbonLesson);
+          switchMode('reader');
+          return;
+        }
+
+        // Open lesson in Reader
+        const lessonId = target.getAttribute('data-open-lesson');
+        if (lessonId) {
+          renderReaderLesson(lessonId);
+          switchMode('reader');
+          openMobileDrawer(false);
+          return;
+        }
+
+        // Open Story Reel
+        const storyIdx = target.getAttribute('data-open-story');
+        if (storyIdx !== null) {
+          openStoryModal(parseInt(storyIdx, 10));
+          return;
+        }
+
+        // Try Command in Simulator
+        const tryCmd = target.getAttribute('data-try-command');
+        if (tryCmd) {
+          const cmdSelect = document.getElementById('sim-command-select');
+          const promptArea = document.getElementById('sim-prompt-textarea');
+          if (cmdSelect) cmdSelect.value = tryCmd;
+          const pEn = target.getAttribute('data-try-prompt-en');
+          const pAr = target.getAttribute('data-try-prompt-ar');
+          if (promptArea && (pEn || pAr)) {
+            promptArea.value = state.lang === 'ar' ? pAr || pEn : pEn;
+          }
+          renderSimulatorOutput();
+          const detailsModal = document.getElementById('details-modal');
+          if (detailsModal) detailsModal.classList.add('hidden');
+          switchMode('simulator');
+          return;
+        }
+
+        // Copy Command / Prompt
+        const copyEn = target.getAttribute('data-copy-text-en');
+        if (copyEn) {
+          const copyAr = target.getAttribute('data-copy-text-ar') || copyEn;
+          const textToCopy = state.lang === 'ar' ? copyAr : copyEn;
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(textToCopy);
+          }
+          showToast(DATA.ui.en.toastCopied, DATA.ui.ar.toastCopied);
+          return;
+        }
+
+        // Helpful reaction
+        const likeId = target.getAttribute('data-like-lesson');
+        if (likeId) {
+          state.likedLessons[likeId] = (state.likedLessons[likeId] || 12) + 1;
+          const countEl = document.querySelector('[data-like-count="' + likeId + '"]');
+          if (countEl) countEl.textContent = String(state.likedLessons[likeId]);
+          saveState();
+          return;
+        }
+
+        // Bookmark to Toolkit
+        const bmCmd = target.getAttribute('data-bookmark-cmd');
+        if (bmCmd) {
+          const exists = state.savedToolkit.some(function (i) {
+            return i.cmd === bmCmd;
+          });
+          if (!exists) {
+            state.savedToolkit.push({
+              cmd: bmCmd,
+              titleEn: target.getAttribute('data-bookmark-title-en') || bmCmd,
+              titleAr: target.getAttribute('data-bookmark-title-ar') || bmCmd
+            });
+          } else {
+            state.savedToolkit = state.savedToolkit.filter(function (i) {
+              return i.cmd !== bmCmd;
+            });
+          }
+          saveState();
+          renderXpAndToolkit();
+          showToast(DATA.ui.en.toastSaved, DATA.ui.ar.toastSaved);
+          return;
+        }
+
+        // Mark Lesson Completed
+        const completeId = target.getAttribute('data-complete-lesson');
+        if (completeId || target.id === 'reader-complete-btn') {
+          const targetLessonId = completeId || state.activeLessonId;
+          if (state.completedLessons.indexOf(targetLessonId) === -1) {
+            state.completedLessons.push(targetLessonId);
+            state.xp += 25;
+            saveState();
+            renderXpAndToolkit();
+            showToast(DATA.ui.en.toastLessonDone, DATA.ui.ar.toastLessonDone);
+          }
+          return;
+        }
+
+        // Quiz Option Click
+        const quizIdx = target.getAttribute('data-quiz-idx');
+        if (quizIdx !== null) {
+          const lesson = DATA.lessons.find(function (l) {
+            return l.id === state.activeLessonId;
+          });
+          const fb = document.getElementById('reader-quiz-feedback');
+          if (lesson && lesson.quiz && fb) {
+            const chosen = parseInt(quizIdx, 10);
+            const isCorrect = chosen === lesson.quiz.correctIndex;
+            fb.classList.remove('hidden');
+            if (isCorrect) {
+              fb.className = 'p-3 rounded-lg text-xs sm:text-sm font-medium mb-3 bg-w3-mint text-w3-greenDark';
+              fb.textContent = state.lang === 'ar' ? lesson.quiz.explanationAr : lesson.quiz.explanationEn;
+              if (state.completedQuizzes.indexOf(lesson.id) === -1) {
+                state.completedQuizzes.push(lesson.id);
+                state.xp += 25;
+                saveState();
+                renderXpAndToolkit();
+              }
+              showToast(DATA.ui.en.toastQuizRight, DATA.ui.ar.toastQuizRight);
+            } else {
+              fb.className = 'p-3 rounded-lg text-xs sm:text-sm font-medium mb-3 bg-w3-pink text-red-900';
+              fb.textContent = state.lang === 'ar' ? DATA.ui.ar.toastQuizWrong : DATA.ui.en.toastQuizWrong;
+            }
+          }
+          return;
+        }
+
+        // Feed category filter
+        const feedFilter = target.getAttribute('data-feed-filter');
+        if (feedFilter) {
+          document.querySelectorAll('.feed-filter-btn').forEach(function (b) {
+            if (b.getAttribute('data-feed-filter') === feedFilter) {
+              b.className = 'feed-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-w3-green text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition';
+            } else {
+              b.className = 'feed-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition';
+            }
+          });
+          document.querySelectorAll('.feed-post-card').forEach(function (card) {
+            const cat = card.getAttribute('data-feed-cat');
+            if (feedFilter === 'all' || cat === feedFilter) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+          return;
+        }
+
+        // Open Skill Details Modal
+        const skillName = target.getAttribute('data-open-skill-modal');
+        if (skillName) {
+          const sk = DATA.skills.find(function (s) {
+            return s.name === skillName;
+          });
+          if (sk) {
+            const modal = document.getElementById('details-modal');
+            document.getElementById('details-modal-cmd').textContent = sk.command;
+            document.getElementById('details-modal-title').textContent = sk.name;
+            document.getElementById('details-modal-meta').textContent =
+              (state.lang === 'ar' ? sk.categoryAr : sk.categoryEn) + ' • ' + sk.phase + ' • ' + sk.file;
+            document.getElementById('details-modal-desc').textContent =
+              state.lang === 'ar' ? sk.descriptionAr : sk.descriptionEn;
+            const tryBtn = document.getElementById('details-modal-try-btn');
+            if (tryBtn) {
+              tryBtn.setAttribute('data-try-command', sk.command);
+              tryBtn.setAttribute('data-try-prompt-en', sk.command + ' Apply this skill to my current task.');
+              tryBtn.setAttribute('data-try-prompt-ar', sk.command + ' طبق هذه المهارة على مهمتي الحالية.');
+            }
+            const copyBtn = document.getElementById('details-modal-copy-btn');
+            if (copyBtn) {
+              copyBtn.setAttribute('data-copy-text-en', sk.command);
+              copyBtn.setAttribute('data-copy-text-ar', sk.command);
+            }
+            if (modal) modal.classList.remove('hidden');
+          }
+          return;
+        }
+
+        // Open MCP Details Modal
+        const mcpName = target.getAttribute('data-open-mcp-modal');
+        if (mcpName) {
+          const srv = DATA.mcpServers.find(function (m) {
+            return m.name === mcpName;
+          });
+          if (srv) {
+            const modal = document.getElementById('details-modal');
+            document.getElementById('details-modal-cmd').textContent = 'MCP: ' + srv.name;
+            document.getElementById('details-modal-title').textContent = srv.name;
+            document.getElementById('details-modal-meta').textContent = 'Phase: ' + srv.phase;
+            document.getElementById('details-modal-desc').textContent =
+              state.lang === 'ar' ? srv.domainAr : srv.domainEn;
+            if (modal) modal.classList.remove('hidden');
+          }
+          return;
+        }
+      });
+
+      // Specific Button Listeners
+      const langBtn = document.getElementById('lang-toggle-btn');
+      if (langBtn) {
+        langBtn.addEventListener('click', function () {
+          state.lang = state.lang === 'en' ? 'ar' : 'en';
+          saveState();
+          applyLangAndTheme();
+        });
+      }
+
+      const themeBtn = document.getElementById('theme-toggle-btn');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function () {
+          state.theme = state.theme === 'dark' ? 'light' : 'dark';
+          saveState();
+          applyLangAndTheme();
+        });
+      }
+
+      // Show More / Collapse All for 11 Combos 3-Card Grid
+      const toggleCombosBtn = document.getElementById('toggle-combos-grid-btn');
+      if (toggleCombosBtn) {
+        toggleCombosBtn.addEventListener('click', function () {
+          const expanded = toggleCombosBtn.getAttribute('data-expanded') === 'true';
+          const nextState = !expanded;
+          toggleCombosBtn.setAttribute('data-expanded', String(nextState));
+          document.querySelectorAll('.combo-grid-card').forEach(function (card) {
+            const idx = parseInt(card.getAttribute('data-combo-card-index') || '0', 10);
+            if (idx >= 3) {
+              if (nextState) card.classList.remove('hidden');
+              else card.classList.add('hidden');
+            }
+          });
+          document.getElementById('toggle-combos-label-en').textContent = nextState
+            ? DATA.ui.en.collapseCombos
+            : DATA.ui.en.showMoreCombos;
+          document.getElementById('toggle-combos-label-ar').textContent = nextState
+            ? DATA.ui.ar.collapseCombos
+            : DATA.ui.ar.showMoreCombos;
+        });
+      }
+
+      // Show More / Collapse All for 60-Skill Table
+      const toggleSkillsBtn = document.getElementById('toggle-skills-table-btn');
+      if (toggleSkillsBtn) {
+        toggleSkillsBtn.addEventListener('click', function () {
+          const expanded = toggleSkillsBtn.getAttribute('data-expanded') === 'true';
+          const nextState = !expanded;
+          toggleSkillsBtn.setAttribute('data-expanded', String(nextState));
+          document.querySelectorAll('.skill-table-row').forEach(function (row, idx) {
+            if (idx >= 12) {
+              if (nextState) row.classList.remove('hidden');
+              else row.classList.add('hidden');
+            }
+          });
+          document.getElementById('toggle-skills-label-en').textContent = nextState
+            ? DATA.ui.en.refCollapseRows
+            : DATA.ui.en.refShowMoreRows;
+          document.getElementById('toggle-skills-label-ar').textContent = nextState
+            ? DATA.ui.ar.refCollapseRows
+            : DATA.ui.ar.refShowMoreRows;
+        });
+      }
+
+      // Reader Prev / Next / Try buttons
+      const prevBtn = document.getElementById('reader-prev-btn');
+      const nextBtn = document.getElementById('reader-next-btn');
+      const readerTryBtn = document.getElementById('reader-try-btn');
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function () {
+          const idx = DATA.lessons.findIndex(function (l) {
+            return l.id === state.activeLessonId;
+          });
+          const prevIdx = idx > 0 ? idx - 1 : DATA.lessons.length - 1;
+          renderReaderLesson(DATA.lessons[prevIdx].id);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function () {
+          const idx = DATA.lessons.findIndex(function (l) {
+            return l.id === state.activeLessonId;
+          });
+          const nextIdx = idx < DATA.lessons.length - 1 ? idx + 1 : 0;
+          renderReaderLesson(DATA.lessons[nextIdx].id);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+      if (readerTryBtn) {
+        readerTryBtn.addEventListener('click', function () {
+          const lesson =
+            DATA.lessons.find(function (l) {
+              return l.id === state.activeLessonId;
+            }) || DATA.lessons[0];
+          const cmdSelect = document.getElementById('sim-command-select');
+          const promptArea = document.getElementById('sim-prompt-textarea');
+          if (cmdSelect) cmdSelect.value = lesson.command;
+          if (promptArea) promptArea.value = state.lang === 'ar' ? lesson.promptAr : lesson.promptEn;
+          renderSimulatorOutput();
+          switchMode('simulator');
+        });
+      }
+
+      // Simulator controls
+      const simCmdSelect = document.getElementById('sim-command-select');
+      const simStackSelect = document.getElementById('sim-stack-select');
+      const simRunBtn = document.getElementById('sim-run-btn');
+      const simCopyBtn = document.getElementById('sim-copy-btn');
+
+      if (simCmdSelect) {
+        simCmdSelect.addEventListener('change', function () {
+          const combo = DATA.combos.find(function (c) {
+            return c.command === simCmdSelect.value;
+          });
+          const promptArea = document.getElementById('sim-prompt-textarea');
+          if (combo && promptArea) {
+            promptArea.value = state.lang === 'ar' ? combo.samplePromptAr : combo.samplePromptEn;
+          }
+          renderSimulatorOutput();
+        });
+      }
+      if (simStackSelect) {
+        simStackSelect.addEventListener('change', renderSimulatorOutput);
+      }
+      if (simRunBtn) {
+        simRunBtn.addEventListener('click', function () {
+          renderSimulatorOutput();
+          showToast('Executed live simulation pipeline!', 'تم تشغيل محاكاة خط العمل بنجاح!');
+        });
+      }
+      if (simCopyBtn) {
+        simCopyBtn.addEventListener('click', function () {
+          const promptArea = document.getElementById('sim-prompt-textarea');
+          if (promptArea && navigator.clipboard) {
+            navigator.clipboard.writeText(promptArea.value);
+          }
+          showToast(DATA.ui.en.toastCopied, DATA.ui.ar.toastCopied);
+        });
+      }
+
+      // Story Modal controls
+      const storyClose = document.getElementById('story-close-btn');
+      const storyPrev = document.getElementById('story-prev-slide-btn');
+      const storyNext = document.getElementById('story-next-slide-btn');
+      if (storyClose) {
+        storyClose.addEventListener('click', function () {
+          document.getElementById('story-player-modal').classList.add('hidden');
+        });
+      }
+      if (storyPrev) {
+        storyPrev.addEventListener('click', function () {
+          if (state.activeSlideIdx > 0) {
+            state.activeSlideIdx -= 1;
+            renderStorySlide();
+          }
+        });
+      }
+      if (storyNext) {
+        storyNext.addEventListener('click', function () {
+          const reel = DATA.storyReels[state.activeStoryIdx] || DATA.storyReels[0];
+          if (state.activeSlideIdx < reel.slides.length - 1) {
+            state.activeSlideIdx += 1;
+            renderStorySlide();
+          } else {
+            document.getElementById('story-player-modal').classList.add('hidden');
+          }
+        });
+      }
+
+      // Details Modal close
+      const detailsClose = document.getElementById('details-modal-close-btn');
+      if (detailsClose) {
+        detailsClose.addEventListener('click', function () {
+          document.getElementById('details-modal').classList.add('hidden');
+        });
+      }
+
+      // Mobile Drawer controls
+      const drawerOpenBtn = document.getElementById('mobile-drawer-open-btn');
+      const drawerBottomBtn = document.getElementById('mobile-bottom-chapters-btn');
+      const drawerCloseBtn = document.getElementById('mobile-drawer-close-btn');
+      const drawerBackdrop = document.getElementById('mobile-drawer-backdrop');
+      if (drawerOpenBtn) drawerOpenBtn.addEventListener('click', function () { openMobileDrawer(true); });
+      if (drawerBottomBtn) drawerBottomBtn.addEventListener('click', function () { openMobileDrawer(true); });
+      if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', function () { openMobileDrawer(false); });
+      if (drawerBackdrop) drawerBackdrop.addEventListener('click', function () { openMobileDrawer(false); });
+
+      // Mobile XP button & Header XP button
+      const mobileXpBtn = document.getElementById('mobile-bottom-xp-btn');
+      const topXpBtn = document.getElementById('top-xp-badge-btn');
+      function showXpSummaryModal() {
+        const modal = document.getElementById('details-modal');
+        document.getElementById('details-modal-cmd').textContent = state.xp + ' XP';
+        document.getElementById('details-modal-title').textContent = getRankTitle(state.xp);
+        document.getElementById('details-modal-meta').textContent =
+          DATA.ui[state.lang].rightRailCompletedLabel + ': ' + state.completedLessons.length + ' / ' + DATA.lessons.length;
+        const savedNames = state.savedToolkit.map(function (i) { return i.cmd; }).join(', ') || 'None yet';
+        document.getElementById('details-modal-desc').textContent =
+          DATA.ui[state.lang].rightRailToolkitTitle + ': ' + savedNames;
+        if (modal) modal.classList.remove('hidden');
+      }
+      if (mobileXpBtn) mobileXpBtn.addEventListener('click', showXpSummaryModal);
+      if (topXpBtn) topXpBtn.addEventListener('click', showXpSummaryModal);
+
+      // Search & Category Filtering in 60-Skill Reference Dictionary
+      const dictSearch = document.getElementById('skill-dict-search');
+      const dictCatSelect = document.getElementById('skill-dict-cat-select');
+      const globalSearch = document.getElementById('global-top-search');
+
+      function filterSkillsTable() {
+        const q = (dictSearch ? dictSearch.value : '').trim().toLowerCase();
+        const cat = dictCatSelect ? dictCatSelect.value : 'ALL';
+        document.querySelectorAll('.skill-table-row').forEach(function (row, idx) {
+          const rowCat = row.getAttribute('data-skill-cat') || '';
+          const rowCorpus = row.getAttribute('data-skill-search') || '';
+          const matchesCat = cat === 'ALL' || rowCat === cat;
+          const matchesQuery = !q || rowCorpus.indexOf(q) !== -1;
+          if (matchesCat && matchesQuery) {
+            if (!q && cat === 'ALL' && idx >= 12 && toggleSkillsBtn && toggleSkillsBtn.getAttribute('data-expanded') !== 'true') {
+              row.classList.add('hidden');
+            } else {
+              row.classList.remove('hidden');
+            }
+          } else {
+            row.classList.add('hidden');
+          }
+        });
+      }
+
+      if (dictSearch) dictSearch.addEventListener('input', filterSkillsTable);
+      if (dictCatSelect) dictCatSelect.addEventListener('change', filterSkillsTable);
+      if (globalSearch) {
+        globalSearch.addEventListener('input', function () {
+          if (globalSearch.value.trim().length > 1) {
+            if (dictSearch) dictSearch.value = globalSearch.value;
+            switchMode('reference');
+            filterSkillsTable();
+          }
+        });
+      }
+
+      // Initial boot
+      applyLangAndTheme();
+    })();
+  </script>
+</W3Layout>

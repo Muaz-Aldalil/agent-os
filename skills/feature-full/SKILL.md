@@ -4,7 +4,7 @@ description: >-
   Complete Full-Stack Feature Builder: Frontend + Backend + Database for ANY tech stack.
   Chains /feature-febe (CMS UI + Backend API/RBAC/Validation/Uploads) with /database and /backend-data
   (migrations, foreign keys, compound indexes, soft deletes, N+1 prevention, and transactions).
-  Always starts with /grill-me + /muaz-skill Smart Intake.
+  Always starts with /intake + /muaz-skill Smart Intake.
 ---
 
 # `/feature-full` — Build a Full Feature: Frontend + Backend + Database (Any Stack)
@@ -14,18 +14,18 @@ You are the **Principal Full-Stack & Database Architect**. Use this skill when b
 ---
 
 ## 1. Chained Skills Activated Automatically
-- **Intake & Architecture**: `/grill-me` + `/muaz-skill` (`references/intake-template.md`)
+- **Intake & Architecture**: `/intake` + `/critique` + `/muaz-skill` (`references/intake-template.md`) + `/design-md` + `/taste-design`
 - **Database Stack**: `/database` + `/backend-data` (adapted to MySQL, PostgreSQL, SQLite, Prisma, Drizzle, Eloquent, MongoDB, Firebase, etc.)
 - **Backend Stack**: `/backend-api` + `/backend-http` + `/backend-identity` + `/backend-ops` (+ `/laravel-mastery` + `/pest-security-guard` if Laravel; `/next-server-action-guard` if Next.js)
-- **Frontend & CMS Stack**: `/muaz-skill` + `/rtl-logical-guard` + `/ui-review-loop` (+ `/nextjs-fullstack` if Next.js; `/wp-guard` + `/woo-guard` if WordPress)
+- **Frontend, CMS & Google Stitch Stack**: `/muaz-skill` + `/generate-design` + `/manage-design-system` + `/stitch-loop` + `/rtl-logical-guard` + `/ui-review-loop` (+ `/nextjs-fullstack`, `/react-components`, `/shadcn-ui`, `/react-vite-dashboard` if React/Next.js; `/wp-guard` + `/woo-guard` if WordPress)
 - **Quality & Testing**: `/clean-code-guard` + `/test-guard`
 
 ---
 
 ## 2. Mandatory 4-Phase Execution Pipeline
 
-### 🔴 Phase 1: Stack Detection + Full `/grill-me` & `/muaz-skill` Smart Intake (NO CODE YET)
-1. **Auto-Detect (`Phase 1A/1B`)**: Read project files (`package.json`, `composer.json`, `.env.example`, `prisma/schema.prisma`, `database/migrations/`) to detect the active Frontend, Backend, and Database stack. Honor any stack explicitly requested by the user.
+### 🔴 Phase 1: Stack Detection + Full `/intake` & `/muaz-skill` Smart Intake (NO CODE YET)
+1. **Auto-Detect (`Phase 1A/1B`)**: Read project files (`MASTER.md`, `DESIGN.md`, `SECURITY.md`, `package.json`, `composer.json`, `.env.example`, `prisma/schema.prisma`, `database/migrations/`) to detect the active Frontend, Backend, Database stack, reusable contracts, and security tier. Honor any stack explicitly requested by the user.
 2. **Grill Interview (`Phase 1C/1D`)**: Use `ask_question` (with `(Recommended)` on the first option) to clarify:
    - Feature goal, user personas, and CMS layout (Sticky Nav, Sticky Sidebar, Table columns, Form fields, RTL/LTR).
    - **Database Entities & Relations**: What tables/fields are needed? How do they relate (`1:N`, `N:M`) to existing tables (e.g., `users`, `categories`, `organizations`)? Should deletion be Soft Delete (`deleted_at`)?
@@ -53,6 +53,7 @@ You are the **Principal Full-Stack & Database Architect**. Use this skill when b
 2. **CMS Data Tables**: `overflow-x-auto` wrapper, sticky headers, search/filter/sort controls, pagination bar, role-gated action buttons, and all **5 UI States** (`Idle`, `Loading`, `Success`, `Error`, `Empty`).
 3. **CMS Forms**: Multi-column responsive grids, inline validation error display, upload preview, and sticky `Save / Cancel` bar.
 4. **All-Media & RTL/LTR**: Responsive across Mobile, Tablet, and Desktop using CSS Logical Properties (`ms-`, `me-`, `ps-`, `pe-`, `start-`, `end-`).
+5. **Junior-Developer Readability, 1-Component-Per-File & Practical 2+ Reusability**: Split `Header`, `Hero`, `Footer`, and repeated UI primitives (`Button`, `Card`, `Modal`, `DataTable` used 2+ times), backend services, and DB scopes into dedicated files with a **2–3 line top header comment** (`Purpose | Reused In | Key Props/Inputs`) so a junior teammate can reuse them across the Admin Dashboard and Landing Page. Never over-abstract raw CSS tokens (like fonts) into wrapper components.
 
 ---
 

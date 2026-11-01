@@ -61,5 +61,53 @@ SELECT sum(amount) FROM ledger;
         self.assertEqual(res["matches"][0]["groupdict"], {"year": "2026", "month": "10"})
         self.assertEqual(res["replaced_text"], "Date: [YEAR-MONTH]-08")
 
+    def test_sandbox_blocks_open_and_filesystem_access(self):
+        res_open = run_python("open('.env').read()")
+        self.assertEqual(res_open["status"], "ERROR")
+        self.assertIn("SecurityViolation", res_open["error"])
+
+        res_path = run_python("Path('.').resolve()")
+        self.assertEqual(res_path["status"], "ERROR")
+        self.assertIn("SecurityViolation", res_path["error"])
+
+    def test_sandbox_blocks_imports_and_dunder_escape(self):
+        res_imp = run_python("__import__('os').system('echo pwned')")
+        self.assertEqual(res_imp["status"], "ERROR")
+        self.assertIn("SecurityViolation", res_imp["error"])
+
+        res_stmt = run_python("import os\nresult = os.getcwd()")
+        self.assertEqual(res_stmt["status"], "ERROR")
+        self.assertIn("SecurityViolation", res_stmt["error"])
+
+        res_dunder = run_python("().__class__.__base__.__subclasses__()")
+        self.assertEqual(res_dunder["status"], "ERROR")
+        self.assertIn("SecurityViolation", res_dunder["error"])
+
+    def test_sandbox_enforces_execution_timeout(self):
+        res = run_python("while True:\n    pass", timeout_seconds=0.2)
+        self.assertEqual(res["status"], "ERROR")
+        self.assertIn("TimeoutError", res["error"])
+
+    def test_sandbox_blocks_single_line_cpu_and_memory_bombs(self):
+        # Single-line comprehension loop must be interrupted by opcode-level trace timeout
+        res_comp = run_python("sum(i * i for i in range(9_000_000))", timeout_seconds=0.05)
+        self.assertEqual(res_comp["status"], "ERROR")
+        self.assertIn("TimeoutError", res_comp["error"])
+
+        # Astronomical exponentiation or huge range allocation blocked at AST level
+        res_pow = run_python("10 ** 100000")
+        self.assertEqual(res_pow["status"], "ERROR")
+        self.assertIn("SecurityViolation", res_pow["error"])
+
+        res_range = run_python("len(list(range(100_000_000)))")
+        self.assertEqual(res_range["status"], "ERROR")
+        self.assertIn("SecurityViolation", res_range["error"])
+
+    def test_sql_blocks_attach_database_disk_write(self):
+        res = run_sql("ATTACH DATABASE 'pwned_disk.db' AS pwn;")
+        self.assertEqual(res["status"], "ERROR")
+        self.assertFalse(Path("pwned_disk.db").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -16,7 +16,9 @@ from typing import List, Dict, Any, Optional
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
+AGENT_OS_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(os.environ.get("AGENT_OS_PROJECT_ROOT") or Path.cwd()).resolve()
+WORKSPACE_ROOT = PROJECT_ROOT
 
 class SymbolDef:
     def __init__(self, name: str, kind: str, file_path: str, line_no: int, signature: str = "", docstring: str = ""):

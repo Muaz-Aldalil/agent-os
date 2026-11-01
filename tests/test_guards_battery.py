@@ -15,7 +15,9 @@ from guard_checker import (
     check_pest_php_security,
     check_rtl_logical_css,
     check_clean_code_hygiene,
-    check_python_security_and_hygiene
+    check_python_security_and_hygiene,
+    check_architectural_boundaries,
+    check_modularity_and_reusability,
 )
 
 class TestNextServerActionGuard(unittest.TestCase):
@@ -229,6 +231,206 @@ class TestPythonSecurityAndHygieneGuard(unittest.TestCase):
         code = 'import os\ndef process_items(items=None):\n    if items is None:\n        items = []\n    api_key = os.getenv("API_KEY")\n    return len(items)\n'
         violations = check_python_security_and_hygiene(code, "clean.py")
         self.assertEqual(len(violations), 0)
+
+
+class TestArchitecturalBoundariesGuard(unittest.TestCase):
+
+    def test_client_server_boundary_leak_detected(self):
+        leaky_client = """
+"use client";
+import { prisma } from "@/lib/prisma";
+import { userRepo } from "@/domains/identity/repositories/user.repo";
+
+export function ProfileWidget({ id }: { id: string }) {
+    const user = prisma.user.findUnique({ where: { id } });
+    return <div>{String(user)}</div>;
+}
+"""
+        violations = check_architectural_boundaries(leaky_client, "src/components/ProfileWidget.tsx")
+        rule_ids = [v.rule for v in violations]
+        self.assertIn("CLIENT_SERVER_BOUNDARY_LEAK", rule_ids)
+        self.assertGreaterEqual(len(violations), 2)
+
+    def test_controller_layer_skipping_detected(self):
+        leaky_controller = """<?php
+declare(strict_types=1);
+
+namespace App\\Http\\Controllers;
+
+use App\\Repositories\\OrderRepository;
+use Illuminate\\Support\\Facades\\DB;
+
+class OrderController {
+    public function store(OrderRepository $orderRepo) {
+        DB::beginTransaction();
+        $rows = DB::select("SELECT * FROM orders WHERE status = 'pending'");
+        return $orderRepo->create([]);
+    }
+}
+"""
+        violations = check_architectural_boundaries(leaky_controller, "app/Http/Controllers/OrderController.php")
+        rule_ids = [v.rule for v in violations]
+        self.assertIn("LAYER_SKIPPING_CONTROLLER_BYPASS", rule_ids)
+        self.assertGreaterEqual(len(violations), 3)
+
+    def test_public_admin_shell_leak_detected(self):
+        leaky_public_page = """
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
+
+export default function PublicLandingPage() {
+    return (
+        <div>
+            <AdminSidebar />
+        </div>
+    );
+}
+"""
+        leaky_admin_page = """
+import { PublicNavbar } from "@/components/public/Navbar";
+
+export default function AdminDashboardPage() {
+    return (
+        <div>
+            <PublicNavbar />
+        </div>
+    );
+}
+"""
+        v_pub = check_architectural_boundaries(leaky_public_page, "src/app/[locale]/(public)/page.tsx")
+        v_adm = check_architectural_boundaries(leaky_admin_page, "src/app/[locale]/admin/page.tsx")
+        self.assertTrue(any(v.rule == "PUBLIC_ADMIN_SHELL_LEAK" for v in v_pub))
+        self.assertTrue(any(v.rule == "PUBLIC_ADMIN_SHELL_LEAK" for v in v_adm))
+
+    def test_cross_domain_repository_leak_detected(self):
+        leaky_domain_service = """<?php
+declare(strict_types=1);
+
+namespace App\\Domains\\Billing\\Services;
+
+use App\\Domains\\Identity\\Repositories\\UserRepository;
+
+class InvoiceService {
+    public function issue(UserRepository $users) {}
+}
+"""
+        violations = check_architectural_boundaries(leaky_domain_service, "app/Domains/Billing/Services/InvoiceService.php")
+        self.assertEqual(len(violations), 1)
+        self.assertEqual(violations[0].rule, "CROSS_DOMAIN_REPOSITORY_LEAK")
+
+    def test_upward_abstraction_leak_detected(self):
+        leaky_service = """<?php
+declare(strict_types=1);
+
+namespace App\\Domains\\Catalog\\Services;
+
+use Illuminate\\Database\\Eloquent\\Builder;
+
+class CourseService {
+    public function queryPublishedCourses(): Builder {
+        return Course::query();
+    }
+}
+"""
+        violations = check_architectural_boundaries(leaky_service, "app/Domains/Catalog/Services/CourseService.php")
+        self.assertEqual(len(violations), 1)
+        self.assertEqual(violations[0].rule, "UPWARD_ABSTRACTION_LEAK")
+
+    def test_compliant_layered_architecture_passes(self):
+        clean_controller = """<?php
+declare(strict_types=1);
+
+namespace App\\Http\\Controllers;
+
+use App\\Domains\\Billing\\Actions\\IssueInvoiceAction;
+
+class InvoiceController {
+    public function store(IssueInvoiceAction $issueInvoice) {
+        return $issueInvoice->execute();
+    }
+}
+"""
+        clean_public_page = """
+import { PublicNavbar } from "@/components/public/Navbar";
+
+export default function PublicCoursesPage() {
+    return <PublicNavbar />;
+}
+"""
+        self.assertEqual(len(check_architectural_boundaries(clean_controller, "app/Http/Controllers/InvoiceController.php")), 0)
+        self.assertEqual(len(check_architectural_boundaries(clean_public_page, "src/app/[locale]/(public)/courses/page.tsx")), 0)
+
+
+class TestModularityAndRootGovernanceGuard(unittest.TestCase):
+
+    def test_monolith_entry_file_detected(self):
+        monolith_app = """
+function Header() {
+    return <header>Nav</header>;
+}
+function HeroSection() {
+    return <section>Hero</section>;
+}
+function Footer() {
+    return <footer>Footer</footer>;
+}
+export default function App() {
+    return (
+        <div>
+            <Header />
+            <HeroSection />
+            <Footer />
+        </div>
+    );
+}
+"""
+        violations = check_modularity_and_reusability(monolith_app, "src/App.jsx")
+        rule_ids = [v.rule for v in violations]
+        self.assertIn("MONOLITH_COMPONENT_FILE", rule_ids)
+
+    def test_missing_component_header_doc_detected_and_compliant_passes(self):
+        undocumented_card = """
+export function Card({ title, children }) {
+    return <div className="rounded-xl p-6">{title}{children}</div>;
+}
+"""
+        documented_card = """/**
+ * Purpose: Reusable surface card container for metrics and feature blocks.
+ * Reused In: Public Landing Page (Features) & Admin Dashboard (Metrics Grid).
+ * Key Props: title (string), children (ReactNode).
+ */
+export function Card({ title, children }) {
+    return <div className="rounded-xl p-6">{title}{children}</div>;
+}
+"""
+        v_missing = check_modularity_and_reusability(undocumented_card, "src/components/ui/Card.tsx")
+        v_clean = check_modularity_and_reusability(documented_card, "src/components/ui/Card.tsx")
+        self.assertEqual(len(v_missing), 1)
+        self.assertEqual(v_missing[0].rule, "MISSING_COMPONENT_HEADER_DOC")
+        self.assertEqual(len(v_clean), 0)
+
+    def test_root_governance_scaffolding_and_tiered_security(self):
+        import tempfile
+        from pathlib import Path
+        from precode_engine import init_root_governance, audit_root_governance, detect_security_tier
+
+        self.assertEqual(detect_security_tier("Promo Landing Page", "landing"), 1)
+        self.assertEqual(detect_security_tier("Academy LMS Portal", "lms"), 3)
+        self.assertEqual(detect_security_tier("Al-Noor SMS System", "sms"), 3)
+        self.assertEqual(detect_security_tier("Acme SaaS Dashboard", "saas"), 2)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root_path = Path(tmp)
+            res = init_root_governance(root_path, "Academy LMS", project_type="lms")
+            self.assertEqual(res["security_tier"], 3)
+            self.assertTrue((root_path / "MASTER.md").is_file())
+            self.assertTrue((root_path / "DESIGN.md").is_file())
+            self.assertTrue((root_path / "SECURITY.md").is_file())
+            sec_text = (root_path / "SECURITY.md").read_text(encoding="utf-8")
+            self.assertIn("Tier 3", sec_text)
+
+            audit_res = audit_root_governance(root_path)
+            self.assertTrue(audit_res["passed"])
+            self.assertEqual(audit_res["score"], 100.0)
 
 
 if __name__ == "__main__":

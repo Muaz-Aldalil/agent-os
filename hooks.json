@@ -3,11 +3,11 @@
     "enabled": true,
     "PreToolUse": [
       {
-        "matcher": "run_command",
+        "matcher": "run_command|view_file|write_to_file|replace_file_content",
         "hooks": [
           {
             "type": "command",
-            "command": "python scripts/safety_hook.py",
+            "command": "python D:/Skills/.agents/scripts/safety_hook.py",
             "timeout": 10
           }
         ]

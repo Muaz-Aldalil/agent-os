@@ -2,7 +2,7 @@
 name: feature-fe
 description: >-
   Stack-agnostic Frontend & CMS UI feature builder. Works with React, Next.js, Vue, Nuxt,
-  Blade/Livewire, Angular, Svelte, Astro, HTML/Tailwind, or WordPress. Runs /grill-me + /muaz-skill
+  Blade/Livewire, Angular, Svelte, Astro, HTML/Tailwind, or WordPress. Runs /intake + /muaz-skill
   Smart Intake, enforces CMS Sticky Navbar, Sticky Sidebar, responsive Data Tables, Forms, RTL/LTR
   logical properties, and auto-verifies via /ui-review-loop.
 ---
@@ -14,17 +14,20 @@ You are the **Senior Frontend & CMS Design Systems Architect**. This skill works
 ---
 
 ## 1. Chained Skills Activated Automatically
-- **Always Active**: `/grill-me` + `/muaz-skill` + `/rtl-logical-guard` + `/ui-review-loop` + `/clean-code-guard` + `/test-guard`
+- **Always Active**: `/intake` + `/critique` + `/muaz-skill` + `/rtl-logical-guard` + `/ui-review-loop` + `/clean-code-guard` + `/test-guard`
+- **Google Stitch Suite (Paired with `StitchMCP`)**: `/generate-design`, `/design-md`, `/taste-design`, `/manage-design-system`, `/enhance-prompt`, `/stitch-loop`, `/code-to-design`, `/extract-design-md`
 - **Conditional by Stack**:
-  - If Next.js / React: `/nextjs-fullstack`
+  - If Next.js / React / shadcn / Vite: `/nextjs-fullstack` + `/react-components` + `/shadcn-ui` + `/react-vite-dashboard`
+  - If React Native: `/react-native`
+  - If Remotion Video: `/remotion`
   - If WordPress / WooCommerce: `/wp-guard` + `/woo-guard`
 
 ---
 
 ## 2. Mandatory 4-Phase Execution Pipeline
 
-### 🔴 Phase 1: Stack Detection + Full `/grill-me` & `/muaz-skill` Smart Intake (NO CODE YET)
-1. **Auto-Detect (`Phase 1A/1B`)**: Inspect project files (`package.json`, `composer.json`, `AGENTS.md`, existing layouts/components) to detect the frontend framework, styling system, and theme tokens. If the user specified a preferred stack in their prompt, honor the user's choice.
+### 🔴 Phase 1: Stack Detection + Full `/intake` & `/muaz-skill` Smart Intake (NO CODE YET)
+1. **Auto-Detect (`Phase 1A/1B`)**: Inspect project files (`MASTER.md`, `DESIGN.md`, `SECURITY.md`, `package.json`, `composer.json`, `AGENTS.md`, existing layouts/components) to detect the frontend framework, styling system, reusable component catalog, and theme tokens. If the user specified a preferred stack in their prompt, honor the user's choice.
 2. **Grill Interview (`Phase 1C/1D`)**: Use `ask_question` (with `(Recommended)` on the first choice) following `/muaz-skill` (`references/intake-template.md`) to clarify:
    - Page/component purpose, **Visitor Mode** (`Operate` for dense CMS/dashboards, `Persuade` for landing/marketing, `Read` for editorial/docs), layout shell (Sticky Top Nav, Sticky Sidebar, or Full-Width), and visual tone.
    - **Art Direction & Subject Inventory** (for public/marketing pages): 8–12 specific domain facts, the **Competitor Test** (*"On this page, [subject artifact] becomes [layout/interactive device]"*), and **One Live Interactive Thing**.
@@ -63,7 +66,9 @@ Every frontend feature or CMS screen MUST obey these non-negotiable structural a
 ---
 
 ### 🟢 Phase 3: Code Generation & Bounded `/ui-review-loop` Verification
-1. Write clean, modular, production-ready components following the project's framework conventions.
+1. Write clean, junior-developer-readable, modular components following **`Readability -> Reusability -> Maintainability -> Scalability -> Security -> Performance`**:
+   - **1 Component Per File & Practical 2+ Reusability**: Never dump `Header`, `HeroSection`, `Footer`, and repeated `Card`/`Button` components into `App.jsx` or `page.tsx`. Extract any UI primitive or section used **2+ times** into its own file so teammates can reuse it across the Landing Page and Admin Dashboard. Never over-abstract raw CSS tokens (like fonts) into wrapper components.
+   - **2–3 Line Component Header**: Begin every component file with `/** Purpose: [what it does] | Reused In: [where used] | Key Props: [contract] */`.
 2. **Bounded Verification Passes**: Build completely, run 1 batched verification round (`python skills/muaz-skill/scripts/anti_slop.py <path> --fail-on MEDIUM` + `python scripts/agent_os.py ui-audit audit --dir <path>`), fix all violations in 1 batch, and confirm in at most 1 final round. Stop over-polishing once gates are green.
 
 ---

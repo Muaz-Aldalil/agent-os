@@ -35,6 +35,12 @@ CANONICAL_DOCS = [
     "06-IMPLEMENTATION_PLAN.md",
 ]
 
+ROOT_GOVERNANCE_DOCS = [
+    "MASTER.md",
+    "DESIGN.md",
+    "SECURITY.md",
+]
+
 # 5 Mandatory UI States for App Flow
 MANDATORY_UI_STATES = ["Idle", "Loading", "Success", "Error", "Empty"]
 
@@ -471,6 +477,264 @@ def init_precode(target_dir: Path, project_name: str, force: bool = False) -> Di
     }
 
 
+def detect_security_tier(project_name: str, project_type: str = "") -> int:
+    """
+    Auto-selects the OWASP ASVS security tier based on project type or name:
+    - Tier 1 (ASVS L1): Public Landing Page, Portfolio, Static Marketing Site
+    - Tier 2 (ASVS L2): Standard Web App, SaaS, CMS, E-Commerce, Dashboard
+    - Tier 3 (ASVS L3): High-Assurance LMS, SMS (School Management), FinTech, ERP, Healthcare
+    """
+    combined = f"{project_name} {project_type}".lower()
+    tier3_keywords = ("lms", "sms", "school", "learning", "fintech", "payment", "bank", "wallet", "erp", "health", "medical", "gov")
+    tier1_keywords = ("landing", "portfolio", "brochure", "static", "promo", "waitlist")
+    if any(k in combined for k in tier3_keywords):
+        return 3
+    if any(k in combined for k in tier1_keywords):
+        return 1
+    return 2
+
+
+def get_root_governance_templates(project_name: str, tier: int = 2, project_type: str = "web") -> Dict[str, str]:
+    """Returns project-root MASTER.md, DESIGN.md, and tiered SECURITY.md templates."""
+    tier_labels = {
+        1: "Tier 1 (OWASP ASVS Level 1 — Public Landing Page / Portfolio Baseline)",
+        2: "Tier 2 (OWASP ASVS Level 2 — Standard SaaS / CMS / Full-Stack Production)",
+        3: "Tier 3 (OWASP ASVS Level 3 — High-Assurance LMS / SMS / FinTech / ERP)",
+    }
+    tier_label = tier_labels.get(tier, tier_labels[2])
+
+    master_md = f"""# Project Master Rules & Modular Architecture (`MASTER.md`): {project_name}
+
+## 1. Project Identity & Scope Hierarchy
+- **Project Name**: {project_name}
+- **Project Type**: {project_type.upper()}
+- **Active Security Posture**: {tier_label} (see [`SECURITY.md`](./SECURITY.md))
+- **Design System Contract**: See [`DESIGN.md`](./DESIGN.md)
+- **Rule Precedence**: Global Agent OS Rules (`GEMINI.md`) govern engineering discipline; this `MASTER.md`, `DESIGN.md`, and `SECURITY.md` govern **project-specific client, architecture, and reusability rules**.
+
+---
+
+## 2. The 6-Pillar Code Quality Law (Every Line of Code)
+Every edit in this repository—even a 1-line change—must honor this exact priority order:
+1. **Readability**: Clear over clever. Code must be understood in **30 seconds by a Junior Developer**.
+2. **Reusability (Practical 2+ Rule)**: If a UI element (`Button`, `Card`, `Modal`, `Badge`, `DataTable`), page section (`Header`, `HeroSection`, `Footer`), or backend service/query is used **2+ times**, extract it into a standalone reusable file. Never over-abstract raw CSS tokens (such as fonts) into wrapper components.
+3. **Maintainability**: Strict separation between UI rendering, business services, and database persistence.
+4. **Scalability**: Bounded queries (pagination/limits), indexed foreign keys, and zero N+1 loops.
+5. **Security**: Enforced per [`SECURITY.md`](./SECURITY.md) ({tier_label}).
+6. **Performance**: Fast initial load (LCP <= 2.5s), minimal client JS, and zero layout shift.
+
+---
+
+## 3. Single-Component-Per-File Modularity & 2–3 Line Header Contract
+1. **Zero Monolith Files**: Never bundle `Header`, `HeroSection`, `Features`, `Footer`, or reusable cards inside `App.jsx`, `page.tsx`, or a single backend file. Every component lives in its own file.
+2. **Mandatory 2–3 Line Component Header**: Every reusable Frontend component, Backend service/controller, or DB model begins with:
+   ```tsx
+   /**
+    * Purpose: [Concise 1-line summary of what this component/module does]
+    * Reused In: [e.g., Public Landing Page, Admin Dashboard, Course Catalog]
+    * Key Props/Inputs: [Primary props or parameters required to use it]
+    */
+   ```
+
+---
+
+## 4. Shared Admin Dashboard <-> Public Landing Page Contracts
+- **Layout Isolation**: Public pages (`(public)/*`) and Admin Dashboard (`/admin/*`) use strictly separate layout shells (`PublicNavbar`/`PublicFooter` vs. `AdminSidebar`/`AdminNavbar`).
+- **Shared Primitives & Data Contracts**: Both surfaces reuse `components/ui/` primitives (`Button`, `Card`, `Badge`, `Modal`) and shared TypeScript/DTO data contracts so a junior developer building the Landing Page can seamlessly consume Admin-managed data.
+"""
+
+    design_md = f"""# Project Design System & Reusable UI Token Contract (`DESIGN.md`): {project_name}
+
+## 1. Visual Direction & 60-30-10 Color Architecture
+- **60% Dominant Canvas (`bg-background`)**: Clean, high-contrast surface (`#f8fafc` Light / `#090d16` Dark).
+- **30% Structural Surface (`bg-card`, `bg-muted`)**: Elevated containers, sticky navbar, sticky sidebar, and modals (`#ffffff` Light / `#111827` Dark). Never nest `<Card>` inside `<Card>`.
+- **10% Primary Accent (`bg-primary`)**: Interactive focal CTAs, active nav indicators, and primary buttons (`#2563eb`).
+- **Semantic Status Tokens**: Success (`#10b981`), Warning (`#f59e0b`), Danger (`#ef4444`).
+
+---
+
+## 2. Typography Scale (CSS Tokens — Never Component Wrappers)
+- **Display / Headings**: Bold geometric sans/display (`clamp(1.75rem, 3vw, 3rem)`, `tracking-tight`, `text-wrap: balance`, `mt > mb`).
+- **Body Copy**: Clean readable sans (`1rem` / `16px`, `leading-relaxed`, `65–75ch` max measure).
+- **Numeric & Table Data**: Enforce `tabular-nums` (`font-variant-numeric: tabular-nums`) on all prices, counts, dates, and IDs.
+- *Practical Reusability Note*: Fonts and colors are shared via CSS variables / Tailwind tokens—never wrap plain text fonts in pointless custom wrapper components.
+
+---
+
+## 3. Reusable UI Primitive Catalog (2+ Reuse Threshold)
+Every component used **2+ times** across sections lives in `src/components/ui/` (one component per file with a 2–3 line top description):
+1. **`Button`**: Variants (`primary`, `secondary`, `outline`, `ghost`, `danger`), sizes (`sm`, `md`, `lg`), loading spinner lock (`min-h-[44px]`).
+2. **`Card`**: Elevated surface container with consistent border radius (`rounded-xl`), padding (`p-6`), and optional header/footer slots.
+3. **`Badge`**: Borderless informational tag or semantic status pill (`Active`, `Pending`, `Completed`, `Error`).
+4. **`Modal` & `Toast`**: Accessible dialog and toast feedback (native `window.alert()` / `window.confirm()` are strictly forbidden).
+5. **`DataTable`**: Responsive `overflow-x-auto` wrapper, sticky header, `2–4 words + ...` cell truncation, and all 5 UI states (`Idle`, `Loading`, `Success`, `Error`, `Empty`).
+
+---
+
+## 4. Layout & Bilingual (RTL / LTR) Logical CSS Rules
+- **Hero Viewport**: `min-h-[calc(100dvh-var(--navbar-height))]` with zero vertical overflow.
+- **Sticky Shells**: Public Navbar (`sticky top-0 z-50 overflow-x-clip`); Admin Sidebar (`lg:sticky lg:top-0 lg:h-dvh`).
+- **CSS Logical Properties Only**: Enforce `ms-*`, `me-*`, `ps-*`, `pe-*`, `start-*`, `end-*`, `text-start`, `text-end`.
+"""
+
+    if tier == 1:
+        tier_controls = """## 2. Tier 1 (OWASP ASVS L1 — Public / Landing Page) Mandatory Controls
+1. **Zero Hardcoded Secrets**: Never commit API keys, SMTP credentials, or tokens in client/server code; use `.env`.
+2. **Contact / Lead Form Protection**: Validate and sanitize all form inputs server-side (email, phone digits, message length) and enforce rate limiting / anti-spam protection.
+3. **XSS & Third-Party Script Hygiene**: Escape all dynamic output; enforce Content-Security-Policy (CSP), HTTPS/HSTS, and `rel="noopener noreferrer"` on external links.
+4. **Dependency Integrity**: Verify every npm/composer/pip package exists in the official registry before installation."""
+    elif tier == 3:
+        tier_controls = """## 2. Tier 3 (OWASP ASVS L3 — High-Assurance LMS / SMS / FinTech / ERP) Mandatory Controls
+1. **Strict Server-Side Identity & Multi-Role Isolation (Anti-IDOR)**:
+   - Derive `user_id`, `tenant_id`/`school_id`, and `role` (`Student`, `Instructor`, `Parent`, `Admin`) strictly from the server session—never from client request payloads.
+   - Scope every database read, update, and delete to the authenticated tenant and role boundary.
+2. **Financial, Grade & Ledger Integrity (Zero-Float + ACID Locking)**:
+   - Never use `float`/`double` for tuition, fees, balances, or grades; use integer subunits (cents/piastres) or `DECIMAL(12,2)`.
+   - Wrap all multi-table mutations, balance updates, and seat/enrollment allocations in ACID transactions with pessimistic row locking (`SELECT ... FOR UPDATE` / `lockForUpdate()`) and idempotency keys.
+3. **Protected Content, Exams & Safe File Uploads**:
+   - Validate file MIME types and magic bytes, enforce strict size caps, store uploads outside the public web root with randomized names, and serve private LMS/SMS documents via signed/authorized URLs.
+4. **Immutable Audit Trail & Error Boundaries**:
+   - Log all role changes, grade/payment mutations, and deletions to an immutable audit log. Never leak stack traces or raw SQL errors to the client."""
+    else:
+        tier_controls = """## 2. Tier 2 (OWASP ASVS L2 — Standard SaaS / CMS / E-Commerce) Mandatory Controls
+1. **Server-Side Auth & Anti-IDOR Scoping**:
+   - Derive `user_id` and `role` (`Admin`, `Editor`, `User`) strictly from the authenticated server session—never from client payloads.
+   - Enforce RBAC guards on both UI controls and backend endpoints/Server Actions.
+2. **Boundary Validation & Parameterized Queries**:
+   - Validate all incoming payloads via strict schemas (Zod, FormRequest, Pydantic) and use parameterized ORM/SQL queries exclusively.
+3. **Safe Media Uploads & Session Security**:
+   - Enforce MIME/size validation, randomized storage filenames, old-file cleanup on update/delete, and `HttpOnly` + `SameSite` session cookies.
+4. **Zero Raw Error Leakage**:
+   - Return structured user-friendly validation errors (`422`) and generic `500` messages while logging internal details server-side."""
+
+    security_md = f"""# Project Security Governance (`SECURITY.md`): {project_name}
+
+## 1. Active Security Profile
+- **Project**: {project_name}
+- **Security Tier**: **{tier_label}**
+- **Enforcement**: Automatically checked by `clean-code-guard`, `next-server-action-guard` / `pest-security-guard`, and `python scripts/agent_os.py sentinel`.
+
+---
+
+{tier_controls}
+
+---
+
+## 3. AI Coding Agent Security Invariants
+- Read this `SECURITY.md` before writing or modifying any route, controller, Server Action, form, or database query.
+- Never bypass authentication, disable CSRF/validation guards, or return mock `"status": "ok"` fixtures in production paths.
+"""
+
+    return {
+        "MASTER.md": master_md,
+        "DESIGN.md": design_md,
+        "SECURITY.md": security_md,
+    }
+
+
+def init_root_governance(
+    target_dir: Path,
+    project_name: str,
+    tier: Optional[int] = None,
+    project_type: str = "web",
+    force: bool = False,
+) -> Dict[str, Any]:
+    """Scaffolds MASTER.md, DESIGN.md, and tiered SECURITY.md at the project root."""
+    target_dir.mkdir(parents=True, exist_ok=True)
+    resolved_tier = tier if tier in (1, 2, 3) else detect_security_tier(project_name, project_type)
+    templates = get_root_governance_templates(project_name, tier=resolved_tier, project_type=project_type)
+    created_files: List[str] = []
+    skipped_files: List[str] = []
+
+    for filename, content in templates.items():
+        file_path = target_dir / filename
+        if file_path.exists() and not force:
+            skipped_files.append(str(file_path))
+        else:
+            file_path.write_text(content, encoding="utf-8")
+            created_files.append(str(file_path))
+
+    return {
+        "project_name": project_name,
+        "security_tier": resolved_tier,
+        "target_dir": str(target_dir),
+        "created_files": created_files,
+        "skipped_files": skipped_files,
+        "success": True,
+    }
+
+
+def audit_root_governance(target_dir: Path) -> Dict[str, Any]:
+    """Audits project root for MASTER.md, DESIGN.md, and tiered SECURITY.md."""
+    checks: List[Dict[str, Any]] = []
+    findings: List[str] = []
+    found_docs: Dict[str, str] = {}
+    missing: List[str] = []
+
+    for doc in ROOT_GOVERNANCE_DOCS:
+        p = target_dir / doc
+        if not p.is_file():
+            missing.append(doc)
+        else:
+            found_docs[doc] = p.read_text(encoding="utf-8", errors="ignore")
+
+    all_exist = len(missing) == 0
+    checks.append({
+        "name": "1. Root Governance Files Present (MASTER.md, DESIGN.md, SECURITY.md)",
+        "passed": all_exist,
+        "message": "All 3 root governance files present" if all_exist else f"Missing: {', '.join(missing)}",
+    })
+    if not all_exist:
+        findings.append(f"Missing root project governance files: {', '.join(missing)}")
+
+    master_txt = found_docs.get("MASTER.md", "")
+    master_ok = bool(re.search(r"Readability", master_txt, re.IGNORECASE)) and bool(
+        re.search(r"Reusability|Single-Component-Per-File", master_txt, re.IGNORECASE)
+    )
+    checks.append({
+        "name": "2. MASTER.md Reusability & Junior-Readability Rules",
+        "passed": master_ok,
+        "message": "Verified 6-Pillar Priority & 1-Component-Per-File rules" if master_ok else "MASTER.md missing Readability/Reusability rules",
+    })
+    if not master_ok:
+        findings.append("MASTER.md must define the 6-Pillar Priority (Readability, Reusability) and Single-Component-Per-File modularity.")
+
+    design_txt = found_docs.get("DESIGN.md", "")
+    design_ok = bool(re.search(r"Typography|Color|60-30-10", design_txt, re.IGNORECASE)) and bool(
+        re.search(r"Button|Card|Reusable", design_txt, re.IGNORECASE)
+    )
+    checks.append({
+        "name": "3. DESIGN.md Tokens & Reusable UI Primitives Catalog",
+        "passed": design_ok,
+        "message": "Verified color/typography tokens and reusable Button/Card primitives" if design_ok else "DESIGN.md missing tokens or reusable primitives",
+    })
+    if not design_ok:
+        findings.append("DESIGN.md must specify typography/color tokens and reusable UI primitives (Button, Card).")
+
+    sec_txt = found_docs.get("SECURITY.md", "")
+    sec_ok = bool(re.search(r"Tier\s*[123]|ASVS", sec_txt, re.IGNORECASE))
+    checks.append({
+        "name": "4. SECURITY.md Tiered Security Profile (Tier 1 / 2 / 3)",
+        "passed": sec_ok,
+        "message": "Verified explicit Security Tier in SECURITY.md" if sec_ok else "SECURITY.md missing Security Tier (Tier 1/2/3)",
+    })
+    if not sec_ok:
+        findings.append("SECURITY.md must declare its active Security Tier (Tier 1 Landing, Tier 2 SaaS/CMS, or Tier 3 LMS/SMS/FinTech).")
+
+    passed_checks = sum(1 for c in checks if c["passed"])
+    total_checks = len(checks)
+    score = round((passed_checks / total_checks) * 100, 1)
+    return {
+        "passed": score == 100.0,
+        "score": score,
+        "passed_checks": passed_checks,
+        "total_checks": total_checks,
+        "checks": checks,
+        "findings": findings,
+        "target_dir": str(target_dir),
+    }
+
+
 def audit_precode(target_dir: Path) -> Dict[str, Any]:
     """
     Deeply audits a pre-code directory against the 8 quality invariants:
@@ -674,13 +938,45 @@ def main():
     status_parser = subparsers.add_parser("status", help="Display status of the 6 pre-coding documents")
     status_parser.add_argument("target_dir", nargs="?", default=None, help="Directory containing the 6 documents")
 
+    # init-root command (MASTER.md, DESIGN.md, SECURITY.md)
+    init_root_parser = subparsers.add_parser("init-root", help="Initialize root MASTER.md, DESIGN.md, and tiered SECURITY.md")
+    init_root_parser.add_argument("project_name", help="Name of the project")
+    init_root_parser.add_argument("--type", dest="project_type", default="web", help="Project type (landing, cms, saas, lms, sms, fintech)")
+    init_root_parser.add_argument("--tier", dest="tier", type=int, choices=[1, 2, 3], default=None, help="Security tier override (1, 2, or 3)")
+    init_root_parser.add_argument("--dir", dest="target_dir", default=None, help="Target project root directory (default: current directory)")
+    init_root_parser.add_argument("--force", action="store_true", help="Overwrite existing files")
+
+    # audit-root command
+    audit_root_parser = subparsers.add_parser("audit-root", help="Audit root MASTER.md, DESIGN.md, and SECURITY.md")
+    audit_root_parser.add_argument("target_dir", nargs="?", default=None, help="Project root directory")
+
     args = parser.parse_args()
 
     if not args.subcommand:
         parser.print_help()
         sys.exit(1)
 
-    if args.subcommand == "init":
+    if args.subcommand == "init-root":
+        target_path = Path(args.target_dir) if args.target_dir else Path.cwd()
+        res = init_root_governance(
+            target_path,
+            args.project_name,
+            tier=args.tier,
+            project_type=args.project_type,
+            force=args.force,
+        )
+        print(f"[SUCCESS] Initialized Root Governance (Tier {res['security_tier']}) for '{args.project_name}' at: {target_path}")
+        for f in res["created_files"]:
+            print(f"  + {Path(f).name}")
+        sys.exit(0)
+
+    elif args.subcommand == "audit-root":
+        target_path = Path(args.target_dir) if args.target_dir else Path.cwd()
+        res = audit_root_governance(target_path)
+        print_audit_report(res)
+        sys.exit(0 if res["passed"] else 1)
+
+    elif args.subcommand == "init":
         if args.target_dir:
             target_path = Path(args.target_dir)
         else:

@@ -2,7 +2,7 @@
 name: start-project
 description: >-
   All-in-one master command to start a brand new project from zero in ANY tech stack.
-  Runs the full /grill-me + /muaz-skill Smart Intake interview (Q1-Q28 in Frontier Rounds),
+  Runs the full /intake + /muaz-skill Smart Intake interview (Q1-Q28 in Frontier Rounds),
   authors the 6 Pre-Coding architecture documents (/web-precode), generates Spec-Kit tasks (/spec-kit),
   and builds the project with CMS Frontend, Backend, Database, and Security guards.
 ---
@@ -15,7 +15,7 @@ You are the **Senior Tech Team Orchestrator** for starting a brand new applicati
 
 ## 1. Mandatory 4-Phase Execution Pipeline
 
-### 🔴 Phase 1: Full `/grill-me` + `/muaz-skill` Smart Intake Interview (NO CODE YET)
+### 🔴 Phase 1: Full `/intake` + `/muaz-skill` Smart Intake Interview (NO CODE YET)
 Before writing any code or locking a tech stack:
 1. **Load `/muaz-skill` Smart Intake** (`references/intake-template.md`, Q1–Q28):
    - Walk through the project decisions in **Frontier Rounds** using the `ask_question` tool (or numbered questions with recommended defaults).
@@ -30,19 +30,24 @@ Before writing any code or locking a tech stack:
 
 ---
 
-### 🟡 Phase 2: Architecture Blueprint (`/web-precode` + `/spec-kit`)
+### 🟡 Phase 2: Root Project Governance (`MASTER.md`, `DESIGN.md`, `SECURITY.md`) & Architecture Blueprint (`/web-precode` + `/spec-kit`)
 Once the user confirms the Intake Summary:
-1. **Execute `/web-precode`**:
+1. **Scaffold & Populate Root Project Governance Files (`MASTER.md`, `DESIGN.md`, `SECURITY.md`)**:
+   - Run `python scripts/agent_os.py precode init-root <project_name> --type <landing|cms|lms|sms|fintech>` to create the 3 project-root rule files:
+     - **`MASTER.md`**: Client/project rules, modular single-component-per-file directory structure, reusable component registry (`Button`, `Card`, `Modal`, `Header`, `Hero`, `Footer`), and shared API/DTO contracts between Admin Dashboard and Public pages.
+     - **`DESIGN.md`**: Project typography, 60-30-10 color tokens, spacing scale, and reusable UI primitive specifications.
+     - **`SECURITY.md`**: Auto-selected security tier by project type (**Tier 1 / ASVS L1**: Landing/Portfolio; **Tier 2 / ASVS L2**: Standard SaaS/CMS/E-Commerce; **Tier 3 / ASVS L3**: High-Assurance LMS/SMS/FinTech/ERP) with Owner override.
+2. **Execute `/web-precode` (for Level 4 Full Specs)**:
    - Run `python scripts/agent_os.py precode init <project_name>` and populate all 6 Pre-Coding Pillars (`01-PRD.md`, `02-TRD.md`, `03-APP_FLOW.md`, `04-DESIGN_BRIEF.md`, `05-BACKEND_SCHEMA.md`, `06-IMPLEMENTATION_PLAN.md`).
    - Run `python scripts/agent_os.py precode audit docs/precode/<project_name>` until Readiness Score = **100%**.
-2. **Execute `/spec-kit`**:
+3. **Execute `/spec-kit`**:
    - Create `specs/001-initial-build/spec.md`, `plan.md`, `checklist.md`, and dependency-ordered `tasks.md` (`/speckit-specify` → `/speckit-plan` → `/speckit-tasks`).
 
 ---
 
 ### 🟢 Phase 3: Stack-Agnostic Build with CMS Frontend, Backend & DB Armor
 Activate the matching skills for the confirmed stack and enforce all mandatory protections:
-1. **Frontend & CMS Layout Armor (`/muaz-skill` + `/rtl-logical-guard` + stack skill)**:
+1. **Frontend, CMS & Google Stitch Armor (`/muaz-skill` + `/generate-design` + `/manage-design-system` + `/stitch-loop` + `/rtl-logical-guard` + stack skill such as `/nextjs-fullstack`, `/react-components`, `/shadcn-ui`, `/react-vite-dashboard`)**:
    - **Sticky Top Navbar**: `sticky top-0 z-40` with backdrop blur.
    - **Sticky Sidebar Panel**: `lg:sticky lg:top-0 lg:h-dvh lg:w-64 lg:shrink-0 lg:overflow-y-auto` on desktop + off-canvas mobile drawer on `<1024px`.
    - **Main Content Wrapper**: `flex-1 min-w-0` so wide CMS data tables never overflow or break the sidebar.

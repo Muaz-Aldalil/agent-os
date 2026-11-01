@@ -39,7 +39,7 @@ IGNORE_DIRS = {
     "coverage", ".specify", ".system_generated", "brain", "__pycache__"
 }
 
-FRONTEND_EXTS = {".tsx", ".jsx", ".vue", ".svelte", ".blade.php", ".html", ".css", ".scss"}
+FRONTEND_EXTS = {".tsx", ".jsx", ".vue", ".svelte", ".astro", ".blade.php", ".html", ".css", ".scss"}
 
 # Severity Levels
 CRITICAL = "Critical"
@@ -69,7 +69,8 @@ class UIFinding:
     ):
         self.finding_id = finding_id
         self.title = title
-        self.category = category
+        category_str = category
+        self.category = category_str
         self.severity = severity
         self.confidence = confidence
         self.file_path = file_path.replace("\\", "/")
@@ -129,6 +130,8 @@ class FrontendTopology:
 
                 if "next" in deps:
                     self.framework = f"Next.js {deps.get('next', '')} (React {deps.get('react', '')})"
+                elif "astro" in deps:
+                    self.framework = f"Astro {deps.get('astro', '')}"
                 elif "nuxt" in deps:
                     self.framework = "Nuxt / Vue"
                 elif "vue" in deps:
@@ -182,17 +185,17 @@ class FrontendTopology:
                     # Classify
                     if "layout" in file.lower():
                         self.layouts.append(p)
-                    elif "page" in file.lower() or "view" in file.lower():
+                    elif "page" in file.lower() or "view" in file.lower() or "/pages/" in f"/{rel.lower()}":
                         self.pages.append(p)
                         self.routes.append(f"/{rel}")
                     elif "components" in rel.lower():
                         self.components.append(p)
 
                 # Check HTML dir="rtl"
-                if ext in {".html", ".blade.php", ".tsx", ".jsx"}:
+                if ext in {".html", ".blade.php", ".tsx", ".jsx", ".astro"}:
                     try:
                         c = p.read_text(encoding="utf-8", errors="ignore")
-                        if 'dir="rtl"' in c or "dir='rtl'" in c:
+                        if 'dir="rtl"' in c or "dir='rtl'" in c or "rtl:" in c:
                             self.has_rtl = True
                     except OSError as e:
                         sys.stderr.write(f"[ui-audit] Warning: Could not read {p.name}: {e}\n")

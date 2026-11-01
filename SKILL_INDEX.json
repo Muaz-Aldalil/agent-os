@@ -1,425 +1,1123 @@
 {
+  "mcp_servers": [
+    {
+      "domain": "Visual UI Generation & Design Systems (Mockups/Variants)",
+      "name": "StitchMCP",
+      "phase": "PLAN"
+    },
+    {
+      "domain": "Live Browser DOM, CSS, Console, LCP & Accessibility Debugging",
+      "name": "chrome-devtools-mcp",
+      "phase": "VERIFY"
+    },
+    {
+      "domain": "Up-to-Date Framework & Library Documentation (Next.js, Laravel, React, Tailwind)",
+      "name": "context7",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "Container Runtime & Service Orchestration",
+      "name": "docker",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "Custom Configured MCP Server (figma-dev-mode-mcp-server)",
+      "name": "figma-dev-mode-mcp-server",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "Official Google Gemini SDK & API Documentation Lookup",
+      "name": "gemini-api-docs",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "GitHub Repositories, Pull Requests, Issues & Code Search",
+      "name": "github",
+      "phase": "PLAN"
+    },
+    {
+      "domain": "Jira Issue Tracking, Sprints & Project Workflows",
+      "name": "jira",
+      "phase": "PLAN"
+    },
+    {
+      "domain": "Custom Configured MCP Server (mcp-search-console)",
+      "name": "mcp-search-console",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "Persistent Knowledge Graph for Cross-Session Entities & Decisions",
+      "name": "memory",
+      "phase": "THINK"
+    },
+    {
+      "domain": "Custom Configured MCP Server (mobbin)",
+      "name": "mobbin",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "Custom Configured MCP Server (mysql)",
+      "name": "mysql",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "Netlify Previews, Deploys & Hosting Management",
+      "name": "netlify",
+      "phase": "VERIFY"
+    },
+    {
+      "domain": "Automated Multi-Viewport E2E User Flows & UI Review Loop",
+      "name": "playwright",
+      "phase": "VERIFY"
+    },
+    {
+      "domain": "Custom Configured MCP Server (redis)",
+      "name": "redis",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "Structured Multi-Step Architectural Tradeoff & Root-Cause Analysis",
+      "name": "sequential-thinking",
+      "phase": "THINK"
+    },
+    {
+      "domain": "Stripe Billing, Checkout, Subscriptions & Webhook Integration",
+      "name": "stripe",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "Custom Configured MCP Server (supabase)",
+      "name": "supabase",
+      "phase": "BUILD"
+    },
+    {
+      "domain": "Custom Configured MCP Server (windsor)",
+      "name": "windsor",
+      "phase": "BUILD"
+    }
+  ],
+  "plugin_skills": [
+    {
+      "description": "Uses Chrome DevTools MCP for accessibility (a11y) debugging and auditing based on web.dev guidelines. Use when testing semantic HTML, ARIA labels, focus states, keyboard navigation, tap targets, and color contrast.",
+      "name": "a11y-debugging",
+      "phase": "VERIFY",
+      "plugin": "chrome-devtools-plugin",
+      "search_corpus": "a11y-debugging chrome-devtools-plugin uses chrome devtools mcp for accessibility (a11y) debugging and auditing based on web.dev guidelines. use when testing semantic html, aria labels, focus states, keyboard navigation, tap targets, and color contrast."
+    },
+    {
+      "description": "Detect keyword cannibalization — queries where multiple pages compete for the same rankings. Use when asked about competing pages, keyword overlap, or cannibalization.",
+      "name": "cannibalization-check",
+      "phase": "BUILD",
+      "plugin": "mcp-search-console",
+      "search_corpus": "cannibalization-check mcp-search-console detect keyword cannibalization — queries where multiple pages compete for the same rankings. use when asked about competing pages, keyword overlap, or cannibalization."
+    },
+    {
+      "description": "Uses Chrome DevTools via MCP for efficient debugging, troubleshooting and browser automation. Use when debugging web pages, automating browser interactions, analyzing performance, or inspecting network requests. This skill does not apply to `--slim` mode (MCP configuration).",
+      "name": "chrome-devtools",
+      "phase": "PLAN",
+      "plugin": "chrome-devtools-plugin",
+      "search_corpus": "chrome-devtools chrome-devtools-plugin uses chrome devtools via mcp for efficient debugging, troubleshooting and browser automation. use when debugging web pages, automating browser interactions, analyzing performance, or inspecting network requests. this skill does not apply to `--slim` mode (mcp configuration)."
+    },
+    {
+      "description": "Build and publish Chrome Extensions using Manifest V3 best practices. Use this skill whenever the user asks to create, modify, debug, or understand Chrome browser extensions, add-ons, or anything involving the Chrome Extensions API. Trigger on mentions of: 'Chrome extension', 'browser extension', 'manifest.json', 'content script', 'service worker' (in browser context), 'popup' (in browser extension context), 'side panel', 'chrome.* API', 'declarativeNetRequest', 'omnibox', 'context menu' (in extension context), 'userScripts', 'user script', 'script manager', or any request to build functionality that integrates with the Chrome browser UI. Also trigger for publishing to the Chrome Web Store: 'publish extension', preparing an extension for publishing, responding to a review rejection, writing permission justifications, or drafting a privacy policy.",
+      "name": "chrome-extensions",
+      "phase": "VERIFY",
+      "plugin": "modern-web-guidance-plugin",
+      "search_corpus": "chrome-extensions modern-web-guidance-plugin build and publish chrome extensions using manifest v3 best practices. use this skill whenever the user asks to create, modify, debug, or understand chrome browser extensions, add-ons, or anything involving the chrome extensions api. trigger on mentions of: 'chrome extension', 'browser extension', 'manifest.json', 'content script', 'service worker' (in browser context), 'popup' (in browser extension context), 'side panel', 'chrome.* api', 'declarativenetrequest', 'omnibox', 'context menu' (in extension context), 'userscripts', 'user script', 'script manager', or any request to build functionality that integrates with the chrome browser ui. also trigger for publishing to the chrome web store: 'publish extension', preparing an extension for publishing, responding to a review rejection, writing permission justifications, or drafting a privacy policy."
+    },
+    {
+      "description": "Find quick-win content optimization targets — high impressions, low CTR, position 11-20. Use when asked for content ideas or optimization opportunities.",
+      "name": "content-opportunities",
+      "phase": "BUILD",
+      "plugin": "mcp-search-console",
+      "search_corpus": "content-opportunities mcp-search-console find quick-win content optimization targets — high impressions, low ctr, position 11-20. use when asked for content ideas or optimization opportunities."
+    },
+    {
+      "description": "Instructions for handling API keys and credentials safely, verifying their presence, and prompting the user to add them if missing using a safe protocol.",
+      "name": "credentials",
+      "phase": "VERIFY",
+      "plugin": "science",
+      "search_corpus": "credentials science instructions for handling api keys and credentials safely, verifying their presence, and prompting the user to add them if missing using a safe protocol."
+    },
+    {
+      "description": "Guides debugging and optimizing Largest Contentful Paint (LCP) using Chrome DevTools MCP tools. Use this skill whenever the user asks about LCP performance, slow page loads, Core Web Vitals optimization, or wants to understand why their page's main content takes too long to appear. Also use when the user mentions \"largest contentful paint\", \"page load speed\", \"CWV\", or wants to improve how fast their hero image or main content renders.",
+      "name": "debug-optimize-lcp",
+      "phase": "BUILD",
+      "plugin": "chrome-devtools-plugin",
+      "search_corpus": "debug-optimize-lcp chrome-devtools-plugin guides debugging and optimizing largest contentful paint (lcp) using chrome devtools mcp tools. use this skill whenever the user asks about lcp performance, slow page loads, core web vitals optimization, or wants to understand why their page's main content takes too long to appear. also use when the user mentions \"largest contentful paint\", \"page load speed\", \"cwv\", or wants to improve how fast their hero image or main content renders."
+    },
+    {
+      "description": "Skill for converting an installed Firebase Extension (or extension source) into a standalone Cloud Functions for Firebase codebase or publishable npm package, including V1 to V2 trigger upgrades, lifecycle hooks, and declarative security",
+      "name": "extension-to-functions-codebase",
+      "phase": "VERIFY",
+      "plugin": "firebase",
+      "search_corpus": "extension-to-functions-codebase firebase skill for converting an installed firebase extension (or extension source) into a standalone cloud functions for firebase codebase or publishable npm package, including v1 to v2 trigger upgrades, lifecycle hooks, and declarative security"
+    },
+    {
+      "description": "Official skill for integrating Firebase AI Logic (Gemini API) into web applications. Covers setup, multimodal inference, structured output, and security.",
+      "name": "firebase-ai-logic-basics",
+      "phase": "VERIFY",
+      "plugin": "firebase",
+      "search_corpus": "firebase-ai-logic-basics firebase official skill for integrating firebase ai logic (gemini api) into web applications. covers setup, multimodal inference, structured output, and security."
+    },
+    {
+      "description": "Deploys and manages full-stack web applications (Next.js, Angular) with Server-Side Rendering (SSR) using Firebase App Hosting. Use when deploying Next.js/Angular apps, configuring apphosting.yaml or firebase.json apphosting blocks, managing secrets, setting up GitHub CI/CD, or configuring Blaze billing requirements. Don't use for classic static web hosting, Auth, Firestore, Crashlytics, or Xcode.",
+      "name": "firebase-app-hosting-basics",
+      "phase": "BUILD",
+      "plugin": "firebase",
+      "search_corpus": "firebase-app-hosting-basics firebase deploys and manages full-stack web applications (next.js, angular) with server-side rendering (ssr) using firebase app hosting. use when deploying next.js/angular apps, configuring apphosting.yaml or firebase.json apphosting blocks, managing secrets, setting up github ci/cd, or configuring blaze billing requirements. don't use for classic static web hosting, auth, firestore, crashlytics, or xcode."
+    },
+    {
+      "description": "Guide for setting up and using Firebase Authentication. Use this skill when the user's app requires user sign-in, user management, or secure data access using auth rules.",
+      "name": "firebase-auth-basics",
+      "phase": "BUILD",
+      "plugin": "firebase",
+      "search_corpus": "firebase-auth-basics firebase guide for setting up and using firebase authentication. use this skill when the user's app requires user sign-in, user management, or secure data access using auth rules."
+    },
+    {
+      "description": "Provides foundational Firebase CLI setup, CLI installation, version checks (`firebase-tools@latest --version`), CLI login (including --no-localhost), project creation, project selection (`firebase use`), and app config file downloads (`google-services.json`, `GoogleService-Info.plist`). Use ONLY for CLI login, project creation/switching, or downloading app config files. Don't use for Firebase Hosting deploy, Firestore, Auth, App Hosting, Data Connect, Crashlytics, or Remote Config.",
+      "name": "firebase-basics",
+      "phase": "BUILD",
+      "plugin": "firebase",
+      "search_corpus": "firebase-basics firebase provides foundational firebase cli setup, cli installation, version checks (`firebase-tools@latest --version`), cli login (including --no-localhost), project creation, project selection (`firebase use`), and app config file downloads (`google-services.json`, `googleservice-info.plist`). use only for cli login, project creation/switching, or downloading app config files. don't use for firebase hosting deploy, firestore, auth, app hosting, data connect, crashlytics, or remote config."
+    },
+    {
+      "description": "Comprehensive guide for Firebase Crashlytics, including provisioning and SDK usage. Use this skill when the user needs help setting up Crashlytics, adding crash reporting, or using the Crashlytics SDK in their application.",
+      "name": "firebase-crashlytics",
+      "phase": "BUILD",
+      "plugin": "firebase",
+      "search_corpus": "firebase-crashlytics firebase comprehensive guide for firebase crashlytics, including provisioning and sdk usage. use this skill when the user needs help setting up crashlytics, adding crash reporting, or using the crashlytics sdk in their application."
+    },
+    {
+      "description": "Builds and deploys Firebase SQL Connect (aka Firebase Data Connect) backends with PostgreSQL securely. Use when designing schemas with tables and relations, writing authorized queries and mutations, configuring real-time data updates, or generating type-safe SDKs. Use when you need a relational database with Firebase, or when the user mentions SQL Connect or Data Connect.",
+      "name": "firebase-data-connect",
+      "phase": "BUILD",
+      "plugin": "firebase",
+      "search_corpus": "firebase-data-connect firebase builds and deploys firebase sql connect (aka firebase data connect) backends with postgresql securely. use when designing schemas with tables and relations, writing authorized queries and mutations, configuring real-time data updates, or generating type-safe sdks. use when you need a relational database with firebase, or when the user mentions sql connect or data connect."
+    },
+    {
+      "description": "Sets up, manages, queries, and configures Cloud Firestore databases (Standard/Enterprise edition), including data modeling, security rules, indexes, and SDK integrations (Web, Python, iOS, Android, Flutter). Use when creating/listing Firestore databases, defining data models/indexes, writing SDK queries, or integrating Firestore SDKs. For authoring or modifying Firestore Security Rules (firestore.rules), delegate to the firestore-rules-author subagent if subagent delegation is available, or use firestore-rules-creation otherwise. Don't use for Firebase Hosting, Data Connect, Auth, Storage/GCS, Crashlytics, Functions, or BigQuery.",
+      "name": "firebase-firestore",
+      "phase": "VERIFY",
+      "plugin": "firebase",
+      "search_corpus": "firebase-firestore firebase sets up, manages, queries, and configures cloud firestore databases (standard/enterprise edition), including data modeling, security rules, indexes, and sdk integrations (web, python, ios, android, flutter). use when creating/listing firestore databases, defining data models/indexes, writing sdk queries, or integrating firestore sdks. for authoring or modifying firestore security rules (firestore.rules), delegate to the firestore-rules-author subagent if subagent delegation is available, or use firestore-rules-creation otherwise. don't use for firebase hosting, data connect, auth, storage/gcs, crashlytics, functions, or bigquery."
+    },
+    {
+      "description": "Deploys and configures classic Firebase Hosting for static websites, single-page apps (SPAs), and microservices. Use when deploying static sites/SPAs, setting up custom domains, configuring firebase.json hosting settings (redirects, rewrites, headers, multi-site), or managing preview channels. Don't use for Firebase App Hosting (Next.js/SSR), Auth, Firestore queries/rules, Data Connect, or Crashlytics.",
+      "name": "firebase-hosting-basics",
+      "phase": "VERIFY",
+      "plugin": "firebase",
+      "search_corpus": "firebase-hosting-basics firebase deploys and configures classic firebase hosting for static websites, single-page apps (spas), and microservices. use when deploying static sites/spas, setting up custom domains, configuring firebase.json hosting settings (redirects, rewrites, headers, multi-site), or managing preview channels. don't use for firebase app hosting (next.js/ssr), auth, firestore queries/rules, data connect, or crashlytics."
+    },
+    {
+      "description": "Manages Firebase Remote Config templates, feature flags, loading strategies, and SDKs (Android, iOS). Use when downloading/deploying remoteconfig JSON templates, managing version history/feature flags, setting in-app defaults, fetchAndActivate(), real-time listeners, or SDK setup. Don't use for Firebase Hosting, Auth, Firestore, Data Connect, Crashlytics, or App Hosting.",
+      "name": "firebase-remote-config-basics",
+      "phase": "BUILD",
+      "plugin": "firebase",
+      "search_corpus": "firebase-remote-config-basics firebase manages firebase remote config templates, feature flags, loading strategies, and sdks (android, ios). use when downloading/deploying remoteconfig json templates, managing version history/feature flags, setting in-app defaults, fetchandactivate(), real-time listeners, or sdk setup. don't use for firebase hosting, auth, firestore, data connect, crashlytics, or app hosting."
+    },
+    {
+      "description": "Designs, authors, refactors, and hardens production-grade Cloud Firestore Security Rules (firestore.rules). IMPORTANT: If subagent delegation AND the firestore-rules-author subagent are available in your environment, delegate authoring firestore.rules to the firestore-rules-author subagent. If subagent delegation is unavailable (e.g. not enabled in the IDE), firestore-rules-author is not installed, or you are running inside firestore-rules-author, follow this skill directly.",
+      "name": "firestore-rules-creation",
+      "phase": "VERIFY",
+      "plugin": "firebase",
+      "search_corpus": "firestore-rules-creation firebase designs, authors, refactors, and hardens production-grade cloud firestore security rules (firestore.rules). important: if subagent delegation and the firestore-rules-author subagent are available in your environment, delegate authoring firestore.rules to the firestore-rules-author subagent. if subagent delegation is unavailable (e.g. not enabled in the ide), firestore-rules-author is not installed, or you are running inside firestore-rules-author, follow this skill directly."
+    },
+    {
+      "description": "Read, create, and manage Google Calendar events. Use when the user shares a calendar.google.com URL, asks what is on their schedule, wants an event found, created, updated, deleted, or moved, wants to RSVP, wants free/busy or scheduling conflicts checked before proposing a time, wants focus time or an out-of-office block created, wants an event quick-added from a phrase or imported from an ICS file, or wants to know where someone is working from and which timezone they are in. Don't use for Gmail, Chat, or Tasks.",
+      "name": "gcalendar",
+      "phase": "BUILD",
+      "plugin": "gcalendar",
+      "search_corpus": "gcalendar gcalendar read, create, and manage google calendar events. use when the user shares a calendar.google.com url, asks what is on their schedule, wants an event found, created, updated, deleted, or moved, wants to rsvp, wants free/busy or scheduling conflicts checked before proposing a time, wants focus time or an out-of-office block created, wants an event quick-added from a phrase or imported from an ics file, or wants to know where someone is working from and which timezone they are in. don't use for gmail, chat, or tasks."
+    },
+    {
+      "description": "Read, create, edit, and manage Google Docs. Use when the user shares a docs.google.com URL, asks to summarize or extract content from a doc, wants a doc drafted, edited, formatted, or commented on, wants tables, images, or smart chips inserted, wants markdown imported or synchronized with a doc, or wants a doc exported. Requires a known document ID — to find documents, use the gdrive skill from the Google Drive plugin; if it isn't installed, ask the user for the doc link. Don't use for Google Sheets, Slides, or Drive file management.",
+      "name": "gdocs",
+      "phase": "BUILD",
+      "plugin": "gdocs",
+      "search_corpus": "gdocs gdocs read, create, edit, and manage google docs. use when the user shares a docs.google.com url, asks to summarize or extract content from a doc, wants a doc drafted, edited, formatted, or commented on, wants tables, images, or smart chips inserted, wants markdown imported or synchronized with a doc, or wants a doc exported. requires a known document id — to find documents, use the gdrive skill from the google drive plugin; if it isn't installed, ask the user for the doc link. don't use for google sheets, slides, or drive file management."
+    },
+    {
+      "description": "Use this skill when writing code that calls the Gemini API for text generation, multi-turn chat, multimodal understanding, image generation, video generation, speech generation (TTS), voice design, voice replication, streaming responses, background research tasks, function calling, structured output, or migrating from the old generateContent API. Covers SDK usage and best practices for Gemini models and agents in Python and TypeScript.",
+      "name": "gemini-api-dev",
+      "phase": "THINK",
+      "plugin": "gemini-api",
+      "search_corpus": "gemini-api-dev gemini-api use this skill when writing code that calls the gemini api for text generation, multi-turn chat, multimodal understanding, image generation, video generation, speech generation (tts), voice design, voice replication, streaming responses, background research tasks, function calling, structured output, or migrating from the old generatecontent api. covers sdk usage and best practices for gemini models and agents in python and typescript."
+    },
+    {
+      "description": "Use this skill when building real-time, bidirectional streaming applications with the Gemini Live API, or migrating legacy Live models (2.0/2.5/3.1) to Gemini 3.8 Live. Covers WebSocket-based audio/video/text streaming, voice activity detection (VAD), background reasoning (extended thinking), asynchronous function calling, session management, ephemeral tokens, live transcription, and live translation. SDKs covered - google-genai (Python), @google/genai (JavaScript/TypeScript).",
+      "name": "gemini-live-api-dev",
+      "phase": "BUILD",
+      "plugin": "gemini-api",
+      "search_corpus": "gemini-live-api-dev gemini-api use this skill when building real-time, bidirectional streaming applications with the gemini live api, or migrating legacy live models (2.0/2.5/3.1) to gemini 3.8 live. covers websocket-based audio/video/text streaming, voice activity detection (vad), background reasoning (extended thinking), asynchronous function calling, session management, ephemeral tokens, live transcription, and live translation. sdks covered - google-genai (python), @google/genai (javascript/typescript)."
+    },
+    {
+      "description": "Use this skill for generative video editing, text-to-video, image-referenced video generation, first-frame-to-video, first-and-last-frame transitions, and video extensions using Gemini Omni 1.1 Flash (gemini-omni-1.1-flash) via the official google-genai SDK. Includes workflows for pre-processing/optimizing high-resolution or long source videos with ffmpeg, stripping audio for full sound regeneration, and handling turn-by-turn video editing and parallel execution.",
+      "name": "gemini-omni-flash-api",
+      "phase": "THINK",
+      "plugin": "gemini-api",
+      "search_corpus": "gemini-omni-flash-api gemini-api use this skill for generative video editing, text-to-video, image-referenced video generation, first-frame-to-video, first-and-last-frame transitions, and video extensions using gemini omni 1.1 flash (gemini-omni-1.1-flash) via the official google-genai sdk. includes workflows for pre-processing/optimizing high-resolution or long source videos with ffmpeg, stripping audio for full sound regeneration, and handling turn-by-turn video editing and parallel execution."
+    },
+    {
+      "description": "Design, implement, and debug autonomous AI agents and multi-agent systems using the Google Antigravity (AGY) SDK. ACTIVATE this skill when the user wants to create, configure, or orchestrate Google Antigravity agents.",
+      "name": "google-antigravity-sdk",
+      "phase": "BUILD",
+      "plugin": "google-antigravity-sdk",
+      "search_corpus": "google-antigravity-sdk google-antigravity-sdk design, implement, and debug autonomous ai agents and multi-agent systems using the google antigravity (agy) sdk. activate this skill when the user wants to create, configure, or orchestrate google antigravity agents."
+    },
+    {
+      "description": "A collection of skills for architecting and implementing production-ready code using Google Maps Platform APIs and SDKs for any map, place, address, geocoding, routing/ETA (including eco-friendly routing), nearby search, 3D / Street View / static map, marker clustering, custom styling, drawing, geofencing, heatmap, or environmental (air-quality / pollen / solar / weather) feature — across Web, Android, iOS, and Web Services APIs. For prototyping, use the public Maps Demo Key — no billing setup and no Cloud project required, covering a growing set of the most popular Google Maps Platform APIs. For production, the skill prompts you to create and restrict your own key. All non-trivial code is grounded in freshly retrieved docs via the Google Maps Platform Code Assist service (no reliance on training-data memory).",
+      "name": "google-maps-platform",
+      "phase": "THINK",
+      "plugin": "google_maps_platform",
+      "search_corpus": "google-maps-platform google_maps_platform a collection of skills for architecting and implementing production-ready code using google maps platform apis and sdks for any map, place, address, geocoding, routing/eta (including eco-friendly routing), nearby search, 3d / street view / static map, marker clustering, custom styling, drawing, geofencing, heatmap, or environmental (air-quality / pollen / solar / weather) feature — across web, android, ios, and web services apis. for prototyping, use the public maps demo key — no billing setup and no cloud project required, covering a growing set of the most popular google maps platform apis. for production, the skill prompts you to create and restrict your own key. all non-trivial code is grounded in freshly retrieved docs via the google maps platform code assist service (no reliance on training-data memory)."
+    },
+    {
+      "description": "Read, write, format, and manage Google Sheets. Use when the user shares a sheets.google.com or docs.google.com/spreadsheets URL, asks to read or summarize spreadsheet data, wants cells written, formatted, sorted, merged, or validated, wants rows/columns inserted or deleted, wants charts, pivot tables, or tables added, wants CSV imported, or wants a spreadsheet created, copied, shared, or exported. Don't use for Google Docs, Slides, or Drive file management.",
+      "name": "gsheets",
+      "phase": "BUILD",
+      "plugin": "gsheets",
+      "search_corpus": "gsheets gsheets read, write, format, and manage google sheets. use when the user shares a sheets.google.com or docs.google.com/spreadsheets url, asks to read or summarize spreadsheet data, wants cells written, formatted, sorted, merged, or validated, wants rows/columns inserted or deleted, wants charts, pivot tables, or tables added, wants csv imported, or wants a spreadsheet created, copied, shared, or exported. don't use for google docs, slides, or drive file management."
+    },
+    {
+      "description": "Read, create, and edit Google Slides presentations. Use when creating presentations, when the user shares a slides.google.com URL, asks to summarize or extract content from a deck, wants slides drafted or updated, or wants a presentation exported. Don't use for Google Docs, Sheets, or Drive file management.",
+      "name": "gslides",
+      "phase": "BUILD",
+      "plugin": "gslides",
+      "search_corpus": "gslides gslides read, create, and edit google slides presentations. use when creating presentations, when the user shares a slides.google.com url, asks to summarize or extract content from a deck, wants slides drafted or updated, or wants a presentation exported. don't use for google docs, sheets, or drive file management."
+    },
+    {
+      "description": "Audit indexing status across top pages. Use when asked about crawling, indexing issues, or whether pages are indexed by Google.",
+      "name": "indexing-audit",
+      "phase": "VERIFY",
+      "plugin": "mcp-search-console",
+      "search_corpus": "indexing-audit mcp-search-console audit indexing status across top pages. use when asked about crawling, indexing issues, or whether pages are indexed by google."
+    },
+    {
+      "description": "Diagnoses and resolves memory leaks in JavaScript/Node.js applications. Use when a user reports high memory usage, OOM errors, or wants to capture, compare, or inspect heap snapshots with Chrome DevTools MCP memory tools.",
+      "name": "memory-leak-debugging",
+      "phase": "PLAN",
+      "plugin": "chrome-devtools-plugin",
+      "search_corpus": "memory-leak-debugging chrome-devtools-plugin diagnoses and resolves memory leaks in javascript/node.js applications. use when a user reports high memory usage, oom errors, or wants to capture, compare, or inspect heap snapshots with chrome devtools mcp memory tools."
+    },
+    {
+      "description": "Search tool for modern web development best practices. MANDATORY: Execute FIRST for all HTML/CSS and clientside JS tasks. Do NOT skip — web APIs evolve rapidly and training weights contain obsolete patterns. Trigger immediately for: - UI/Layout: Modals/dialogs/popovers, tables, dark mode, anchor positioning, container queries, `:has()`, etc. - Scroll/Motion: View Transitions, Scroll-driven animations, parallax/reveals, etc. - Performance: CWV (LCP, INP), content-visibility, Fetch Priority, image optimization, etc. - System/APIs: Security, passkeys, HTML sanitization, Web Components, dates/timezones, Built-in AI, WebAssembly, etc. - Frameworks: Standard HTML/CSS/DOM in React, Vue, Angular, etc. - General Frontend: Forms, validation (`:user-valid`), autofill, accessibility, custom selects, scrollbars, etc. DO NOT trigger for: - Backend: SQL, ORMs, API routes, etc. - Infra/Scripts: CI/CD, Docker, Actions, Python/Go, Git, etc. - Tooling/Trivial: Vite, tsconfig, ESLint, tests, copy/renames, 3P docs, etc.",
+      "name": "modern-web-guidance",
+      "phase": "VERIFY",
+      "plugin": "modern-web-guidance-plugin",
+      "search_corpus": "modern-web-guidance modern-web-guidance-plugin search tool for modern web development best practices. mandatory: execute first for all html/css and clientside js tasks. do not skip — web apis evolve rapidly and training weights contain obsolete patterns. trigger immediately for: - ui/layout: modals/dialogs/popovers, tables, dark mode, anchor positioning, container queries, `:has()`, etc. - scroll/motion: view transitions, scroll-driven animations, parallax/reveals, etc. - performance: cwv (lcp, inp), content-visibility, fetch priority, image optimization, etc. - system/apis: security, passkeys, html sanitization, web components, dates/timezones, built-in ai, webassembly, etc. - frameworks: standard html/css/dom in react, vue, angular, etc. - general frontend: forms, validation (`:user-valid`), autofill, accessibility, custom selects, scrollbars, etc. do not trigger for: - backend: sql, orms, api routes, etc. - infra/scripts: ci/cd, docker, actions, python/go, git, etc. - tooling/trivial: vite, tsconfig, eslint, tests, copy/renames, 3p docs, etc."
+    },
+    {
+      "description": "Searches, retrieves, and synthesizes official Google developer documentation across Google Cloud, AI/Gemini, Android, Chrome, Web, Flutter, Go, Firebase, and other Google developer platforms. Integrates with the Developer Knowledge MCP server (search_documents, get_documents, answer_query) or the Developer Knowledge REST API fallback. Use when searching for gcloud CLI commands, API syntax, IAM permissions, official documentation, architectural comparisons, or product choice overviews. Don't use for local filesystem lookups or non-Google documentation.",
+      "name": "retrieving-developer-knowledge",
+      "phase": "THINK",
+      "plugin": "google-developer-knowledge",
+      "search_corpus": "retrieving-developer-knowledge google-developer-knowledge searches, retrieves, and synthesizes official google developer documentation across google cloud, ai/gemini, android, chrome, web, flutter, go, firebase, and other google developer platforms. integrates with the developer knowledge mcp server (search_documents, get_documents, answer_query) or the developer knowledge rest api fallback. use when searching for gcloud cli commands, api syntax, iam permissions, official documentation, architectural comparisons, or product choice overviews. don't use for local filesystem lookups or non-google documentation."
+    },
+    {
+      "description": "Generate a complete weekly SEO performance report for a site. Use when asked for a site summary, performance overview, or weekly report.",
+      "name": "seo-weekly-report",
+      "phase": "BUILD",
+      "plugin": "mcp-search-console",
+      "search_corpus": "seo-weekly-report mcp-search-console generate a complete weekly seo performance report for a site. use when asked for a site summary, performance overview, or weekly report."
+    },
+    {
+      "description": "Uses Chrome DevTools MCP and documentation to troubleshoot connection and target issues. Trigger this skill when list_pages, new_page, or navigate_page fail, or when the server initialization fails.",
+      "name": "troubleshooting",
+      "phase": "BUILD",
+      "plugin": "chrome-devtools-plugin",
+      "search_corpus": "troubleshooting chrome-devtools-plugin uses chrome devtools mcp and documentation to troubleshoot connection and target issues. trigger this skill when list_pages, new_page, or navigate_page fail, or when the server initialization fails."
+    },
+    {
+      "description": "Checks whether the uv Python package manager is installed and installs it if missing. Ensures uv is on PATH. Use when another skill requires uv as a prerequisite.",
+      "name": "uv",
+      "phase": "BUILD",
+      "plugin": "science",
+      "search_corpus": "uv science checks whether the uv python package manager is installed and installs it if missing. ensures uv is on path. use when another skill requires uv as a prerequisite."
+    },
+    {
+      "description": "Distills a completed user workflow or interaction into a reusable agent skill. Use when the user asks to turn their workflow, interaction, or multi-step process into a skill, or when they say \"make this a skill\", \"create a skill from what we just did\", \"package this workflow\" or similar. Do not use for creating skills from scratch without an existing workflow (use a generic skill-creator for that).",
+      "name": "workflow-skill-creator",
+      "phase": "THINK",
+      "plugin": "science",
+      "search_corpus": "workflow-skill-creator science distills a completed user workflow or interaction into a reusable agent skill. use when the user asks to turn their workflow, interaction, or multi-step process into a skill, or when they say \"make this a skill\", \"create a skill from what we just did\", \"package this workflow\" or similar. do not use for creating skills from scratch without an existing workflow (use a generic skill-creator for that)."
+    },
+    {
+      "description": "Safely modifies Xcode projects (.pbxproj) to add Swift Packages and link files. Use this skill whenever an iOS project needs dependencies installed (e.g. Firebase, Alamofire).",
+      "name": "xcode-project-setup",
+      "phase": "BUILD",
+      "plugin": "firebase",
+      "search_corpus": "xcode-project-setup firebase safely modifies xcode projects (.pbxproj) to add swift packages and link files. use this skill whenever an ios project needs dependencies installed (e.g. firebase, alamofire)."
+    }
+  ],
   "skills": [
+    {
+      "category": "Core Architecture & Workflow",
+      "description": "Orchestrates multi-agent workflows: parallel research fan-out, stochastic consensus, structured debate, build-verify QA loops, autonomous optimization research, dual-axis security audits, agent workspace scaffolding, and model-outage fallback. Use when a task needs parallelization, independent second opinions, continuous self-improvement loops, pre-deploy security review, workspace organization, or recovery from model degradation. Triggers on: parallelize, fan-out, subagents, consensus, debate, second opinions, research loop, auto-research, make it faster continuously, security audit, scaffold workspace, organize folders, model down, fallback.",
+      "file": "skills/agentic-workflows/SKILL.md",
+      "name": "agentic-workflows",
+      "phase": "THINK",
+      "role": "guard",
+      "search_corpus": "agentic-workflows orchestrates multi-agent workflows: parallel research fan-out, stochastic consensus, structured debate, build-verify qa loops, autonomous optimization research, dual-axis security audits, agent workspace scaffolding, and model-outage fallback. use when a task needs parallelization, independent second opinions, continuous self-improvement loops, pre-deploy security review, workspace organization, or recovery from model degradation. triggers on: parallelize, fan-out, subagents, consensus, debate, second opinions, research loop, auto-research, make it faster continuously, security audit, scaffold workspace, organize folders, model down, fallback. core architecture & workflow guard think"
+    },
     {
       "category": "Backend & Data Systems",
       "description": "Use when building, designing, debugging, or optimizing backend systems, REST/GraphQL APIs, authentication, database layers, or server-side logic. Covers Node.js, Python, Swift, PHP. Triggers on: API, endpoint, server, auth, JWT, database query, migration, middleware, route.",
       "file": "skills/backend-api/SKILL.md",
       "name": "backend-api",
-      "search_corpus": "backend-api use when building, designing, debugging, or optimizing backend systems, rest/graphql apis, authentication, database layers, or server-side logic. covers node.js, python, swift, php. triggers on: api, endpoint, server, auth, jwt, database query, migration, middleware, route. backend & data systems"
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "backend-api use when building, designing, debugging, or optimizing backend systems, rest/graphql apis, authentication, database layers, or server-side logic. covers node.js, python, swift, php. triggers on: api, endpoint, server, auth, jwt, database query, migration, middleware, route. backend & data systems domain-skill build"
     },
     {
       "category": "Backend & Data Systems",
       "description": "Backend data procedures for the Backend Agent: relational/NoSQL modeling, caching, search, transactions, migrations, indexing, query optimization, database testing practices. Loaded on demand per detected stack.",
       "file": "skills/backend-data/SKILL.md",
       "name": "backend-data",
-      "search_corpus": "backend-data backend data procedures for the backend agent: relational/nosql modeling, caching, search, transactions, migrations, indexing, query optimization, database testing practices. loaded on demand per detected stack. backend & data systems"
+      "phase": "BUILD",
+      "role": "sub-module",
+      "search_corpus": "backend-data backend data procedures for the backend agent: relational/nosql modeling, caching, search, transactions, migrations, indexing, query optimization, database testing practices. loaded on demand per detected stack. backend & data systems sub-module build"
     },
     {
       "category": "Backend & Data Systems",
       "description": "Backend HTTP/API procedures for the Backend Agent: REST/GraphQL conventions, gRPC, WebSockets, SSE, webhooks, streaming, boundary validation, versioning, contract testing practices. Loaded on demand per detected stack.",
       "file": "skills/backend-http/SKILL.md",
       "name": "backend-http",
-      "search_corpus": "backend-http backend http/api procedures for the backend agent: rest/graphql conventions, grpc, websockets, sse, webhooks, streaming, boundary validation, versioning, contract testing practices. loaded on demand per detected stack. backend & data systems"
+      "phase": "BUILD",
+      "role": "sub-module",
+      "search_corpus": "backend-http backend http/api procedures for the backend agent: rest/graphql conventions, grpc, websockets, sse, webhooks, streaming, boundary validation, versioning, contract testing practices. loaded on demand per detected stack. backend & data systems sub-module build"
     },
     {
       "category": "Backend & Data Systems",
       "description": "Backend identity procedures for the Backend Agent: sessions, JWT, OAuth2, OIDC, API keys, RBAC/ABAC, MFA/SSO, session stores, token lifecycle, server-side enforcement. Loaded on demand per detected stack.",
       "file": "skills/backend-identity/SKILL.md",
       "name": "backend-identity",
-      "search_corpus": "backend-identity backend identity procedures for the backend agent: sessions, jwt, oauth2, oidc, api keys, rbac/abac, mfa/sso, session stores, token lifecycle, server-side enforcement. loaded on demand per detected stack. backend & data systems"
+      "phase": "BUILD",
+      "role": "sub-module",
+      "search_corpus": "backend-identity backend identity procedures for the backend agent: sessions, jwt, oauth2, oidc, api keys, rbac/abac, mfa/sso, session stores, token lifecycle, server-side enforcement. loaded on demand per detected stack. backend & data systems sub-module build"
     },
     {
       "category": "Backend & Data Systems",
       "description": "Backend operations procedures for the Backend Agent: background jobs, queues, workers, object storage, deployment concerns, observability (structured logging, metrics, tracing, health), deployment verification. Loaded on demand per detected stack.",
       "file": "skills/backend-ops/SKILL.md",
       "name": "backend-ops",
-      "search_corpus": "backend-ops backend operations procedures for the backend agent: background jobs, queues, workers, object storage, deployment concerns, observability (structured logging, metrics, tracing, health), deployment verification. loaded on demand per detected stack. backend & data systems"
+      "phase": "BUILD",
+      "role": "sub-module",
+      "search_corpus": "backend-ops backend operations procedures for the backend agent: background jobs, queues, workers, object storage, deployment concerns, observability (structured logging, metrics, tracing, health), deployment verification. loaded on demand per detected stack. backend & data systems sub-module build"
+    },
+    {
+      "category": "Quality & Security Guards",
+      "description": "Full-stack bug and vulnerability investigation agent. Invoke with an explicitly authorized target (feature, component, API, change, or workflow) to find meaningful, evidence-backed functional bugs and security issues across frontend, backend, and their boundaries. Read-only by design; reports only, never modifies.",
+      "file": "skills/bug-hunter/SKILL.md",
+      "name": "bug-hunter",
+      "phase": "VERIFY",
+      "role": "domain-skill",
+      "search_corpus": "bug-hunter full-stack bug and vulnerability investigation agent. invoke with an explicitly authorized target (feature, component, api, change, or workflow) to find meaningful, evidence-backed functional bugs and security issues across frontend, backend, and their boundaries. read-only by design; reports only, never modifies. quality & security guards domain-skill verify"
     },
     {
       "category": "Simplicity & Anti-Bloat (Ponytail)",
       "description": "Ultra-compressed communication mode that cuts output tokens while keeping technical accuracy. Levels: lite, full, ultra and the wenyan variants. Use for /caveman, \"caveman mode\", \"talk like caveman\", \"be brief\" or \"less tokens\".",
       "file": "skills/caveman/SKILL.md",
       "name": "caveman",
-      "search_corpus": "caveman ultra-compressed communication mode that cuts output tokens while keeping technical accuracy. levels: lite, full, ultra and the wenyan variants. use for /caveman, \"caveman mode\", \"talk like caveman\", \"be brief\" or \"less tokens\". simplicity & anti-bloat (ponytail)"
+      "phase": "THINK",
+      "role": "domain-skill",
+      "search_corpus": "caveman ultra-compressed communication mode that cuts output tokens while keeping technical accuracy. levels: lite, full, ultra and the wenyan variants. use for /caveman, \"caveman mode\", \"talk like caveman\", \"be brief\" or \"less tokens\". simplicity & anti-bloat (ponytail) domain-skill think"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
       "description": "All-in-one Pre-Push & PR Quality, Security, UI, and Anti-Bloat Review. Chains /clean-code-guard, /test-guard, /rtl-logical-guard, /next-server-action-guard, /pest-security-guard, /ponytail-review, and /debate-review into a single command.",
       "file": "skills/check-all/SKILL.md",
       "name": "check-all",
-      "search_corpus": "check-all all-in-one pre-push & pr quality, security, ui, and anti-bloat review. chains /clean-code-guard, /test-guard, /rtl-logical-guard, /next-server-action-guard, /pest-security-guard, /ponytail-review, and /debate-review into a single command. beginner situation combos (all-in-one)"
+      "phase": "VERIFY",
+      "role": "master-command",
+      "search_corpus": "check-all all-in-one pre-push & pr quality, security, ui, and anti-bloat review. chains /clean-code-guard, /test-guard, /rtl-logical-guard, /next-server-action-guard, /pest-security-guard, /ponytail-review, and /debate-review into a single command. beginner situation combos (all-in-one) master-command verify"
     },
     {
       "category": "Quality & Security Guards",
-      "description": "Review generated or changed production code before it ships, using Clean Code, SOLID, DRY, KISS, YAGNI, and LLM-specific failure-mode checks in any programming language. Best used reactively after an agent writes, edits, refactors, or fixes code, before presenting, committing, or merging the result. Use when the user asks \"review this PR\", \"is this safe to merge?\", \"make this cleaner\", \"audit this code\", \"refactor this\", \"fix this bug\", or after a coding agent produced implementation code. Can also guide writing when explicitly invoked before a risky edit. Invoke it on your own initiative the moment you finish writing, editing, or refactoring non-trivial production code, before presenting or committing — don't wait to be asked. DO NOT USE for factual/conceptual questions, CI/tooling config, git workflow, running/debugging tests, pure architecture discussion, prose writing, data analysis, or test-code review (use test-guard).",
+      "description": "Review generated or changed production code before it ships using Clean Code, SOLID, DRY, KISS, YAGNI, architecture layer boundaries, and AI failure-mode checks. Use when reviewing PRs, auditing/refactoring code, or after writing non-trivial production code. Do not use for test-code review (use test-guard).",
       "file": "skills/clean-code-guard/SKILL.md",
       "name": "clean-code-guard",
-      "search_corpus": "clean-code-guard review generated or changed production code before it ships, using clean code, solid, dry, kiss, yagni, and llm-specific failure-mode checks in any programming language. best used reactively after an agent writes, edits, refactors, or fixes code, before presenting, committing, or merging the result. use when the user asks \"review this pr\", \"is this safe to merge?\", \"make this cleaner\", \"audit this code\", \"refactor this\", \"fix this bug\", or after a coding agent produced implementation code. can also guide writing when explicitly invoked before a risky edit. invoke it on your own initiative the moment you finish writing, editing, or refactoring non-trivial production code, before presenting or committing — don't wait to be asked. do not use for factual/conceptual questions, ci/tooling config, git workflow, running/debugging tests, pure architecture discussion, prose writing, data analysis, or test-code review (use test-guard). quality & security guards"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "clean-code-guard review generated or changed production code before it ships using clean code, solid, dry, kiss, yagni, architecture layer boundaries, and ai failure-mode checks. use when reviewing prs, auditing/refactoring code, or after writing non-trivial production code. do not use for test-code review (use test-guard). quality & security guards guard verify"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Convert frontend code (Vite, React, Angular, Vue, etc.) to a Stitch Design by chaining static HTML extraction, design system extraction, and file upload. **ALWAYS** use this skill when the user's intent is to move existing web apps or React/Angular/Vue components into Stitch (e.g., requests to \"save\", \"migrate\", or \"upload\"). You must use this skill even for simple \"save\" operations, as it is the only way to ensure the design system is extracted and assets are properly linked.",
+      "file": "skills/code-to-design/SKILL.md",
+      "name": "code-to-design",
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "code-to-design convert frontend code (vite, react, angular, vue, etc.) to a stitch design by chaining static html extraction, design system extraction, and file upload. **always** use this skill when the user's intent is to move existing web apps or react/angular/vue components into stitch (e.g., requests to \"save\", \"migrate\", or \"upload\"). you must use this skill even for simple \"save\" operations, as it is the only way to ensure the design system is extracted and assets are properly linked. google stitch design & ui suite domain-skill build"
+    },
+    {
+      "category": "Quality & Security Guards",
+      "description": "Uses Chrome DevTools MCP for inspecting, debugging, and testing cookies, session state, authentication issues, and cookie consent compliance. Use when diagnosing 401/403 errors, authentication redirects, session expiration, Cookie/Set-Cookie header issues, cookie banner consent conformance, or third-party cookie/SameSite/Partitioned cookie warnings.",
+      "file": "skills/cookie-debugging/SKILL.md",
+      "name": "cookie-debugging",
+      "phase": "PLAN",
+      "role": "domain-skill",
+      "search_corpus": "cookie-debugging uses chrome devtools mcp for inspecting, debugging, and testing cookies, session state, authentication issues, and cookie consent compliance. use when diagnosing 401/403 errors, authentication redirects, session expiration, cookie/set-cookie header issues, cookie banner consent conformance, or third-party cookie/samesite/partitioned cookie warnings. quality & security guards domain-skill plan"
+    },
+    {
+      "category": "Core Architecture & Workflow",
+      "description": "Adversarial Draft Self-Review & Gap Auditor (\"Treat Your Previous Response as a Draft That May Be Wrong\"). Activates via /critique or automatically before presenting any Level 3-4 engineering plan, specification, or architectural proposal. Audits drafts against codebase truth, hidden Backend/Database blast radius, accidental UI/navigation deletions, missing 6-state matrix coverage, over-engineering, and parallel-tab file collisions.",
+      "file": "skills/critique/SKILL.md",
+      "name": "critique",
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "critique adversarial draft self-review & gap auditor (\"treat your previous response as a draft that may be wrong\"). activates via /critique or automatically before presenting any level 3-4 engineering plan, specification, or architectural proposal. audits drafts against codebase truth, hidden backend/database blast radius, accidental ui/navigation deletions, missing 6-state matrix coverage, over-engineering, and parallel-tab file collisions. core architecture & workflow guard verify"
     },
     {
       "category": "Core Architecture & Workflow",
       "description": "Audits, activates, and manages the low-bandwidth Data-Saver Profile for Antigravity IDE. Reduces daily internet data consumption by 75-85% by disabling background ghost-text completions, silent IDE and extension updates, continuous Git autofetch, and telemetry.",
       "file": "skills/data-saver/SKILL.md",
       "name": "data-saver",
-      "search_corpus": "data-saver audits, activates, and manages the low-bandwidth data-saver profile for antigravity ide. reduces daily internet data consumption by 75-85% by disabling background ghost-text completions, silent ide and extension updates, continuous git autofetch, and telemetry. core architecture & workflow"
+      "phase": "THINK",
+      "role": "guard",
+      "search_corpus": "data-saver audits, activates, and manages the low-bandwidth data-saver profile for antigravity ide. reduces daily internet data consumption by 75-85% by disabling background ghost-text completions, silent ide and extension updates, continuous git autofetch, and telemetry. core architecture & workflow guard think"
     },
     {
       "category": "Backend & Data Systems",
       "description": "Use when designing database schemas, writing queries, creating migrations, optimizing performance, or managing data layer across PostgreSQL, MongoDB, SQLite, Firebase, Redis. Triggers on: schema, query, migration, database, SQL, index, relation, collection, Firestore.",
       "file": "skills/database/SKILL.md",
       "name": "database",
-      "search_corpus": "database use when designing database schemas, writing queries, creating migrations, optimizing performance, or managing data layer across postgresql, mongodb, sqlite, firebase, redis. triggers on: schema, query, migration, database, sql, index, relation, collection, firestore. backend & data systems"
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "database use when designing database schemas, writing queries, creating migrations, optimizing performance, or managing data layer across postgresql, mongodb, sqlite, firebase, redis. triggers on: schema, query, migration, database, sql, index, relation, collection, firestore. backend & data systems domain-skill build"
     },
     {
       "category": "Core Architecture & Workflow",
       "description": "Two-model debate review of a GitHub PR, GitLab MR, Azure DevOps PR, or local working tree, posted as inline comments or printed. Use for any PR/MR review request, or a local review before a PR exists.",
       "file": "skills/debate-review/SKILL.md",
       "name": "debate-review",
-      "search_corpus": "debate-review two-model debate review of a github pr, gitlab mr, azure devops pr, or local working tree, posted as inline comments or printed. use for any pr/mr review request, or a local review before a pr exists. core architecture & workflow"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "debate-review two-model debate review of a github pr, gitlab mr, azure devops pr, or local working tree, posted as inline comments or printed. use for any pr/mr review request, or a local review before a pr exists. core architecture & workflow guard verify"
     },
     {
       "category": "Core Architecture & Workflow",
       "description": "Configure delegation fleet lanes: which implementer CLI handles which kind of work, with optional model and effort (or variant) dials. Discovers installed CLIs, proposes a lane map for user approval, and writes global or project config only after explicit yes. Use when the user asks to set up, configure, or reconfigure delegation lanes, a fleet of lanes, or which implementer handles feature/tests/ui work — not for dispatching a coding task to an implementer.",
       "file": "skills/delegate-setup/SKILL.md",
       "name": "delegate-setup",
-      "search_corpus": "delegate-setup configure delegation fleet lanes: which implementer cli handles which kind of work, with optional model and effort (or variant) dials. discovers installed clis, proposes a lane map for user approval, and writes global or project config only after explicit yes. use when the user asks to set up, configure, or reconfigure delegation lanes, a fleet of lanes, or which implementer handles feature/tests/ui work — not for dispatching a coding task to an implementer. core architecture & workflow"
+      "phase": "PLAN",
+      "role": "sub-module",
+      "search_corpus": "delegate-setup configure delegation fleet lanes: which implementer cli handles which kind of work, with optional model and effort (or variant) dials. discovers installed clis, proposes a lane map for user approval, and writes global or project config only after explicit yes. use when the user asks to set up, configure, or reconfigure delegation lanes, a fleet of lanes, or which implementer handles feature/tests/ui work — not for dispatching a coding task to an implementer. core architecture & workflow sub-module plan"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Analyze Stitch projects and synthesize a semantic design system into DESIGN.md files",
+      "file": "skills/design-md/SKILL.md",
+      "name": "design-md",
+      "phase": "PLAN",
+      "role": "domain-skill",
+      "search_corpus": "design-md analyze stitch projects and synthesize a semantic design system into design.md files google stitch design & ui suite domain-skill plan"
     },
     {
       "category": "Backend & Data Systems",
       "description": "Use when setting up CI/CD pipelines, Docker containers, deployment configurations, environment management, or infrastructure automation. Triggers on: deploy, Docker, CI, GitHub Actions, Vercel, Netlify, AWS, nginx, hosting, pipeline.",
       "file": "skills/devops-deploy/SKILL.md",
       "name": "devops-deploy",
-      "search_corpus": "devops-deploy use when setting up ci/cd pipelines, docker containers, deployment configurations, environment management, or infrastructure automation. triggers on: deploy, docker, ci, github actions, vercel, netlify, aws, nginx, hosting, pipeline. backend & data systems"
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "devops-deploy use when setting up ci/cd pipelines, docker containers, deployment configurations, environment management, or infrastructure automation. triggers on: deploy, docker, ci, github actions, vercel, netlify, aws, nginx, hosting, pipeline. backend & data systems domain-skill build"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
       "description": "All-in-one Project Documentation Generator & Updater for beginners and teams. Chains /project-documentation and /docs-guard to scan any codebase and generate or update clear, beginner-friendly README.md, docs/ARCHITECTURE.md, and docs/API.md files.",
       "file": "skills/doc-project/SKILL.md",
       "name": "doc-project",
-      "search_corpus": "doc-project all-in-one project documentation generator & updater for beginners and teams. chains /project-documentation and /docs-guard to scan any codebase and generate or update clear, beginner-friendly readme.md, docs/architecture.md, and docs/api.md files. beginner situation combos (all-in-one)"
+      "phase": "BUILD",
+      "role": "master-command",
+      "search_corpus": "doc-project all-in-one project documentation generator & updater for beginners and teams. chains /project-documentation and /docs-guard to scan any codebase and generate or update clear, beginner-friendly readme.md, docs/architecture.md, and docs/api.md files. beginner situation combos (all-in-one) master-command build"
     },
     {
       "category": "Quality & Security Guards",
       "description": "Review generated or changed documentation before it ships — READMEs, API references, docstrings, PHPDoc/JSDoc, changelogs, tutorials, and doc sites. Best used reactively after an agent writes or edits docs, after code changes documented behavior, or before publishing docs. Use when the user says 'review the docs', 'is this documentation accurate', 'update the docs', 'write a README', 'document this API', 'add a docstring', or 'add a changelog entry'. Core job: verify every referenced function, flag, endpoint, config key, and code sample against the source; catch docs-vs-code drift; strip filler and unverifiable claims. DO NOT USE for production code review (use clean-code-guard), test review (use test-guard), marketing copy or blog posts, prose style editing of non-technical writing, or documentation site theming.",
       "file": "skills/docs-guard/SKILL.md",
       "name": "docs-guard",
-      "search_corpus": "docs-guard review generated or changed documentation before it ships — readmes, api references, docstrings, phpdoc/jsdoc, changelogs, tutorials, and doc sites. best used reactively after an agent writes or edits docs, after code changes documented behavior, or before publishing docs. use when the user says 'review the docs', 'is this documentation accurate', 'update the docs', 'write a readme', 'document this api', 'add a docstring', or 'add a changelog entry'. core job: verify every referenced function, flag, endpoint, config key, and code sample against the source; catch docs-vs-code drift; strip filler and unverifiable claims. do not use for production code review (use clean-code-guard), test review (use test-guard), marketing copy or blog posts, prose style editing of non-technical writing, or documentation site theming. quality & security guards"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "docs-guard review generated or changed documentation before it ships — readmes, api references, docstrings, phpdoc/jsdoc, changelogs, tutorials, and doc sites. best used reactively after an agent writes or edits docs, after code changes documented behavior, or before publishing docs. use when the user says 'review the docs', 'is this documentation accurate', 'update the docs', 'write a readme', 'document this api', 'add a docstring', or 'add a changelog entry'. core job: verify every referenced function, flag, endpoint, config key, and code sample against the source; catch docs-vs-code drift; strip filler and unverifiable claims. do not use for production code review (use clean-code-guard), test review (use test-guard), marketing copy or blog posts, prose style editing of non-technical writing, or documentation site theming. quality & security guards guard verify"
     },
     {
       "category": "Core Architecture & Workflow",
-      "description": "Autonomous Senior Engineering Workflow protocol for end-to-end software development. Activates on any engineering task: bug fixes, refactoring, feature development, or architectural changes. Enforces brownfield reality checks, proportional task sizing, unidirectional gate locks, embedded adversarial self-auditing, automatic defect resolution, guard-skill orchestration, the Danger Zone Playbook (Payments, Auth, Database Expand-and-Contract), and the Clean Session Continuity Protocol (automated PROGRESS.md and DECISIONS.md generation).",
+      "description": "Autonomous Senior Engineering & Critical Thinking Workflow for end-to-end software development. Activates on any engineering task: bug fixes, refactoring, feature development, or architectural design. Enforces Independent Critical Thinking & Debate Before Execution, Andrej Karpathy's 4 Coding Laws, obra/superpowers Pattern Analysis & Backward Root-Cause Tracing, the 3-Class Instrument Model, the Danger Zone Playbook (Payments, Auth, Database Expand-and-Contract), and the 60%-70% Context Handover Protocol.",
       "file": "skills/engineering-workflow/SKILL.md",
       "name": "engineering-workflow",
-      "search_corpus": "engineering-workflow autonomous senior engineering workflow protocol for end-to-end software development. activates on any engineering task: bug fixes, refactoring, feature development, or architectural changes. enforces brownfield reality checks, proportional task sizing, unidirectional gate locks, embedded adversarial self-auditing, automatic defect resolution, guard-skill orchestration, the danger zone playbook (payments, auth, database expand-and-contract), and the clean session continuity protocol (automated progress.md and decisions.md generation). core architecture & workflow"
+      "phase": "THINK",
+      "role": "domain-skill",
+      "search_corpus": "engineering-workflow autonomous senior engineering & critical thinking workflow for end-to-end software development. activates on any engineering task: bug fixes, refactoring, feature development, or architectural design. enforces independent critical thinking & debate before execution, andrej karpathy's 4 coding laws, obra/superpowers pattern analysis & backward root-cause tracing, the 3-class instrument model, the danger zone playbook (payments, auth, database expand-and-contract), and the 60%-70% context handover protocol. core architecture & workflow domain-skill think"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Transforms vague UI ideas into polished, Stitch-optimized prompts. Enhances specificity, adds UI/UX keywords, injects design system context, and structures output for better generation results.",
+      "file": "skills/enhance-prompt/SKILL.md",
+      "name": "enhance-prompt",
+      "phase": "PLAN",
+      "role": "sub-module",
+      "search_corpus": "enhance-prompt transforms vague ui ideas into polished, stitch-optimized prompts. enhances specificity, adds ui/ux keywords, injects design system context, and structures output for better generation results. google stitch design & ui suite sub-module plan"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Extract a comprehensive design system (DESIGN.md) directly from frontend source code — React, Vue, Svelte, Angular, plain HTML/CSS, or any web framework. Analyzes component files, stylesheets, Tailwind configs, theme definitions, and design tokens to produce a rich, Stitch-compatible design system document. Use this skill whenever the user wants to reverse-engineer a design system from an existing codebase, audit the visual language of a project, extract design tokens from source files, or understand the styling patterns in a frontend repo — even if they just say \"what does this app look like?\" or \"pull out the design from this code.",
+      "file": "skills/extract-design-md/SKILL.md",
+      "name": "extract-design-md",
+      "phase": "PLAN",
+      "role": "guard",
+      "search_corpus": "extract-design-md extract a comprehensive design system (design.md) directly from frontend source code — react, vue, svelte, angular, plain html/css, or any web framework. analyzes component files, stylesheets, tailwind configs, theme definitions, and design tokens to produce a rich, stitch-compatible design system document. use this skill whenever the user wants to reverse-engineer a design system from an existing codebase, audit the visual language of a project, extract design tokens from source files, or understand the styling patterns in a frontend repo — even if they just say \"what does this app look like?\" or \"pull out the design from this code. google stitch design & ui suite guard plan"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Extract self-contained static HTML from a built web application or React components by inlining CSS and images. Use this skill whenever you need to capture a specific UI state, share a static version of a page, or prepare assets for Stitch upload, even if the user just asks to 'save the HTML' or 'mock the view'.",
+      "file": "skills/extract-static-html/SKILL.md",
+      "name": "extract-static-html",
+      "phase": "BUILD",
+      "role": "sub-module",
+      "search_corpus": "extract-static-html extract self-contained static html from a built web application or react components by inlining css and images. use this skill whenever you need to capture a specific ui state, share a static version of a page, or prepare assets for stitch upload, even if the user just asks to 'save the html' or 'mock the view'. google stitch design & ui suite sub-module build"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
-      "description": "Stack-agnostic Frontend & CMS UI feature builder. Works with React, Next.js, Vue, Nuxt, Blade/Livewire, Angular, Svelte, Astro, HTML/Tailwind, or WordPress. Runs /grill-me + /muaz-skill Smart Intake, enforces CMS Sticky Navbar, Sticky Sidebar, responsive Data Tables, Forms, RTL/LTR logical properties, and auto-verifies via /ui-review-loop.",
+      "description": "Stack-agnostic Frontend & CMS UI feature builder. Works with React, Next.js, Vue, Nuxt, Blade/Livewire, Angular, Svelte, Astro, HTML/Tailwind, or WordPress. Runs /intake + /muaz-skill Smart Intake, enforces CMS Sticky Navbar, Sticky Sidebar, responsive Data Tables, Forms, RTL/LTR logical properties, and auto-verifies via /ui-review-loop.",
       "file": "skills/feature-fe/SKILL.md",
       "name": "feature-fe",
-      "search_corpus": "feature-fe stack-agnostic frontend & cms ui feature builder. works with react, next.js, vue, nuxt, blade/livewire, angular, svelte, astro, html/tailwind, or wordpress. runs /grill-me + /muaz-skill smart intake, enforces cms sticky navbar, sticky sidebar, responsive data tables, forms, rtl/ltr logical properties, and auto-verifies via /ui-review-loop. beginner situation combos (all-in-one)"
+      "phase": "BUILD",
+      "role": "master-command",
+      "search_corpus": "feature-fe stack-agnostic frontend & cms ui feature builder. works with react, next.js, vue, nuxt, blade/livewire, angular, svelte, astro, html/tailwind, or wordpress. runs /intake + /muaz-skill smart intake, enforces cms sticky navbar, sticky sidebar, responsive data tables, forms, rtl/ltr logical properties, and auto-verifies via /ui-review-loop. beginner situation combos (all-in-one) master-command build"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
-      "description": "Stack-agnostic Frontend + Backend feature builder (CMS, dashboards, APIs, forms, tables, auth). Chains /feature-fe (Frontend & CMS Layout Armor) with /backend-api, /backend-http, /backend-identity, /backend-ops, and stack security guards (/laravel-mastery + /pest-security-guard or /next-server-action-guard). Always starts with /grill-me + /muaz-skill Smart Intake.",
+      "description": "Stack-agnostic Frontend + Backend feature builder (CMS, dashboards, APIs, forms, tables, auth). Chains /feature-fe (Frontend & CMS Layout Armor) with /backend-api, /backend-http, /backend-identity, /backend-ops, and stack security guards (/laravel-mastery + /pest-security-guard or /next-server-action-guard). Always starts with /intake + /muaz-skill Smart Intake.",
       "file": "skills/feature-febe/SKILL.md",
       "name": "feature-febe",
-      "search_corpus": "feature-febe stack-agnostic frontend + backend feature builder (cms, dashboards, apis, forms, tables, auth). chains /feature-fe (frontend & cms layout armor) with /backend-api, /backend-http, /backend-identity, /backend-ops, and stack security guards (/laravel-mastery + /pest-security-guard or /next-server-action-guard). always starts with /grill-me + /muaz-skill smart intake. beginner situation combos (all-in-one)"
+      "phase": "BUILD",
+      "role": "master-command",
+      "search_corpus": "feature-febe stack-agnostic frontend + backend feature builder (cms, dashboards, apis, forms, tables, auth). chains /feature-fe (frontend & cms layout armor) with /backend-api, /backend-http, /backend-identity, /backend-ops, and stack security guards (/laravel-mastery + /pest-security-guard or /next-server-action-guard). always starts with /intake + /muaz-skill smart intake. beginner situation combos (all-in-one) master-command build"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
-      "description": "Complete Full-Stack Feature Builder: Frontend + Backend + Database for ANY tech stack. Chains /feature-febe (CMS UI + Backend API/RBAC/Validation/Uploads) with /database and /backend-data (migrations, foreign keys, compound indexes, soft deletes, N+1 prevention, and transactions). Always starts with /grill-me + /muaz-skill Smart Intake.",
+      "description": "Complete Full-Stack Feature Builder: Frontend + Backend + Database for ANY tech stack. Chains /feature-febe (CMS UI + Backend API/RBAC/Validation/Uploads) with /database and /backend-data (migrations, foreign keys, compound indexes, soft deletes, N+1 prevention, and transactions). Always starts with /intake + /muaz-skill Smart Intake.",
       "file": "skills/feature-full/SKILL.md",
       "name": "feature-full",
-      "search_corpus": "feature-full complete full-stack feature builder: frontend + backend + database for any tech stack. chains /feature-febe (cms ui + backend api/rbac/validation/uploads) with /database and /backend-data (migrations, foreign keys, compound indexes, soft deletes, n+1 prevention, and transactions). always starts with /grill-me + /muaz-skill smart intake. beginner situation combos (all-in-one)"
+      "phase": "BUILD",
+      "role": "master-command",
+      "search_corpus": "feature-full complete full-stack feature builder: frontend + backend + database for any tech stack. chains /feature-febe (cms ui + backend api/rbac/validation/uploads) with /database and /backend-data (migrations, foreign keys, compound indexes, soft deletes, n+1 prevention, and transactions). always starts with /intake + /muaz-skill smart intake. beginner situation combos (all-in-one) master-command build"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
-      "description": "All-in-one WordPress & WooCommerce feature, theme, plugin, and admin UI builder. Runs /grill-me + /muaz-skill Smart Intake, chains /wp-guard, /woo-guard, /rtl-logical-guard, /database, and /clean-code-guard to build secure, HPOS-compatible, RTL-ready WordPress features.",
+      "description": "All-in-one WordPress & WooCommerce feature, theme, plugin, and admin UI builder. Runs /intake + /muaz-skill Smart Intake, chains /wp-guard, /woo-guard, /rtl-logical-guard, /database, and /clean-code-guard to build secure, HPOS-compatible, RTL-ready WordPress features.",
       "file": "skills/feature-wp/SKILL.md",
       "name": "feature-wp",
-      "search_corpus": "feature-wp all-in-one wordpress & woocommerce feature, theme, plugin, and admin ui builder. runs /grill-me + /muaz-skill smart intake, chains /wp-guard, /woo-guard, /rtl-logical-guard, /database, and /clean-code-guard to build secure, hpos-compatible, rtl-ready wordpress features. beginner situation combos (all-in-one)"
+      "phase": "BUILD",
+      "role": "master-command",
+      "search_corpus": "feature-wp all-in-one wordpress & woocommerce feature, theme, plugin, and admin ui builder. runs /intake + /muaz-skill smart intake, chains /wp-guard, /woo-guard, /rtl-logical-guard, /database, and /clean-code-guard to build secure, hpos-compatible, rtl-ready wordpress features. beginner situation combos (all-in-one) master-command build"
     },
     {
       "category": "Core Architecture & Workflow",
       "description": "Helps users discover and install agent skills when they ask questions like \"how do I do X\", \"find a skill for X\", \"is there a skill that can...\", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",
       "file": "skills/find-skills/SKILL.md",
       "name": "find-skills",
-      "search_corpus": "find-skills helps users discover and install agent skills when they ask questions like \"how do i do x\", \"find a skill for x\", \"is there a skill that can...\", or express interest in extending capabilities. this skill should be used when the user is looking for functionality that might exist as an installable skill. core architecture & workflow"
+      "phase": "THINK",
+      "role": "domain-skill",
+      "search_corpus": "find-skills helps users discover and install agent skills when they ask questions like \"how do i do x\", \"find a skill for x\", \"is there a skill that can...\", or express interest in extending capabilities. this skill should be used when the user is looking for functionality that might exist as an installable skill. core architecture & workflow domain-skill think"
+    },
+    {
+      "category": "Quality & Security Guards",
+      "description": "Audits Firebase (Firestore, Cloud Storage) security rules for vulnerabilities, privilege escalation, role bypasses, create vs update inconsistencies, resource exhaustion, type safety, size limits, and hasOnly ownership checks. Use when auditing/reviewing rules, running red-team rule assessments, or scoring against auditor checklists. Don't use for Firebase CLI (login, deploy), Auth, Crashlytics, Remote Config, or database queries.",
+      "file": "skills/firebase-security-rules-auditor/SKILL.md",
+      "name": "firebase-security-rules-auditor",
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "firebase-security-rules-auditor audits firebase (firestore, cloud storage) security rules for vulnerabilities, privilege escalation, role bypasses, create vs update inconsistencies, resource exhaustion, type safety, size limits, and hasonly ownership checks. use when auditing/reviewing rules, running red-team rule assessments, or scoring against auditor checklists. don't use for firebase cli (login, deploy), auth, crashlytics, remote config, or database queries. quality & security guards guard verify"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
       "description": "All-in-one Backend, API, Auth/RBAC, Form Validation, File Upload, and Database Bug Fixer for any stack (Laravel/PHP, Node.js, Next.js Server Actions, Python, Go, SQL/NoSQL). Chains /backend-api, /backend-data, /database, /backend-identity, /test-guard, and stack guards.",
       "file": "skills/fix-backend/SKILL.md",
       "name": "fix-backend",
-      "search_corpus": "fix-backend all-in-one backend, api, auth/rbac, form validation, file upload, and database bug fixer for any stack (laravel/php, node.js, next.js server actions, python, go, sql/nosql). chains /backend-api, /backend-data, /database, /backend-identity, /test-guard, and stack guards. beginner situation combos (all-in-one)"
+      "phase": "BUILD",
+      "role": "master-command",
+      "search_corpus": "fix-backend all-in-one backend, api, auth/rbac, form validation, file upload, and database bug fixer for any stack (laravel/php, node.js, next.js server actions, python, go, sql/nosql). chains /backend-api, /backend-data, /database, /backend-identity, /test-guard, and stack guards. beginner situation combos (all-in-one) master-command build"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
       "description": "All-in-one UI Violation Scanner & Auto-Fixer for any frontend or CMS stack. Scans the project with /ui-audit, generates structured fix prompts automatically, fixes broken Sticky Navbars, Sticky Sidebars, overflowing Data Tables, messy Forms, RTL/LTR bugs (/rtl-logical-guard), and verifies everything via /ui-review-loop.",
       "file": "skills/fix-ui/SKILL.md",
       "name": "fix-ui",
-      "search_corpus": "fix-ui all-in-one ui violation scanner & auto-fixer for any frontend or cms stack. scans the project with /ui-audit, generates structured fix prompts automatically, fixes broken sticky navbars, sticky sidebars, overflowing data tables, messy forms, rtl/ltr bugs (/rtl-logical-guard), and verifies everything via /ui-review-loop. beginner situation combos (all-in-one)"
+      "phase": "BUILD",
+      "role": "master-command",
+      "search_corpus": "fix-ui all-in-one ui violation scanner & auto-fixer for any frontend or cms stack. scans the project with /ui-audit, generates structured fix prompts automatically, fixes broken sticky navbars, sticky sidebars, overflowing data tables, messy forms, rtl/ltr bugs (/rtl-logical-guard), and verifies everything via /ui-review-loop. beginner situation combos (all-in-one) master-command build"
     },
     {
-      "category": "Specification-Driven Development (Spec-Kit)",
-      "description": "[DEPRECATED ALIAS] Points directly to official spec-kit skill. Activates when the user mentions glopale or legacy specify commands.",
-      "file": "skills/glopale/SKILL.md",
-      "name": "glopale",
-      "search_corpus": "glopale [deprecated alias] points directly to official spec-kit skill. activates when the user mentions glopale or legacy specify commands. specification-driven development (spec-kit)"
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Generate new screens from text prompts or images, edit existing screens with prompts and design system tokens, and generate design variants using Stitch MCP. Includes prompt enhancement pipeline, design mappings, professional UI/UX terminology, design tokens and theme system capabilities.",
+      "file": "skills/generate-design/SKILL.md",
+      "name": "generate-design",
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "generate-design generate new screens from text prompts or images, edit existing screens with prompts and design system tokens, and generate design variants using stitch mcp. includes prompt enhancement pipeline, design mappings, professional ui/ux terminology, design tokens and theme system capabilities. google stitch design & ui suite domain-skill build"
+    },
+    {
+      "category": "Core Architecture & Workflow",
+      "description": "Dialog-First Smart Intake, Full-Stack Impact Translator & Do-Not-Remove Lock Gate. Activates on any new feature request, multi-part UI adjustment, or ambiguous instruction. Inspects the codebase in Read-Only mode first, checks for parallel Antigravity tab collisions, translates Frontend/UI requests into a 3-Layer Impact Map (UI + Backend API + Database Schema), lists existing UI/navigation elements that must NOT be removed, and opens the interactive ask_question Dialog Box with plain-product-language options and a final execution-mode selector.",
+      "file": "skills/intake/SKILL.md",
+      "name": "intake",
+      "phase": "THINK",
+      "role": "phase-skill",
+      "search_corpus": "intake dialog-first smart intake, full-stack impact translator & do-not-remove lock gate. activates on any new feature request, multi-part ui adjustment, or ambiguous instruction. inspects the codebase in read-only mode first, checks for parallel antigravity tab collisions, translates frontend/ui requests into a 3-layer impact map (ui + backend api + database schema), lists existing ui/navigation elements that must not be removed, and opens the interactive ask_question dialog box with plain-product-language options and a final execution-mode selector. core architecture & workflow phase-skill think"
     },
     {
       "category": "Backend & Data Systems",
       "description": "Enterprise architectural engineering skill for modern Laravel 11+ and PHP 8.3/8.4 applications. Enforces strict types, Form Request boundaries, Eloquent query optimization (preventing N+1), pessimistic locking, idempotent queues/jobs, and Pest 3 architectural security testing.",
       "file": "skills/laravel-mastery/SKILL.md",
       "name": "laravel-mastery",
-      "search_corpus": "laravel-mastery enterprise architectural engineering skill for modern laravel 11+ and php 8.3/8.4 applications. enforces strict types, form request boundaries, eloquent query optimization (preventing n+1), pessimistic locking, idempotent queues/jobs, and pest 3 architectural security testing. backend & data systems"
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "laravel-mastery enterprise architectural engineering skill for modern laravel 11+ and php 8.3/8.4 applications. enforces strict types, form request boundaries, eloquent query optimization (preventing n+1), pessimistic locking, idempotent queues/jobs, and pest 3 architectural security testing. backend & data systems domain-skill build"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Manage design systems in Stitch using MCP tools. Includes retrieval of assets, creating/updating design systems in Stitch, and applying them to screens.",
+      "file": "skills/manage-design-system/SKILL.md",
+      "name": "manage-design-system",
+      "phase": "PLAN",
+      "role": "domain-skill",
+      "search_corpus": "manage-design-system manage design systems in stitch using mcp tools. includes retrieval of assets, creating/updating design systems in stitch, and applying them to screens. google stitch design & ui suite domain-skill plan"
     },
     {
       "category": "Frontend & User Experience",
       "description": "Senior Frontend Architect & Design Systems Engineer with full-stack backend co-pilot. Activates on any request to build, design, create, scaffold, improve, audit, or optimize a frontend website or UI — with optional backend guidance (database, auth, payments, backend structure, deployment) for full-stack web apps. Powered by ui-ux-pro-max search engine (91 styles, 169 palettes, 72 font families, 169 product types, 198+ rules). Outputs a structured design blueprint followed by production-ready code, with full decision traceability.",
       "file": "skills/muaz-skill/SKILL.md",
       "name": "muaz-skill",
-      "search_corpus": "muaz-skill senior frontend architect & design systems engineer with full-stack backend co-pilot. activates on any request to build, design, create, scaffold, improve, audit, or optimize a frontend website or ui — with optional backend guidance (database, auth, payments, backend structure, deployment) for full-stack web apps. powered by ui-ux-pro-max search engine (91 styles, 169 palettes, 72 font families, 169 product types, 198+ rules). outputs a structured design blueprint followed by production-ready code, with full decision traceability. frontend & user experience"
+      "phase": "BUILD",
+      "role": "guard",
+      "search_corpus": "muaz-skill senior frontend architect & design systems engineer with full-stack backend co-pilot. activates on any request to build, design, create, scaffold, improve, audit, or optimize a frontend website or ui — with optional backend guidance (database, auth, payments, backend structure, deployment) for full-stack web apps. powered by ui-ux-pro-max search engine (91 styles, 169 palettes, 72 font families, 169 product types, 198+ rules). outputs a structured design blueprint followed by production-ready code, with full decision traceability. frontend & user experience guard build"
     },
     {
       "category": "Quality & Security Guards",
       "description": "Security and architecture guard for Next.js 14-16+ App Router Server Actions. Enforces server-side authentication derivation, anti-IDOR resource ownership checks, Zod payload validation, and secure error boundaries. Use whenever creating, editing, or reviewing Server Actions in 'actions.ts' or App Router endpoints.",
       "file": "skills/next-server-action-guard/SKILL.md",
       "name": "next-server-action-guard",
-      "search_corpus": "next-server-action-guard security and architecture guard for next.js 14-16+ app router server actions. enforces server-side authentication derivation, anti-idor resource ownership checks, zod payload validation, and secure error boundaries. use whenever creating, editing, or reviewing server actions in 'actions.ts' or app router endpoints. quality & security guards"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "next-server-action-guard security and architecture guard for next.js 14-16+ app router server actions. enforces server-side authentication derivation, anti-idor resource ownership checks, zod payload validation, and secure error boundaries. use whenever creating, editing, or reviewing server actions in 'actions.ts' or app router endpoints. quality & security guards guard verify"
     },
     {
       "category": "Frontend & User Experience",
       "description": "Enterprise architectural engineering skill for Next.js 15+ and React 19 App Router applications. Enforces Server vs Client Component boundaries, Turbopack performance, Server Actions security, Suspense streaming, partial prerendering (PPR), and Tailwind CSS v4 styling rules.",
       "file": "skills/nextjs-fullstack/SKILL.md",
       "name": "nextjs-fullstack",
-      "search_corpus": "nextjs-fullstack enterprise architectural engineering skill for next.js 15+ and react 19 app router applications. enforces server vs client component boundaries, turbopack performance, server actions security, suspense streaming, partial prerendering (ppr), and tailwind css v4 styling rules. frontend & user experience"
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "nextjs-fullstack enterprise architectural engineering skill for next.js 15+ and react 19 app router applications. enforces server vs client component boundaries, turbopack performance, server actions security, suspense streaming, partial prerendering (ppr), and tailwind css v4 styling rules. frontend & user experience domain-skill build"
     },
     {
       "category": "Core Architecture & Workflow",
       "description": "Delegate a coding task to the OpenCode CLI as a background implementer, then review its diff and land it yourself. Use this whenever the user wants to hand implementation work to OpenCode — phrasings like \"have OpenCode do X\", \"delegate this to OpenCode\", \"run it through OpenCode\", or \"use OpenCode to implement/fix/refactor\" — or wants to run a queue of coding tasks through OpenCode while staying the reviewer. Prefer it when the user will review the diff and commit it themselves. DO NOT USE for tasks small enough to do inline, or when the user wants the code written directly without delegating.",
       "file": "skills/opencode-delegate/SKILL.md",
       "name": "opencode-delegate",
-      "search_corpus": "opencode-delegate delegate a coding task to the opencode cli as a background implementer, then review its diff and land it yourself. use this whenever the user wants to hand implementation work to opencode — phrasings like \"have opencode do x\", \"delegate this to opencode\", \"run it through opencode\", or \"use opencode to implement/fix/refactor\" — or wants to run a queue of coding tasks through opencode while staying the reviewer. prefer it when the user will review the diff and commit it themselves. do not use for tasks small enough to do inline, or when the user wants the code written directly without delegating. core architecture & workflow"
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "opencode-delegate delegate a coding task to the opencode cli as a background implementer, then review its diff and land it yourself. use this whenever the user wants to hand implementation work to opencode — phrasings like \"have opencode do x\", \"delegate this to opencode\", \"run it through opencode\", or \"use opencode to implement/fix/refactor\" — or wants to run a queue of coding tasks through opencode while staying the reviewer. prefer it when the user will review the diff and commit it themselves. do not use for tasks small enough to do inline, or when the user wants the code written directly without delegating. core architecture & workflow domain-skill build"
+    },
+    {
+      "category": "Quality & Security Guards",
+      "description": "Authorized security assessment agent for web applications the user owns or is explicitly authorized to test. Probes frontend, backend API, and database/data-plane boundaries (including Supabase/PostgREST RLS) using native curl or curl.exe under strict allowlists. Operates across three layers (WSTG-anchored) with high-coverage budgets to surface authorization (BOLA/BFLA), authentication, injection, mass assignment, and business logic flaws. Requires an explicit origin set and test credentials. Read-only on source, config, and git; produces reproducible evidence with mandatory remediation guidance and retest recipes. Safe for local and Daytona sandbox execution.",
+      "file": "skills/pentest/SKILL.md",
+      "name": "pentest",
+      "phase": "VERIFY",
+      "role": "domain-skill",
+      "search_corpus": "pentest authorized security assessment agent for web applications the user owns or is explicitly authorized to test. probes frontend, backend api, and database/data-plane boundaries (including supabase/postgrest rls) using native curl or curl.exe under strict allowlists. operates across three layers (wstg-anchored) with high-coverage budgets to surface authorization (bola/bfla), authentication, injection, mass assignment, and business logic flaws. requires an explicit origin set and test credentials. read-only on source, config, and git; produces reproducible evidence with mandatory remediation guidance and retest recipes. safe for local and daytona sandbox execution. quality & security guards domain-skill verify"
     },
     {
       "category": "Quality & Security Guards",
       "description": "Automated architectural security and quality guard for PHP and Laravel applications. Enforces Pest 3 architectural security presets (arch()->preset()->security()), strict types, and forbids dangerous PHP functions. Use whenever writing, reviewing, or testing PHP/Laravel code.",
       "file": "skills/pest-security-guard/SKILL.md",
       "name": "pest-security-guard",
-      "search_corpus": "pest-security-guard automated architectural security and quality guard for php and laravel applications. enforces pest 3 architectural security presets (arch()->preset()->security()), strict types, and forbids dangerous php functions. use whenever writing, reviewing, or testing php/laravel code. quality & security guards"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "pest-security-guard automated architectural security and quality guard for php and laravel applications. enforces pest 3 architectural security presets (arch()->preset()->security()), strict types, and forbids dangerous php functions. use whenever writing, reviewing, or testing php/laravel code. quality & security guards guard verify"
+    },
+    {
+      "category": "Core Architecture & Workflow",
+      "description": "Autonomous Session Triage, One-Primary-Focus Daily Planner & Skill/Tool Evolution Factory. Handles daily/session work planning automatically without requiring the Owner to maintain a manual daily plan, and orchestrates end-to-end creation or upgrading of new skills and CLI tools when requested. Triggered by /plan-daily, /plan-daily-work, \"plan today's work\", or when adding a new skill/tool to Agent OS.",
+      "file": "skills/plan-daily/SKILL.md",
+      "name": "plan-daily",
+      "phase": "THINK",
+      "role": "master-command",
+      "search_corpus": "plan-daily autonomous session triage, one-primary-focus daily planner & skill/tool evolution factory. handles daily/session work planning automatically without requiring the owner to maintain a manual daily plan, and orchestrates end-to-end creation or upgrading of new skills and cli tools when requested. triggered by /plan-daily, /plan-daily-work, \"plan today's work\", or when adding a new skill/tool to agent os. core architecture & workflow master-command think"
     },
     {
       "category": "Simplicity & Anti-Bloat (Ponytail)",
       "description": "Forces the laziest solution that actually works, simplest, shortest, most minimal. Channels a senior dev who has seen everything: question whether the task needs to exist at all (YAGNI), reach for the standard library before custom code, native platform features before dependencies, one line before fifty. Supports intensity levels: lite, full (default), ultra. Use on ANY coding task: writing, adding, refactoring, fixing, reviewing, or designing code, and choosing libraries or dependencies. Also use whenever the user says \"ponytail\", \"be lazy\", \"lazy mode\", \"simplest solution\", \"minimal solution\", \"yagni\", \"do less\", or \"shortest path\", or complains about over-engineering, bloat, boilerplate, or unnecessary dependencies. Do NOT use for non-coding requests (general knowledge, prose, translation, summaries, recipes).",
       "file": "skills/ponytail/SKILL.md",
       "name": "ponytail",
-      "search_corpus": "ponytail forces the laziest solution that actually works, simplest, shortest, most minimal. channels a senior dev who has seen everything: question whether the task needs to exist at all (yagni), reach for the standard library before custom code, native platform features before dependencies, one line before fifty. supports intensity levels: lite, full (default), ultra. use on any coding task: writing, adding, refactoring, fixing, reviewing, or designing code, and choosing libraries or dependencies. also use whenever the user says \"ponytail\", \"be lazy\", \"lazy mode\", \"simplest solution\", \"minimal solution\", \"yagni\", \"do less\", or \"shortest path\", or complains about over-engineering, bloat, boilerplate, or unnecessary dependencies. do not use for non-coding requests (general knowledge, prose, translation, summaries, recipes). simplicity & anti-bloat (ponytail)"
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "ponytail forces the laziest solution that actually works, simplest, shortest, most minimal. channels a senior dev who has seen everything: question whether the task needs to exist at all (yagni), reach for the standard library before custom code, native platform features before dependencies, one line before fifty. supports intensity levels: lite, full (default), ultra. use on any coding task: writing, adding, refactoring, fixing, reviewing, or designing code, and choosing libraries or dependencies. also use whenever the user says \"ponytail\", \"be lazy\", \"lazy mode\", \"simplest solution\", \"minimal solution\", \"yagni\", \"do less\", or \"shortest path\", or complains about over-engineering, bloat, boilerplate, or unnecessary dependencies. do not use for non-coding requests (general knowledge, prose, translation, summaries, recipes). simplicity & anti-bloat (ponytail) domain-skill build"
     },
     {
       "category": "Simplicity & Anti-Bloat (Ponytail)",
       "description": "Whole-repo audit for over-engineering. Like ponytail-review, but scans the entire codebase instead of a diff: a ranked list of what to delete, simplify, or replace with stdlib/native equivalents. Use when the user says \"audit this codebase\", \"audit for over-engineering\", \"what can I delete from this repo\", \"find bloat\", \"ponytail-audit\", or \"/ponytail-audit\". One-shot report, does not apply fixes.",
       "file": "skills/ponytail-audit/SKILL.md",
       "name": "ponytail-audit",
-      "search_corpus": "ponytail-audit whole-repo audit for over-engineering. like ponytail-review, but scans the entire codebase instead of a diff: a ranked list of what to delete, simplify, or replace with stdlib/native equivalents. use when the user says \"audit this codebase\", \"audit for over-engineering\", \"what can i delete from this repo\", \"find bloat\", \"ponytail-audit\", or \"/ponytail-audit\". one-shot report, does not apply fixes. simplicity & anti-bloat (ponytail)"
+      "phase": "VERIFY",
+      "role": "sub-module",
+      "search_corpus": "ponytail-audit whole-repo audit for over-engineering. like ponytail-review, but scans the entire codebase instead of a diff: a ranked list of what to delete, simplify, or replace with stdlib/native equivalents. use when the user says \"audit this codebase\", \"audit for over-engineering\", \"what can i delete from this repo\", \"find bloat\", \"ponytail-audit\", or \"/ponytail-audit\". one-shot report, does not apply fixes. simplicity & anti-bloat (ponytail) sub-module verify"
     },
     {
       "category": "Simplicity & Anti-Bloat (Ponytail)",
       "description": "Harvest every `ponytail:` comment in the codebase into a debt ledger, so the deliberate shortcuts and deferrals ponytail leaves behind get tracked instead of rotting into \"later means never\". Use when the user says \"ponytail debt\", \"/ponytail-debt\", \"what did ponytail defer\", \"list the shortcuts\", \"ponytail ledger\", or \"what did we mark to do later\". One-shot report, changes nothing.",
       "file": "skills/ponytail-debt/SKILL.md",
       "name": "ponytail-debt",
-      "search_corpus": "ponytail-debt harvest every `ponytail:` comment in the codebase into a debt ledger, so the deliberate shortcuts and deferrals ponytail leaves behind get tracked instead of rotting into \"later means never\". use when the user says \"ponytail debt\", \"/ponytail-debt\", \"what did ponytail defer\", \"list the shortcuts\", \"ponytail ledger\", or \"what did we mark to do later\". one-shot report, changes nothing. simplicity & anti-bloat (ponytail)"
+      "phase": "VERIFY",
+      "role": "sub-module",
+      "search_corpus": "ponytail-debt harvest every `ponytail:` comment in the codebase into a debt ledger, so the deliberate shortcuts and deferrals ponytail leaves behind get tracked instead of rotting into \"later means never\". use when the user says \"ponytail debt\", \"/ponytail-debt\", \"what did ponytail defer\", \"list the shortcuts\", \"ponytail ledger\", or \"what did we mark to do later\". one-shot report, changes nothing. simplicity & anti-bloat (ponytail) sub-module verify"
     },
     {
       "category": "Simplicity & Anti-Bloat (Ponytail)",
       "description": "Show ponytail's measured impact as a compact scoreboard: less code, less cost, more speed, from the benchmark medians. One-shot display, not a persistent mode, and not a per-repo number. Trigger: /ponytail-gain, \"ponytail gain\", \"what does ponytail save\", \"show ponytail impact\", \"ponytail scoreboard\".",
       "file": "skills/ponytail-gain/SKILL.md",
       "name": "ponytail-gain",
-      "search_corpus": "ponytail-gain show ponytail's measured impact as a compact scoreboard: less code, less cost, more speed, from the benchmark medians. one-shot display, not a persistent mode, and not a per-repo number. trigger: /ponytail-gain, \"ponytail gain\", \"what does ponytail save\", \"show ponytail impact\", \"ponytail scoreboard\". simplicity & anti-bloat (ponytail)"
+      "phase": "THINK",
+      "role": "sub-module",
+      "search_corpus": "ponytail-gain show ponytail's measured impact as a compact scoreboard: less code, less cost, more speed, from the benchmark medians. one-shot display, not a persistent mode, and not a per-repo number. trigger: /ponytail-gain, \"ponytail gain\", \"what does ponytail save\", \"show ponytail impact\", \"ponytail scoreboard\". simplicity & anti-bloat (ponytail) sub-module think"
     },
     {
       "category": "Simplicity & Anti-Bloat (Ponytail)",
       "description": "Quick-reference card for all ponytail modes, skills, and commands. One-shot display, not a persistent mode. Trigger: /ponytail-help, \"ponytail help\", \"what ponytail commands\", \"how do I use ponytail\".",
       "file": "skills/ponytail-help/SKILL.md",
       "name": "ponytail-help",
-      "search_corpus": "ponytail-help quick-reference card for all ponytail modes, skills, and commands. one-shot display, not a persistent mode. trigger: /ponytail-help, \"ponytail help\", \"what ponytail commands\", \"how do i use ponytail\". simplicity & anti-bloat (ponytail)"
+      "phase": "THINK",
+      "role": "sub-module",
+      "search_corpus": "ponytail-help quick-reference card for all ponytail modes, skills, and commands. one-shot display, not a persistent mode. trigger: /ponytail-help, \"ponytail help\", \"what ponytail commands\", \"how do i use ponytail\". simplicity & anti-bloat (ponytail) sub-module think"
     },
     {
       "category": "Simplicity & Anti-Bloat (Ponytail)",
       "description": "Code review focused exclusively on over-engineering. Finds what to delete: reinvented standard library, unneeded dependencies, speculative abstractions, dead flexibility. One line per finding: location, what to cut, what replaces it. Use when the user says \"review for over-engineering\", \"what can we delete\", \"is this over-engineered\", \"simplify review\", or invokes /ponytail-review. Complements correctness-focused review, this one only hunts complexity.",
       "file": "skills/ponytail-review/SKILL.md",
       "name": "ponytail-review",
-      "search_corpus": "ponytail-review code review focused exclusively on over-engineering. finds what to delete: reinvented standard library, unneeded dependencies, speculative abstractions, dead flexibility. one line per finding: location, what to cut, what replaces it. use when the user says \"review for over-engineering\", \"what can we delete\", \"is this over-engineered\", \"simplify review\", or invokes /ponytail-review. complements correctness-focused review, this one only hunts complexity. simplicity & anti-bloat (ponytail)"
+      "phase": "VERIFY",
+      "role": "sub-module",
+      "search_corpus": "ponytail-review code review focused exclusively on over-engineering. finds what to delete: reinvented standard library, unneeded dependencies, speculative abstractions, dead flexibility. one line per finding: location, what to cut, what replaces it. use when the user says \"review for over-engineering\", \"what can we delete\", \"is this over-engineered\", \"simplify review\", or invokes /ponytail-review. complements correctness-focused review, this one only hunts complexity. simplicity & anti-bloat (ponytail) sub-module verify"
     },
     {
       "category": "Core Architecture & Workflow",
       "description": "Generates, audits, and updates comprehensive codebase documentation (README.md, docs/ARCHITECTURE.md, docs/API.md) using deterministic local analysis. Activate when asked to \"document project\", \"generate README\", \"create docs\", \"document codebase\", \"explain architecture\", \"document API\", or \"repo onboarding\". Do NOT activate for explaining single functions or one-off code snippets.",
       "file": "skills/project-documentation/SKILL.md",
       "name": "project-documentation",
-      "search_corpus": "project-documentation generates, audits, and updates comprehensive codebase documentation (readme.md, docs/architecture.md, docs/api.md) using deterministic local analysis. activate when asked to \"document project\", \"generate readme\", \"create docs\", \"document codebase\", \"explain architecture\", \"document api\", or \"repo onboarding\". do not activate for explaining single functions or one-off code snippets. core architecture & workflow"
+      "phase": "BUILD",
+      "role": "sub-module",
+      "search_corpus": "project-documentation generates, audits, and updates comprehensive codebase documentation (readme.md, docs/architecture.md, docs/api.md) using deterministic local analysis. activate when asked to \"document project\", \"generate readme\", \"create docs\", \"document codebase\", \"explain architecture\", \"document api\", or \"repo onboarding\". do not activate for explaining single functions or one-off code snippets. core architecture & workflow sub-module build"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Converts Stitch designs into modular Vite and React components, or syncs/updates existing React components to align with the latest Stitch designs, using system-level networking and AST-based validation.",
+      "file": "skills/react-components/SKILL.md",
+      "name": "react-components",
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "react-components converts stitch designs into modular vite and react components, or syncs/updates existing react components to align with the latest stitch designs, using system-level networking and ast-based validation. google stitch design & ui suite domain-skill build"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Convert Stitch HTML designs to React Native components, or syncs/updates existing native components to align with the latest Stitch designs, using StyleSheet.",
+      "file": "skills/react-native/SKILL.md",
+      "name": "react-native",
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "react-native convert stitch html designs to react native components, or syncs/updates existing native components to align with the latest stitch designs, using stylesheet. google stitch design & ui suite domain-skill build"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Convert Stitch designs into production React + Vite dashboards with TanStack Query, accessible tokens from DESIGN.md, and Web3-ready patterns (ethers/viem).",
+      "file": "skills/react-vite-dashboard/SKILL.md",
+      "name": "react-vite-dashboard",
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "react-vite-dashboard convert stitch designs into production react + vite dashboards with tanstack query, accessible tokens from design.md, and web3-ready patterns (ethers/viem). google stitch design & ui suite domain-skill build"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Generate walkthrough videos from Stitch projects using Remotion with smooth transitions, zooming, and text overlays",
+      "file": "skills/remotion/SKILL.md",
+      "name": "remotion",
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "remotion generate walkthrough videos from stitch projects using remotion with smooth transitions, zooming, and text overlays google stitch design & ui suite domain-skill build"
+    },
+    {
+      "category": "Quality & Security Guards",
+      "description": "Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA for ordinary source-repository architecture analysis.",
+      "file": "skills/reverse-engineer-anything/SKILL.md",
+      "name": "reverse-engineer-anything",
+      "phase": "PLAN",
+      "role": "domain-skill",
+      "search_corpus": "reverse-engineer-anything reverse engineer native, managed, electron/javascript, packaged, firmware, and browser targets with rea. use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. skip rea for ordinary source-repository architecture analysis. quality & security guards domain-skill plan"
     },
     {
       "category": "Quality & Security Guards",
       "description": "Quality guard enforcing CSS Logical Properties and bidirectional (LTR/RTL) layout integrity for bilingual Arabic/English web applications. Activates whenever reviewing, editing, or creating React/Next.js components, Tailwind CSS classes, or HTML templates to eliminate broken layouts.",
       "file": "skills/rtl-logical-guard/SKILL.md",
       "name": "rtl-logical-guard",
-      "search_corpus": "rtl-logical-guard quality guard enforcing css logical properties and bidirectional (ltr/rtl) layout integrity for bilingual arabic/english web applications. activates whenever reviewing, editing, or creating react/next.js components, tailwind css classes, or html templates to eliminate broken layouts. quality & security guards"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "rtl-logical-guard quality guard enforcing css logical properties and bidirectional (ltr/rtl) layout integrity for bilingual arabic/english web applications. activates whenever reviewing, editing, or creating react/next.js components, tailwind css classes, or html templates to eliminate broken layouts. quality & security guards guard verify"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
       "description": "All-in-one Low-Bandwidth & Token Saver command for mobile data, hotspot, and metered connections. Chains /data-saver (bandwidth_guard.py) with /caveman lite and configures offline package manager caching (npm, pnpm, yarn, composer, pip) to cut internet data usage by 75-85%.",
       "file": "skills/save-data/SKILL.md",
       "name": "save-data",
-      "search_corpus": "save-data all-in-one low-bandwidth & token saver command for mobile data, hotspot, and metered connections. chains /data-saver (bandwidth_guard.py) with /caveman lite and configures offline package manager caching (npm, pnpm, yarn, composer, pip) to cut internet data usage by 75-85%. beginner situation combos (all-in-one)"
+      "phase": "THINK",
+      "role": "master-command",
+      "search_corpus": "save-data all-in-one low-bandwidth & token saver command for mobile data, hotspot, and metered connections. chains /data-saver (bandwidth_guard.py) with /caveman lite and configures offline package manager caching (npm, pnpm, yarn, composer, pip) to cut internet data usage by 75-85%. beginner situation combos (all-in-one) master-command think"
+    },
+    {
+      "category": "Quality & Security Guards",
+      "description": "Security guidance and vulnerability review for codebases, APIs, services, CLI tools, libraries, and daemons. Use for security questions, focused reviews, vulnerability research, security audits, or pen tests. Run the complete workflow only for explicit codebase audit or pen-test requests, full/comprehensive/end-to-end reviews, or requested report artifacts.",
+      "file": "skills/security-audit/SKILL.md",
+      "name": "security-audit",
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "security-audit security guidance and vulnerability review for codebases, apis, services, cli tools, libraries, and daemons. use for security questions, focused reviews, vulnerability research, security audits, or pen tests. run the complete workflow only for explicit codebase audit or pen-test requests, full/comprehensive/end-to-end reviews, or requested report artifacts. quality & security guards guard verify"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Expert guidance for integrating and building applications with shadcn/ui components, including component discovery, installation, customization, and best practices.",
+      "file": "skills/shadcn-ui/SKILL.md",
+      "name": "shadcn-ui",
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "shadcn-ui expert guidance for integrating and building applications with shadcn/ui components, including component discovery, installation, customization, and best practices. google stitch design & ui suite domain-skill build"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Analyze a project description or site requirements and synthesize a project constitution into SITE.md for the Stitch Build Loop",
+      "file": "skills/site-md/SKILL.md",
+      "name": "site-md",
+      "phase": "PLAN",
+      "role": "domain-skill",
+      "search_corpus": "site-md analyze a project description or site requirements and synthesize a project constitution into site.md for the stitch build loop google stitch design & ui suite domain-skill plan"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
-      "description": "Smart feature router and builder for any tech stack. Reads a plain-language feature description (in English or Arabic) and existing project files, automatically selects the best Frontend, CMS, Backend, Database, and Security skills, runs the full /grill-me + /muaz-skill Smart Intake interview, builds the feature, and auto-verifies UI, security, and tests.",
+      "description": "Smart feature router and builder for any tech stack. Reads a plain-language feature description (in English or Arabic) and existing project files, automatically selects the best Frontend, CMS, Backend, Database, and Security skills, runs the full /intake + /muaz-skill Smart Intake interview, builds the feature, and auto-verifies UI, security, and tests.",
       "file": "skills/smart-feature/SKILL.md",
       "name": "smart-feature",
-      "search_corpus": "smart-feature smart feature router and builder for any tech stack. reads a plain-language feature description (in english or arabic) and existing project files, automatically selects the best frontend, cms, backend, database, and security skills, runs the full /grill-me + /muaz-skill smart intake interview, builds the feature, and auto-verifies ui, security, and tests. beginner situation combos (all-in-one)"
+      "phase": "BUILD",
+      "role": "master-command",
+      "search_corpus": "smart-feature smart feature router and builder for any tech stack. reads a plain-language feature description (in english or arabic) and existing project files, automatically selects the best frontend, cms, backend, database, and security skills, runs the full /intake + /muaz-skill smart intake interview, builds the feature, and auto-verifies ui, security, and tests. beginner situation combos (all-in-one) master-command build"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Official Specification-Driven Development (SDD) workflow using GitHub Spec Kit (specify CLI). Activates on any request to plan, specify, break down, implement, or converge features using Spec Kit. Covers all SDD phases: constitution, specify, clarify, plan, checklist, tasks, implement, analyze, converge, and taskstoissues.",
       "file": "skills/spec-kit/SKILL.md",
       "name": "spec-kit",
-      "search_corpus": "spec-kit official specification-driven development (sdd) workflow using github spec kit (specify cli). activates on any request to plan, specify, break down, implement, or converge features using spec kit. covers all sdd phases: constitution, specify, clarify, plan, checklist, tasks, implement, analyze, converge, and taskstoissues. specification-driven development (spec-kit)"
+      "phase": "PLAN",
+      "role": "master-command",
+      "search_corpus": "spec-kit official specification-driven development (sdd) workflow using github spec kit (specify cli). activates on any request to plan, specify, break down, implement, or converge features using spec kit. covers all sdd phases: constitution, specify, clarify, plan, checklist, tasks, implement, analyze, converge, and taskstoissues. specification-driven development (spec-kit) master-command plan"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Perform a non-destructive cross-artifact consistency and quality analysis across spec.md, plan.md, and tasks.md after task generation.",
       "file": "skills/speckit-analyze/SKILL.md",
       "name": "speckit-analyze",
-      "search_corpus": "speckit-analyze perform a non-destructive cross-artifact consistency and quality analysis across spec.md, plan.md, and tasks.md after task generation. specification-driven development (spec-kit)"
+      "phase": "VERIFY",
+      "role": "phase-skill",
+      "search_corpus": "speckit-analyze perform a non-destructive cross-artifact consistency and quality analysis across spec.md, plan.md, and tasks.md after task generation. specification-driven development (spec-kit) phase-skill verify"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Generate a custom checklist for the current feature based on user requirements.",
       "file": "skills/speckit-checklist/SKILL.md",
       "name": "speckit-checklist",
-      "search_corpus": "speckit-checklist generate a custom checklist for the current feature based on user requirements. specification-driven development (spec-kit)"
+      "phase": "PLAN",
+      "role": "phase-skill",
+      "search_corpus": "speckit-checklist generate a custom checklist for the current feature based on user requirements. specification-driven development (spec-kit) phase-skill plan"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Identify underspecified areas in the current feature spec by asking up to 5 highly targeted clarification questions and encoding answers back into the spec.",
       "file": "skills/speckit-clarify/SKILL.md",
       "name": "speckit-clarify",
-      "search_corpus": "speckit-clarify identify underspecified areas in the current feature spec by asking up to 5 highly targeted clarification questions and encoding answers back into the spec. specification-driven development (spec-kit)"
+      "phase": "PLAN",
+      "role": "phase-skill",
+      "search_corpus": "speckit-clarify identify underspecified areas in the current feature spec by asking up to 5 highly targeted clarification questions and encoding answers back into the spec. specification-driven development (spec-kit) phase-skill plan"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Create or update the project constitution from interactive or provided principle inputs.",
       "file": "skills/speckit-constitution/SKILL.md",
       "name": "speckit-constitution",
-      "search_corpus": "speckit-constitution create or update the project constitution from interactive or provided principle inputs. specification-driven development (spec-kit)"
+      "phase": "PLAN",
+      "role": "phase-skill",
+      "search_corpus": "speckit-constitution create or update the project constitution from interactive or provided principle inputs. specification-driven development (spec-kit) phase-skill plan"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Assess the current codebase against the feature's spec, plan, and tasks, then append any remaining unbuilt work as new tasks to tasks.md so implement can complete it.",
       "file": "skills/speckit-converge/SKILL.md",
       "name": "speckit-converge",
-      "search_corpus": "speckit-converge assess the current codebase against the feature's spec, plan, and tasks, then append any remaining unbuilt work as new tasks to tasks.md so implement can complete it. specification-driven development (spec-kit)"
+      "phase": "VERIFY",
+      "role": "phase-skill",
+      "search_corpus": "speckit-converge assess the current codebase against the feature's spec, plan, and tasks, then append any remaining unbuilt work as new tasks to tasks.md so implement can complete it. specification-driven development (spec-kit) phase-skill verify"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Execute the implementation plan by processing and executing all tasks defined in tasks.md",
       "file": "skills/speckit-implement/SKILL.md",
       "name": "speckit-implement",
-      "search_corpus": "speckit-implement execute the implementation plan by processing and executing all tasks defined in tasks.md specification-driven development (spec-kit)"
+      "phase": "BUILD",
+      "role": "phase-skill",
+      "search_corpus": "speckit-implement execute the implementation plan by processing and executing all tasks defined in tasks.md specification-driven development (spec-kit) phase-skill build"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Execute the implementation planning workflow using the plan template to generate design artifacts.",
       "file": "skills/speckit-plan/SKILL.md",
       "name": "speckit-plan",
-      "search_corpus": "speckit-plan execute the implementation planning workflow using the plan template to generate design artifacts. specification-driven development (spec-kit)"
+      "phase": "PLAN",
+      "role": "phase-skill",
+      "search_corpus": "speckit-plan execute the implementation planning workflow using the plan template to generate design artifacts. specification-driven development (spec-kit) phase-skill plan"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Create or update the feature specification from a natural language feature description.",
       "file": "skills/speckit-specify/SKILL.md",
       "name": "speckit-specify",
-      "search_corpus": "speckit-specify create or update the feature specification from a natural language feature description. specification-driven development (spec-kit)"
+      "phase": "PLAN",
+      "role": "phase-skill",
+      "search_corpus": "speckit-specify create or update the feature specification from a natural language feature description. specification-driven development (spec-kit) phase-skill plan"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Generate an actionable, dependency-ordered tasks.md for the feature based on available design artifacts.",
       "file": "skills/speckit-tasks/SKILL.md",
       "name": "speckit-tasks",
-      "search_corpus": "speckit-tasks generate an actionable, dependency-ordered tasks.md for the feature based on available design artifacts. specification-driven development (spec-kit)"
+      "phase": "PLAN",
+      "role": "phase-skill",
+      "search_corpus": "speckit-tasks generate an actionable, dependency-ordered tasks.md for the feature based on available design artifacts. specification-driven development (spec-kit) phase-skill plan"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "Convert existing tasks into actionable, dependency-ordered GitHub issues for the feature based on available design artifacts.",
       "file": "skills/speckit-taskstoissues/SKILL.md",
       "name": "speckit-taskstoissues",
-      "search_corpus": "speckit-taskstoissues convert existing tasks into actionable, dependency-ordered github issues for the feature based on available design artifacts. specification-driven development (spec-kit)"
+      "phase": "PLAN",
+      "role": "phase-skill",
+      "search_corpus": "speckit-taskstoissues convert existing tasks into actionable, dependency-ordered github issues for the feature based on available design artifacts. specification-driven development (spec-kit) phase-skill plan"
     },
     {
       "category": "Beginner Situation Combos (All-in-One)",
-      "description": "All-in-one master command to start a brand new project from zero in ANY tech stack. Runs the full /grill-me + /muaz-skill Smart Intake interview (Q1-Q28 in Frontier Rounds), authors the 6 Pre-Coding architecture documents (/web-precode), generates Spec-Kit tasks (/spec-kit), and builds the project with CMS Frontend, Backend, Database, and Security guards.",
+      "description": "All-in-one master command to start a brand new project from zero in ANY tech stack. Runs the full /intake + /muaz-skill Smart Intake interview (Q1-Q28 in Frontier Rounds), authors the 6 Pre-Coding architecture documents (/web-precode), generates Spec-Kit tasks (/spec-kit), and builds the project with CMS Frontend, Backend, Database, and Security guards.",
       "file": "skills/start-project/SKILL.md",
       "name": "start-project",
-      "search_corpus": "start-project all-in-one master command to start a brand new project from zero in any tech stack. runs the full /grill-me + /muaz-skill smart intake interview (q1-q28 in frontier rounds), authors the 6 pre-coding architecture documents (/web-precode), generates spec-kit tasks (/spec-kit), and builds the project with cms frontend, backend, database, and security guards. beginner situation combos (all-in-one)"
+      "phase": "PLAN",
+      "role": "master-command",
+      "search_corpus": "start-project all-in-one master command to start a brand new project from zero in any tech stack. runs the full /intake + /muaz-skill smart intake interview (q1-q28 in frontier rounds), authors the 6 pre-coding architecture documents (/web-precode), generates spec-kit tasks (/spec-kit), and builds the project with cms frontend, backend, database, and security guards. beginner situation combos (all-in-one) master-command plan"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Teaches agents to iteratively build websites using Stitch with an autonomous baton-passing loop pattern",
+      "file": "skills/stitch-loop/SKILL.md",
+      "name": "stitch-loop",
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "stitch-loop teaches agents to iteratively build websites using stitch with an autonomous baton-passing loop pattern google stitch design & ui suite domain-skill build"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance.",
+      "file": "skills/taste-design/SKILL.md",
+      "name": "taste-design",
+      "phase": "PLAN",
+      "role": "domain-skill",
+      "search_corpus": "taste-design semantic design system skill for google stitch. generates agent-friendly design.md files that enforce premium, anti-generic ui standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance. google stitch design & ui suite domain-skill plan"
     },
     {
       "category": "Quality & Security Guards",
-      "description": "Review generated or changed test code against universal testing rules before it ships. Best used reactively after an agent writes, edits, generates, or refactors tests, before presenting, committing, or merging them. Use for pytest (test_*.py, *_test.py), PHPUnit/Pest (*Test.php), Jest/Vitest (*.test.ts, *.spec.js), Go (*_test.go), files under tests/, __tests__/, or spec/, and review requests like 'write tests for X', 'add tests', 'test this', 'review these tests', or PR diffs containing tests. Can also guide test writing when explicitly invoked before the work. This skill is the quality gate that prevents AI-generated test bloat. DO NOT USE for production or implementation code review (use clean-code-guard), CI or test-runner configuration, running or debugging tests, or general architecture discussion.",
+      "description": "Review generated or changed test code against universal testing rules before it ships (pytest, PHPUnit/Pest, Jest/Vitest, Go). Prevents AI-generated test bloat, over-mocking, and implementation-detail assertions. Do not use for production code review (use clean-code-guard).",
       "file": "skills/test-guard/SKILL.md",
       "name": "test-guard",
-      "search_corpus": "test-guard review generated or changed test code against universal testing rules before it ships. best used reactively after an agent writes, edits, generates, or refactors tests, before presenting, committing, or merging them. use for pytest (test_*.py, *_test.py), phpunit/pest (*test.php), jest/vitest (*.test.ts, *.spec.js), go (*_test.go), files under tests/, __tests__/, or spec/, and review requests like 'write tests for x', 'add tests', 'test this', 'review these tests', or pr diffs containing tests. can also guide test writing when explicitly invoked before the work. this skill is the quality gate that prevents ai-generated test bloat. do not use for production or implementation code review (use clean-code-guard), ci or test-runner configuration, running or debugging tests, or general architecture discussion. quality & security guards"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "test-guard review generated or changed test code against universal testing rules before it ships (pytest, phpunit/pest, jest/vitest, go). prevents ai-generated test bloat, over-mocking, and implementation-detail assertions. do not use for production code review (use clean-code-guard). quality & security guards guard verify"
     },
     {
       "category": "Testing & QA Automation",
       "description": "Use when writing unit tests, integration tests, E2E tests, setting up test infrastructure, debugging test failures, or improving test coverage. Triggers on: test, spec, vitest, jest, playwright, pytest, mock, stub, fixture, coverage.",
       "file": "skills/testing-qa/SKILL.md",
       "name": "testing-qa",
-      "search_corpus": "testing-qa use when writing unit tests, integration tests, e2e tests, setting up test infrastructure, debugging test failures, or improving test coverage. triggers on: test, spec, vitest, jest, playwright, pytest, mock, stub, fixture, coverage. testing & qa automation"
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "testing-qa use when writing unit tests, integration tests, e2e tests, setting up test infrastructure, debugging test failures, or improving test coverage. triggers on: test, spec, vitest, jest, playwright, pytest, mock, stub, fixture, coverage. testing & qa automation domain-skill build"
     },
     {
       "category": "Frontend & User Experience",
       "description": "Comprehensive, evidence-based frontend UI audit workflow. Discovers the entire frontend architecture, inspects routes, layouts, design tokens, responsiveness, accessibility, interactions, and localization, produces structured audit reports in docs/ui-audits/<timestamp>/, and generates isolated, self-contained implementation prompts for every confirmed issue without modifying code.",
       "file": "skills/ui-audit/SKILL.md",
       "name": "ui-audit",
-      "search_corpus": "ui-audit comprehensive, evidence-based frontend ui audit workflow. discovers the entire frontend architecture, inspects routes, layouts, design tokens, responsiveness, accessibility, interactions, and localization, produces structured audit reports in docs/ui-audits/<timestamp>/, and generates isolated, self-contained implementation prompts for every confirmed issue without modifying code. frontend & user experience"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "ui-audit comprehensive, evidence-based frontend ui audit workflow. discovers the entire frontend architecture, inspects routes, layouts, design tokens, responsiveness, accessibility, interactions, and localization, produces structured audit reports in docs/ui-audits/<timestamp>/, and generates isolated, self-contained implementation prompts for every confirmed issue without modifying code. frontend & user experience guard verify"
     },
     {
       "category": "Core Architecture & Workflow",
       "description": "Verify UI work with recorded evidence instead of screenshots — record browser-testing rounds (video + DOM timeline + network evidence) reviewed on a local site where the operator leaves timestamped video comments, and run coverage sweeps that exercise 100% of an inventoried UI. Use after ANY change that touches web UI, whenever an agent tests or reviews UI behavior (agent-browser, Playwright, or Chrome), for a DOM dynamics / browser testing pass, and when the operator should verify asynchronously — prefer this over calling agent-browser directly for UI verification. Recording rounds run through the agent-browser CLI by default; a browser-control backend can record the operator's real logged-in browser on explicit request (requires the browser-control CLI + extension + ffmpeg).",
       "file": "skills/ui-review-loop/SKILL.md",
       "name": "ui-review-loop",
-      "search_corpus": "ui-review-loop verify ui work with recorded evidence instead of screenshots — record browser-testing rounds (video + dom timeline + network evidence) reviewed on a local site where the operator leaves timestamped video comments, and run coverage sweeps that exercise 100% of an inventoried ui. use after any change that touches web ui, whenever an agent tests or reviews ui behavior (agent-browser, playwright, or chrome), for a dom dynamics / browser testing pass, and when the operator should verify asynchronously — prefer this over calling agent-browser directly for ui verification. recording rounds run through the agent-browser cli by default; a browser-control backend can record the operator's real logged-in browser on explicit request (requires the browser-control cli + extension + ffmpeg). core architecture & workflow"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "ui-review-loop verify ui work with recorded evidence instead of screenshots — record browser-testing rounds (video + dom timeline + network evidence) reviewed on a local site where the operator leaves timestamped video comments, and run coverage sweeps that exercise 100% of an inventoried ui. use after any change that touches web ui, whenever an agent tests or reviews ui behavior (agent-browser, playwright, or chrome), for a dom dynamics / browser testing pass, and when the operator should verify asynchronously — prefer this over calling agent-browser directly for ui verification. recording rounds run through the agent-browser cli by default; a browser-control backend can record the operator's real logged-in browser on explicit request (requires the browser-control cli + extension + ffmpeg). core architecture & workflow guard verify"
+    },
+    {
+      "category": "Google Stitch Design & UI Suite",
+      "description": "Upload local assets (images, mockups, extracted HTML, design markdown) to a Stitch project. ALWAYS use this skill when you need to upload visual assets, HTML pages, or design docs to Stitch, particularly when direct MCP tool calls fail or truncate due to base64 token limits.",
+      "file": "skills/upload-to-stitch/SKILL.md",
+      "name": "upload-to-stitch",
+      "phase": "BUILD",
+      "role": "sub-module",
+      "search_corpus": "upload-to-stitch upload local assets (images, mockups, extracted html, design markdown) to a stitch project. always use this skill when you need to upload visual assets, html pages, or design docs to stitch, particularly when direct mcp tool calls fail or truncate due to base64 token limits. google stitch design & ui suite sub-module build"
     },
     {
       "category": "Specification-Driven Development (Spec-Kit)",
       "description": "The 6 Pre-Coding Pillars Specification & Architecture Blueprint for web applications. Enforces authoring, structuring, and verifying all 6 essential documents (PRD, TRD, App Flow with 5-State UI Matrix, Design Brief with 60-30-10 tokens, Backend Schema with ERD, and Implementation Plan) before writing any code.",
       "file": "skills/web-precode/SKILL.md",
       "name": "web-precode",
-      "search_corpus": "web-precode the 6 pre-coding pillars specification & architecture blueprint for web applications. enforces authoring, structuring, and verifying all 6 essential documents (prd, trd, app flow with 5-state ui matrix, design brief with 60-30-10 tokens, backend schema with erd, and implementation plan) before writing any code. specification-driven development (spec-kit)"
+      "phase": "PLAN",
+      "role": "phase-skill",
+      "search_corpus": "web-precode the 6 pre-coding pillars specification & architecture blueprint for web applications. enforces authoring, structuring, and verifying all 6 essential documents (prd, trd, app flow with 5-state ui matrix, design brief with 60-30-10 tokens, backend schema with erd, and implementation plan) before writing any code. specification-driven development (spec-kit) phase-skill plan"
     },
     {
-      "category": "General Customizations",
+      "category": "Frontend & User Experience",
       "description": "Standardized protocol and developer guide for WebMCP (Web Model Context Protocol), the W3C browser standard exposing in-page JavaScript tools and declarative forms to AI agents via document.modelContext. Use when designing, authoring, registering, testing, or debugging in-browser WebMCP tools (document.modelContext.registerTool, getTools, executeTool), managing permissions policy (\"tools\"), securing cross-origin iframe exposures (exposedTo/fromOrigins), or enabling agentic web application actuation.",
       "file": "skills/webmcp/SKILL.md",
       "name": "webmcp",
-      "search_corpus": "webmcp standardized protocol and developer guide for webmcp (web model context protocol), the w3c browser standard exposing in-page javascript tools and declarative forms to ai agents via document.modelcontext. use when designing, authoring, registering, testing, or debugging in-browser webmcp tools (document.modelcontext.registertool, gettools, executetool), managing permissions policy (\"tools\"), securing cross-origin iframe exposures (exposedto/fromorigins), or enabling agentic web application actuation. general customizations"
+      "phase": "BUILD",
+      "role": "domain-skill",
+      "search_corpus": "webmcp standardized protocol and developer guide for webmcp (web model context protocol), the w3c browser standard exposing in-page javascript tools and declarative forms to ai agents via document.modelcontext. use when designing, authoring, registering, testing, or debugging in-browser webmcp tools (document.modelcontext.registertool, gettools, executetool), managing permissions policy (\"tools\"), securing cross-origin iframe exposures (exposedto/fromorigins), or enabling agentic web application actuation. frontend & user experience domain-skill build"
     },
     {
       "category": "Quality & Security Guards",
       "description": "Review generated or changed WooCommerce code — extensions, payment and shipping integrations, checkout customizations, and order/product logic — before it ships. Best used reactively after an agent writes, edits, or reviews code touching WooCommerce APIs: wc_get_order, wc_get_orders, wc_get_product, WC() cart or session, woocommerce_* hooks, Store API endpoints, payment gateways, order or product meta, HPOS, subscriptions, or bookings. Use on 'review this Woo plugin', 'is this HPOS compatible', or after tasks like 'write a WooCommerce extension', 'add a checkout field', 'hook into the order flow', or 'update stock'. Enforces HPOS-safe order access, CRUD over direct meta, feature-compatibility declarations, server-side checkout validation, money-handling discipline, and hooks over template overrides. DO NOT USE for WordPress code without WooCommerce APIs (use wp-guard), generic code review (use clean-code-guard), test review (use test-guard), or store configuration and admin-screen questions.",
       "file": "skills/woo-guard/SKILL.md",
       "name": "woo-guard",
-      "search_corpus": "woo-guard review generated or changed woocommerce code — extensions, payment and shipping integrations, checkout customizations, and order/product logic — before it ships. best used reactively after an agent writes, edits, or reviews code touching woocommerce apis: wc_get_order, wc_get_orders, wc_get_product, wc() cart or session, woocommerce_* hooks, store api endpoints, payment gateways, order or product meta, hpos, subscriptions, or bookings. use on 'review this woo plugin', 'is this hpos compatible', or after tasks like 'write a woocommerce extension', 'add a checkout field', 'hook into the order flow', or 'update stock'. enforces hpos-safe order access, crud over direct meta, feature-compatibility declarations, server-side checkout validation, money-handling discipline, and hooks over template overrides. do not use for wordpress code without woocommerce apis (use wp-guard), generic code review (use clean-code-guard), test review (use test-guard), or store configuration and admin-screen questions. quality & security guards"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "woo-guard review generated or changed woocommerce code — extensions, payment and shipping integrations, checkout customizations, and order/product logic — before it ships. best used reactively after an agent writes, edits, or reviews code touching woocommerce apis: wc_get_order, wc_get_orders, wc_get_product, wc() cart or session, woocommerce_* hooks, store api endpoints, payment gateways, order or product meta, hpos, subscriptions, or bookings. use on 'review this woo plugin', 'is this hpos compatible', or after tasks like 'write a woocommerce extension', 'add a checkout field', 'hook into the order flow', or 'update stock'. enforces hpos-safe order access, crud over direct meta, feature-compatibility declarations, server-side checkout validation, money-handling discipline, and hooks over template overrides. do not use for wordpress code without woocommerce apis (use wp-guard), generic code review (use clean-code-guard), test review (use test-guard), or store configuration and admin-screen questions. quality & security guards guard verify"
     },
     {
       "category": "Quality & Security Guards",
       "description": "Review generated or changed WordPress code — plugins, themes, and blocks — before it ships. Best used reactively after an agent writes, edits, or reviews code touching WordPress APIs: add_action/add_filter, shortcodes, meta boxes, AJAX handlers, REST routes, WP_Query or $wpdb, widgets, or WP-CLI commands. Use on 'review this plugin', 'is this safe to ship', 'make this translatable', 'speed up this query', or after tasks like 'write a plugin' or 'add an endpoint/shortcode/meta box'. Enforces escaping and sanitization, nonces plus capability checks, prepared database queries, core-API-first development, translation-ready strings, and query/caching discipline. DO NOT USE for WooCommerce-specific order, product, or checkout logic (use woo-guard), non-WordPress PHP, generic code quality review (use clean-code-guard), test code review (use test-guard), server or hosting configuration, or conceptual WordPress questions.",
       "file": "skills/wp-guard/SKILL.md",
       "name": "wp-guard",
-      "search_corpus": "wp-guard review generated or changed wordpress code — plugins, themes, and blocks — before it ships. best used reactively after an agent writes, edits, or reviews code touching wordpress apis: add_action/add_filter, shortcodes, meta boxes, ajax handlers, rest routes, wp_query or $wpdb, widgets, or wp-cli commands. use on 'review this plugin', 'is this safe to ship', 'make this translatable', 'speed up this query', or after tasks like 'write a plugin' or 'add an endpoint/shortcode/meta box'. enforces escaping and sanitization, nonces plus capability checks, prepared database queries, core-api-first development, translation-ready strings, and query/caching discipline. do not use for woocommerce-specific order, product, or checkout logic (use woo-guard), non-wordpress php, generic code quality review (use clean-code-guard), test code review (use test-guard), server or hosting configuration, or conceptual wordpress questions. quality & security guards"
+      "phase": "VERIFY",
+      "role": "guard",
+      "search_corpus": "wp-guard review generated or changed wordpress code — plugins, themes, and blocks — before it ships. best used reactively after an agent writes, edits, or reviews code touching wordpress apis: add_action/add_filter, shortcodes, meta boxes, ajax handlers, rest routes, wp_query or $wpdb, widgets, or wp-cli commands. use on 'review this plugin', 'is this safe to ship', 'make this translatable', 'speed up this query', or after tasks like 'write a plugin' or 'add an endpoint/shortcode/meta box'. enforces escaping and sanitization, nonces plus capability checks, prepared database queries, core-api-first development, translation-ready strings, and query/caching discipline. do not use for woocommerce-specific order, product, or checkout logic (use woo-guard), non-wordpress php, generic code quality review (use clean-code-guard), test code review (use test-guard), server or hosting configuration, or conceptual wordpress questions. quality & security guards guard verify"
     }
   ],
-  "total_skills": 60
+  "total_mcp_servers": 19,
+  "total_plugin_skills": 36,
+  "total_skills": 85
 }

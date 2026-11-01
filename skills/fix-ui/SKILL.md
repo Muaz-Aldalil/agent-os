@@ -16,6 +16,7 @@ You are the **Senior UI Audit & Remediation Engineer**. Use this skill whenever 
 ## 1. Chained Skills Activated Automatically
 - `/ui-audit` (`python scripts/agent_os.py ui-audit`)
 - `/muaz-skill` (Tune & Audit Mode)
+- **Google Stitch Suite (Paired with `StitchMCP`)**: `/taste-design`, `/design-md`, `/manage-design-system`, `/generate-design`, `/code-to-design`, `/extract-design-md`, `/shadcn-ui`, `/react-components`
 - `/rtl-logical-guard` (Bilingual LTR/RTL Logical CSS)
 - `/ui-review-loop` (Visual & Structural Verification Loop)
 - `/clean-code-guard`

@@ -1,6 +1,6 @@
 ---
 name: clean-code-guard
-description: Review generated or changed production code before it ships, using Clean Code, SOLID, DRY, KISS, YAGNI, and LLM-specific failure-mode checks in any programming language. Best used reactively after an agent writes, edits, refactors, or fixes code, before presenting, committing, or merging the result. Use when the user asks "review this PR", "is this safe to merge?", "make this cleaner", "audit this code", "refactor this", "fix this bug", or after a coding agent produced implementation code. Can also guide writing when explicitly invoked before a risky edit. Invoke it on your own initiative the moment you finish writing, editing, or refactoring non-trivial production code, before presenting or committing — don't wait to be asked. DO NOT USE for factual/conceptual questions, CI/tooling config, git workflow, running/debugging tests, pure architecture discussion, prose writing, data analysis, or test-code review (use test-guard).
+description: Review generated or changed production code before it ships using Clean Code, SOLID, DRY, KISS, YAGNI, architecture layer boundaries, and AI failure-mode checks. Use when reviewing PRs, auditing/refactoring code, or after writing non-trivial production code. Do not use for test-code review (use test-guard).
 ---
 
 # clean-code-guard
@@ -40,6 +40,7 @@ The reference files are:
 - [references/solid.md](references/solid.md) — SRP, OCP, LSP, ISP, DIP with the modern phrasings and detection smells.
 - [references/dry-kiss-yagni.md](references/dry-kiss-yagni.md) — knowledge vs code duplication, Sandi Metz's re-inline rule, McCabe complexity, Fowler's YAGNI cost categories.
 - [references/ai-failure-modes.md](references/ai-failure-modes.md) — the 14 systematic ways LLMs produce bad code. **Read this one first if you are an AI agent reading this skill.** It is the highest-leverage file in the skill.
+- [references/architecture-boundaries.md](references/architecture-boundaries.md) — unidirectional layer flow (Controller/UI → Service/Action → Repository/DB), domain & Public/Admin shell isolation, and anti-abstraction-leak rules.
 - [references/review-checklist.md](references/review-checklist.md) — structured walk-through for review mode.
 - [references/sources.md](references/sources.md) — central bibliography for source URLs. Read it only when you need to verify or cite an external source.
 
@@ -114,7 +115,7 @@ These are the rules to follow on every code change. They are imperative, not sug
 19. **Re-derive, do not copy from similar.** When tempted to copy a function and modify it, stop. Re-derive from the spec. Off-by-one and wrong-null-semantic bugs almost always enter through copy-from-similar. (arXiv 2411.01414)
 20. **Enumerate boundary cases before writing them.** For any range, off-by-one, null/empty/one/many, even/odd, or unicode/byte boundary, write the case list in a comment first. Cover each case in code before moving on.
 21. **Strip dead code before delivery.** Run a linter or grep pass for unused imports, unused symbols, unreachable branches, and "just in case" exports. Remove them. A function that nothing calls today does not get to live for "someday."
-22. **Read before write.** Before writing in an unfamiliar repo, read the file you'll edit, one neighbor, and any project rules file (CLAUDE.md, AGENTS.md, README's "conventions" section). Use the project's existing helpers, error types, and logging.
+22. **Read before write.** Before writing in an unfamiliar repo, read the file you'll edit, one neighbor, and any project rules file (`MASTER.md`, `DESIGN.md`, `SECURITY.md`, `CLAUDE.md`, `AGENTS.md`, `README`'s "conventions" section). Use the project's existing helpers, error types, and logging.
 23. **No new dependency for what a few lines cover.** Before adding a package, check the standard library, the already-installed dependencies, and whether a few lines of local code do the job. A new dependency is permanent maintenance and supply-chain surface; add one only when it owns real complexity you should not re-implement (cryptography, parsing, time zones — illustrative, not exhaustive), never to save ten lines. See [references/dry-kiss-yagni.md](references/dry-kiss-yagni.md).
 
 ### The floor — never cut these for simplicity
@@ -130,11 +131,19 @@ Rule 16 trusts the contract *inside* the boundary; the items below stay even whi
 
 24. **Preserve observable behavior when refactoring.** When the user asks you to clean up, simplify, or refactor existing code, do not change the contract — same inputs produce the same outputs, same exceptions raised, same side effects, same ordering guarantees. If you spot a bug while refactoring, flag it separately and ask before changing it. Refactoring is defined as *"a change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior"* (Fowler, *Refactoring*). Bug fixes and refactors are two operations — never bundle them in a single change.
 
+### Architectural layer & domain boundaries
+
+25. **Never skip architectural layers (Controller/UI → Service/Action → Repository/DB).** HTTP Controllers, Route handlers, and UI pages/components must never directly invoke `*Repository` classes, execute raw SQL (`DB::raw`, `DB::statement`, `prisma.$queryRaw`), or orchestrate multi-step database transactions (`DB::beginTransaction`, `prisma.$transaction`). Client-side UI components (`"use client"`) must never import server-only modules (`prisma`, `@/lib/db`, `repositories/*`, `fs`, or secret env vars). Delegate business orchestration and persistence to the `Service`, `Action`, or `Server Action` layer. See [references/architecture-boundaries.md](references/architecture-boundaries.md).
+26. **Enforce bounded domain and Public vs. Admin shell isolation.** Modules in Domain A must communicate with Domain B through public `Service` contracts or domain events—never by importing Domain B's internal `Repository`. Public routes/pages (`(public)/*`, storefront views) must never import `/admin/*` layout/navigation shells (`AdminSidebar`, `AdminNavbar`), and `/admin/*` pages must never render the Public `Navbar` or `Footer`. (Evans, *Domain-Driven Design*; Clean Architecture)
+27. **Never leak low-level abstractions across layer contracts.** Services and repositories must return domain DTOs, entities, or typed results—never unexecuted ORM query builders (`Eloquent\Builder`, `PrismaPromise`), third-party SDK HTTP wrappers (`Stripe\ApiResponse`, `AxiosResponse`), raw database driver exceptions (`PDOException`, `PrismaClientKnownRequestError`), or unmasked internal model attributes (`password`, `remember_token`).
+28. **Single component per file & practical 2+ reusability (`Readability → Reusability → Maintainability → Scalability → Security → Performance`).** Never dump multiple page sections (`Header`, `HeroSection`, `Features`, `Footer`) or reusable primitives (`Button`, `Card`, `Modal`, `Badge`, `DataTable`) into `App.jsx`, `page.tsx`, or a single monolithic file. Extract any UI component, section, or backend query/service used **2+ times** into its own standalone file so teammates (e.g., connecting a Landing Page to an Admin Dashboard) can reuse it cleanly. Never go to the extreme of wrapping raw CSS tokens (such as fonts) into unnecessary wrapper components.
+29. **Junior-developer readability & concise 2–3 line component header.** Write clear, linear, self-explanatory code that a junior developer can read and edit in 30 seconds. Every reusable Frontend component, Backend service/controller, or DB model file must begin with a concise **2–3 line header comment** (`/** Purpose: [what it does] | Reused In: [where used] | Key Props/Inputs: [contract] */`)—not a 50-line documentation wall.
+
 ## Self-check before delivery
 
 Before you show the user the code you wrote or edited:
 
-1. Walk imperatives 1–24 against your diff. Fix every violation.
+1. Walk imperatives 1–29 against your diff. Fix every violation.
 2. For new functions, count: lines ≤ 20? params ≤ 4? complexity feels ≤ 10? names reveal intent?
 3. For new comments, ask: does this explain *why*? If it explains *what*, delete it.
 4. For new error handling: is the caught error type specific? Does the handler do something other than silently return?
@@ -142,6 +151,7 @@ Before you show the user the code you wrote or edited:
 6. Did you read the file you edited and at least one neighbor? Did your style match?
 7. Is there any hardcoded "ok" return or fixture data? If yes, replace with real implementation or an explicit unimplemented/unsupported-operation failure.
 8. If this is a refactor: did you change observable behavior? If yes, you bundled a bug fix — split it out and ask the user.
+9. Did you respect architectural layer, domain, and Public/Admin shell boundaries (no Controller → Repository/raw SQL bypass, no `"use client"` → DB/server leak, no cross-domain internal repository import, no ORM builder/SDK wrapper leak)?
 
 If you cannot answer yes to every check, fix before shipping.
 

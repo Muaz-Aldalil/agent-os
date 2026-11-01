@@ -88,5 +88,10 @@ class CurrencyExchange:
         report = self.sentinel.format_report()
         self.assertIn("[PASS] Zero architectural or scalability regressions detected", report)
 
+    def test_boundary_leak_detection_in_sentinel(self):
+        leaky_client = '"use client";\nimport { prisma } from "@/lib/prisma";\nexport function Widget() { return null; }\n'
+        findings = self.sentinel.audit_boundaries(leaky_client, "src/components/Widget.tsx")
+        self.assertTrue(any(f.severity == P0 and "CLIENT_SERVER_BOUNDARY_LEAK" in f.category for f in findings))
+
 if __name__ == "__main__":
     unittest.main()

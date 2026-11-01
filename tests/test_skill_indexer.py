@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
 Unit tests for skill_indexer.py.
-Validates skill indexing, parsing, categorization, and search accuracy.
+Validates skill indexing, role & 4-phase classification, plugin/MCP discovery, and search accuracy.
 """
 
 import sys
 import os
 import unittest
-from pathlib import Path
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "scripts")))
-from skill_indexer import build_index, search_skills, parse_frontmatter
+from skill_indexer import build_index, search_skills, parse_frontmatter, infer_role_and_phase
+
 
 class TestSkillIndexer(unittest.TestCase):
 
@@ -30,10 +30,23 @@ version: 1.0.0
         self.assertIn("line two", data.get("description", ""))
         self.assertEqual(data.get("version"), "1.0.0")
 
-    def test_build_index_indexes_all_skills(self):
+    def test_build_index_indexes_all_skills_with_roles_and_phases(self):
         index_data = build_index()
-        self.assertGreaterEqual(index_data["total_skills"], 40)
+        self.assertGreaterEqual(index_data["total_skills"], 85)
         self.assertEqual(len(index_data["skills"]), index_data["total_skills"])
+        for skill in index_data["skills"]:
+            self.assertIn(skill["phase"], {"THINK", "PLAN", "BUILD", "VERIFY"})
+            self.assertIn(
+                skill["role"],
+                {"master-command", "phase-skill", "domain-skill", "sub-module", "guard"},
+            )
+            self.assertNotEqual(skill["category"], "General Customizations", f"Uncategorized skill: {skill['name']}")
+        self.assertGreaterEqual(index_data.get("total_mcp_servers", 0), 8)
+
+    def test_infer_role_and_phase_for_new_skills(self):
+        role, phase = infer_role_and_phase("custom-security-guard", "Audits custom endpoints for security", "General")
+        self.assertEqual(role, "guard")
+        self.assertEqual(phase, "VERIFY")
 
     def test_search_skills_exact_match(self):
         results = search_skills("next-server-action-guard", limit=1)
@@ -51,6 +64,7 @@ version: 1.0.0
         self.assertGreaterEqual(len(results), 1)
         names = [r["name"] for r in results]
         self.assertIn("rtl-logical-guard", names)
+
 
 if __name__ == "__main__":
     unittest.main()

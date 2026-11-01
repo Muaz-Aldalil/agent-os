@@ -17,10 +17,12 @@ from typing import List, Dict, Any, Optional
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
-SCRIPTS_DIR = WORKSPACE_ROOT / "scripts"
-if str(WORKSPACE_ROOT) not in sys.path:
-    sys.path.insert(0, str(WORKSPACE_ROOT))
+AGENT_OS_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(os.environ.get("AGENT_OS_PROJECT_ROOT") or Path.cwd()).resolve()
+WORKSPACE_ROOT = PROJECT_ROOT
+SCRIPTS_DIR = AGENT_OS_ROOT / "scripts"
+if str(AGENT_OS_ROOT) not in sys.path:
+    sys.path.insert(0, str(AGENT_OS_ROOT))
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
@@ -46,15 +48,15 @@ class Finding:
         }
 
 def get_git_diff(staged_only: bool = False, target_file: Optional[str] = None) -> str:
-    """Retrieves git diff for the workspace."""
+    """Retrieves git diff for the target project workspace."""
     cmd = ["git", "diff"]
     if staged_only:
         cmd.append("--cached")
     if target_file:
         cmd.extend(["--", target_file])
     try:
-        return subprocess.check_output(cmd, cwd=WORKSPACE_ROOT, text=True, errors="replace")
-    except Exception as e:
+        return subprocess.check_output(cmd, cwd=PROJECT_ROOT, text=True, errors="replace")
+    except Exception:
         return ""
 
 def parse_diff_files(diff_text: str) -> Dict[str, List[Tuple[int, str]]]:

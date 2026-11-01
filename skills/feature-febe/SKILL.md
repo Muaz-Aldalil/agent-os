@@ -4,7 +4,7 @@ description: >-
   Stack-agnostic Frontend + Backend feature builder (CMS, dashboards, APIs, forms, tables, auth).
   Chains /feature-fe (Frontend & CMS Layout Armor) with /backend-api, /backend-http, /backend-identity,
   /backend-ops, and stack security guards (/laravel-mastery + /pest-security-guard or /next-server-action-guard).
-  Always starts with /grill-me + /muaz-skill Smart Intake.
+  Always starts with /intake + /muaz-skill Smart Intake.
 ---
 
 # `/feature-febe` — Build a New Frontend + Backend Feature (Any Tech Stack)
@@ -14,8 +14,8 @@ You are the **Senior Full-Stack (Frontend + Backend) Architect**. This skill wor
 ---
 
 ## 1. Chained Skills Activated Automatically
-- **Intake & Planning**: `/grill-me` + `/muaz-skill` (`references/intake-template.md`)
-- **Frontend Stack**: `/muaz-skill` + `/rtl-logical-guard` + `/ui-review-loop` (+ `/nextjs-fullstack` if Next.js; `/wp-guard` + `/woo-guard` if WordPress)
+- **Intake & Planning**: `/intake` + `/critique` + `/muaz-skill` (`references/intake-template.md`) + `/design-md` + `/taste-design`
+- **Frontend & Google Stitch Stack**: `/muaz-skill` + `/generate-design` + `/manage-design-system` + `/stitch-loop` + `/rtl-logical-guard` + `/ui-review-loop` (+ `/nextjs-fullstack`, `/react-components`, `/shadcn-ui`, `/react-vite-dashboard` if React/Next.js; `/wp-guard` + `/woo-guard` if WordPress)
 - **Backend Stack**: `/backend-api` + `/backend-http` + `/backend-identity` + `/backend-ops` (+ `/laravel-mastery` + `/pest-security-guard` if Laravel/PHP; `/next-server-action-guard` if Next.js)
 - **Quality & Testing**: `/clean-code-guard` + `/test-guard`
 
@@ -23,8 +23,8 @@ You are the **Senior Full-Stack (Frontend + Backend) Architect**. This skill wor
 
 ## 2. Mandatory 4-Phase Execution Pipeline
 
-### 🔴 Phase 1: Stack Detection + Full `/grill-me` & `/muaz-skill` Smart Intake (NO CODE YET)
-1. **Auto-Detect (`Phase 1A/1B`)**: Inspect project files (`package.json`, `composer.json`, `requirements.txt`, `AGENTS.md`) to detect the Frontend and Backend stack. Honor any stack explicitly requested by the user.
+### 🔴 Phase 1: Stack Detection + Full `/intake` & `/muaz-skill` Smart Intake (NO CODE YET)
+1. **Auto-Detect (`Phase 1A/1B`)**: Inspect project files (`MASTER.md`, `DESIGN.md`, `SECURITY.md`, `package.json`, `composer.json`, `requirements.txt`, `AGENTS.md`) to detect the Frontend and Backend stack, reusable component catalog, and active security tier. Honor any stack explicitly requested by the user.
 2. **Grill Interview (`Phase 1C/1D`)**: Use `ask_question` (with `(Recommended)` on the first option) to clarify:
    - Feature goal, UI layout (Sticky Nav, Sticky Sidebar, CMS Table columns, Form inputs), and RTL/LTR needs.
    - **RBAC Permissions**: Which user roles (`Admin`, `Editor`, `User`, `Public`) can view, create, edit, or delete?
@@ -41,6 +41,7 @@ You are the **Senior Full-Stack (Frontend + Backend) Architect**. This skill wor
 - **Data Tables**: `overflow-x-auto`, sticky headers, search/filter/sort bar, pagination controls wired to the backend API, and all **5 UI States** (`Idle`, `Loading`, `Success`, `Error`, `Empty`).
 - **Forms**: Responsive multi-column grids, field-by-field server error display, disabled submit spinner, and sticky bottom `Save / Cancel` bar.
 - **All-Media & RTL/LTR**: Responsive across Mobile, Tablet, and Desktop using CSS Logical Properties (`ms-`, `me-`, `ps-`, `pe-`, `start-`, `end-`).
+- **Junior-Developer Readability, 1-Component-Per-File & Practical 2+ Reusability**: Split `Header`, `Hero`, `Footer`, and repeated UI primitives (`Button`, `Card`, `Modal`, `DataTable` used 2+ times) into dedicated files with a **2–3 line top header comment** (`Purpose | Reused In | Key Props/Inputs`) so a junior developer can connect the Landing Page and Admin Dashboard cleanly. Never over-abstract raw CSS tokens (like fonts) into wrapper components.
 
 #### B. Backend & CMS API Armor
 1. **Role & Permission Guards (RBAC)**:

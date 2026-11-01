@@ -373,8 +373,8 @@ Even when you don't type a single guard name, these protections are **built into
 
 ---
 
-## 📚 7. Complete Dictionary of All 60 Skills (Optional Reference)
-### القاموس المرجعي لجميع المهارات الـ 60 (مرجع اختياري)
+## 📚 7. Complete Dictionary of All 76 Skills (Optional Reference)
+### القاموس المرجعي لجميع المهارات الـ 76 (مرجع اختياري)
 
 You never need to memorize these—the **11 Situation Commands** above call them for you automatically! They are listed here only in case you are curious what is inside the engine:
 
@@ -382,9 +382,10 @@ You never need to memorize these—the **11 Situation Commands** above call them
 | :--- | :--- |
 | **1. Beginner Situation Combos (11)**<br>*(أوامر الحالات الشاملة)* | `/start-project`, `/smart-feature`, `/feature-fe`, `/feature-febe`, `/feature-full`, `/feature-wp`, `/fix-ui`, `/fix-backend`, `/check-all`, `/doc-project`, `/save-data` |
 | **2. Frontend & UI Design (3)**<br>*(تصميم وبناء الواجهات)* | `/muaz-skill` (91 styles, 169 palettes, 28 intake questions), `/nextjs-fullstack`, `/ui-audit` |
-| **3. Backend & Data Systems (8)**<br>*(الباك-إند وقواعد البيانات)* | `/laravel-mastery`, `/backend-api`, `/backend-data`, `/backend-http`, `/backend-identity`, `/backend-ops`, `/database`, `/devops-deploy` |
-| **4. Automatic Security & Quality Guards (8)**<br>*(حراس الأمان والجودة)* | `/clean-code-guard`, `/test-guard`, `/docs-guard`, `/next-server-action-guard`, `/pest-security-guard`, `/rtl-logical-guard`, `/woo-guard`, `/wp-guard` |
-| **5. Pre-Coding & Spec-Kit Planning (13)**<br>*(التخطيط المعماري المسبق)* | `/web-precode`, `/spec-kit`, `/speckit-constitution`, `/speckit-specify`, `/speckit-clarify`, `/speckit-plan`, `/speckit-checklist`, `/speckit-tasks`, `/speckit-implement`, `/speckit-analyze`, `/speckit-converge`, `/speckit-taskstoissues`, `/glopale` |
-| **6. Core Workflow & Review (8)**<br>*(سير العمل والمراجعة)* | `/engineering-workflow`, `/data-saver`, `/debate-review`, `/delegate-setup`, `/opencode-delegate`, `/find-skills`, `/project-documentation`, `/ui-review-loop` |
-| **7. Simplicity & Anti-Bloat (7)**<br>*(تبسيط الكود وتقليل التوكنز)* | `/caveman`, `/ponytail`, `/ponytail-audit`, `/ponytail-debt`, `/ponytail-gain`, `/ponytail-help`, `/ponytail-review` |
-| **8. Testing & Browser Protocol (2)**<br>*(الاختبارات وبروتوكول المتصفح)* | `/testing-qa`, `/webmcp` |
+| **3. Google Stitch Design & UI Suite (16)**<br>*(مهارات Google Stitch الرسمية المرتبطة بـ StitchMCP)* | `/generate-design`, `/design-md`, `/taste-design`, `/manage-design-system`, `/extract-design-md`, `/extract-static-html`, `/code-to-design`, `/upload-to-stitch`, `/enhance-prompt`, `/site-md`, `/stitch-loop`, `/react-components`, `/react-native`, `/react-vite-dashboard`, `/remotion`, `/shadcn-ui` |
+| **4. Backend & Data Systems (8)**<br>*(الباك-إند وقواعد البيانات)* | `/laravel-mastery`, `/backend-api`, `/backend-data`, `/backend-http`, `/backend-identity`, `/backend-ops`, `/database`, `/devops-deploy` |
+| **5. Automatic Security & Quality Guards (8)**<br>*(حراس الأمان والجودة)* | `/clean-code-guard`, `/test-guard`, `/docs-guard`, `/next-server-action-guard`, `/pest-security-guard`, `/rtl-logical-guard`, `/woo-guard`, `/wp-guard` |
+| **6. Pre-Coding & Spec-Kit Planning (13)**<br>*(التخطيط المعماري المسبق)* | `/web-precode`, `/spec-kit`, `/speckit-constitution`, `/speckit-specify`, `/speckit-clarify`, `/speckit-plan`, `/speckit-checklist`, `/speckit-tasks`, `/speckit-implement`, `/speckit-analyze`, `/speckit-converge`, `/speckit-taskstoissues`, `/plan-daily` |
+| **7. Core Workflow & Review (8)**<br>*(سير العمل والمراجعة)* | `/engineering-workflow`, `/data-saver`, `/debate-review`, `/delegate-setup`, `/opencode-delegate`, `/find-skills`, `/project-documentation`, `/ui-review-loop` |
+| **8. Simplicity & Anti-Bloat (7)**<br>*(تبسيط الكود وتقليل التوكنز)* | `/caveman`, `/ponytail`, `/ponytail-audit`, `/ponytail-debt`, `/ponytail-gain`, `/ponytail-help`, `/ponytail-review` |
+| **9. Testing & Browser Protocol (2)**<br>*(الاختبارات وبروتوكول المتصفح)* | `/testing-qa`, `/webmcp` |

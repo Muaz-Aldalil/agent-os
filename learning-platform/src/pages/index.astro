@@ -11,6 +11,7 @@ import skillsRegistry from '../data/skills-registry.json';
 
 const allLessons = CURRICULUM_TRACKS.flatMap((track) => track.lessons);
 const skillsList = skillsRegistry.skills || [];
+const cliList = skillsRegistry.cliTools || [];
 const mcpList = skillsRegistry.mcpServers || [];
 const uniqueCategoriesEn = Array.from(new Set(skillsList.map((s) => s.categoryEn)));
 
@@ -21,14 +22,15 @@ const clientPayload = JSON.stringify({
   lessons: allLessons,
   combos: SITUATION_COMBOS_CARDS,
   skills: skillsList,
+  cliTools: cliList,
   mcpServers: mcpList,
   ui: UI_DICTIONARY
 });
 ---
 
 <W3Layout
-  title="Agent OS — W3Schools x Social Learning Platform (v1.15.0)"
-  description="Interactive W3Schools-style tutorial reader, social learning feed, Try-it-Yourself simulator, and 60-skill dictionary for Agent OS."
+  title="Agent OS — W3Schools x Social Learning Platform (v2.1.0)"
+  description="Interactive W3Schools-style tutorial reader, social learning feed, Try-it-Yourself simulator, and 85-skill + 28-CLI reference dictionary for Agent OS."
 >
   <!-- LAYER 1A: STICKY TOPBAR (h-14) -->
   <header class="sticky top-0 z-40 bg-w3-card dark:bg-w3-slate border-b border-w3-line dark:border-zinc-700">
@@ -640,9 +642,16 @@ const clientPayload = JSON.stringify({
                   <span class="lang-ar">{UI_DICTIONARY.ar.simSelectCombo}</span>
                 </label>
                 <select id="sim-command-select" aria-label="Select Agent OS Slash Command" class="w-full px-3 py-2 rounded-lg bg-w3-card dark:bg-w3-slate border border-w3-line dark:border-zinc-700 text-xs sm:text-sm font-mono text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green focus-visible:outline-none">
-                  {SITUATION_COMBOS_CARDS.map((c) => (
-                    <option value={c.command}>{c.command} — {c.titleEn}</option>
-                  ))}
+                  <optgroup label="12 All-in-One Situation Combos">
+                    {SITUATION_COMBOS_CARDS.map((c) => (
+                      <option value={c.command}>{c.command} — {c.titleEn}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="All 85 Targeted Skills (By User Request Domain)">
+                    {skillsList.map((sk) => (
+                      <option value={sk.command}>{sk.command} — {sk.domainShortEn || sk.shortEn}</option>
+                    ))}
+                  </optgroup>
                 </select>
               </div>
 
@@ -768,11 +777,15 @@ const clientPayload = JSON.stringify({
                     <span class="lang-en">{UI_DICTIONARY.en.refColCommand}</span>
                     <span class="lang-ar">{UI_DICTIONARY.ar.refColCommand}</span>
                   </th>
-                  <th class="py-3 px-3 text-start font-display font-semibold hidden sm:table-cell">
+                  <th class="py-3 px-3 text-start font-display font-semibold">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColDomain}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColDomain}</span>
+                  </th>
+                  <th class="py-3 px-3 text-start font-display font-semibold hidden md:table-cell">
                     <span class="lang-en">{UI_DICTIONARY.en.refColCategory}</span>
                     <span class="lang-ar">{UI_DICTIONARY.ar.refColCategory}</span>
                   </th>
-                  <th class="py-3 px-3 text-start font-display font-semibold">
+                  <th class="py-3 px-3 text-start font-display font-semibold hidden sm:table-cell">
                     <span class="lang-en">{UI_DICTIONARY.en.refColPhase}</span>
                     <span class="lang-ar">{UI_DICTIONARY.ar.refColPhase}</span>
                   </th>
@@ -788,15 +801,19 @@ const clientPayload = JSON.stringify({
               </thead>
               <tbody id="skills-table-body" class="divide-y divide-w3-line dark:divide-zinc-700 bg-w3-card dark:bg-w3-slate">
                 {skillsList.map((skill, idx) => (
-                  <tr data-skill-row={skill.name} data-skill-cat={skill.categoryEn} data-skill-search={`${skill.name} ${skill.categoryEn} ${skill.categoryAr} ${skill.phase} ${skill.descriptionEn} ${skill.descriptionAr}`.toLowerCase()} class={`skill-table-row hover:bg-w3-example/60 dark:hover:bg-w3-slateDeep ${idx >= 12 ? 'hidden' : ''}`}>
+                  <tr data-skill-row={skill.name} data-skill-cat={skill.categoryEn} data-skill-search={`${skill.name} ${skill.command} ${skill.domainEn || ''} ${skill.domainAr || ''} ${skill.categoryEn} ${skill.categoryAr} ${skill.phase} ${skill.descriptionEn} ${skill.descriptionAr} ${skill.samplePromptEn || ''}`.toLowerCase()} class={`skill-table-row hover:bg-w3-example/60 dark:hover:bg-w3-slateDeep ${idx >= 12 ? 'hidden' : ''}`}>
                     <td class="py-2.5 px-3 font-mono font-semibold text-w3-greenDark dark:text-w3-mint whitespace-nowrap">
                       {skill.command}
                     </td>
-                    <td class="py-2.5 px-3 text-w3-muted dark:text-zinc-300 max-w-xs truncate hidden sm:table-cell">
+                    <td class="py-2.5 px-3 max-w-xs truncate text-w3-ink dark:text-zinc-200 font-medium">
+                      <span class="lang-en">{skill.domainShortEn || skill.shortEn}</span>
+                      <span class="lang-ar">{skill.domainShortAr || skill.shortAr}</span>
+                    </td>
+                    <td class="py-2.5 px-3 text-w3-muted dark:text-zinc-300 max-w-xs truncate hidden md:table-cell">
                       <span class="lang-en">{skill.categoryEn}</span>
                       <span class="lang-ar">{skill.categoryAr}</span>
                     </td>
-                    <td class="py-2.5 px-3 whitespace-nowrap">
+                    <td class="py-2.5 px-3 whitespace-nowrap hidden sm:table-cell">
                       <span class="px-2 py-0.5 rounded bg-w3-example dark:bg-w3-slateDeep font-mono text-xs text-w3-ink dark:text-zinc-200">
                         {skill.phase}
                       </span>
@@ -806,10 +823,16 @@ const clientPayload = JSON.stringify({
                       <span class="lang-ar">{skill.shortAr}</span>
                     </td>
                     <td class="py-2.5 px-3 text-end whitespace-nowrap">
-                      <button type="button" data-open-skill-modal={skill.name} class="px-2.5 py-1 rounded bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
-                        <span class="lang-en">{UI_DICTIONARY.en.refDetailsBtn}</span>
-                        <span class="lang-ar">{UI_DICTIONARY.ar.refDetailsBtn}</span>
-                      </button>
+                      <div class="inline-flex items-center justify-end gap-1.5">
+                        <button type="button" data-copy-text-en={skill.samplePromptEn || skill.command} data-copy-text-ar={skill.samplePromptAr || skill.command} class="px-2 py-1 rounded bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                          <span class="lang-en">{UI_DICTIONARY.en.copyPromptShortBtn}</span>
+                          <span class="lang-ar">{UI_DICTIONARY.ar.copyPromptShortBtn}</span>
+                        </button>
+                        <button type="button" data-open-skill-modal={skill.name} class="px-2.5 py-1 rounded bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                          <span class="lang-en">{UI_DICTIONARY.en.refDetailsBtn}</span>
+                          <span class="lang-ar">{UI_DICTIONARY.ar.refDetailsBtn}</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -825,11 +848,83 @@ const clientPayload = JSON.stringify({
           </div>
         </section>
 
-        <!-- 18 MCP SERVERS RESPONSIVE TABLE -->
+        <!-- 28 UNIFIED AGENT OS CLI TOOLS TABLE -->
+        <section class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
+          <div class="mb-3">
+            <h3 class="font-display font-bold text-lg text-w3-ink dark:text-w3-canvas mt-1 mb-1">
+              <span class="lang-en">{UI_DICTIONARY.en.cliTableTitle}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.cliTableTitle}</span>
+            </h3>
+            <p class="text-xs sm:text-sm text-w3-muted dark:text-zinc-300">
+              <span class="lang-en">{UI_DICTIONARY.en.cliTableSub}</span>
+              <span class="lang-ar">{UI_DICTIONARY.ar.cliTableSub}</span>
+            </p>
+          </div>
+          <div class="w-full overflow-x-auto rounded-lg border border-w3-line dark:border-zinc-700">
+            <table class="w-full text-start border-collapse text-xs sm:text-sm">
+              <thead class="bg-w3-slate text-white">
+                <tr>
+                  <th class="py-2.5 px-3 text-start font-display font-semibold">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColCommand}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColCommand}</span>
+                  </th>
+                  <th class="py-2.5 px-3 text-start font-display font-semibold">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColDomain}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColDomain}</span>
+                  </th>
+                  <th class="py-2.5 px-3 text-start font-display font-semibold hidden sm:table-cell">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColPhase}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColPhase}</span>
+                  </th>
+                  <th class="py-2.5 px-3 text-start font-display font-semibold">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColSummary}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColSummary}</span>
+                  </th>
+                  <th class="py-2.5 px-3 text-end font-display font-semibold">
+                    <span class="lang-en">{UI_DICTIONARY.en.refColAction}</span>
+                    <span class="lang-ar">{UI_DICTIONARY.ar.refColAction}</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-w3-line dark:divide-zinc-700 bg-w3-card dark:bg-w3-slate">
+                {cliList.map((tool) => (
+                  <tr data-cli-search={`${tool.name} ${tool.command} ${tool.domainEn} ${tool.domainAr} ${tool.descriptionEn} ${tool.descriptionAr}`.toLowerCase()} class="cli-table-row hover:bg-w3-example/60 dark:hover:bg-w3-slateDeep">
+                    <td class="py-2 px-3 font-mono font-semibold text-w3-greenDark dark:text-w3-mint whitespace-nowrap">
+                      agent_os.py {tool.name}
+                    </td>
+                    <td class="py-2 px-3 max-w-xs truncate text-w3-ink dark:text-zinc-200 font-medium">
+                      <span class="lang-en">{tool.domainShortEn}</span>
+                      <span class="lang-ar">{tool.domainShortAr}</span>
+                    </td>
+                    <td class="py-2 px-3 font-mono text-xs text-w3-ink dark:text-zinc-200 hidden sm:table-cell">{tool.phase}</td>
+                    <td class="py-2 px-3 max-w-xs truncate text-w3-ink dark:text-zinc-200">
+                      <span class="lang-en">{tool.shortEn}</span>
+                      <span class="lang-ar">{tool.shortAr}</span>
+                    </td>
+                    <td class="py-2 px-3 text-end whitespace-nowrap">
+                      <div class="inline-flex items-center justify-end gap-1.5">
+                        <button type="button" data-copy-text-en={tool.samplePromptEn} data-copy-text-ar={tool.samplePromptAr} class="px-2 py-1 rounded bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                          <span class="lang-en">{UI_DICTIONARY.en.copyPromptShortBtn}</span>
+                          <span class="lang-ar">{UI_DICTIONARY.ar.copyPromptShortBtn}</span>
+                        </button>
+                        <button type="button" data-open-cli-modal={tool.name} class="px-2.5 py-1 rounded bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                          <span class="lang-en">{UI_DICTIONARY.en.refDetailsBtn}</span>
+                          <span class="lang-ar">{UI_DICTIONARY.ar.refDetailsBtn}</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 19 MCP SERVERS RESPONSIVE TABLE -->
         <section class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
           <h3 class="font-display font-bold text-lg text-w3-ink dark:text-w3-canvas mt-1 mb-3">
-            <span class="lang-en">18 Configured MCP Servers Reference</span>
-            <span class="lang-ar">مرجع خوادم MCP الـ 18 المربوطة بالنظام</span>
+            <span class="lang-en">19 Configured MCP Servers Reference</span>
+            <span class="lang-ar">مرجع خوادم MCP الـ 19 المربوطة بالنظام</span>
           </h3>
           <div class="w-full overflow-x-auto rounded-lg border border-w3-line dark:border-zinc-700">
             <table class="w-full text-start border-collapse text-xs sm:text-sm">
@@ -1021,9 +1116,26 @@ const clientPayload = JSON.stringify({
         </button>
       </div>
 
-      <h3 id="details-modal-title" class="font-display font-bold text-lg mt-4 mb-2">Skill Details</h3>
+      <h3 id="details-modal-title" class="font-display font-bold text-lg mt-4 mb-1">Skill Details</h3>
       <p id="details-modal-meta" class="text-xs font-mono text-w3-greenDark dark:text-w3-mint mb-3"></p>
-      <p id="details-modal-desc" class="text-sm text-w3-muted dark:text-zinc-200 leading-relaxed mb-5"></p>
+
+      <div id="details-modal-domain-box" class="mb-3 p-3 rounded-lg bg-w3-example dark:bg-w3-slateDeep border-s-4 border-w3-green">
+        <span class="block text-xs font-bold text-w3-greenDark dark:text-w3-mint mb-1">
+          <span class="lang-en">{UI_DICTIONARY.en.modalDomainLabel}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modalDomainLabel}</span>
+        </span>
+        <p id="details-modal-domain" class="text-xs sm:text-sm font-semibold text-w3-ink dark:text-zinc-100"></p>
+      </div>
+
+      <p id="details-modal-desc" class="text-sm text-w3-muted dark:text-zinc-200 leading-relaxed mb-4"></p>
+
+      <div id="details-modal-prompt-box" class="mb-4">
+        <span class="block text-xs font-bold text-w3-ink dark:text-zinc-200 mb-1.5">
+          <span class="lang-en">{UI_DICTIONARY.en.modalPromptLabel}</span>
+          <span class="lang-ar">{UI_DICTIONARY.ar.modalPromptLabel}</span>
+        </span>
+        <pre id="details-modal-prompt" class="p-3 rounded-lg bg-w3-slate text-w3-mint border-s-4 border-w3-green font-mono text-xs overflow-x-auto whitespace-pre-wrap"></pre>
+      </div>
 
       <div class="flex flex-wrap items-center gap-3 pt-3 border-t border-w3-line dark:border-zinc-700">
         <button type="button" id="details-modal-try-btn" class="px-4 py-2 rounded-md bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green">
@@ -1300,7 +1412,12 @@ const clientPayload = JSON.stringify({
         const lessonMatch =
           DATA.lessons.find(function (l) {
             return l.command === selectedCmd;
-          }) || DATA.lessons[0];
+          }) || null;
+
+        const skillMatch =
+          DATA.skills.find(function (s) {
+            return s.command === selectedCmd;
+          }) || null;
 
         const stackMatch =
           DATA.techStacks.find(function (s) {
@@ -1310,7 +1427,24 @@ const clientPayload = JSON.stringify({
         if (stackBadge) stackBadge.textContent = stackMatch.badge;
 
         if (stage1List) {
-          const qs = isAr ? lessonMatch.simQuestionsAr : lessonMatch.simQuestionsEn;
+          let qs = [];
+          if (lessonMatch) {
+            qs = isAr ? lessonMatch.simQuestionsAr : lessonMatch.simQuestionsEn;
+          } else if (skillMatch) {
+            qs = isAr
+              ? [
+                  'نطاق الاستخدام: ' + (skillMatch.domainAr || skillMatch.shortAr),
+                  'بوابة الاستيعاب (Read-Only): فحص git status والملفات المستهدفة قبل أي تعديل',
+                  'تأكيد قائمة Do-Not-Remove ومعايير التحقق النهائية'
+                ]
+              : [
+                  'Target Domain: ' + (skillMatch.domainEn || skillMatch.shortEn),
+                  'Stage 0 Read-Only Gate: Inspect git status & target files before editing',
+                  'Confirm Do-Not-Remove Lock List & Goal-Driven Verification criteria'
+                ];
+          } else {
+            qs = isAr ? DATA.lessons[0].simQuestionsAr : DATA.lessons[0].simQuestionsEn;
+          }
           stage1List.innerHTML = qs
             .map(function (q) {
               return '<li>• ' + q + '</li>';
@@ -1319,7 +1453,12 @@ const clientPayload = JSON.stringify({
         }
 
         if (stage2Pills) {
-          const combinedSkills = Array.from(new Set(lessonMatch.chainedSkills.concat(stackMatch.stackSkills)));
+          const baseChain = lessonMatch
+            ? lessonMatch.chainedSkills
+            : skillMatch
+            ? [skillMatch.command, '/intake', '/clean-code-guard']
+            : DATA.lessons[0].chainedSkills;
+          const combinedSkills = Array.from(new Set(baseChain.concat(stackMatch.stackSkills)));
           stage2Pills.innerHTML = combinedSkills
             .map(function (sk) {
               return '<span class="px-2.5 py-1 rounded bg-w3-slate border border-w3-green text-w3-mint font-mono text-xs">' + sk + '</span>';
@@ -1562,22 +1701,83 @@ const clientPayload = JSON.stringify({
           });
           if (sk) {
             const modal = document.getElementById('details-modal');
+            const domainBox = document.getElementById('details-modal-domain-box');
+            const domainEl = document.getElementById('details-modal-domain');
+            const promptBox = document.getElementById('details-modal-prompt-box');
+            const promptEl = document.getElementById('details-modal-prompt');
+            const tryBtn = document.getElementById('details-modal-try-btn');
+            const copyBtn = document.getElementById('details-modal-copy-btn');
+
             document.getElementById('details-modal-cmd').textContent = sk.command;
             document.getElementById('details-modal-title').textContent = sk.name;
             document.getElementById('details-modal-meta').textContent =
               (state.lang === 'ar' ? sk.categoryAr : sk.categoryEn) + ' • ' + sk.phase + ' • ' + sk.file;
             document.getElementById('details-modal-desc').textContent =
               state.lang === 'ar' ? sk.descriptionAr : sk.descriptionEn;
-            const tryBtn = document.getElementById('details-modal-try-btn');
-            if (tryBtn) {
-              tryBtn.setAttribute('data-try-command', sk.command);
-              tryBtn.setAttribute('data-try-prompt-en', sk.command + ' Apply this skill to my current task.');
-              tryBtn.setAttribute('data-try-prompt-ar', sk.command + ' طبق هذه المهارة على مهمتي الحالية.');
+
+            if (domainBox && domainEl) {
+              domainBox.classList.remove('hidden');
+              domainEl.textContent = state.lang === 'ar' ? sk.domainAr || sk.shortAr : sk.domainEn || sk.shortEn;
             }
-            const copyBtn = document.getElementById('details-modal-copy-btn');
+            const promptTextEn = sk.samplePromptEn || sk.command + ' Apply this skill to my current task.';
+            const promptTextAr = sk.samplePromptAr || sk.command + ' طبق هذه المهارة على مهمتي الحالية.';
+            if (promptBox && promptEl) {
+              promptBox.classList.remove('hidden');
+              promptEl.textContent = state.lang === 'ar' ? promptTextAr : promptTextEn;
+            }
+            if (tryBtn) {
+              tryBtn.classList.remove('hidden');
+              tryBtn.setAttribute('data-try-command', sk.command);
+              tryBtn.setAttribute('data-try-prompt-en', promptTextEn);
+              tryBtn.setAttribute('data-try-prompt-ar', promptTextAr);
+            }
             if (copyBtn) {
-              copyBtn.setAttribute('data-copy-text-en', sk.command);
-              copyBtn.setAttribute('data-copy-text-ar', sk.command);
+              copyBtn.classList.remove('hidden');
+              copyBtn.setAttribute('data-copy-text-en', promptTextEn);
+              copyBtn.setAttribute('data-copy-text-ar', promptTextAr);
+            }
+            if (modal) modal.classList.remove('hidden');
+          }
+          return;
+        }
+
+        // Open CLI Tool Details Modal
+        const cliName = target.getAttribute('data-open-cli-modal');
+        if (cliName && DATA.cliTools) {
+          const tool = DATA.cliTools.find(function (t) {
+            return t.name === cliName;
+          });
+          if (tool) {
+            const modal = document.getElementById('details-modal');
+            const domainBox = document.getElementById('details-modal-domain-box');
+            const domainEl = document.getElementById('details-modal-domain');
+            const promptBox = document.getElementById('details-modal-prompt-box');
+            const promptEl = document.getElementById('details-modal-prompt');
+            const tryBtn = document.getElementById('details-modal-try-btn');
+            const copyBtn = document.getElementById('details-modal-copy-btn');
+
+            document.getElementById('details-modal-cmd').textContent = 'CLI: agent_os.py ' + tool.name;
+            document.getElementById('details-modal-title').textContent = 'agent_os.py ' + tool.name;
+            document.getElementById('details-modal-meta').textContent =
+              (state.lang === 'ar' ? tool.categoryAr : tool.categoryEn) + ' • ' + tool.phase;
+            document.getElementById('details-modal-desc').textContent =
+              state.lang === 'ar' ? tool.descriptionAr : tool.descriptionEn;
+
+            if (domainBox && domainEl) {
+              domainBox.classList.remove('hidden');
+              domainEl.textContent = state.lang === 'ar' ? tool.domainAr : tool.domainEn;
+            }
+            if (promptBox && promptEl) {
+              promptBox.classList.remove('hidden');
+              promptEl.textContent = state.lang === 'ar' ? tool.samplePromptAr : tool.samplePromptEn;
+            }
+            if (tryBtn) {
+              tryBtn.classList.add('hidden');
+            }
+            if (copyBtn) {
+              copyBtn.classList.remove('hidden');
+              copyBtn.setAttribute('data-copy-text-en', tool.samplePromptEn);
+              copyBtn.setAttribute('data-copy-text-ar', tool.samplePromptAr);
             }
             if (modal) modal.classList.remove('hidden');
           }
@@ -1592,11 +1792,24 @@ const clientPayload = JSON.stringify({
           });
           if (srv) {
             const modal = document.getElementById('details-modal');
+            const domainBox = document.getElementById('details-modal-domain-box');
+            const domainEl = document.getElementById('details-modal-domain');
+            const promptBox = document.getElementById('details-modal-prompt-box');
+            const tryBtn = document.getElementById('details-modal-try-btn');
+            const copyBtn = document.getElementById('details-modal-copy-btn');
+
             document.getElementById('details-modal-cmd').textContent = 'MCP: ' + srv.name;
             document.getElementById('details-modal-title').textContent = srv.name;
             document.getElementById('details-modal-meta').textContent = 'Phase: ' + srv.phase;
             document.getElementById('details-modal-desc').textContent =
               state.lang === 'ar' ? srv.domainAr : srv.domainEn;
+            if (domainBox && domainEl) {
+              domainBox.classList.remove('hidden');
+              domainEl.textContent = state.lang === 'ar' ? srv.shortAr : srv.shortEn;
+            }
+            if (promptBox) promptBox.classList.add('hidden');
+            if (tryBtn) tryBtn.classList.add('hidden');
+            if (copyBtn) copyBtn.classList.add('hidden');
             if (modal) modal.classList.remove('hidden');
           }
           return;
@@ -1717,9 +1930,17 @@ const clientPayload = JSON.stringify({
           const combo = DATA.combos.find(function (c) {
             return c.command === simCmdSelect.value;
           });
+          const sk = DATA.skills.find(function (s) {
+            return s.command === simCmdSelect.value;
+          });
           const promptArea = document.getElementById('sim-prompt-textarea');
           if (combo && promptArea) {
             promptArea.value = state.lang === 'ar' ? combo.samplePromptAr : combo.samplePromptEn;
+          } else if (sk && promptArea) {
+            promptArea.value =
+              state.lang === 'ar'
+                ? sk.samplePromptAr || sk.command + ' طبق هذه المهارة على مهمتي الحالية.'
+                : sk.samplePromptEn || sk.command + ' Apply this skill to my current task.';
           }
           renderSimulatorOutput();
         });
@@ -1795,6 +2016,14 @@ const clientPayload = JSON.stringify({
       const topXpBtn = document.getElementById('top-xp-badge-btn');
       function showXpSummaryModal() {
         const modal = document.getElementById('details-modal');
+        const domainBox = document.getElementById('details-modal-domain-box');
+        const promptBox = document.getElementById('details-modal-prompt-box');
+        const tryBtn = document.getElementById('details-modal-try-btn');
+        const copyBtn = document.getElementById('details-modal-copy-btn');
+        if (domainBox) domainBox.classList.add('hidden');
+        if (promptBox) promptBox.classList.add('hidden');
+        if (tryBtn) tryBtn.classList.add('hidden');
+        if (copyBtn) copyBtn.classList.add('hidden');
         document.getElementById('details-modal-cmd').textContent = state.xp + ' XP';
         document.getElementById('details-modal-title').textContent = getRankTitle(state.xp);
         document.getElementById('details-modal-meta').textContent =
@@ -1807,7 +2036,7 @@ const clientPayload = JSON.stringify({
       if (mobileXpBtn) mobileXpBtn.addEventListener('click', showXpSummaryModal);
       if (topXpBtn) topXpBtn.addEventListener('click', showXpSummaryModal);
 
-      // Search & Category Filtering in 60-Skill Reference Dictionary
+      // Search & Category Filtering in 85-Skill & 28-CLI Reference Dictionary
       const dictSearch = document.getElementById('skill-dict-search');
       const dictCatSelect = document.getElementById('skill-dict-cat-select');
       const globalSearch = document.getElementById('global-top-search');
@@ -1826,6 +2055,15 @@ const clientPayload = JSON.stringify({
             } else {
               row.classList.remove('hidden');
             }
+          } else {
+            row.classList.add('hidden');
+          }
+        });
+        document.querySelectorAll('.cli-table-row').forEach(function (row) {
+          const rowCorpus = row.getAttribute('data-cli-search') || '';
+          const matchesQuery = !q || rowCorpus.indexOf(q) !== -1;
+          if (matchesQuery) {
+            row.classList.remove('hidden');
           } else {
             row.classList.add('hidden');
           }

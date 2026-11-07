@@ -29,15 +29,47 @@ class TestHandbookSyncAndPlatform(unittest.TestCase):
     def test_sync_registry_produces_all_60_skills_and_bilingual_fields(self):
         payload = sync_handbook.sync_registry()
         self.assertGreaterEqual(payload["totalSkills"], 85)
+        self.assertGreaterEqual(payload["totalCliTools"], 28)
         self.assertGreaterEqual(payload["totalMcpServers"], 18)
         self.assertTrue(sync_handbook.REGISTRY_OUT_PATH.exists())
 
         loaded = json.loads(sync_handbook.REGISTRY_OUT_PATH.read_text(encoding="utf-8"))
         self.assertEqual(len(loaded["skills"]), payload["totalSkills"])
-        first_skill = loaded["skills"][0]
-        for key in ("name", "command", "categoryEn", "categoryAr", "shortEn", "shortAr", "descriptionEn", "descriptionAr"):
-            self.assertIn(key, first_skill)
-            self.assertTrue(first_skill[key])
+        self.assertEqual(len(loaded["cliTools"]), payload["totalCliTools"])
+        for skill in loaded["skills"]:
+            for key in (
+                "name",
+                "command",
+                "categoryEn",
+                "categoryAr",
+                "domainEn",
+                "domainAr",
+                "domainShortEn",
+                "domainShortAr",
+                "shortEn",
+                "shortAr",
+                "descriptionEn",
+                "descriptionAr",
+                "samplePromptEn",
+                "samplePromptAr",
+            ):
+                self.assertIn(key, skill, f"Missing {key} in skill {skill.get('name')}")
+                self.assertTrue(skill[key], f"Empty {key} in skill {skill.get('name')}")
+        for tool in loaded["cliTools"]:
+            for key in (
+                "name",
+                "command",
+                "domainEn",
+                "domainAr",
+                "domainShortEn",
+                "domainShortAr",
+                "descriptionEn",
+                "descriptionAr",
+                "samplePromptEn",
+                "samplePromptAr",
+            ):
+                self.assertIn(key, tool, f"Missing {key} in CLI tool {tool.get('name')}")
+                self.assertTrue(tool[key], f"Empty {key} in CLI tool {tool.get('name')}")
 
     def test_astro_platform_files_and_synced_handbook_pass_rtl_and_mobile_rules(self):
         index_astro = WORKSPACE_ROOT / "learning-platform" / "src" / "pages" / "index.astro"
@@ -56,6 +88,9 @@ class TestHandbookSyncAndPlatform(unittest.TestCase):
         self.assertIn("overflow-x-auto", html_text)
         self.assertIn("flex-1 min-w-0", html_text)
         self.assertIn("max-w-xs truncate", html_text)
+        self.assertIn('id="details-modal-domain"', html_text)
+        self.assertIn('id="details-modal-prompt"', html_text)
+        self.assertIn("data-open-cli-modal=", html_text)
         # Verify all 11 Situation Combos + /plan-daily are present
         for cmd in (
             "/start-project",

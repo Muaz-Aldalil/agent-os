@@ -26,6 +26,7 @@ const REGISTRY_PATH = path.join(ROOT_DIR, 'src', 'data', 'skills-registry.json')
 const skillsRegistry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf-8'));
 const allLessons = CURRICULUM_TRACKS.flatMap((t) => t.lessons);
 const skillsList = skillsRegistry.skills || [];
+const cliList = skillsRegistry.cliTools || [];
 const mcpList = skillsRegistry.mcpServers || [];
 const uniqueCategoriesEn = Array.from(new Set(skillsList.map((s) => s.categoryEn)));
 
@@ -36,6 +37,7 @@ const clientPayload = JSON.stringify({
   lessons: allLessons,
   combos: SITUATION_COMBOS_CARDS,
   skills: skillsList,
+  cliTools: cliList,
   mcpServers: mcpList,
   ui: UI_DICTIONARY
 });
@@ -157,6 +159,7 @@ svg, img, video, canvas { display: block; vertical-align: middle; }
 .items-center { align-items: center; }
 .items-stretch { align-items: stretch; }
 .justify-center { justify-content: center; }
+.justify-end { justify-content: flex-end; }
 .justify-between { justify-content: space-between; }
 .justify-around { justify-content: space-around; }
 .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
@@ -204,6 +207,7 @@ svg, img, video, canvas { display: block; vertical-align: middle; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .whitespace-nowrap { white-space: nowrap; }
 .whitespace-pre-line { white-space: pre-line; }
+.whitespace-pre-wrap { white-space: pre-wrap; }
 .pointer-events-none { pointer-events: none; }
 .border-collapse { border-collapse: collapse; }
 
@@ -407,6 +411,7 @@ html[dir="rtl"] .rtl\\:translate-x-full { transform: translateX(100%); }
 }
 @media (min-width: 768px) {
   .md\\:block { display: block; }
+  .md\\:table-cell { display: table-cell; }
   .md\\:flex-row { flex-direction: row; }
   .md\\:items-center { align-items: center; }
   .md\\:w-72 { width: 18rem; }
@@ -666,9 +671,18 @@ function renderStaticHtml() {
     })
     .join('\n          ');
 
-  const simComboOptionsHtml = SITUATION_COMBOS_CARDS.map(
-    (c) => `<option value="${escHtml(c.command)}">${escHtml(c.command)} - ${escHtml(c.titleEn)}</option>`
-  ).join('\n                  ');
+  const simComboOptionsHtml = [
+    '<optgroup label="12 All-in-One Situation Combos">',
+    ...SITUATION_COMBOS_CARDS.map(
+      (c) => `<option value="${escHtml(c.command)}">${escHtml(c.command)} - ${escHtml(c.titleEn)}</option>`
+    ),
+    '</optgroup>',
+    '<optgroup label="All 85 Targeted Skills (By User Request Domain)">',
+    ...skillsList.map(
+      (sk) => `<option value="${escHtml(sk.command)}">${escHtml(sk.command)} - ${escHtml(sk.domainShortEn || sk.shortEn)}</option>`
+    ),
+    '</optgroup>'
+  ].join('\n                  ');
 
   const simStackOptionsHtml = TECH_STACKS.map(
     (st) => `<option value="${escHtml(st.id)}">${escHtml(st.labelEn)}</option>`
@@ -681,14 +695,18 @@ function renderStaticHtml() {
   const skillsRowsHtml = skillsList
     .map((skill, idx) => {
       const hiddenCls = idx >= 12 ? 'hidden' : '';
-      const searchStr = `${skill.name} ${skill.categoryEn} ${skill.categoryAr} ${skill.phase} ${skill.descriptionEn} ${skill.descriptionAr}`.toLowerCase();
+      const searchStr = `${skill.name} ${skill.command} ${skill.domainEn || ''} ${skill.domainAr || ''} ${skill.categoryEn} ${skill.categoryAr} ${skill.phase} ${skill.descriptionEn} ${skill.descriptionAr} ${skill.samplePromptEn || ''}`.toLowerCase();
       return `<tr data-skill-row="${escHtml(skill.name)}" data-skill-cat="${escHtml(skill.categoryEn)}" data-skill-search="${escHtml(searchStr)}" class="skill-table-row hover:bg-w3-example/60 dark:hover:bg-w3-slateDeep ${hiddenCls}">
                     <td class="py-2.5 px-3 font-mono font-semibold text-w3-greenDark dark:text-w3-mint whitespace-nowrap">${escHtml(skill.command)}</td>
-                    <td class="py-2.5 px-3 text-w3-muted dark:text-zinc-300 max-w-xs truncate hidden sm:table-cell">
+                    <td class="py-2.5 px-3 max-w-xs truncate text-w3-ink dark:text-zinc-200 font-medium">
+                      <span class="lang-en">${escHtml(skill.domainShortEn || skill.shortEn)}</span>
+                      <span class="lang-ar">${escHtml(skill.domainShortAr || skill.shortAr)}</span>
+                    </td>
+                    <td class="py-2.5 px-3 text-w3-muted dark:text-zinc-300 max-w-xs truncate hidden md:table-cell">
                       <span class="lang-en">${escHtml(skill.categoryEn)}</span>
                       <span class="lang-ar">${escHtml(skill.categoryAr)}</span>
                     </td>
-                    <td class="py-2.5 px-3 whitespace-nowrap">
+                    <td class="py-2.5 px-3 whitespace-nowrap hidden sm:table-cell">
                       <span class="px-2 py-0.5 rounded bg-w3-example dark:bg-w3-slateDeep font-mono text-xs text-w3-ink dark:text-zinc-200">${escHtml(skill.phase)}</span>
                     </td>
                     <td class="py-2.5 px-3 max-w-xs truncate text-w3-ink dark:text-zinc-200">
@@ -696,10 +714,46 @@ function renderStaticHtml() {
                       <span class="lang-ar">${escHtml(skill.shortAr)}</span>
                     </td>
                     <td class="py-2.5 px-3 text-end whitespace-nowrap">
-                      <button type="button" data-open-skill-modal="${escHtml(skill.name)}" class="px-2.5 py-1 rounded bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
-                        <span class="lang-en">${escHtml(UI_DICTIONARY.en.refDetailsBtn)}</span>
-                        <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refDetailsBtn)}</span>
-                      </button>
+                      <div class="inline-flex items-center justify-end gap-1.5">
+                        <button type="button" data-copy-text-en="${escHtml(skill.samplePromptEn || skill.command)}" data-copy-text-ar="${escHtml(skill.samplePromptAr || skill.command)}" class="px-2 py-1 rounded bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                          <span class="lang-en">${escHtml(UI_DICTIONARY.en.copyPromptShortBtn)}</span>
+                          <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.copyPromptShortBtn)}</span>
+                        </button>
+                        <button type="button" data-open-skill-modal="${escHtml(skill.name)}" class="px-2.5 py-1 rounded bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                          <span class="lang-en">${escHtml(UI_DICTIONARY.en.refDetailsBtn)}</span>
+                          <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refDetailsBtn)}</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>`;
+    })
+    .join('\n                ');
+
+  const cliRowsHtml = cliList
+    .map((tool) => {
+      const searchStr = `${tool.name} ${tool.command} ${tool.domainEn} ${tool.domainAr} ${tool.descriptionEn} ${tool.descriptionAr}`.toLowerCase();
+      return `<tr data-cli-search="${escHtml(searchStr)}" class="cli-table-row hover:bg-w3-example/60 dark:hover:bg-w3-slateDeep">
+                    <td class="py-2 px-3 font-mono font-semibold text-w3-greenDark dark:text-w3-mint whitespace-nowrap">agent_os.py ${escHtml(tool.name)}</td>
+                    <td class="py-2 px-3 max-w-xs truncate text-w3-ink dark:text-zinc-200 font-medium">
+                      <span class="lang-en">${escHtml(tool.domainShortEn)}</span>
+                      <span class="lang-ar">${escHtml(tool.domainShortAr)}</span>
+                    </td>
+                    <td class="py-2 px-3 font-mono text-xs text-w3-ink dark:text-zinc-200 hidden sm:table-cell">${escHtml(tool.phase)}</td>
+                    <td class="py-2 px-3 max-w-xs truncate text-w3-ink dark:text-zinc-200">
+                      <span class="lang-en">${escHtml(tool.shortEn)}</span>
+                      <span class="lang-ar">${escHtml(tool.shortAr)}</span>
+                    </td>
+                    <td class="py-2 px-3 text-end whitespace-nowrap">
+                      <div class="inline-flex items-center justify-end gap-1.5">
+                        <button type="button" data-copy-text-en="${escHtml(tool.samplePromptEn)}" data-copy-text-ar="${escHtml(tool.samplePromptAr)}" class="px-2 py-1 rounded bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:border-w3-green focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                          <span class="lang-en">${escHtml(UI_DICTIONARY.en.copyPromptShortBtn)}</span>
+                          <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.copyPromptShortBtn)}</span>
+                        </button>
+                        <button type="button" data-open-cli-modal="${escHtml(tool.name)}" class="px-2.5 py-1 rounded bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                          <span class="lang-en">${escHtml(UI_DICTIONARY.en.refDetailsBtn)}</span>
+                          <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refDetailsBtn)}</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>`;
     })
@@ -735,8 +789,8 @@ function renderStaticHtml() {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Agent OS - W3Schools x Social Learning Platform (v1.15.0)</title>
-    <meta name="description" content="Interactive W3Schools-style tutorial reader, social learning feed, Try-it-Yourself simulator, and 60-skill dictionary for Agent OS." />
+    <title>Agent OS - W3Schools x Social Learning Platform (v2.1.0)</title>
+    <meta name="description" content="Interactive W3Schools-style tutorial reader, social learning feed, Try-it-Yourself simulator, and 85-skill + 28-CLI dictionary for Agent OS." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
@@ -1199,11 +1253,15 @@ function renderStaticHtml() {
                       <span class="lang-en">${escHtml(UI_DICTIONARY.en.refColCommand)}</span>
                       <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refColCommand)}</span>
                     </th>
-                    <th class="py-3 px-3 text-start font-display font-semibold hidden sm:table-cell">
+                    <th class="py-3 px-3 text-start font-display font-semibold">
+                      <span class="lang-en">${escHtml(UI_DICTIONARY.en.refColDomain)}</span>
+                      <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refColDomain)}</span>
+                    </th>
+                    <th class="py-3 px-3 text-start font-display font-semibold hidden md:table-cell">
                       <span class="lang-en">${escHtml(UI_DICTIONARY.en.refColCategory)}</span>
                       <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refColCategory)}</span>
                     </th>
-                    <th class="py-3 px-3 text-start font-display font-semibold">
+                    <th class="py-3 px-3 text-start font-display font-semibold hidden sm:table-cell">
                       <span class="lang-en">${escHtml(UI_DICTIONARY.en.refColPhase)}</span>
                       <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refColPhase)}</span>
                     </th>
@@ -1232,9 +1290,53 @@ function renderStaticHtml() {
           </section>
 
           <section class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
+            <div class="mb-3">
+              <h3 class="font-display font-bold text-lg text-w3-ink dark:text-w3-canvas mt-1 mb-1">
+                <span class="lang-en">${escHtml(UI_DICTIONARY.en.cliTableTitle)}</span>
+                <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.cliTableTitle)}</span>
+              </h3>
+              <p class="text-xs sm:text-sm text-w3-muted dark:text-zinc-300">
+                <span class="lang-en">${escHtml(UI_DICTIONARY.en.cliTableSub)}</span>
+                <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.cliTableSub)}</span>
+              </p>
+            </div>
+            <div class="w-full overflow-x-auto rounded-lg border border-w3-line dark:border-zinc-700">
+              <table class="w-full text-start border-collapse text-xs sm:text-sm">
+                <thead class="bg-w3-slate text-white">
+                  <tr>
+                    <th class="py-2.5 px-3 text-start font-display font-semibold">
+                      <span class="lang-en">${escHtml(UI_DICTIONARY.en.refColCommand)}</span>
+                      <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refColCommand)}</span>
+                    </th>
+                    <th class="py-2.5 px-3 text-start font-display font-semibold">
+                      <span class="lang-en">${escHtml(UI_DICTIONARY.en.refColDomain)}</span>
+                      <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refColDomain)}</span>
+                    </th>
+                    <th class="py-2.5 px-3 text-start font-display font-semibold hidden sm:table-cell">
+                      <span class="lang-en">${escHtml(UI_DICTIONARY.en.refColPhase)}</span>
+                      <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refColPhase)}</span>
+                    </th>
+                    <th class="py-2.5 px-3 text-start font-display font-semibold">
+                      <span class="lang-en">${escHtml(UI_DICTIONARY.en.refColSummary)}</span>
+                      <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refColSummary)}</span>
+                    </th>
+                    <th class="py-2.5 px-3 text-end font-display font-semibold">
+                      <span class="lang-en">${escHtml(UI_DICTIONARY.en.refColAction)}</span>
+                      <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refColAction)}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-w3-line dark:divide-zinc-700 bg-w3-card dark:bg-w3-slate">
+                  ${cliRowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
             <h3 class="font-display font-bold text-lg text-w3-ink dark:text-w3-canvas mt-1 mb-3">
-              <span class="lang-en">18 Configured MCP Servers Reference</span>
-              <span class="lang-ar">مرجع خوادم MCP الـ 18 المربوطة بالنظام</span>
+              <span class="lang-en">19 Configured MCP Servers Reference</span>
+              <span class="lang-ar">مرجع خوادم MCP الـ 19 المربوطة بالنظام</span>
             </h3>
             <div class="w-full overflow-x-auto rounded-lg border border-w3-line dark:border-zinc-700">
               <table class="w-full text-start border-collapse text-xs sm:text-sm">
@@ -1380,9 +1482,23 @@ function renderStaticHtml() {
             <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.modalCloseBtn)}</span>
           </button>
         </div>
-        <h3 id="details-modal-title" class="font-display font-bold text-lg mt-4 mb-2">Skill Details</h3>
+        <h3 id="details-modal-title" class="font-display font-bold text-lg mt-4 mb-1">Skill Details</h3>
         <p id="details-modal-meta" class="text-xs font-mono text-w3-greenDark dark:text-w3-mint mb-3"></p>
-        <p id="details-modal-desc" class="text-sm text-w3-muted dark:text-zinc-200 leading-relaxed mb-5"></p>
+        <div id="details-modal-domain-box" class="mb-3 p-3 rounded-lg bg-w3-example dark:bg-w3-slateDeep border-s-4 border-w3-green">
+          <span class="block text-xs font-bold text-w3-greenDark dark:text-w3-mint mb-1">
+            <span class="lang-en">${escHtml(UI_DICTIONARY.en.modalDomainLabel)}</span>
+            <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.modalDomainLabel)}</span>
+          </span>
+          <p id="details-modal-domain" class="text-xs sm:text-sm font-semibold text-w3-ink dark:text-zinc-100"></p>
+        </div>
+        <p id="details-modal-desc" class="text-sm text-w3-muted dark:text-zinc-200 leading-relaxed mb-4"></p>
+        <div id="details-modal-prompt-box" class="mb-4">
+          <span class="block text-xs font-bold text-w3-ink dark:text-zinc-200 mb-1.5">
+            <span class="lang-en">${escHtml(UI_DICTIONARY.en.modalPromptLabel)}</span>
+            <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.modalPromptLabel)}</span>
+          </span>
+          <pre id="details-modal-prompt" class="p-3 rounded-lg bg-w3-slate text-w3-mint border-s-4 border-w3-green font-mono text-xs overflow-x-auto whitespace-pre-wrap"></pre>
+        </div>
         <div class="flex flex-wrap items-center gap-3 pt-3 border-t border-w3-line dark:border-zinc-700">
           <button type="button" id="details-modal-try-btn" class="px-4 py-2 rounded-md bg-w3-green hover:bg-w3-greenHover text-white font-semibold text-xs focus-visible:ring-2 focus-visible:ring-w3-green">
             <span class="lang-en">${escHtml(UI_DICTIONARY.en.modalTryInSimBtn)}</span>

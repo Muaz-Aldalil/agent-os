@@ -517,16 +517,26 @@ function renderStaticHtml() {
                     <span class="lang-en">${escHtml(card.titleEn)}</span>
                     <span class="lang-ar">${escHtml(card.titleAr)}</span>
                   </h3>
-                  <p class="text-xs text-w3-muted dark:text-zinc-300 leading-relaxed mb-4">
+                  <p class="text-xs text-w3-muted dark:text-zinc-300 leading-relaxed mb-3">
                     <span class="lang-en">${escHtml(card.descEn)}</span>
                     <span class="lang-ar">${escHtml(card.descAr)}</span>
                   </p>
+                  <div class="bg-w3-slate text-w3-mint border-s-4 border-w3-green p-2.5 rounded font-mono text-xs overflow-x-auto mb-3 whitespace-pre-wrap">
+                    <span class="lang-en">${escHtml(card.samplePromptEn)}</span>
+                    <span class="lang-ar">${escHtml(card.samplePromptAr)}</span>
+                  </div>
                 </div>
-                <div class="flex items-center justify-between gap-2 pt-3 border-t border-w3-line dark:border-zinc-700">
-                  <button type="button" data-try-command="${escHtml(card.command)}" data-try-prompt-en="${escHtml(card.samplePromptEn)}" data-try-prompt-ar="${escHtml(card.samplePromptAr)}" class="px-3 py-1.5 rounded-md bg-w3-green hover:bg-w3-greenHover text-white text-xs font-semibold focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
-                    <span class="lang-en">${escHtml(UI_DICTIONARY.en.tryItBtn)}</span>
-                    <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.tryItBtn)}</span>
-                  </button>
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-w3-line dark:border-zinc-700">
+                  <div class="flex items-center gap-1.5">
+                    <button type="button" data-copy-text-en="${escHtml(card.samplePromptEn)}" data-copy-text-ar="${escHtml(card.samplePromptAr)}" class="px-3 py-1.5 rounded-md bg-w3-green hover:bg-w3-greenHover text-white text-xs font-semibold focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                      <span class="lang-en">${escHtml(UI_DICTIONARY.en.copyPromptShortBtn)}</span>
+                      <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.copyPromptShortBtn)}</span>
+                    </button>
+                    <button type="button" data-try-command="${escHtml(card.command)}" data-try-prompt-en="${escHtml(card.samplePromptEn)}" data-try-prompt-ar="${escHtml(card.samplePromptAr)}" class="px-2.5 py-1.5 rounded-md bg-w3-example dark:bg-w3-slate text-xs font-semibold text-w3-ink dark:text-w3-canvas hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                      <span class="lang-en">${escHtml(UI_DICTIONARY.en.tryItBtn)}</span>
+                      <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.tryItBtn)}</span>
+                    </button>
+                  </div>
                   <button type="button" data-open-lesson="${escHtml(card.lessonId)}" class="px-2.5 py-1.5 rounded-md bg-w3-example dark:bg-w3-slate text-xs font-semibold text-w3-greenDark dark:text-w3-mint hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
                     <span class="lang-en">Lesson »</span>
                     <span class="lang-ar">الدرس »</span>
@@ -534,6 +544,104 @@ function renderStaticHtml() {
                 </div>
               </article>`;
   }).join('\n            ');
+
+  const homeSkillsCardsHtml = skillsList
+    .map((skill, idx) => {
+      const hiddenCls = idx >= 6 ? 'hidden' : '';
+      const searchStr = `${skill.name} ${skill.command} ${skill.domainEn || ''} ${skill.domainAr || ''} ${skill.categoryEn} ${skill.categoryAr} ${skill.descriptionEn} ${skill.descriptionAr} ${skill.samplePromptEn || ''}`.toLowerCase();
+      return `<article data-home-cmd-index="${idx}" data-home-cmd-cat="${escHtml(skill.categoryEn)}" data-home-cmd-search="${escHtml(searchStr)}" class="home-cmd-card rounded-xl border border-w3-line dark:border-zinc-700 bg-w3-canvas dark:bg-w3-slateDeep p-4 flex flex-col justify-between ${hiddenCls}">
+                <div>
+                  <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <code class="px-2.5 py-1 rounded bg-w3-slate text-w3-mint font-mono text-xs font-bold">${escHtml(skill.command)}</code>
+                    <span class="px-2 py-0.5 rounded bg-w3-example dark:bg-w3-slate font-mono text-xs text-w3-ink dark:text-zinc-200">
+                      <span class="lang-en">${escHtml(skill.categoryEn)} • ${escHtml(skill.phase)}</span>
+                      <span class="lang-ar">${escHtml(skill.categoryAr)} • ${escHtml(skill.phaseAr)}</span>
+                    </span>
+                  </div>
+                  <div class="mb-2 p-2.5 rounded-lg bg-w3-mint/40 dark:bg-w3-slate border-s-4 border-w3-green">
+                    <span class="block text-xs font-bold text-w3-greenDark dark:text-w3-mint mb-0.5">
+                      <span class="lang-en">When &amp; How to Use:</span>
+                      <span class="lang-ar">متى وكيف تستخدمه:</span>
+                    </span>
+                    <p class="text-xs font-semibold text-w3-ink dark:text-zinc-100">
+                      <span class="lang-en">${escHtml(skill.domainEn)}</span>
+                      <span class="lang-ar">${escHtml(skill.domainAr)}</span>
+                    </p>
+                  </div>
+                  <p class="text-xs text-w3-muted dark:text-zinc-200 leading-relaxed mb-3">
+                    <span class="lang-en">${escHtml(skill.descriptionEn)}</span>
+                    <span class="lang-ar">${escHtml(skill.descriptionAr)}</span>
+                  </p>
+                  <div class="mb-3">
+                    <span class="block text-xs font-bold text-w3-ink dark:text-zinc-200 mb-1">
+                      <span class="lang-en">Ready Copy-Paste Command (Paste in AI Chat):</span>
+                      <span class="lang-ar">أمر جاهز للنسخ واللصق (في شات الذكاء الاصطناعي):</span>
+                    </span>
+                    <pre class="p-2.5 rounded-lg bg-w3-slate text-w3-mint border-s-4 border-w3-green font-mono text-xs overflow-x-auto whitespace-pre-wrap"><span class="lang-en">${escHtml(skill.samplePromptEn)}</span><span class="lang-ar">${escHtml(skill.samplePromptAr)}</span></pre>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-w3-line dark:border-zinc-700">
+                  <button type="button" data-copy-text-en="${escHtml(skill.samplePromptEn)}" data-copy-text-ar="${escHtml(skill.samplePromptAr)}" class="px-3.5 py-1.5 rounded-md bg-w3-green hover:bg-w3-greenHover text-white text-xs font-semibold focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <span class="lang-en">${escHtml(UI_DICTIONARY.en.modalCopyCmdBtn)}</span>
+                    <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.modalCopyCmdBtn)}</span>
+                  </button>
+                  <button type="button" data-try-command="${escHtml(skill.command)}" data-try-prompt-en="${escHtml(skill.samplePromptEn)}" data-try-prompt-ar="${escHtml(skill.samplePromptAr)}" class="px-3 py-1.5 rounded-md bg-w3-example dark:bg-w3-slate text-xs font-semibold text-w3-ink dark:text-w3-canvas hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <span class="lang-en">${escHtml(UI_DICTIONARY.en.tryItBtn)}</span>
+                    <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.tryItBtn)}</span>
+                  </button>
+                </div>
+              </article>`;
+    })
+    .join('\n            ');
+
+  const homeCliCardsHtml = cliList
+    .map((tool, cIdx) => {
+      const idx = skillsList.length + cIdx;
+      const searchStr = `cli agent_os.py ${tool.name} ${tool.command} ${tool.domainEn} ${tool.domainAr} ${tool.descriptionEn} ${tool.descriptionAr} ${tool.samplePromptEn}`.toLowerCase();
+      return `<article data-home-cmd-index="${idx}" data-home-cmd-cat="CLI_ONLY" data-home-cmd-search="${escHtml(searchStr)}" class="home-cmd-card rounded-xl border border-w3-line dark:border-zinc-700 bg-w3-canvas dark:bg-w3-slateDeep p-4 flex flex-col justify-between hidden">
+                <div>
+                  <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <code class="px-2.5 py-1 rounded bg-w3-slate text-w3-yellow font-mono text-xs font-bold">CLI: agent_os.py ${escHtml(tool.name)}</code>
+                    <span class="px-2 py-0.5 rounded bg-w3-example dark:bg-w3-slate font-mono text-xs text-w3-ink dark:text-zinc-200">
+                      <span class="lang-en">CLI Engine • ${escHtml(tool.phase)}</span>
+                      <span class="lang-ar">أداة سطر أوامر • ${escHtml(tool.phaseAr)}</span>
+                    </span>
+                  </div>
+                  <div class="mb-2 p-2.5 rounded-lg bg-w3-mint/40 dark:bg-w3-slate border-s-4 border-w3-green">
+                    <span class="block text-xs font-bold text-w3-greenDark dark:text-w3-mint mb-0.5">
+                      <span class="lang-en">When &amp; How to Use:</span>
+                      <span class="lang-ar">متى وكيف تستخدمه:</span>
+                    </span>
+                    <p class="text-xs font-semibold text-w3-ink dark:text-zinc-100">
+                      <span class="lang-en">${escHtml(tool.domainEn)}</span>
+                      <span class="lang-ar">${escHtml(tool.domainAr)}</span>
+                    </p>
+                  </div>
+                  <p class="text-xs text-w3-muted dark:text-zinc-200 leading-relaxed mb-3">
+                    <span class="lang-en">${escHtml(tool.descriptionEn)}</span>
+                    <span class="lang-ar">${escHtml(tool.descriptionAr)}</span>
+                  </p>
+                  <div class="mb-3">
+                    <span class="block text-xs font-bold text-w3-ink dark:text-zinc-200 mb-1">
+                      <span class="lang-en">Ready Copy-Paste Command (Terminal or AI Chat):</span>
+                      <span class="lang-ar">أمر جاهز للنسخ واللصق (في التيرمينال أو الشات):</span>
+                    </span>
+                    <pre class="p-2.5 rounded-lg bg-w3-slate text-w3-mint border-s-4 border-w3-green font-mono text-xs overflow-x-auto whitespace-pre-wrap"><span class="lang-en">${escHtml(tool.samplePromptEn)}</span><span class="lang-ar">${escHtml(tool.samplePromptAr)}</span></pre>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-w3-line dark:border-zinc-700">
+                  <button type="button" data-copy-text-en="${escHtml(tool.samplePromptEn)}" data-copy-text-ar="${escHtml(tool.samplePromptAr)}" class="px-3.5 py-1.5 rounded-md bg-w3-green hover:bg-w3-greenHover text-white text-xs font-semibold focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <span class="lang-en">${escHtml(UI_DICTIONARY.en.modalCopyCmdBtn)}</span>
+                    <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.modalCopyCmdBtn)}</span>
+                  </button>
+                  <button type="button" data-open-cli-modal="${escHtml(tool.name)}" class="px-3 py-1.5 rounded-md bg-w3-example dark:bg-w3-slate text-xs font-semibold text-w3-ink dark:text-w3-canvas hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                    <span class="lang-en">${escHtml(UI_DICTIONARY.en.refDetailsBtn)}</span>
+                    <span class="lang-ar">${escHtml(UI_DICTIONARY.ar.refDetailsBtn)}</span>
+                  </button>
+                </div>
+              </article>`;
+    })
+    .join('\n            ');
 
   const feedCardsHtml = allLessons
     .map((lesson) => {
@@ -1017,6 +1125,53 @@ function renderStaticHtml() {
               <button type="button" id="toggle-combos-grid-btn" data-expanded="false" class="px-5 py-2 rounded-full bg-w3-example dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas font-semibold text-xs hover:bg-w3-green hover:text-white focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
                 <span id="toggle-combos-label-en" class="lang-en">${escHtml(UI_DICTIONARY.en.showMoreCombos)}</span>
                 <span id="toggle-combos-label-ar" class="lang-ar">${escHtml(UI_DICTIONARY.ar.showMoreCombos)}</span>
+              </button>
+            </div>
+          </section>
+
+          <section id="all-commands-directory" aria-label="Complete All-Commands Copy-Paste Directory" class="bg-w3-card dark:bg-w3-slate rounded-xl border border-w3-line dark:border-zinc-700 p-4 sm:p-6 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+              <div>
+                <h2 class="font-display font-bold text-lg sm:text-xl text-w3-ink dark:text-w3-canvas mt-1 mb-1">
+                  <span class="lang-en">All 85 Skills &amp; 28 CLI Tools — When to Use, Description &amp; Ready Copy-Paste Commands</span>
+                  <span class="lang-ar">دليل جميع الأوامر الكامل (85 مهارة + 28 أداة CLI) — متى وكيف تستخدمها + الوصف + أمر جاهز للنسخ</span>
+                </h2>
+                <p class="text-xs text-w3-muted dark:text-zinc-300">
+                  <span class="lang-en">Every command in Agent OS with its exact user request domain, full explanation, and ready copy-paste prompt.</span>
+                  <span class="lang-ar">جميع أوامر النظام مع حالة الاستخدام الدقيقة، الشرح الكامل، والأمر الجاهز للنسخ واللصق فوراً.</span>
+                </p>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-w3-mint text-w3-greenDark font-mono text-xs font-bold shrink-0">113 Commands Ready</span>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3 mb-4">
+              <div class="relative flex-1 min-w-0">
+                <span class="absolute inset-y-0 start-3 flex items-center pointer-events-none text-w3-muted dark:text-zinc-400">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8" />
+                    <path stroke-linecap="round" d="m21 21-4.3-4.3" />
+                  </svg>
+                </span>
+                <input id="home-cmd-search" type="search" aria-label="Search all 85 skills and 28 CLI commands" placeholder="Search any /command, CLI tool, domain, or keyword (e.g., intake, nextjs, security, trace)..." class="w-full ps-10 pe-4 py-2 text-xs sm:text-sm rounded-lg bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green focus-visible:outline-none" />
+              </div>
+              <div class="w-full md:w-72 shrink-0">
+                <select id="home-cmd-cat-select" aria-label="Filter commands by category" class="w-full px-3 py-2 text-xs sm:text-sm rounded-lg bg-w3-canvas dark:bg-w3-slateDeep border border-w3-line dark:border-zinc-700 text-w3-ink dark:text-w3-canvas focus-visible:ring-2 focus-visible:ring-w3-green focus-visible:outline-none">
+                  <option value="ALL">All Commands (85 Skills + 28 CLI Tools)</option>
+                  <option value="CLI_ONLY">28 Unified CLI Tools (agent_os.py)</option>
+                  ${catOptionsHtml}
+                </select>
+              </div>
+            </div>
+
+            <div id="home-all-cmds-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${homeSkillsCardsHtml}
+              ${homeCliCardsHtml}
+            </div>
+
+            <div class="mt-4 text-center">
+              <button type="button" id="toggle-all-cmds-btn" data-expanded="false" class="px-5 py-2.5 rounded-full bg-w3-green text-white font-semibold text-xs hover:bg-w3-greenHover focus-visible:ring-2 focus-visible:ring-w3-green micro-transition">
+                <span id="toggle-all-cmds-label-en" class="lang-en">Show All 113 Commands (85 Skills + 28 CLI Tools) ▼</span>
+                <span id="toggle-all-cmds-label-ar" class="lang-ar">عرض جميع الأوامر الـ 113 بالكامل (85 مهارة + 28 أداة CLI) ▼</span>
               </button>
             </div>
           </section>
